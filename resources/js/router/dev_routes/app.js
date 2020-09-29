@@ -8,30 +8,46 @@ export default {
                 tokenRequired: false
             }
         },
-        // {
-        //     path: '/login',
-        //     name: 'login',
-        //     component: resolve => require(['@/assets/js/basic/Login'], resolve),
-        //     meta: {
-        //         tokenRequired: false
-        //     }
-        // },
-        // {
-        //     path: '/register',
-        //     name: 'register',
-        //     component: resolve => require(['@/assets/js/basic/Register'], resolve),
-        //     meta: {
-        //         tokenRequired: false
-        //     }
-        // },
-        // {
-        //     path: '/header',
-        //     name: 'header',
-        //     component: resolve => require(['@/assets/js/basic/Header'], resolve),
-        //     meta: {
-        //         tokenRequired: false
-        //     }
-        // },
+        {
+            path: '/login',
+            name: 'login',
+            component: resolve => require(['@/js/basic/login'], resolve),
+            meta: {
+                tokenRequired: false
+            }
+        },
+        {
+            path: '/registerAccount',
+            name: 'registerAccount',
+            component: resolve => require(['@/js/basic/register'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/casherDashboard',
+            name: 'casherDashboard',
+            component: resolve => require(['@/js/modules/dashboard/casherDashboard'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/:any',
+            name: 'any',
+            component: resolve => require(['@/js/basic/landing'], resolve),
+            meta: {
+                tokenRequired: false
+            }
+        },
+        {
+            path: '/:any',
+            name: 'any',
+            component: resolve => require(['@/js/modules/dashboard/casherDashboard'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
         // {
         //     path: '/userDashboard',
         //     name: 'userDashboard',

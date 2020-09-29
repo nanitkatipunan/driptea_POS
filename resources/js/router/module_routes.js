@@ -8,7 +8,7 @@ let beforeEnter = (to, from, next) => {
   let token = localStorage.getItem('userToken')
   if(token !== null && userID > 0){
     if(to.path === '/' || to.meta.tokenRequired === false){
-      next({path: '/userDashboard'})
+      next({path: '/casherDashboard'})
     }else{
       next()
     }
@@ -28,7 +28,7 @@ let routes = [
   {
     path: '/',
     name: 'landing',
-    component: resolve => require(['@//js/basic/landing'], resolve),
+    component: resolve => require(['@/js/basic/landing'], resolve),
     beforeEnter: beforeEnter
   }
 ]

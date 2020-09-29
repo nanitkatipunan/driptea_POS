@@ -13,4 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/{any}', 'App\Http\Controllers\PageController@index')->where('any', '.*');
+Route::post('register', 'App\Http\Controllers\UserController@register');
+Route::post('login', 'App\Http\Controllers\UserController@authenticate');
+Route::post('tokenRefresh', 'App\Http\Controllers\UserController@tokenRefresh');
+Route::post('deaunthenticate', 'App\Http\Controllers\UserController@deaunthenticate');
+Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::post('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
+});
  

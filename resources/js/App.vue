@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #17D817"> 
+        <nav v-if="auth.currentPath !== '/'" class="navbar navbar-expand-sm navbar-light" style="background-color: #17D817"> 
             <img style="height: 50px; margin-left: 2%;" :src="image" v-on:click="redirect('/')">
             <a class="navbar-brand dripteaWord" v-on:click="redirect('/')">Driptea</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-2" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,11 +56,15 @@ li, .dripteaWord, img {
 </style>
 <script>
 import image from "../assets/logo.png"
+import AUTH from "./services/auth"
+import ROUTER from './router'
 export default {
     name: "app",
     data(){
         return {
-            image: image
+            image: image,
+            auth: AUTH,
+            token: null
         }
     },
     components: {
