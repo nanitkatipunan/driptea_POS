@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <nav v-if="auth.currentPath !== '/'" class="navbar navbar-expand-sm navbar-light" style="background-color: #17D817"> 
-            <img style="height: 50px; margin-left: 2%;" :src="image" v-on:click="redirect('/')">
-            <a class="navbar-brand dripteaWord" v-on:click="redirect('/')">Driptea</a>
+        <nav v-if="auth.currentPath !== '/'" class="navbar navbar-expand-sm navbar-dark" style="background-color: black"> 
+            <img style="height: 50px; margin-left: 2%; border: 1px solid white" :src="image" v-on:click="redirect('/')">
+            <a class="navbar-brand dripteaWord" style="color:white" v-on:click="redirect('/')">Driptea</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-2" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -13,7 +13,7 @@
                 </ul>
             </div>
         </nav>
-        <div class="container">
+        <div>
             <router-view></router-view>
         </div>
         <!-- <footer> -->
@@ -38,6 +38,9 @@
     </div>
 </template>
 <style>
+#app{
+    font-family: Roboto Slab;
+}
 .footer{
     margin-top: 2%;
 }
@@ -48,7 +51,7 @@ ul {
     margin-right: 2%;
 }
 a {
-    font-weight: bold
+    font-weight: bold;
 }
 li, .dripteaWord, img {
     cursor: pointer;

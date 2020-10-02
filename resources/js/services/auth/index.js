@@ -8,7 +8,7 @@ export default {
     imageSelected: null,
     token: null,
     user: {
-        userId: null,
+        casherId: null,
         fullname: null,
         userType: null
     },
@@ -33,9 +33,9 @@ export default {
             return false
         }
     },
-    setUser(userId, fullname, userType) {
-        localStorage.setItem('userId', userId)
-        this.user.userId = userId
+    setUser(casherId, fullname, userType) {
+        localStorage.setItem('casherId', casherId)
+        this.user.casherId = casherId
         this.user.fullname = fullname
         this.user.userType = userType
     },
@@ -54,7 +54,7 @@ export default {
       },
     deaunthenticate(){
         localStorage.removeItem('userToken')
-        localStorage.removeItem('userId')
+        localStorage.removeItem('casherId')
         this.setUser(null)
         axios.post(this.url+'deaunthenticate')
         this.token = null

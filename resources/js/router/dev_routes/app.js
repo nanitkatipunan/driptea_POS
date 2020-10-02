@@ -25,9 +25,49 @@ export default {
             }
         },
         {
+            path: '/order/product/:item',
+            name: 'order',
+            component: resolve => require(['@/js/modules/order/order'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
             path: '/casherDashboard',
             name: 'casherDashboard',
             component: resolve => require(['@/js/modules/dashboard/casherDashboard'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/chosenCategory/:itemChosen',
+            name: 'chosenCategory',
+            component: resolve => require(['@/js/modules/products/chosenCategory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/addProduct',
+            name: 'addProduct',
+            component: resolve => require(['@/js/modules/addingAdmin/addProducts'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/addCategories',
+            name: 'addCategories',
+            component: resolve => require(['@/js/modules/addingAdmin/addCategories'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/productCategory/:image?',
+            name: 'productCategory',
+            component: resolve => require(['@/js/modules/products/productCategory'], resolve),
             meta: {
                 tokenRequired: true
             }
@@ -60,14 +100,6 @@ export default {
         //     path: '/profile',
         //     name: 'profile',
         //     component: resolve => require(['@/assets/js/modules/profile/profile'], resolve),
-        //     meta: {
-        //         tokenRequired: true
-        //     }
-        // },
-        // {
-        //     path: '/addProduct',
-        //     name: 'addProduct',
-        //     component: resolve => require(['@/assets/js/modules/product/addProduct'], resolve),
         //     meta: {
         //         tokenRequired: true
         //     }

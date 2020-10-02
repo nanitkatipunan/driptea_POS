@@ -2113,6 +2113,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2167,7 +2170,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "\n.footer{\r\n    margin-top: 2%;\n}\n.copyright {\r\n    font-size: 13px;\n}\nul {\r\n    margin-right: 2%;\n}\na {\r\n    font-weight: bold\n}\nli, .dripteaWord, img {\r\n    cursor: pointer;\n}\r\n", ""]);
+exports.push([module.i, "\n#app{\r\n    font-family: Roboto Slab;\n}\n.footer{\r\n    margin-top: 2%;\n}\n.copyright {\r\n    font-size: 13px;\n}\nul {\r\n    margin-right: 2%;\n}\na {\r\n    font-weight: bold;\n}\nli, .dripteaWord, img {\r\n    cursor: pointer;\n}\r\n", ""]);
 
 // exports
 
@@ -20453,12 +20456,16 @@ var render = function() {
       ? _c(
           "nav",
           {
-            staticClass: "navbar navbar-expand-sm navbar-light",
-            staticStyle: { "background-color": "#17D817" }
+            staticClass: "navbar navbar-expand-sm navbar-dark",
+            staticStyle: { "background-color": "black" }
           },
           [
             _c("img", {
-              staticStyle: { height: "50px", "margin-left": "2%" },
+              staticStyle: {
+                height: "50px",
+                "margin-left": "2%",
+                border: "1px solid white"
+              },
               attrs: { src: _vm.image },
               on: {
                 click: function($event) {
@@ -20471,6 +20478,7 @@ var render = function() {
               "a",
               {
                 staticClass: "navbar-brand dripteaWord",
+                staticStyle: { color: "white" },
                 on: {
                   click: function($event) {
                     return _vm.redirect("/")
@@ -20522,7 +20530,7 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "container" }, [_c("router-view")], 1)
+    _c("div", [_c("router-view")], 1)
   ])
 }
 var staticRenderFns = [
@@ -35985,7 +35993,7 @@ __webpack_require__.r(__webpack_exports__);
     path: '/login',
     name: 'login',
     component: function component(resolve) {
-      return Promise.all(/*! AMD require */[__webpack_require__.e(4), __webpack_require__.e(1)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/login */ "./resources/js/basic/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return Promise.all(/*! AMD require */[__webpack_require__.e(7), __webpack_require__.e(3)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/login */ "./resources/js/basic/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: false
@@ -35994,7 +36002,16 @@ __webpack_require__.r(__webpack_exports__);
     path: '/registerAccount',
     name: 'registerAccount',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/register */ "./resources/js/basic/register.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return __webpack_require__.e(/*! AMD require */ 4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/register */ "./resources/js/basic/register.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+    },
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/order/product/:item',
+    name: 'order',
+    component: function component(resolve) {
+      return __webpack_require__.e(/*! AMD require */ 9).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/order/order */ "./resources/js/modules/order/order.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: true
@@ -36003,7 +36020,43 @@ __webpack_require__.r(__webpack_exports__);
     path: '/casherDashboard',
     name: 'casherDashboard',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/dashboard/casherDashboard */ "./resources/js/modules/dashboard/casherDashboard.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return __webpack_require__.e(/*! AMD require */ 1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/dashboard/casherDashboard */ "./resources/js/modules/dashboard/casherDashboard.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+    },
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/chosenCategory/:itemChosen',
+    name: 'chosenCategory',
+    component: function component(resolve) {
+      return __webpack_require__.e(/*! AMD require */ 8).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/products/chosenCategory */ "./resources/js/modules/products/chosenCategory.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+    },
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/addProduct',
+    name: 'addProduct',
+    component: function component(resolve) {
+      return __webpack_require__.e(/*! AMD require */ 6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/addProducts */ "./resources/js/modules/addingAdmin/addProducts.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+    },
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/addCategories',
+    name: 'addCategories',
+    component: function component(resolve) {
+      return __webpack_require__.e(/*! AMD require */ 5).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/addCategories */ "./resources/js/modules/addingAdmin/addCategories.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+    },
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/productCategory/:image?',
+    name: 'productCategory',
+    component: function component(resolve) {
+      return __webpack_require__.e(/*! AMD require */ 2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/products/productCategory */ "./resources/js/modules/products/productCategory.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: true
@@ -36021,7 +36074,7 @@ __webpack_require__.r(__webpack_exports__);
     path: '/:any',
     name: 'any',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/dashboard/casherDashboard */ "./resources/js/modules/dashboard/casherDashboard.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return __webpack_require__.e(/*! AMD require */ 1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/dashboard/casherDashboard */ "./resources/js/modules/dashboard/casherDashboard.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: true
@@ -36038,14 +36091,6 @@ __webpack_require__.r(__webpack_exports__);
   //     path: '/profile',
   //     name: 'profile',
   //     component: resolve => require(['@/assets/js/modules/profile/profile'], resolve),
-  //     meta: {
-  //         tokenRequired: true
-  //     }
-  // },
-  // {
-  //     path: '/addProduct',
-  //     name: 'addProduct',
-  //     component: resolve => require(['@/assets/js/modules/product/addProduct'], resolve),
   //     meta: {
   //         tokenRequired: true
   //     }
@@ -36111,7 +36156,7 @@ var beforeEnter = function beforeEnter(to, from, next) {
   // localStorage.setItem('usertoken', 'abcde')
   // TODO Redirect if no token when token is required in meta.tokenRequired
   _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].currentPath = to.path;
-  var userID = localStorage.getItem('userId');
+  var userID = localStorage.getItem('casherId');
   var token = localStorage.getItem('userToken');
 
   if (token !== null && userID > 0) {
@@ -36180,7 +36225,7 @@ __webpack_require__.r(__webpack_exports__);
   imageSelected: null,
   token: null,
   user: {
-    userId: null,
+    casherId: null,
     fullname: null,
     userType: null
   },
@@ -36211,9 +36256,9 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     }
   },
-  setUser: function setUser(userId, fullname, userType) {
-    localStorage.setItem('userId', userId);
-    this.user.userId = userId;
+  setUser: function setUser(casherId, fullname, userType) {
+    localStorage.setItem('casherId', casherId);
+    this.user.casherId = casherId;
     this.user.fullname = fullname;
     this.user.userType = userType;
   },
@@ -36235,7 +36280,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   deaunthenticate: function deaunthenticate() {
     localStorage.removeItem('userToken');
-    localStorage.removeItem('userId');
+    localStorage.removeItem('casherId');
     this.setUser(null);
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.url + 'deaunthenticate');
     this.token = null;
