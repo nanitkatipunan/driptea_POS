@@ -11,7 +11,7 @@ class Order extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'productId', 'quantity', 'size', 'cupType', 'sugarLevel', 'subTotal', 'status'
+        'customerId', 'productId', 'quantity', 'size', 'cupType', 'sugarLevel', 'subTotal', 'choosenPrice', 'status'
     ];
 
     public function orderProduct(){

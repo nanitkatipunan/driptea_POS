@@ -12,10 +12,10 @@
                             <table class="table table-responsive table-bordered" id="myTable">
                                 <tr>
                                     <th style="width: 200px;">Product Name</th>
-                                    <th style="width: 200px;">Unit Price</th>
-                                    <th style="width: 100px;">Quantity</th>
-                                    <th style="width: 100px;">Total</th>
-                                    <th style="width: 20px;">❌</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th style="width: 15px;">❌</th>
                                 </tr>
                                 <tbody>
                                     <tr v-for="(item, index) in tableData" :key="index">
@@ -24,7 +24,7 @@
                                         <td>{{item.quantity}}</td>
                                         <td>{{item.subTotal}}</td>
                                         <td>
-                                            <button class="btn" type="button" aria-expanded="false" @click="deleteOrder(item.id)">❌</button>
+                                            <button style="font-size: 10px" type="button" aria-expanded="false" @click="deleteOrder(item.id)">❌</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -33,7 +33,7 @@
                         <div class="col-md-6"></div>
                         <div class="col-md-3" style="text-align:left;">
                             <p>Subtotal:</p>
-                            <p>Delivery Fee: </p>
+                            <p>Delivery&nbsp;Fee: </p>
                             <p class="pStyle">Total: </p>
                             <p class="pStyle">Incash: </p>
                             <p class="pStyle">Change: </p>
@@ -63,13 +63,13 @@
                     </div>
                     <div class="col-md-6">
                         <center>
-                            <input type="number" placeholder="enter cash paid..." v-model="fee"><br>
+                            <input type="number" placeholder="enter delivery fee..." v-model="fee"><br>
                             <button class="btn btn-primary" @click="addingFee">Add Delivery Fee</button>
                         </center>
                     </div>
                 </div>
                 <center>
-                    <button class="btn btn-primary checkout">Checkout</button>
+                    <button class="btn btn-primary checkout" @click="checkoutOrder">Checkout</button>
                 </center>
             </div>
        </div>
@@ -202,14 +202,28 @@ export default {
             ROUTER.push('/chosenCategory/'+param).catch(()=>{})
         },
         retrieveProduct(){
-            this.$axios.post(AUTH.url + 'retrieveOrder', {id: localStorage.getItem('customerId')}).then(res => {
-                console.log(res.data.order)
+            let params = {
+                id: localStorage.getItem('customerId')
+            }
+            this.$axios.post(AUTH.url + 'retrieveOrder', params).then(res => {
                 this.tableData = res.data.order
             })
         },
         deleteOrder(prodId){
             this.$axios.post(AUTH.url + 'deleteOrder', {id: prodId}).then(res => {
                 this.retrieveProduct()
+            })
+        },
+        checkoutOrder(){
+            let params = {
+                id: localStorage.getItem('customerId'),
+                status: 'complete'
+            }
+            this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
+                this.retrieveProduct()
+                // localStorage.removeItem('customerId')
+                // localStorage.removeItem('customerType')
+                // ROUTER.push('/casherDashboard').catch(()=>{})
             })
         }
     }

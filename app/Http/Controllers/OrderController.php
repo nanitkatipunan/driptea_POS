@@ -47,6 +47,16 @@ class OrderController extends Controller
         return response()->json(compact('order'));
     }
 
+    public function updateStatus(Request $request){
+        $order = Order::where('customerId', $request->id)->where('deleted_at', null)->get();
+        foreach ($order as $value) {
+            $ord = Order::firstOrCreate(['id' => $value->id]);
+            $ord->status = $request['status'];
+            $ord->save();
+        }
+        return response()->json(['success' => 'successfully updated!']);
+    }
+
     public function retrieveWholeOrder(Request $request){
         $order = Order::with('orderProduct')->find($request->id)->get();
         $addOns = AddOns::where('orderId', $request->id)->get(['addOns']);

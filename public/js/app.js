@@ -35993,7 +35993,7 @@ __webpack_require__.r(__webpack_exports__);
     path: '/login',
     name: 'login',
     component: function component(resolve) {
-      return Promise.all(/*! AMD require */[__webpack_require__.e(7), __webpack_require__.e(3)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/login */ "./resources/js/basic/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return Promise.all(/*! AMD require */[__webpack_require__.e(10), __webpack_require__.e(5)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/login */ "./resources/js/basic/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: false
@@ -36002,7 +36002,7 @@ __webpack_require__.r(__webpack_exports__);
     path: '/registerAccount',
     name: 'registerAccount',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/register */ "./resources/js/basic/register.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return __webpack_require__.e(/*! AMD require */ 6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/register */ "./resources/js/basic/register.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: true
@@ -36011,7 +36011,7 @@ __webpack_require__.r(__webpack_exports__);
     path: '/order/product/:item',
     name: 'order',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 9).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/order/order */ "./resources/js/modules/order/order.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return __webpack_require__.e(/*! AMD require */ 3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/order/order */ "./resources/js/modules/order/order.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: true
@@ -36029,7 +36029,7 @@ __webpack_require__.r(__webpack_exports__);
     path: '/chosenCategory/:itemChosen',
     name: 'chosenCategory',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 8).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/products/chosenCategory */ "./resources/js/modules/products/chosenCategory.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return __webpack_require__.e(/*! AMD require */ 4).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/products/chosenCategory */ "./resources/js/modules/products/chosenCategory.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: true
@@ -36038,7 +36038,7 @@ __webpack_require__.r(__webpack_exports__);
     path: '/addProduct',
     name: 'addProduct',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 6).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/addProducts */ "./resources/js/modules/addingAdmin/addProducts.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return __webpack_require__.e(/*! AMD require */ 9).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/addProducts */ "./resources/js/modules/addingAdmin/addProducts.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: true
@@ -36047,7 +36047,16 @@ __webpack_require__.r(__webpack_exports__);
     path: '/addCategories',
     name: 'addCategories',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 5).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/addCategories */ "./resources/js/modules/addingAdmin/addCategories.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return __webpack_require__.e(/*! AMD require */ 8).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/addCategories */ "./resources/js/modules/addingAdmin/addCategories.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+    },
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/addAddOns',
+    name: 'addAddOns',
+    component: function component(resolve) {
+      return __webpack_require__.e(/*! AMD require */ 7).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/addAddOns */ "./resources/js/modules/addingAdmin/addAddOns.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: true

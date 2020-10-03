@@ -218,10 +218,10 @@ __webpack_require__.r(__webpack_exports__);
     retrieveProduct: function retrieveProduct() {
       var _this2 = this;
 
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOrder', {
+      var params = {
         id: localStorage.getItem('customerId')
-      }).then(function (res) {
-        console.log(res.data.order);
+      };
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOrder', params).then(function (res) {
         _this2.tableData = res.data.order;
       });
     },
@@ -232,6 +232,20 @@ __webpack_require__.r(__webpack_exports__);
         id: prodId
       }).then(function (res) {
         _this3.retrieveProduct();
+      });
+    },
+    checkoutOrder: function checkoutOrder() {
+      var _this4 = this;
+
+      var params = {
+        id: localStorage.getItem('customerId'),
+        status: 'complete'
+      };
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'updateStatus', params).then(function (res) {
+        _this4.retrieveProduct(); // localStorage.removeItem('customerId')
+        // localStorage.removeItem('customerType')
+        // ROUTER.push('/casherDashboard').catch(()=>{})
+
       });
     }
   }
@@ -359,19 +373,13 @@ var render = function() {
                           _vm._v("Product Name")
                         ]),
                         _vm._v(" "),
-                        _c("th", { staticStyle: { width: "200px" } }, [
-                          _vm._v("Unit Price")
-                        ]),
+                        _c("th", [_vm._v("Unit Price")]),
                         _vm._v(" "),
-                        _c("th", { staticStyle: { width: "100px" } }, [
-                          _vm._v("Quantity")
-                        ]),
+                        _c("th", [_vm._v("Quantity")]),
                         _vm._v(" "),
-                        _c("th", { staticStyle: { width: "100px" } }, [
-                          _vm._v("Total")
-                        ]),
+                        _c("th", [_vm._v("Total")]),
                         _vm._v(" "),
-                        _c("th", { staticStyle: { width: "20px" } }, [
+                        _c("th", { staticStyle: { width: "15px" } }, [
                           _vm._v("❌")
                         ])
                       ]),
@@ -394,7 +402,7 @@ var render = function() {
                               _c(
                                 "button",
                                 {
-                                  staticClass: "btn",
+                                  staticStyle: { "font-size": "10px" },
                                   attrs: {
                                     type: "button",
                                     "aria-expanded": "false"
@@ -427,7 +435,7 @@ var render = function() {
                   [
                     _c("p", [_vm._v("Subtotal:")]),
                     _vm._v(" "),
-                    _c("p", [_vm._v("Delivery Fee: ")]),
+                    _c("p", [_vm._v("Delivery Fee: ")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "pStyle" }, [_vm._v("Total: ")]),
                     _vm._v(" "),
@@ -562,7 +570,7 @@ var render = function() {
                       ],
                       attrs: {
                         type: "number",
-                        placeholder: "enter cash paid..."
+                        placeholder: "enter delivery fee..."
                       },
                       domProps: { value: _vm.fee },
                       on: {
@@ -592,9 +600,14 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("center", [
-            _c("button", { staticClass: "btn btn-primary checkout" }, [
-              _vm._v("Checkout")
-            ])
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary checkout",
+                on: { click: _vm.checkoutOrder }
+              },
+              [_vm._v("Checkout")]
+            )
           ])
         ],
         1

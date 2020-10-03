@@ -26,6 +26,7 @@ Route::post('updateCategory','App\Http\Controllers\AddCategoryController@updateC
 Route::post('retrieveCategory','App\Http\Controllers\AddCategoryController@retrieveCategory');
 Route::post('addCustomer','App\Http\Controllers\CustomerDetailsController@insertCustomer');
 Route::post('addOrder','App\Http\Controllers\OrderController@addOrder');
+Route::post('updateStatus','App\Http\Controllers\OrderController@updateStatus');
 Route::post('deleteOrder','App\Http\Controllers\OrderController@deleteOrder');
 Route::post('retrieveOrder','App\Http\Controllers\OrderController@retrieveOrder');
 Route::post('retrieveWholeOrder','App\Http\Controllers\OrderController@retrieveWholeOrder');

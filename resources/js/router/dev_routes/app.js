@@ -65,6 +65,14 @@ export default {
             }
         },
         {
+            path: '/addAddOns',
+            name: 'addAddOns',
+            component: resolve => require(['@/js/modules/addingAdmin/addAddOns'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
             path: '/productCategory/:image?',
             name: 'productCategory',
             component: resolve => require(['@/js/modules/products/productCategory'], resolve),
