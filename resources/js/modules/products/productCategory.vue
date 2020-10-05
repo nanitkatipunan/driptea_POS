@@ -72,6 +72,7 @@
                     <button class="btn btn-primary checkout" @click="checkoutOrder">Checkout</button>
                 </center>
             </div>
+            <receipt v-if="receiptShow"></receipt>
        </div>
     </div>
 </template>
@@ -138,6 +139,7 @@ table{
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
+import receipt from '../order/receipt.vue'
 export default {
     data(){
         return{
@@ -150,14 +152,21 @@ export default {
             change: 0,
             subTotalPrice: 0,
             cash: null,
-            fee: null
+            fee: null,
+            receiptShow: false
         }
+    },
+    components: {
+        receipt
     },
     mounted(){
         this.retrieveCategory()
         this.retrieveProduct()
     },
     methods: {
+        hideReceipt(){
+            this.receiptShow = false
+        },
         addingFee(){
             this.deliveryFee = this.fee
         },
@@ -219,12 +228,14 @@ export default {
                 id: localStorage.getItem('customerId'),
                 status: 'complete'
             }
-            this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
-                this.retrieveProduct()
+            this.receiptShow = true
+            // this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
+            //     this.retrieveProduct()
+            //     this.receiptShow = true
                 // localStorage.removeItem('customerId')
                 // localStorage.removeItem('customerType')
                 // ROUTER.push('/casherDashboard').catch(()=>{})
-            })
+            // })
         }
     }
 }

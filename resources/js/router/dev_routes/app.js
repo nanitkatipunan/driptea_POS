@@ -21,7 +21,7 @@ export default {
             name: 'registerAccount',
             component: resolve => require(['@/js/basic/register'], resolve),
             meta: {
-                tokenRequired: true
+                tokenRequired: false
             }
         },
         {

@@ -1,18 +1,16 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[10],{
 
-/***/ "../../../node_modules/json-schema/lib/validate.js":
-/*!*******************************************************************************!*\
-  !*** C:/Users/2ndyrGroupC/Documents/node_modules/json-schema/lib/validate.js ***!
-  \*******************************************************************************/
+/***/ "./node_modules/json-schema/lib/validate.js":
+/*!**************************************************!*\
+  !*** ./node_modules/json-schema/lib/validate.js ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
  * JSONSchema Validator - Validates JavaScript objects using JSON Schemas
  *	(http://www.json.com/json-schema-proposal/)
- *
- * Copyright (c) 2007 Kris Zyp SitePen (www.sitepen.com)
- * Licensed under the MIT (MIT-LICENSE.txt) license.
+ * Licensed under AFL-2.1 OR BSD-3-Clause
 To use the validator call the validate function with an instance object and an optional schema object.
 If a schema is provided, it will be used to validate. If the instance object refers to a schema (self-validating),
 that schema will be used to validate and the schema parameter is not necessary (if both exist,
@@ -109,7 +107,7 @@ var validate = exports._validate = function(/*Any*/instance,/*Object*/schema,/*O
 						!(value instanceof Array && type == 'array') &&
 						!(value instanceof Date && type == 'date') &&
 						!(type == 'integer' && value%1===0)){
-					return [{property:path,message:(typeof value) + " value found, but a " + type + " is required"}];
+					return [{property:path,message:value + " - " + (typeof value) + " value found, but a " + type + " is required"}];
 				}
 				if(type instanceof Array){
 					var unionErrors=[];
@@ -233,7 +231,7 @@ var validate = exports._validate = function(/*Any*/instance,/*Object*/schema,/*O
 					delete instance[i];
 					continue;
 				} else {
-					errors.push({property:path,message:(typeof value) + "The property " + i +
+					errors.push({property:path,message:"The property " + i +
 						" is not defined in the schema and the schema does not allow additional properties"});
 				}
 			}

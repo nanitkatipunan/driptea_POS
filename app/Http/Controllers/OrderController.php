@@ -57,9 +57,8 @@ class OrderController extends Controller
         return response()->json(['success' => 'successfully updated!']);
     }
 
-    public function retrieveWholeOrder(Request $request){
-        $order = Order::with('orderProduct')->find($request->id)->get();
-        $addOns = AddOns::where('orderId', $request->id)->get(['addOns']);
-        return response()->json(compact('order', 'addOns'));
+    public function retrieveOrderCustomer(Request $request){
+        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('deleted_at', null)->get();
+        return response()->json(compact('order'));
     }
 }
