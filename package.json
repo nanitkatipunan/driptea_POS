@@ -20,6 +20,7 @@
     "dependencies": {
         "bootstrap": "^4.1.1",
         "json-schema": "^0.2.5",
+        "moment": "^2.29.0",
         "pdfmake": "^0.1.68",
         "vue": "^2.6.12",
         "vue-router": "^3.4.3"

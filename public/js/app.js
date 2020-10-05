@@ -36065,7 +36065,7 @@ __webpack_require__.r(__webpack_exports__);
     path: '/productCategory/:image?',
     name: 'productCategory',
     component: function component(resolve) {
-      return __webpack_require__.e(/*! AMD require */ 2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/products/productCategory */ "./resources/js/modules/products/productCategory.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return Promise.all(/*! AMD require */[__webpack_require__.e(2), __webpack_require__.e(11)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/products/productCategory */ "./resources/js/modules/products/productCategory.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: true
