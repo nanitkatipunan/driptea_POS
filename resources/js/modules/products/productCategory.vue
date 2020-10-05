@@ -3,7 +3,7 @@
         <div class="row firstRow">
             <div class="col-md-6">
                 <center>
-                    <div class="firstCol row">
+                    <div class="firstCol">
                         <center>
                             <img v-if="customerType === 'walkin'" style="width: 70px; height: 50px; border: solid 1px black" src="@/assets/walkin.jpg">
                             <img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda.png">
@@ -11,7 +11,7 @@
                             <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb.jpeg">
                             <table class="table table-responsive table-bordered" id="myTable">
                                 <tr>
-                                    <th style="width: 200px;">Product Name</th>
+                                    <th>Product Name</th>
                                     <th>Unit Price</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
@@ -30,26 +30,28 @@
                                 </tbody>
                             </table>
                         </center>
-                        <div class="col-md-6"></div>
-                        <div class="col-md-3" style="text-align:left;">
-                            <p>Subtotal:</p>
-                            <p>Delivery&nbsp;Fee: </p>
-                            <p class="pStyle">Total: </p>
-                            <p class="pStyle">Incash: </p>
-                            <p class="pStyle">Change: </p>
-                        </div>
-                        <div class="col-md-3" style="text-align:left;">
-                            <p>₱ {{getSubTotal()}}</p>
-                            <p>₱ {{convertFee()}}</p>
-                            <p class="pStyle">₱ {{convertTotalPrice()}}</p>
-                            <p class="pStyle">₱ {{convertIncash()}}</p>
-                            <p class="pStyle">₱ {{convertChange()}}</p>
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-3" style="text-align:left;">
+                                <p>Subtotal:</p>
+                                <p>Delivery&nbsp;Fee: </p>
+                                <p class="pStyle">Total: </p>
+                                <p class="pStyle">Incash: </p>
+                                <p class="pStyle">Change: </p>
+                            </div>
+                            <div class="col-md-3" style="text-align:left;">
+                                <p>₱ {{getSubTotal()}}</p>
+                                <p>₱ {{convertFee()}}</p>
+                                <p class="pStyle">₱ {{convertTotalPrice()}}</p>
+                                <p class="pStyle">₱ {{convertIncash()}}</p>
+                                <p class="pStyle">₱ {{convertChange()}}</p>
+                            </div>
                         </div>
                     </div>
                 </center>
             </div>
             <div class="col-md-6">
-                <div class="row" style="height: 600px; overflow-y: scroll">
+                <div class="row dataStyle">
                     <div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
                         <img class="imgItem" :src="item.image" @click="redirect(item.productCategory)">
                     </div>
@@ -76,6 +78,10 @@
     </div>
 </template>
 <style>
+.dataStyle{
+    height: 600px;
+    overflow-y: scroll;
+}
 .checkout{
     margin-top: 3%;
     height: 40% !important;
@@ -109,9 +115,31 @@ p{
 }
 table{
     height: 450px;
+    width: 100%;
 }
-.table tr th{
-   text-align: center;   
+.table tr{
+   text-align: center;
+}
+th {
+   width: 100%;
+}
+@media screen and (max-width: 800px) {
+    .firstCol{
+        border-radius: 5px;
+        box-shadow: 5px 5px gray;
+        width: 90%;
+        margin-top: 5%;
+        background-color:white;
+        height: 600px !important;
+    }
+    table{
+        height: 350px;
+        width: 100%;
+    }
+    .dataStyle{
+        height: 490px !important;
+        overflow-y: scroll;
+    }
 }
 .firstCol{
     border-radius: 5px;

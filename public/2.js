@@ -148,6 +148,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -265,7 +293,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.checkout{\r\n    margin-top: 3%;\r\n    height: 40% !important;\r\n    font-size: 20px; width: 200px;\n}\n.btn{\r\n    height: 33px;\r\n    width: 150px;\n}\ninput{\r\n    height: 35px;\r\n    border-radius: 5px;\n}\n::-webkit-scrollbar {\r\n  width: 1px;\n}\n.pStyle{\r\n    font-weight: bold;\n}\np{\r\n    margin-top: -10%;\n}\n.firstRow{\r\n    margin-bottom: 5%;\r\n    margin-top: 3%;\n}\n.sudlanan{\r\n    background-color: black;\r\n    height: 92.8vh;\r\n    overflow: hidden;\n}\ntable{\r\n    height: 450px;\n}\n.table tr th{\r\n   text-align: center;\n}\n.firstCol{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    width: 90%;\r\n    margin-top: 5%;\r\n    background-color:white;\r\n    height: 650px;\n}\n.secondCol{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    margin-top: 5%;\r\n    margin-right: 2%;\r\n    margin-left: 3%;\r\n    height: 150px;\r\n    background-color: white;\n}\n.imgItem{\r\n    height: 150px;\r\n    width: 100%;\n}\r\n", ""]);
+exports.push([module.i, "\n.dataStyle{\r\n    height: 600px;\r\n    overflow-y: scroll;\n}\n.checkout{\r\n    margin-top: 3%;\r\n    height: 40% !important;\r\n    font-size: 20px; width: 200px;\n}\n.btn{\r\n    height: 33px;\r\n    width: 150px;\n}\ninput{\r\n    height: 35px;\r\n    border-radius: 5px;\n}\n::-webkit-scrollbar {\r\n  width: 1px;\n}\n.pStyle{\r\n    font-weight: bold;\n}\np{\r\n    margin-top: -10%;\n}\n.firstRow{\r\n    margin-bottom: 5%;\r\n    margin-top: 3%;\n}\n.sudlanan{\r\n    background-color: black;\r\n    height: 92.8vh;\r\n    overflow: hidden;\n}\ntable{\r\n    height: 450px;\r\n    width: 100%;\n}\n.table tr{\r\n   text-align: center;\n}\nth {\r\n   width: 100%;\n}\n@media screen and (max-width: 800px) {\n.firstCol{\r\n        border-radius: 5px;\r\n        box-shadow: 5px 5px gray;\r\n        width: 90%;\r\n        margin-top: 5%;\r\n        background-color:white;\r\n        height: 600px !important;\n}\ntable{\r\n        height: 350px;\r\n        width: 100%;\n}\n.dataStyle{\r\n        height: 490px !important;\r\n        overflow-y: scroll;\n}\n}\n.firstCol{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    width: 90%;\r\n    margin-top: 5%;\r\n    background-color:white;\r\n    height: 650px;\n}\n.secondCol{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    margin-top: 5%;\r\n    margin-right: 2%;\r\n    margin-left: 3%;\r\n    height: 150px;\r\n    background-color: white;\n}\n.imgItem{\r\n    height: 150px;\r\n    width: 100%;\n}\r\n", ""]);
 
 // exports
 
@@ -326,7 +354,7 @@ var render = function() {
           _c("center", [
             _c(
               "div",
-              { staticClass: "firstCol row" },
+              { staticClass: "firstCol" },
               [
                 _c("center", [
                   _vm.customerType === "walkin"
@@ -369,9 +397,7 @@ var render = function() {
                     },
                     [
                       _c("tr", [
-                        _c("th", { staticStyle: { width: "200px" } }, [
-                          _vm._v("Product Name")
-                        ]),
+                        _c("th", [_vm._v("Product Name")]),
                         _vm._v(" "),
                         _c("th", [_vm._v("Unit Price")]),
                         _vm._v(" "),
@@ -424,51 +450,53 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-3",
-                    staticStyle: { "text-align": "left" }
-                  },
-                  [
-                    _c("p", [_vm._v("Subtotal:")]),
-                    _vm._v(" "),
-                    _c("p", [_vm._v("Delivery Fee: ")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "pStyle" }, [_vm._v("Total: ")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "pStyle" }, [_vm._v("Incash: ")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "pStyle" }, [_vm._v("Change: ")])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-3",
-                    staticStyle: { "text-align": "left" }
-                  },
-                  [
-                    _c("p", [_vm._v("₱ " + _vm._s(_vm.getSubTotal()))]),
-                    _vm._v(" "),
-                    _c("p", [_vm._v("₱ " + _vm._s(_vm.convertFee()))]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "pStyle" }, [
-                      _vm._v("₱ " + _vm._s(_vm.convertTotalPrice()))
-                    ]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "pStyle" }, [
-                      _vm._v("₱ " + _vm._s(_vm.convertIncash()))
-                    ]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "pStyle" }, [
-                      _vm._v("₱ " + _vm._s(_vm.convertChange()))
-                    ])
-                  ]
-                )
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-6" }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "col-md-3",
+                      staticStyle: { "text-align": "left" }
+                    },
+                    [
+                      _c("p", [_vm._v("Subtotal:")]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Delivery Fee: ")]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "pStyle" }, [_vm._v("Total: ")]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "pStyle" }, [_vm._v("Incash: ")]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "pStyle" }, [_vm._v("Change: ")])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "col-md-3",
+                      staticStyle: { "text-align": "left" }
+                    },
+                    [
+                      _c("p", [_vm._v("₱ " + _vm._s(_vm.getSubTotal()))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("₱ " + _vm._s(_vm.convertFee()))]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "pStyle" }, [
+                        _vm._v("₱ " + _vm._s(_vm.convertTotalPrice()))
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "pStyle" }, [
+                        _vm._v("₱ " + _vm._s(_vm.convertIncash()))
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "pStyle" }, [
+                        _vm._v("₱ " + _vm._s(_vm.convertChange()))
+                      ])
+                    ]
+                  )
+                ])
               ],
               1
             )
@@ -483,10 +511,7 @@ var render = function() {
         [
           _c(
             "div",
-            {
-              staticClass: "row",
-              staticStyle: { height: "600px", "overflow-y": "scroll" }
-            },
+            { staticClass: "row dataStyle" },
             _vm._l(_vm.data, function(item, index) {
               return _c(
                 "div",

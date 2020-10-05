@@ -17,7 +17,7 @@ class ProductController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
-
+        dd($request->image);
         $imageName = time().'.'.$request->image->getClientOriginalExtension();
         $request->image->move(public_path('images'), $imageName);
         $data = $request->all();
@@ -25,6 +25,7 @@ class ProductController extends Controller
         $product->price = $data['price'];
         $product->productCategory = $data['productCategory'];
         $product->productName = $data['productName'];
+        $product->status = 'Available';
         $product->image = 'images/'.$imageName;
         $product->save();
         
@@ -33,10 +34,13 @@ class ProductController extends Controller
 
     public function updateProduct(Request $request){
         $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        dd($imageName);
+        $data = $request->all();
         $product = Product::firstOrCreate(['id' => $request->id]);
         $product->price = $request['price'];
         $product->productCategory = $request['productCategory'];
         $product->productName = $request['productName'];
+        $product->status = $request['productName'];
         $product->image = 'images/'.$imageName;
         $product->save();
         return response()->json(compact('product'));
@@ -48,8 +52,20 @@ class ProductController extends Controller
         return response()->json(compact('product'));
     }
 
-    public function retrieveOneProduct(Request $request){
-        $product = Product::where('id', $request->id)->get();
+    public function retrieveAllProduct(Request $request){
+        $product = Product::get();
         return response()->json(compact('product'));
+    }
+
+    public function retrieveOneProduct(Request $request){
+        $product = Product::where('id', $request->id)->orderBy('id','DESC')->get();
+        return response()->json(compact('product'));
+    }
+
+    public function updateStatusProduct(Request $request){
+        $product = Product::firstOrCreate(['id' => $request->id]);
+        $product->status = $request['status'];
+        $product->save();
+        return response()->json(['success' => 'successfully updated!']);
     }
 }
