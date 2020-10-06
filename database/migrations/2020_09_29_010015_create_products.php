@@ -18,7 +18,12 @@ class CreateProducts extends Migration
             $table->string('productCategory');
             $table->string('productName');
             $table->string('status');
-            $table->double('price');
+            $table->double('lowPrice');
+            $table->double('highPrice');
+            $table->double('overPrice');
+            $table->double('onlinelowPrice');
+            $table->double('onlinehighPrice');
+            $table->double('onlineoverPrice');
             $table->string('image');
             $table->timestamps();
             $table->softDeletes();

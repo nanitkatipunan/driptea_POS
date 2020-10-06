@@ -165,17 +165,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -190,7 +179,7 @@ __webpack_require__.r(__webpack_exports__);
       change: 0,
       subTotalPrice: 0,
       cash: null,
-      fee: null
+      fee: ''
     };
   },
   mounted: function mounted() {
@@ -204,20 +193,20 @@ __webpack_require__.r(__webpack_exports__);
     addingIncash: function addingIncash() {
       this.incash = this.cash;
     },
-    convertFee: function convertFee() {
-      return parseInt(this.deliveryFee).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-    },
     convertTotalPrice: function convertTotalPrice() {
-      var total = this.subTotalPrice + parseInt(this.deliveryFee);
-      this.totalPrice = total;
-      return parseInt(total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-    },
-    convertIncash: function convertIncash() {
-      return parseInt(this.incash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+      if (this.fee !== '' || this.fee > 0) {
+        var total = this.subTotalPrice + parseInt(this.fee);
+        this.totalPrice = total;
+        return parseInt(total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+      } else {
+        var _total = this.subTotalPrice;
+        this.totalPrice = _total;
+        return parseInt(_total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+      }
     },
     convertChange: function convertChange() {
-      if (this.incash > this.totalPrice) {
-        var amountChange = this.incash - this.totalPrice;
+      if (this.cash > this.totalPrice) {
+        var amountChange = this.cash - this.totalPrice;
         return amountChange.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
       } else {
         return this.change.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
@@ -252,6 +241,14 @@ __webpack_require__.r(__webpack_exports__);
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOrder', params).then(function (res) {
         _this2.tableData = res.data.order;
       });
+    },
+    getAddOns: function getAddOns(item) {
+      var storeAddOns = "";
+      item.forEach(function (el) {
+        storeAddOns += el.addOns + ", ";
+      });
+      console.log(storeAddOns);
+      return storeAddOns;
     },
     deleteOrder: function deleteOrder(prodId) {
       var _this3 = this;
@@ -293,7 +290,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.dataStyle{\r\n    height: 600px;\r\n    overflow-y: scroll;\n}\n.checkout{\r\n    margin-top: 3%;\r\n    height: 40% !important;\r\n    font-size: 20px; width: 200px;\n}\n.btn{\r\n    height: 33px;\r\n    width: 150px;\n}\ninput{\r\n    height: 35px;\r\n    border-radius: 5px;\n}\n::-webkit-scrollbar {\r\n  width: 1px;\n}\n.pStyle{\r\n    font-weight: bold;\n}\np{\r\n    margin-top: -10%;\n}\n.firstRow{\r\n    margin-bottom: 5%;\r\n    margin-top: 3%;\n}\n.sudlanan{\r\n    background-color: black;\r\n    height: 92.8vh;\r\n    overflow: hidden;\n}\ntable{\r\n    height: 450px;\r\n    width: 100%;\n}\n.table tr{\r\n   text-align: center;\n}\nth {\r\n   width: 100%;\n}\n@media screen and (max-width: 800px) {\n.firstCol{\r\n        border-radius: 5px;\r\n        box-shadow: 5px 5px gray;\r\n        width: 90%;\r\n        margin-top: 5%;\r\n        background-color:white;\r\n        height: 600px !important;\n}\ntable{\r\n        height: 350px;\r\n        width: 100%;\n}\n.dataStyle{\r\n        height: 490px !important;\r\n        overflow-y: scroll;\n}\n}\n.firstCol{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    width: 90%;\r\n    margin-top: 5%;\r\n    background-color:white;\r\n    height: 650px;\n}\n.secondCol{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    margin-top: 5%;\r\n    margin-right: 2%;\r\n    margin-left: 3%;\r\n    height: 150px;\r\n    background-color: white;\n}\n.imgItem{\r\n    height: 150px;\r\n    width: 100%;\n}\r\n", ""]);
+exports.push([module.i, "\n.dataStyle{\r\n    height: 700px;\r\n    overflow-y: scroll;\n}\n.checkout{\r\n    margin-top: 3%;\r\n    height: 40% !important;\r\n    font-size: 20px; width: 200px;\n}\n.btn{\r\n    height: 33px;\r\n    width: 150px;\n}\ninput{\r\n    /* height: 35px; */\r\n    /* margin-top: -50px; */\r\n    /* margin-bottom: 15px; */\r\n    width: 100px;\r\n    border-radius: 5px;\n}\n::-webkit-scrollbar {\r\n  width: 1px;\n}\n.pStyle{\r\n    font-weight: bold;\n}\np{\r\n    margin-top: -10%;\n}\n.firstRow{\r\n    margin-bottom: 5%;\r\n    margin-top: 3%;\n}\n.sudlanan{\r\n    background-color: black;\r\n    height: 92.8vh;\r\n    overflow: hidden;\n}\ntable{\r\n    height: 450px;\r\n    width: 100%;\n}\n.table tr{\r\n   text-align: center;\n}\nth {\r\n   width: 100%;\n}\n@media screen and (max-width: 800px) {\n.firstCol{\r\n        border-radius: 5px;\r\n        box-shadow: 5px 5px gray;\r\n        width: 90%;\r\n        margin-top: 5%;\r\n        background-color:white;\r\n        height: 600px !important;\n}\ntable{\r\n        height: 350px;\r\n        width: 100%;\n}\n.dataStyle{\r\n        height: 490px !important;\r\n        overflow-y: scroll;\n}\n}\n.firstCol{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    width: 90%;\r\n    margin-top: 5%;\r\n    background-color:white;\r\n    height: 650px;\n}\n.secondCol{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    margin-top: 5%;\r\n    margin-right: 2%;\r\n    margin-left: 3%;\r\n    height: 150px;\r\n    background-color: white;\n}\n.imgItem{\r\n    height: 150px;\r\n    width: 100%;\n}\r\n", ""]);
 
 // exports
 
@@ -397,7 +394,11 @@ var render = function() {
                     },
                     [
                       _c("tr", [
-                        _c("th", [_vm._v("Product Name")]),
+                        _c("th", { staticStyle: { width: "45%" } }, [
+                          _vm._v("Product Name")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Add ons")]),
                         _vm._v(" "),
                         _c("th", [_vm._v("Unit Price")]),
                         _vm._v(" "),
@@ -416,6 +417,10 @@ var render = function() {
                           return _c("tr", { key: index }, [
                             _c("td", [
                               _vm._v(_vm._s(item.order_product[0].productName))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(_vm.getAddOns(item.same_order)))
                             ]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(item.choosenPrice))]),
@@ -456,62 +461,150 @@ var render = function() {
                   _c(
                     "div",
                     {
-                      staticClass: "col-md-3",
+                      staticClass: "col-md-6",
                       staticStyle: { "text-align": "left" }
                     },
                     [
-                      _c("p", [_vm._v("Subtotal:")]),
-                      _vm._v(" "),
-                      _c("p", [_vm._v("Delivery Fee: ")]),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "pStyle" }, [_vm._v("Total: ")]),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "pStyle" }, [_vm._v("Incash: ")]),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "pStyle" }, [_vm._v("Change: ")])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "col-md-3",
-                      staticStyle: { "text-align": "left" }
-                    },
-                    [
-                      _c("p", [_vm._v("₱ " + _vm._s(_vm.getSubTotal()))]),
-                      _vm._v(" "),
-                      _c("p", [_vm._v("₱ " + _vm._s(_vm.convertFee()))]),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "pStyle" }, [
-                        _vm._v("₱ " + _vm._s(_vm.convertTotalPrice()))
+                      _c("p", { staticStyle: { display: "inline" } }, [
+                        _vm._v("Subtotal:   ")
                       ]),
                       _vm._v(" "),
-                      _c("p", { staticClass: "pStyle" }, [
-                        _vm._v("₱ " + _vm._s(_vm.convertIncash()))
+                      _c("p", { staticStyle: { display: "inline" } }, [
+                        _vm._v("₱ " + _vm._s(_vm.getSubTotal()))
                       ]),
+                      _c("br"),
                       _vm._v(" "),
-                      _c("p", { staticClass: "pStyle" }, [
-                        _vm._v("₱ " + _vm._s(_vm.convertChange()))
-                      ])
+                      _vm.customerType === "fb"
+                        ? _c("p", { staticStyle: { display: "inline" } }, [
+                            _vm._v("Delivery Fee: ")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.customerType === "fb"
+                        ? _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.fee,
+                                expression: "fee"
+                              }
+                            ],
+                            staticStyle: { display: "inline" },
+                            attrs: { type: "number", placeholder: "₱ 0.00" },
+                            domProps: { value: _vm.fee },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.fee = $event.target.value
+                              }
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        {
+                          staticClass: "pStyle",
+                          staticStyle: { display: "inline" }
+                        },
+                        [_vm._v("Total:    ")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        {
+                          staticClass: "pStyle",
+                          staticStyle: { display: "inline" }
+                        },
+                        [_vm._v("₱ " + _vm._s(_vm.convertTotalPrice()))]
+                      ),
+                      _c("br"),
+                      _vm._v(" "),
+                      _vm.customerType !== "fb"
+                        ? _c(
+                            "p",
+                            {
+                              staticClass: "pStyle",
+                              staticStyle: { display: "inline" }
+                            },
+                            [_vm._v("Incash:    ")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.customerType !== "fb"
+                        ? _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.cash,
+                                expression: "cash"
+                              }
+                            ],
+                            staticStyle: { display: "inline" },
+                            attrs: { type: "number", placeholder: "₱ 0.00" },
+                            domProps: { value: _vm.cash },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.cash = $event.target.value
+                              }
+                            }
+                          })
+                        : _vm._e(),
+                      _c("br"),
+                      _vm._v(" "),
+                      _vm.customerType !== "fb"
+                        ? _c(
+                            "p",
+                            {
+                              staticClass: "pStyle",
+                              staticStyle: { display: "inline" }
+                            },
+                            [_vm._v("Change:   ")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.customerType !== "fb"
+                        ? _c(
+                            "p",
+                            {
+                              staticClass: "pStyle",
+                              staticStyle: { display: "inline" }
+                            },
+                            [_vm._v("₱ " + _vm._s(_vm.convertChange()))]
+                          )
+                        : _vm._e()
                     ]
                   )
                 ])
               ],
               1
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary checkout",
+                on: { click: _vm.checkoutOrder }
+              },
+              [_vm._v("Checkout")]
             )
           ])
         ],
         1
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-md-6" },
-        [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "dataStyle" }, [
           _c(
             "div",
-            { staticClass: "row dataStyle" },
+            { staticClass: "row" },
             _vm._l(_vm.data, function(item, index) {
               return _c(
                 "div",
@@ -530,113 +623,9 @@ var render = function() {
               )
             }),
             0
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "row", staticStyle: { "margin-top": "5%" } },
-            [
-              _c(
-                "div",
-                { staticClass: "col-md-6" },
-                [
-                  _c("center", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.cash,
-                          expression: "cash"
-                        }
-                      ],
-                      attrs: {
-                        type: "number",
-                        placeholder: "enter cash paid..."
-                      },
-                      domProps: { value: _vm.cash },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.cash = $event.target.value
-                        }
-                      }
-                    }),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        on: { click: _vm.addingIncash }
-                      },
-                      [_vm._v("Add Cash")]
-                    )
-                  ])
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "col-md-6" },
-                [
-                  _c("center", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.fee,
-                          expression: "fee"
-                        }
-                      ],
-                      attrs: {
-                        type: "number",
-                        placeholder: "enter delivery fee..."
-                      },
-                      domProps: { value: _vm.fee },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.fee = $event.target.value
-                        }
-                      }
-                    }),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        on: { click: _vm.addingFee }
-                      },
-                      [_vm._v("Add Delivery Fee")]
-                    )
-                  ])
-                ],
-                1
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("center", [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary checkout",
-                on: { click: _vm.checkoutOrder }
-              },
-              [_vm._v("Checkout")]
-            )
-          ])
-        ],
-        1
-      )
+          )
+        ])
+      ])
     ])
   ])
 }

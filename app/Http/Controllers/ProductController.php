@@ -10,19 +10,25 @@ class ProductController extends Controller
     public function formSubmit(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'productCategory' => 'required|string|max:255',
             'productName' => 'required|string|max:255',
+            'lowPrice' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'highPrice' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'overPrice' => 'required|regex:/^\d+(\.\d{1,2})?$/',
         ]);
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
-        dd($request->image);
         $imageName = time().'.'.$request->image->getClientOriginalExtension();
         $request->image->move(public_path('images'), $imageName);
         $data = $request->all();
         $product = new Product();
-        $product->price = $data['price'];
+        $product->lowPrice = $data['lowPrice'];
+        $product->highPrice = $data['highPrice'];
+        $product->overPrice = $data['overPrice'];
+        $product->onlinelowPrice = $data['onlinelowPrice'];
+        $product->onlinehighPrice = $data['onlinehighPrice'];
+        $product->onlineoverPrice = $data['onlineoverPrice'];
         $product->productCategory = $data['productCategory'];
         $product->productName = $data['productName'];
         $product->status = 'Available';
@@ -33,15 +39,19 @@ class ProductController extends Controller
     }
 
     public function updateProduct(Request $request){
-        $imageName = time().'.'.$request->image->getClientOriginalExtension();
-        dd($imageName);
+        // $imageName = time().'.'.$request->image->getClientOriginalExtension();
         $data = $request->all();
         $product = Product::firstOrCreate(['id' => $request->id]);
-        $product->price = $request['price'];
-        $product->productCategory = $request['productCategory'];
-        $product->productName = $request['productName'];
-        $product->status = $request['productName'];
-        $product->image = 'images/'.$imageName;
+        $product->lowPrice = $data['lowPrice'];
+        $product->highPrice = $data['highPrice'];
+        $product->overPrice = $data['overPrice'];
+        $product->onlinelowPrice = $data['onlinelowPrice'];
+        $product->onlinehighPrice = $data['onlinehighPrice'];
+        $product->onlineoverPrice = $data['onlineoverPrice'];
+        $product->productCategory = $data['productCategory'];
+        $product->productName = $data['productName'];
+        $product->status = $data['productName'];
+        $product->image = $data['image'];
         $product->save();
         return response()->json(compact('product'));
     }
@@ -53,12 +63,12 @@ class ProductController extends Controller
     }
 
     public function retrieveAllProduct(Request $request){
-        $product = Product::get();
+        $product = Product::orderBy('id','DESC')->get();
         return response()->json(compact('product'));
     }
 
     public function retrieveOneProduct(Request $request){
-        $product = Product::where('id', $request->id)->orderBy('id','DESC')->get();
+        $product = Product::where('id', $request->id)->get();
         return response()->json(compact('product'));
     }
 

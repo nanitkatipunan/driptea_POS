@@ -11,7 +11,8 @@
                             <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb.jpeg">
                             <table class="table table-responsive table-bordered" id="myTable">
                                 <tr>
-                                    <th>Product Name</th>
+                                    <th style="width: 45%;">Product Name</th>
+                                    <th>Add&nbsp;ons</th>
                                     <th>Unit Price</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
@@ -20,6 +21,7 @@
                                 <tbody>
                                     <tr v-for="(item, index) in tableData" :key="index">
                                         <td>{{item.order_product[0].productName}}</td>
+                                        <td>{{getAddOns(item.same_order)}}</td>
                                         <td>{{item.choosenPrice}}</td>
                                         <td>{{item.quantity}}</td>
                                         <td>{{item.subTotal}}</td>
@@ -32,54 +34,38 @@
                         </center>
                         <div class="row">
                             <div class="col-md-6"></div>
-                            <div class="col-md-3" style="text-align:left;">
-                                <p>Subtotal:</p>
-                                <p>Delivery&nbsp;Fee: </p>
-                                <p class="pStyle">Total: </p>
-                                <p class="pStyle">Incash: </p>
-                                <p class="pStyle">Change: </p>
-                            </div>
-                            <div class="col-md-3" style="text-align:left;">
-                                <p>₱ {{getSubTotal()}}</p>
-                                <p>₱ {{convertFee()}}</p>
-                                <p class="pStyle">₱ {{convertTotalPrice()}}</p>
-                                <p class="pStyle">₱ {{convertIncash()}}</p>
-                                <p class="pStyle">₱ {{convertChange()}}</p>
+                            <div class="col-md-6" style="text-align:left;">
+                                <p style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
+                                <p style="display: inline;">₱ {{getSubTotal()}}</p><br>
+                                <p v-if="customerType === 'fb'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
+                                <input v-if="customerType === 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="fee">
+                                <p style="display: inline;" class="pStyle">Total:&emsp;&emsp;&emsp;&emsp;</p>
+                                <p style="display: inline;" class="pStyle">₱ {{convertTotalPrice()}}</p><br>
+                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Incash:&emsp;&emsp;&emsp;&nbsp;</p>
+                                <input v-if="customerType !== 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
+                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
+                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
                             </div>
                         </div>
                     </div>
+                    <button class="btn btn-primary checkout" @click="checkoutOrder">Checkout</button>
                 </center>
             </div>
             <div class="col-md-6">
-                <div class="row dataStyle">
-                    <div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
-                        <img class="imgItem" :src="item.image" @click="redirect(item.productCategory)">
+                <div class="dataStyle">
+                    <div class="row">
+                        <div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
+                            <img class="imgItem" :src="item.image" @click="redirect(item.productCategory)">
+                        </div>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 5%;">
-                    <div class="col-md-6">
-                        <center>
-                            <input type="number" placeholder="enter cash paid..." v-model="cash"><br>
-                            <button class="btn btn-primary" @click="addingIncash">Add Cash</button>
-                        </center>
-                    </div>
-                    <div class="col-md-6">
-                        <center>
-                            <input type="number" placeholder="enter delivery fee..." v-model="fee"><br>
-                            <button class="btn btn-primary" @click="addingFee">Add Delivery Fee</button>
-                        </center>
-                    </div>
-                </div>
-                <center>
-                    <button class="btn btn-primary checkout" @click="checkoutOrder">Checkout</button>
-                </center>
             </div>
        </div>
     </div>
 </template>
 <style>
 .dataStyle{
-    height: 600px;
+    height: 700px;
     overflow-y: scroll;
 }
 .checkout{
@@ -92,7 +78,10 @@
     width: 150px;
 }
 input{
-    height: 35px;
+    /* height: 35px; */
+    /* margin-top: -50px; */
+    /* margin-bottom: 15px; */
+    width: 100px;
     border-radius: 5px;
 }
 ::-webkit-scrollbar {
@@ -178,7 +167,7 @@ export default {
             change: 0,
             subTotalPrice: 0,
             cash: null,
-            fee: null
+            fee: ''
         }
     },
     mounted(){
@@ -191,21 +180,21 @@ export default {
         },
         addingIncash(){
             this.incash = this.cash
-        },                                                      
-        convertFee(){
-            return  parseInt(this.deliveryFee).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
         },
         convertTotalPrice(){
-            let total = this.subTotalPrice + parseInt(this.deliveryFee)
-            this.totalPrice = total
-            return parseInt(total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
-        },
-        convertIncash(){
-            return parseInt(this.incash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+            if(this.fee !== '' || this.fee > 0){
+                let total = this.subTotalPrice + parseInt(this.fee)
+                this.totalPrice = total
+                return parseInt(total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+            }else{
+                let total = this.subTotalPrice
+                this.totalPrice = total
+                return parseInt(total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+            }
         },
         convertChange(){
-            if(this.incash > this.totalPrice){
-                let amountChange = this.incash - this.totalPrice
+            if(this.cash > this.totalPrice){
+                let amountChange = this.cash - this.totalPrice
                 return amountChange.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
             }else{
                 return this.change.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
@@ -236,6 +225,14 @@ export default {
             this.$axios.post(AUTH.url + 'retrieveOrder', params).then(res => {
                 this.tableData = res.data.order
             })
+        },
+        getAddOns(item){
+            let storeAddOns = ""
+            item.forEach(el => {
+                storeAddOns += el.addOns + ", "
+            })
+            console.log(storeAddOns)
+            return storeAddOns
         },
         deleteOrder(prodId){
             this.$axios.post(AUTH.url + 'deleteOrder', {id: prodId}).then(res => {

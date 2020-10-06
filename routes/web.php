@@ -37,6 +37,17 @@ Route::post('deleteOrder','App\Http\Controllers\OrderController@deleteOrder');
 Route::post('retrieveOrder','App\Http\Controllers\OrderController@retrieveOrder');
 Route::post('retrieveWholeOrder','App\Http\Controllers\OrderController@retrieveWholeOrder');
 
+Route::post('addingAddOns','App\Http\Controllers\AddAddOnsController@addAddons');
+Route::post('retrievingAddOns','App\Http\Controllers\AddAddOnsController@retrieveAddOns');
+Route::post('updateStatusAddOns','App\Http\Controllers\AddAddOnsController@updateStatusAvailable');
+Route::post('updateAddOns','App\Http\Controllers\AddAddOnsController@updateAddOns');
+Route::post('retrieveOneAddOn','App\Http\Controllers\AddAddOnsController@retrieveOneAddOn');
+
+Route::post('addingCupType','App\Http\Controllers\CupTypeController@addingCupType');
+Route::post('retrieveCupType','App\Http\Controllers\CupTypeController@retrieveCupType');
+Route::post('updateAvailableCupType','App\Http\Controllers\CupTypeController@updateAvailableCupType');
+Route::post('editingCupType','App\Http\Controllers\CupTypeController@editingCupType');
+
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
 });

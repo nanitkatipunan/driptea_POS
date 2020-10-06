@@ -6,12 +6,12 @@
                 <div class="col-md-4">
                     <center>
                         <h3>Cup's Size</h3>
-                        <button class="btn color" ref='lowD' @click="getCupSize('lowDose', $event)">Low Dose</button>
-                        <button class="btn" @click="getCupSize('normalDose', $event)">Normal Dose</button>
+                        <button class="btn" ref='lowD' @click="getCupSize('lowDose', $event)">Low Dose</button>
+                        <button class="btn" @click="getCupSize('highDose', $event)">High Dose</button>
                         <button class="btn" @click="getCupSize('overDose', $event)">Over Dose</button>
                         <h3 class="cupType">Cup Type</h3>
-                        <button class="btn" @click="getCupType('normal', $event)">Normal</button>
-                        <button class="btn" @click="getCupType('reusable', $event)">Reusable</button>
+                        <button class="btn" v-for="(item, index) in cupData" :key="index" @click="getCupType(item, $event)">{{item.cupTypeName}}</button>
+                        <!-- <button class="btn" @click="getCupType('reusable', $event)">Reusable</button> -->
                     </center>
                 </div>
                 <div class="col-md-4">
@@ -32,13 +32,13 @@
                 <div class="col-md-4">
                     <center>
                         <h3>Add-ons</h3>
-                        <button class="btn" @click="addAddOns('pearl', $event)">Pearl</button>
-                        <button class="btn" @click="addAddOns('pudding', $event)">Pudding</button>
+                        <button class="btn" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">{{item.addons_name}}</button>
+                        <!-- <button class="btn" @click="addAddOns('pudding', $event)">Pudding</button>
                         <button class="btn" @click="addAddOns('nataJelly', $event)">Nata Jelly</button>
                         <button class="btn" @click="addAddOns('mousse', $event)">Mousse</button>
                         <button class="btn" @click="addAddOns('coffeeJelly', $event)">Coffee Jelly</button>
                         <button class="btn" @click="addAddOns('crushedOreo', $event)">Crushed Oreo</button>
-                        <button class="btn" @click="addAddOns('crushedCookies', $event)">Crushed Cookies</button>
+                        <button class="btn" @click="addAddOns('crushedCookies', $event)">Crushed Cookies</button> -->
                     </center>
                 </div>
             </div>
@@ -114,38 +114,72 @@ export default {
             addOnsEvent: '',
             addOnsAmount: 0,
             subTotal: 0,
-            total: null
+            total: null,
+            lowPrice: null,
+            highPrice: null,
+            overPrice: null,
+            onlinelowPrice: null,
+            onlinehighPrice: null,
+            onlineoverPrice: null,
+            productData: null,
+            addOnsData: null,
+            cupData: null,
+            addOnsPrice: null,
+            cupPrice: null
         }
     },
     mounted(){
         this.getProduct()
         this.$refs.lowD.click()
+        this.retrieveProducts()
+        this.retrieveAddOns()
+        this.retrieveCupType()
     },
     methods: {
+        retrieveProducts() {
+            this.$axios.post(AUTH.url + "retrieveAllProduct").then(response => {
+                this.productData = response.data.product;
+            });
+        },
+        retrieveAddOns() {
+            this.$axios.post(AUTH.url + "retrievingAddOns").then(response => {
+                this.addOnsData = response.data.addons;
+            });
+        },
+        retrieveCupType(){
+            this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
+                this.cupData = response.data.cupType
+            });
+        },
         getProduct(){
             this.$axios.post(AUTH.url + 'retrieveOneProduct', {id: this.itemId}).then(response => {
                 this.itemSelected = response.data.product[0].productName
-                this.total = response.data.product[0].price
+                this.lowPrice = response.data.product[0].lowPrice
+                this.highPrice = response.data.product[0].highPrice
+                this.overPrice = response.data.product[0].overPrice
+                this.onlinelowPrice = response.data.product[0].onlinelowPrice
+                this.onlinehighPrice = response.data.product[0].onlinehighPrice
+                this.onlineoverPrice = response.data.product[0].onlineoverPrice
             })
         },
         getCupSize(params, event){
-            this.subTotal = this.total
             let a = 0
             if(this.cupEvent !== event.target){
                 event.target.classList.remove('normalColor')
                 event.target.classList.add('color')
                 this.cupSize = params
-                if(params === 'normalDose'){
-                    a = 10
+                if(params === 'highDose'){
+                    this.total = this.highPrice
                 }else if(params === 'overDose'){
-                    a = 20
+                    this.total = this.overPrice
+                }else if(params === 'lowDose'){
+                    this.total = this.lowPrice
                 }
                 if(this.cupEvent !== ''){
                     this.cupEvent.classList.add('normalColor')
                     this.cupEvent.classList.remove('color')
                 }
             }
-            this.subTotal += a
             console.log(this.subTotal)
             this.cupEvent = event.target
         },
@@ -165,25 +199,28 @@ export default {
             if(this.cupTypeEvent !== event.target){
                 event.target.classList.remove('normalColor')
                 event.target.classList.add('color')
-                this.cupType = params
+                this.cupType = params.cupTypeName
                 if(this.cupTypeEvent !== ''){
                     this.cupTypeEvent.classList.add('normalColor')
                     this.cupTypeEvent.classList.remove('color')
                 }
+                this.cupPrice = params.cupTypePrice
             }
             this.cupTypeEvent = event.target
         },
         addAddOns(params, event){
-            if(this.addOns.includes(params)){
-                event.target.classList.remove('color')
-                this.addOns.splice(this.addOns.indexOf(params), 1)
-                this.addOnsAmount -= 10
-            }else{
-                event.target.classList.add('color')
-                this.addOns.push(params)
-                this.addOnsAmount += 10
-            }
-            console.log(this.addOnsAmount)
+            this.$axios.post(AUTH.url + "retrieveOneAddOn", {id: params.id}).then(response => {
+                this.addOnsPrice = response.data.addons.addons_price
+                if(this.addOns.includes(params.addons_name)){
+                    event.target.classList.remove('color')
+                    this.addOns.splice(this.addOns.indexOf(params.addons_name), 1)
+                    this.addOnsAmount -= this.addOnsPrice
+                }else{
+                    event.target.classList.add('color')
+                    this.addOns.push(params.addons_name)
+                    this.addOnsAmount += this.addOnsPrice
+                }
+            });
         },
         addToCart(){
             if(this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null){
@@ -193,12 +230,13 @@ export default {
                     quantity: this.quantity,
                     size: this.cupSize,
                     sugarLevel: this.sugarLevel,
-                    choosenPrice: (this.subTotal === 0? this.total : this.subTotal),
+                    choosenPrice: this.total,
                     cupType: this.cupType,
                     status: 'pending',
                     addOns: this.addOns,
-                    subTotal: this.quantity * ((this.subTotal === 0? this.total : this.subTotal) + this.addOnsAmount)
+                    subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
                 }
+                console.log(parameter)
                 this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
                     ROUTER.push('/productCategory/'+localStorage.getItem('customerType')).catch(()=>{})
                 })
