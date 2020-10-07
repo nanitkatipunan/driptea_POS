@@ -35,8 +35,8 @@
                         <div class="row">
                             <div class="col-md-6"></div>
                             <div class="col-md-6" style="text-align:left;">
-                                <p style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
-                                <p style="display: inline;">₱ {{getSubTotal()}}</p><br>
+                                <p v-if="customerType === 'fb'" style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
+                                <p v-if="customerType === 'fb'" style="display: inline;">₱ {{getSubTotal()}}</p><br>
                                 <p v-if="customerType === 'fb'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
                                 <input v-if="customerType === 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="fee">
                                 <p style="display: inline;" class="pStyle">Total:&emsp;&emsp;&emsp;&emsp;</p>
@@ -63,7 +63,7 @@
        </div>
     </div>
 </template>
-<style>
+<style scoped>
 .dataStyle{
     height: 700px;
     overflow-y: scroll;
@@ -182,6 +182,9 @@ export default {
             this.incash = this.cash
         },
         convertTotalPrice(){
+            if(this.subTotalPrice === 0){
+                this.getSubTotal()
+            }
             if(this.fee !== '' || this.fee > 0){
                 let total = this.subTotalPrice + parseInt(this.fee)
                 this.totalPrice = total
@@ -245,10 +248,26 @@ export default {
                 status: 'complete'
             }
             this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
-                this.retrieveProduct()
-                // localStorage.removeItem('customerId')
-                // localStorage.removeItem('customerType')
-                // ROUTER.push('/casherDashboard').catch(()=>{})
+                let params = {
+                    customerId: localStorage.getItem('customerId'),
+                    subTotal: this.getSubTotal(),
+                    deliveryFee: this.fee,
+                    total: this.convertTotalPrice(),
+                    incash: this.cash,
+                    change: this.convertChange()
+                }
+                this.$axios.post(AUTH.url + 'addCheckout', params).then(res => {
+                    let parameter = {
+                        id: localStorage.getItem('customerId'),
+                    }
+                    this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
+                        console.log(response.data)
+                        // this.retrieveProduct()
+                        // localStorage.removeItem('customerId')
+                        // localStorage.removeItem('customerType')
+                        // ROUTER.push('/casherDashboard').catch(()=>{})
+                    })
+                })
             })
         }
     }

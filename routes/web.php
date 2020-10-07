@@ -48,6 +48,9 @@ Route::post('retrieveCupType','App\Http\Controllers\CupTypeController@retrieveCu
 Route::post('updateAvailableCupType','App\Http\Controllers\CupTypeController@updateAvailableCupType');
 Route::post('editingCupType','App\Http\Controllers\CupTypeController@editingCupType');
 
+Route::post('addCheckout','App\Http\Controllers\StoreCheckoutsController@addCheckout');
+Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveCheckouts');
+
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
 });

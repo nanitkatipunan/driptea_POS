@@ -152,12 +152,12 @@
                 </center><hr>
                 <form action>
                     <div class="form-group">
-                        <label for="addOns">Cup Type :</label>
+                        <label for="cup">Cup Type :</label>
                         <br>
                         <input v-model="inputCup" type="text" class="form-control" id="addOns">
                     </div>
                     <div class="form-group">
-                        <label for="price">Additional Price :</label>
+                        <label for="cupPrice">Additional Price :</label>
                         <br>
                         <input v-model="inputCupPrice" type="number" min="1" class="form-control" id="price">
                     </div>
@@ -805,6 +805,9 @@ export default {
         showCupType(){
             this.showCupTypeModal = true
             this.btnCupType = true
+            this.inputCupPrice = null
+            this.inputCup = null
+
         },
         editCup(item){
             this.showCupTypeModal = true

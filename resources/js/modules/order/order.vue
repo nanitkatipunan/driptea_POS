@@ -6,7 +6,7 @@
                 <div class="col-md-4">
                     <center>
                         <h3>Cup's Size</h3>
-                        <button class="btn" ref='lowD' @click="getCupSize('lowDose', $event)">Low Dose</button>
+                        <button class="btn" @click="getCupSize('lowDose', $event)">Low Dose</button>
                         <button class="btn" @click="getCupSize('highDose', $event)">High Dose</button>
                         <button class="btn" @click="getCupSize('overDose', $event)">Over Dose</button>
                         <h3 class="cupType">Cup Type</h3>
@@ -75,6 +75,7 @@
 }
 .btn{
     margin-top: 5%;
+    width: 35px;
     width: 90%;
     font-weight: bold;
     font-size: 20px;
@@ -130,7 +131,6 @@ export default {
     },
     mounted(){
         this.getProduct()
-        this.$refs.lowD.click()
         this.retrieveProducts()
         this.retrieveAddOns()
         this.retrieveCupType()
