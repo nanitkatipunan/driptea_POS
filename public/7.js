@@ -476,6 +476,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -576,6 +583,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.inputCupPrice !== null && this.inputCup !== null) {
         var param = {
           cupType: this.inputCup,
+          cupQuantity: this.inputCupQuantity,
           price: this.inputCupPrice,
           status: 'Available'
         };
@@ -595,6 +603,7 @@ __webpack_require__.r(__webpack_exports__);
         var param = {
           id: this.idCup,
           cupType: this.inputCup,
+          cupQuantity: this.inputCupQuantity,
           price: this.inputCupPrice,
           status: this.cupStatus
         };
@@ -874,12 +883,14 @@ __webpack_require__.r(__webpack_exports__);
       this.btnCupType = true;
       this.inputCupPrice = null;
       this.inputCup = null;
+      this.inputCupQuantity = null;
     },
     editCup: function editCup(item) {
       this.showCupTypeModal = true;
       this.btnEditCupType = true;
       this.idCup = item.id;
       this.inputCup = item.cupTypeName;
+      this.inputCupQuantity = item.cupQuantity;
       this.inputCupPrice = item.cupTypePrice;
       this.cupStatus = item.status;
     },
@@ -1529,6 +1540,10 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [
+                          _vm._v("Cup Quantity")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { scope: "col" } }, [
                           _vm._v("Status")
                         ]),
                         _vm._v(" "),
@@ -1550,6 +1565,8 @@ var render = function() {
                             _c("td", [_vm._v(_vm._s(item.cupTypeName))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(item.cupTypePrice))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.cupQuantity))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(item.status))]),
                             _vm._v(" "),
@@ -1667,6 +1684,36 @@ var render = function() {
                             return
                           }
                           _vm.inputCup = $event.target.value
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "quantity" } }, [
+                      _vm._v("Cup Quantity :")
+                    ]),
+                    _vm._v(" "),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.inputCupQuantity,
+                          expression: "inputCupQuantity"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "number", id: "addOns" },
+                      domProps: { value: _vm.inputCupQuantity },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.inputCupQuantity = $event.target.value
                         }
                       }
                     })

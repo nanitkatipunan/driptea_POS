@@ -10,6 +10,7 @@ class CupTypeController extends Controller
     public function addingCupType(Request $request){
         $cupType = CupType::create([
             'cupTypeName' => $request['cupType'],
+            'cupQuantity' => $request['cupQuantity'],
             'cupTypePrice'=> $request['price'],
             'status'=> $request['status']
         ]);
@@ -32,6 +33,7 @@ class CupTypeController extends Controller
     public function editingCupType(Request $request){
         $cupType = CupType::firstOrCreate(['id' => $request->id]);
         $cupType->cupTypeName = $request['cupType'];
+        $cupType->cupQuantity = $request['cupQuantity'];
         $cupType->cupTypePrice = $request['price'];
         $cupType->status = $request['status'];
         $cupType->save();

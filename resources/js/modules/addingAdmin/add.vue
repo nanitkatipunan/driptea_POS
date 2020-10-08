@@ -118,6 +118,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Cup Type</th>
                                 <th scope="col">Additional Price</th>
+                                <th scope="col">Cup Quantity</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -128,6 +129,7 @@
                                     <td scope="row">{{index+1}}</td>
                                     <td>{{item.cupTypeName}}</td>
                                     <td>{{item.cupTypePrice}}</td>
+                                    <td>{{item.cupQuantity}}</td>
                                     <td>{{item.status}}</td>
                                     <td>
                                         <div style="text-align: left">
@@ -156,6 +158,11 @@
                         <label for="cup">Cup Type :</label>
                         <br>
                         <input v-model="inputCup" type="text" class="form-control" id="addOns">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Cup Quantity :</label>
+                        <br>
+                        <input v-model="inputCupQuantity" type="number" class="form-control" id="addOns">
                     </div>
                     <div class="form-group">
                         <label for="cupPrice">Additional Price :</label>
@@ -556,6 +563,7 @@ export default {
             if(this.inputCupPrice !== null && this.inputCup !== null){
                 let param = {
                     cupType: this.inputCup,
+                    cupQuantity: this.inputCupQuantity,
                     price: this.inputCupPrice,
                     status: 'Available'
                 };
@@ -572,6 +580,7 @@ export default {
                 let param = {
                     id: this.idCup,
                     cupType: this.inputCup,
+                    cupQuantity: this.inputCupQuantity,
                     price: this.inputCupPrice,
                     status: this.cupStatus
                 };
@@ -836,6 +845,7 @@ export default {
             this.btnCupType = true
             this.inputCupPrice = null
             this.inputCup = null
+            this.inputCupQuantity = null
 
         },
         editCup(item){
@@ -843,6 +853,7 @@ export default {
             this.btnEditCupType = true
             this.idCup = item.id
             this.inputCup = item.cupTypeName
+            this.inputCupQuantity = item.cupQuantity
             this.inputCupPrice = item.cupTypePrice
             this.cupStatus = item.status
         },

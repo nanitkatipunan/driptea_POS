@@ -16,6 +16,7 @@ class CreateCupType extends Migration
         Schema::create('cup_type', function (Blueprint $table) {
             $table->increments('id');
             $table->string('cupTypeName');
+            $table->integer('cupQuantity');
             $table->double('cupTypePrice');
             $table->string('status');
             $table->timestamps();
