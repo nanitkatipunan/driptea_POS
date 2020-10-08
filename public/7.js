@@ -469,13 +469,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      productName: '',
-      img: '',
+      productName: null,
+      img: null,
       imgURL: null,
       lowPrice: null,
       highPrice: null,
@@ -484,11 +491,11 @@ __webpack_require__.r(__webpack_exports__);
       onlinehighPrice: null,
       onlineoverPrice: null,
       prodType: null,
-      image: '',
+      image: null,
       imageURL: null,
       productType: null,
-      inputAddOns: "",
-      addOnsPrice: "",
+      inputAddOns: null,
+      addOnsPrice: null,
       addOnsStat: null,
       editAddOnsShow: false,
       addonsShow: false,
@@ -517,7 +524,8 @@ __webpack_require__.r(__webpack_exports__);
       status: null,
       prodId: null,
       priceEvent: '',
-      online: false
+      online: false,
+      errorMessage: null
     };
   },
   mounted: function mounted() {
@@ -565,31 +573,39 @@ __webpack_require__.r(__webpack_exports__);
     addingCupType: function addingCupType() {
       var _this4 = this;
 
-      var param = {
-        cupType: this.inputCup,
-        price: this.inputCupPrice,
-        status: 'Available'
-      };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingCupType", param).then(function (response) {
-        _this4.retrieveCupType();
+      if (this.inputCupPrice !== null && this.inputCup !== null) {
+        var param = {
+          cupType: this.inputCup,
+          price: this.inputCupPrice,
+          status: 'Available'
+        };
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingCupType", param).then(function (response) {
+          _this4.retrieveCupType();
 
-        _this4.hide();
-      });
+          _this4.hide();
+        });
+      } else {
+        this.errorMessage = 'All fields are required!';
+      }
     },
     editingCupType: function editingCupType() {
       var _this5 = this;
 
-      var param = {
-        id: this.idCup,
-        cupType: this.inputCup,
-        price: this.inputCupPrice,
-        status: this.cupStatus
-      };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "editingCupType", param).then(function (response) {
-        _this5.retrieveCupType();
+      if (this.inputCupPrice !== null && this.inputCup !== null) {
+        var param = {
+          id: this.idCup,
+          cupType: this.inputCup,
+          price: this.inputCupPrice,
+          status: this.cupStatus
+        };
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "editingCupType", param).then(function (response) {
+          _this5.retrieveCupType();
 
-        _this5.hide();
-      });
+          _this5.hide();
+        });
+      } else {
+        this.errorMessage = 'All fields are required!';
+      }
     },
     normalPrice: function normalPrice(event) {
       if (this.priceEvent !== event.target) {
@@ -624,33 +640,37 @@ __webpack_require__.r(__webpack_exports__);
       this.imgURL = URL.createObjectURL(e.target.files[0]);
     },
     formSubmitProduct: function formSubmitProduct(e) {
-      e.preventDefault();
-      var currentObj = this;
-      var config = {
-        headers: {
-          'content-type': 'multipart/form-data'
-        }
-      };
-      var formData = new FormData();
-      formData.append('image', this.img);
-      formData.append('productCategory', this.prodType);
-      formData.append('productName', this.productName);
-      formData.append('status', 'Available');
-      formData.append('lowPrice', this.lowPrice);
-      formData.append('highPrice', this.highPrice);
-      formData.append('overPrice', this.overPrice);
-      formData.append('onlinelowPrice', this.onlinelowPrice);
-      formData.append('onlinehighPrice', this.onlinehighPrice);
-      formData.append('onlineoverPrice', this.onlineoverPrice);
-      console.log(formData);
-      axios.post('/formSubmit', formData, config).then(function (response) {
-        currentObj.success = response.data.success;
-        currentObj.retrieveCategories();
-        currentObj.retrieveProducts();
-        currentObj.hide();
-      })["catch"](function (error) {
-        currentObj.output = error;
-      });
+      if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null) {
+        e.preventDefault();
+        var currentObj = this;
+        var config = {
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
+        };
+        var formData = new FormData();
+        formData.append('image', this.img);
+        formData.append('productCategory', this.prodType);
+        formData.append('productName', this.productName);
+        formData.append('status', 'Available');
+        formData.append('lowPrice', this.lowPrice);
+        formData.append('highPrice', this.highPrice);
+        formData.append('overPrice', this.overPrice);
+        formData.append('onlinelowPrice', this.onlinelowPrice);
+        formData.append('onlinehighPrice', this.onlinehighPrice);
+        formData.append('onlineoverPrice', this.onlineoverPrice);
+        console.log(formData);
+        axios.post('/formSubmit', formData, config).then(function (response) {
+          currentObj.success = response.data.success;
+          currentObj.retrieveCategories();
+          currentObj.retrieveProducts();
+          currentObj.hide();
+        })["catch"](function (error) {
+          currentObj.output = error;
+        });
+      } else {
+        this.errorMessage = 'All fields are required!';
+      }
     },
     editProduct: function editProduct(item) {
       this.showProductModal = true;
@@ -670,33 +690,37 @@ __webpack_require__.r(__webpack_exports__);
       this.prodId = item.id;
     },
     updateProduct: function updateProduct(e) {
-      e.preventDefault();
-      var currentObj = this;
-      var config = {
-        headers: {
-          'content-type': 'multipart/form-data'
-        }
-      };
-      var formData = new FormData();
-      formData.append('id', this.prodId);
-      formData.append('image', this.img);
-      formData.append('status', this.status);
-      formData.append('productCategory', this.prodType);
-      formData.append('productName', this.productName);
-      formData.append('lowPrice', this.lowPrice);
-      formData.append('higPrice', this.higPrice);
-      formData.append('overPrice', this.overPrice);
-      formData.append('onlinelowPrice', this.onlinelowPrice);
-      formData.append('onlinehigPrice', this.onlinehigPrice);
-      formData.append('onlineoverPrice', this.onlineoverPrice);
-      axios.post('/updateProduct', formData, config).then(function (response) {
-        currentObj.success = response.data.success;
-        currentObj.retrieveCategories();
-        currentObj.retrieveProducts();
-        currentObj.hide();
-      })["catch"](function (error) {
-        currentObj.output = error;
-      });
+      if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null) {
+        e.preventDefault();
+        var currentObj = this;
+        var config = {
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
+        };
+        var formData = new FormData();
+        formData.append('id', this.prodId);
+        formData.append('image', this.img);
+        formData.append('status', this.status);
+        formData.append('productCategory', this.prodType);
+        formData.append('productName', this.productName);
+        formData.append('lowPrice', this.lowPrice);
+        formData.append('higPrice', this.higPrice);
+        formData.append('overPrice', this.overPrice);
+        formData.append('onlinelowPrice', this.onlinelowPrice);
+        formData.append('onlinehigPrice', this.onlinehigPrice);
+        formData.append('onlineoverPrice', this.onlineoverPrice);
+        axios.post('/updateProduct', formData, config).then(function (response) {
+          currentObj.success = response.data.success;
+          currentObj.retrieveCategories();
+          currentObj.retrieveProducts();
+          currentObj.hide();
+        })["catch"](function (error) {
+          currentObj.output = error;
+        });
+      } else {
+        this.errorMessage = 'All fields are required!';
+      }
     },
     productStatusUpdate: function productStatusUpdate(id) {
       var _this6 = this;
@@ -729,24 +753,28 @@ __webpack_require__.r(__webpack_exports__);
       this.imageURL = URL.createObjectURL(e.target.files[0]);
     },
     formSubmit: function formSubmit(e) {
-      e.preventDefault();
-      var currentObj = this;
-      var config = {
-        headers: {
-          'content-type': 'multipart/form-data'
-        }
-      };
-      var formData = new FormData();
-      formData.append('image', this.image);
-      formData.append('productCategory', this.productType);
-      axios.post('/addCategory', formData, config).then(function (response) {
-        currentObj.success = response.data.success;
-        currentObj.retrieveCategories();
-        currentObj.retrieveProducts();
-        currentObj.hide();
-      })["catch"](function (error) {
-        currentObj.output = error;
-      });
+      if (this.image !== null && this.productType !== null) {
+        e.preventDefault();
+        var currentObj = this;
+        var config = {
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
+        };
+        var formData = new FormData();
+        formData.append('image', this.image);
+        formData.append('productCategory', this.productType);
+        axios.post('/addCategory', formData, config).then(function (response) {
+          currentObj.success = response.data.success;
+          currentObj.retrieveCategories();
+          currentObj.retrieveProducts();
+          currentObj.hide();
+        })["catch"](function (error) {
+          currentObj.output = error;
+        });
+      } else {
+        this.errorMessage = 'All fields are required!';
+      }
     },
     product: function product(event) {
       if (this.secondEvent !== event.target) {
@@ -871,16 +899,20 @@ __webpack_require__.r(__webpack_exports__);
     addAddOns: function addAddOns() {
       var _this8 = this;
 
-      var param = {
-        addOns: this.inputAddOns,
-        price: this.addOnsPrice,
-        status: 'Available'
-      };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingAddOns", param).then(function (response) {
-        _this8.retrieveAddOns();
+      if (this.addOnsPrice !== null && this.inputAddOns !== null) {
+        var param = {
+          addOns: this.inputAddOns,
+          price: this.addOnsPrice,
+          status: 'Available'
+        };
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingAddOns", param).then(function (response) {
+          _this8.retrieveAddOns();
 
-        _this8.hide();
-      });
+          _this8.hide();
+        });
+      } else {
+        this.errorMessage = 'All fields are required!';
+      }
     },
     retrieveAddOns: function retrieveAddOns() {
       var _this9 = this;
@@ -900,17 +932,21 @@ __webpack_require__.r(__webpack_exports__);
     editAddOnsData: function editAddOnsData() {
       var _this10 = this;
 
-      var param = {
-        id: this.idAddOns,
-        addOns: this.inputAddOns,
-        price: this.addOnsPrice,
-        status: this.addOnsStat
-      };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAddOns", param).then(function (response) {
-        _this10.retrieveAddOns();
+      if (this.addOnsPrice !== null && this.inputAddOns !== null) {
+        var param = {
+          id: this.idAddOns,
+          addOns: this.inputAddOns,
+          price: this.addOnsPrice,
+          status: this.addOnsStat
+        };
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAddOns", param).then(function (response) {
+          _this10.retrieveAddOns();
 
-        _this10.hide();
-      });
+          _this10.hide();
+        });
+      } else {
+        this.errorMessage = 'All fields are required!';
+      }
     },
     NAStatusUpdate: function NAStatusUpdate(id) {
       var _this11 = this;
@@ -965,7 +1001,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n[data-v-62e92aac]::-webkit-scrollbar {\r\n  width: 2px;\n}\n.my-custom-scrollbar[data-v-62e92aac][data-v-62e92aac] {\r\n    position: relative;\r\n    height: 500px;\r\n    width: 100%;\r\n    overflow: auto;\n}\n.fileStyle[data-v-62e92aac]{\r\n    font-size: 17px !important;\r\n    width: 97px;\r\n    margin-top: 3%;\r\n    margin-bottom: 3%;\n}\n.addOnsImage[data-v-62e92aac]{\r\n    width: 250px !important; \r\n    height: 250px !important; \r\n    margin-top: 2% !important;\n}\n.navButton[data-v-62e92aac]{\r\n    float: left;\r\n    width: 200px;\n}\n.borderStyle1[data-v-62e92aac]{\r\n    border-left: 1px solid #d8dce3;\r\n    border-top: 1px solid #d8dce3;\r\n    border-right: 1px solid #d8dce3;\n}\n.btnBorderStyle[data-v-62e92aac]{\r\n    margin-top: -0.7%;\r\n    border-bottom: 1px solid #d8dce3;\n}\n.borderStyle[data-v-62e92aac]{\r\n    border-left: 3px solid grey;\r\n    border-top: 3px solid grey;\r\n    border-right: 3px solid grey;\n}\n.btnBorderStyle1[data-v-62e92aac]{\r\n    border-bottom: 3px solid grey;\n}\n.table tr[data-v-62e92aac]{\r\n   text-align: center;\n}\nimg[data-v-62e92aac]{\r\n    height: 50px;\r\n    width: 100px;\n}\nhr[data-v-62e92aac]{\r\n    border: 1px solid gray;\n}\nlabel[data-v-62e92aac]{\r\n    font-size: 20px !important;\n}\n.blurred-background[data-v-62e92aac] {\r\n    position: fixed;\r\n    box-sizing: border-box;\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: 1;\r\n    top: 0;\r\n    left: 0;\r\n    text-align: center;\r\n    background: rgb(54, 54, 54, .7);\n}\n.alert-box[data-v-62e92aac] {\r\n    width: 400px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 180px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 30px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.alert-box2[data-v-62e92aac] {\r\n    width: 550px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 150px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 30px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.alert-box3[data-v-62e92aac] {\r\n    width: 550px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 50px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 20px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.productTable[data-v-62e92aac] {\r\n    width: 100%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.categoryTable[data-v-62e92aac]{\r\n    width: 70%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.addOnsTable[data-v-62e92aac]{\r\n    width: 50%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.my-custom-scrollbar[data-v-62e92aac] {\r\n    position: relative;\r\n    height: 500px;\r\n    width:70%;\r\n    overflow: auto;\n}\n.table-wrapper-scroll-y[data-v-62e92aac] {\r\n    display: contents;\n}\n.div[data-v-62e92aac] {\r\n    /* border-style: solid; */\r\n    margin-top: 3%;\r\n    margin-bottom: 5%;\n}\n.btnModal[data-v-62e92aac]{\r\n    float: right;\r\n    margin-right: 1%;\n}\n#buttonAdd[data-v-62e92aac] {\r\n    float: right;\n}\r\n", ""]);
+exports.push([module.i, "\n.errorColor[data-v-62e92aac]{\r\n    color: red;\n}\n[data-v-62e92aac]::-webkit-scrollbar {\r\n  width: 2px;\n}\n.my-custom-scrollbar[data-v-62e92aac][data-v-62e92aac] {\r\n    position: relative;\r\n    height: 500px;\r\n    width: 100%;\r\n    overflow: auto;\n}\n.fileStyle[data-v-62e92aac]{\r\n    font-size: 17px !important;\r\n    width: 97px;\r\n    margin-top: 3%;\r\n    margin-bottom: 3%;\n}\n.addOnsImage[data-v-62e92aac]{\r\n    width: 250px !important; \r\n    height: 250px !important; \r\n    margin-top: 2% !important;\n}\n.navButton[data-v-62e92aac]{\r\n    float: left;\r\n    width: 200px;\n}\n.borderStyle1[data-v-62e92aac]{\r\n    border-left: 1px solid #d8dce3;\r\n    border-top: 1px solid #d8dce3;\r\n    border-right: 1px solid #d8dce3;\n}\n.btnBorderStyle[data-v-62e92aac]{\r\n    margin-top: -0.7%;\r\n    border-bottom: 1px solid #d8dce3;\n}\n.borderStyle[data-v-62e92aac]{\r\n    border-left: 3px solid grey;\r\n    border-top: 3px solid grey;\r\n    border-right: 3px solid grey;\n}\n.btnBorderStyle1[data-v-62e92aac]{\r\n    border-bottom: 3px solid grey;\n}\n.table tr[data-v-62e92aac]{\r\n   text-align: center;\n}\nimg[data-v-62e92aac]{\r\n    height: 50px;\r\n    width: 100px;\n}\nhr[data-v-62e92aac]{\r\n    border: 1px solid gray;\n}\nlabel[data-v-62e92aac]{\r\n    font-size: 20px !important;\n}\n.blurred-background[data-v-62e92aac] {\r\n    position: fixed;\r\n    box-sizing: border-box;\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: 1;\r\n    top: 0;\r\n    left: 0;\r\n    text-align: center;\r\n    background: rgb(54, 54, 54, .7);\n}\n.alert-box[data-v-62e92aac] {\r\n    width: 400px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 180px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 30px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.alert-box2[data-v-62e92aac] {\r\n    width: 550px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 150px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 30px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.alert-box3[data-v-62e92aac] {\r\n    width: 550px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 50px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 20px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.productTable[data-v-62e92aac] {\r\n    width: 100%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.categoryTable[data-v-62e92aac]{\r\n    width: 70%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.addOnsTable[data-v-62e92aac]{\r\n    width: 50%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.my-custom-scrollbar[data-v-62e92aac] {\r\n    position: relative;\r\n    height: 500px;\r\n    width:70%;\r\n    overflow: auto;\n}\n.table-wrapper-scroll-y[data-v-62e92aac] {\r\n    display: contents;\n}\n.div[data-v-62e92aac] {\r\n    /* border-style: solid; */\r\n    margin-top: 3%;\r\n    margin-bottom: 5%;\n}\n.btnModal[data-v-62e92aac]{\r\n    float: right;\r\n    margin-right: 1%;\n}\n#buttonAdd[data-v-62e92aac] {\r\n    float: right;\n}\r\n", ""]);
 
 // exports
 
@@ -1600,6 +1636,12 @@ var render = function() {
                 _c("hr"),
                 _vm._v(" "),
                 _c("form", { attrs: { action: "" } }, [
+                  _vm.errorMessage !== null
+                    ? _c("span", { staticClass: "errorColor" }, [
+                        _vm._v(_vm._s(_vm.errorMessage))
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "cup" } }, [
                       _vm._v("Cup Type :")
@@ -1720,6 +1762,12 @@ var render = function() {
                 _c("hr"),
                 _vm._v(" "),
                 _c("form", { attrs: { action: "" } }, [
+                  _vm.errorMessage !== null
+                    ? _c("span", { staticClass: "errorColor" }, [
+                        _vm._v(_vm._s(_vm.errorMessage))
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "addOns" } }, [
                       _vm._v("Add-ons :")
@@ -1847,6 +1895,12 @@ var render = function() {
                   },
                   [
                     _c("div", { staticClass: "row" }, [
+                      _vm.errorMessage !== null
+                        ? _c("span", { staticClass: "errorColor" }, [
+                            _vm._v(_vm._s(_vm.errorMessage))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c("div", { staticClass: "col-md-6" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", { attrs: { for: "pCat" } }, [
@@ -2407,6 +2461,12 @@ var render = function() {
                     on: { submit: _vm.formSubmit }
                   },
                   [
+                    _vm.errorMessage !== null
+                      ? _c("span", { staticClass: "errorColor" }, [
+                          _vm._v(_vm._s(_vm.errorMessage))
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c("div", { staticClass: "form-group" }, [
                       _c("label", { attrs: { for: "addOns" } }, [
                         _vm._v("Product Category:")

@@ -151,6 +151,7 @@
                     <h1>Adding Cup Type</h1>
                 </center><hr>
                 <form action>
+                    <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
                     <div class="form-group">
                         <label for="cup">Cup Type :</label>
                         <br>
@@ -175,6 +176,7 @@
                     <h1>Adding Add-ons</h1>
                 </center><hr>
                 <form action>
+                    <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
                     <div class="form-group">
                         <label for="addOns">Add-ons :</label>
                         <br>
@@ -200,6 +202,7 @@
                 </center><hr>
                 <form @submit="formSubmitProduct" enctype="multipart/form-data" action>
                     <div class="row">
+                        <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="pCat">Product Category:</label>
@@ -294,6 +297,7 @@
                     <h1>Adding Category</h1>
                 </center><hr>
                 <form @submit="formSubmit" enctype="multipart/form-data" action>
+                    <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
                     <div class="form-group">
                         <label for="addOns">Product Category:</label>
                         <br>
@@ -315,6 +319,9 @@
     </div>
 </template>
 <style scoped>
+.errorColor{
+    color: red;
+}
 ::-webkit-scrollbar {
   width: 2px;
 }
@@ -462,8 +469,8 @@ import ROUTER from '../../router'
 export default {
     data() {
         return {
-            productName: '',
-            img: '',
+            productName: null,
+            img: null,
             imgURL: null,
             lowPrice: null,
             highPrice: null,
@@ -472,11 +479,11 @@ export default {
             onlinehighPrice: null,
             onlineoverPrice: null,
             prodType: null,
-            image: '',
+            image: null,
             imageURL: null,
             productType: null,
-            inputAddOns: "",
-            addOnsPrice: "",
+            inputAddOns: null,
+            addOnsPrice: null,
             addOnsStat: null,
             editAddOnsShow: false,
             addonsShow: false,
@@ -505,7 +512,8 @@ export default {
             status: null,
             prodId: null,
             priceEvent: '',
-            online: false
+            online: false,
+            errorMessage: null
         };
     },
     mounted() {
@@ -545,27 +553,35 @@ export default {
             });
         },
         addingCupType(){
-            let param = {
-                cupType: this.inputCup,
-                price: this.inputCupPrice,
-                status: 'Available'
-            };
-            this.$axios.post(AUTH.url + "addingCupType", param).then(response => {
-                this.retrieveCupType()
-                this.hide()
-            });
+            if(this.inputCupPrice !== null && this.inputCup !== null){
+                let param = {
+                    cupType: this.inputCup,
+                    price: this.inputCupPrice,
+                    status: 'Available'
+                };
+                this.$axios.post(AUTH.url + "addingCupType", param).then(response => {
+                    this.retrieveCupType()
+                    this.hide()
+                });
+            }else{
+                this.errorMessage = 'All fields are required!'
+            }
         },
         editingCupType(){
-            let param = {
-                id: this.idCup,
-                cupType: this.inputCup,
-                price: this.inputCupPrice,
-                status: this.cupStatus
-            };
-            this.$axios.post(AUTH.url + "editingCupType", param).then(response => {
-                this.retrieveCupType()
-                this.hide()
-            });
+            if(this.inputCupPrice !== null && this.inputCup !== null){
+                let param = {
+                    id: this.idCup,
+                    cupType: this.inputCup,
+                    price: this.inputCupPrice,
+                    status: this.cupStatus
+                };
+                this.$axios.post(AUTH.url + "editingCupType", param).then(response => {
+                    this.retrieveCupType()
+                    this.hide()
+                });
+            }else{
+                this.errorMessage = 'All fields are required!'
+            }
         },
         normalPrice(event){
             if(this.priceEvent !== event.target){
@@ -596,34 +612,38 @@ export default {
             this.imgURL = URL.createObjectURL(e.target.files[0])
         },
         formSubmitProduct(e) {
-            e.preventDefault();
-            let currentObj = this;
+            if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null){
+                e.preventDefault();
+                let currentObj = this;
 
-            const config = {
-                headers: { 'content-type': 'multipart/form-data' }
+                const config = {
+                    headers: { 'content-type': 'multipart/form-data' }
+                }
+
+                let formData = new FormData();
+                formData.append('image', this.img)
+                formData.append('productCategory', this.prodType)
+                formData.append('productName', this.productName)
+                formData.append('status', 'Available')
+                formData.append('lowPrice', this.lowPrice)
+                formData.append('highPrice', this.highPrice)
+                formData.append('overPrice', this.overPrice)
+                formData.append('onlinelowPrice', this.onlinelowPrice)
+                formData.append('onlinehighPrice', this.onlinehighPrice)
+                formData.append('onlineoverPrice', this.onlineoverPrice)
+                console.log(formData)
+                axios.post('/formSubmit', formData, config).then(function (response) {
+                    currentObj.success = response.data.success
+                    currentObj.retrieveCategories()
+                    currentObj.retrieveProducts()
+                    currentObj.hide()
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
+            }else{
+                this.errorMessage = 'All fields are required!'
             }
-
-            let formData = new FormData();
-            formData.append('image', this.img)
-            formData.append('productCategory', this.prodType)
-            formData.append('productName', this.productName)
-            formData.append('status', 'Available')
-            formData.append('lowPrice', this.lowPrice)
-            formData.append('highPrice', this.highPrice)
-            formData.append('overPrice', this.overPrice)
-            formData.append('onlinelowPrice', this.onlinelowPrice)
-            formData.append('onlinehighPrice', this.onlinehighPrice)
-            formData.append('onlineoverPrice', this.onlineoverPrice)
-            console.log(formData)
-            axios.post('/formSubmit', formData, config).then(function (response) {
-                currentObj.success = response.data.success
-                currentObj.retrieveCategories()
-                currentObj.retrieveProducts()
-                currentObj.hide()
-            })
-            .catch(function (error) {
-                currentObj.output = error;
-            });
         },
         editProduct(item){
             this.showProductModal = true
@@ -643,34 +663,38 @@ export default {
             this.prodId = item.id
         },
         updateProduct(e){
-            e.preventDefault();
-            let currentObj = this;
+            if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null){
+                e.preventDefault();
+                let currentObj = this;
 
-            const config = {
-                headers: { 'content-type': 'multipart/form-data' }
+                const config = {
+                    headers: { 'content-type': 'multipart/form-data' }
+                }
+                let formData = new FormData();
+                formData.append('id', this.prodId)
+                formData.append('image', this.img)
+                formData.append('status', this.status)
+                formData.append('productCategory', this.prodType)
+                formData.append('productName', this.productName)
+                formData.append('lowPrice', this.lowPrice)
+                formData.append('higPrice', this.higPrice)
+                formData.append('overPrice', this.overPrice)
+                formData.append('onlinelowPrice', this.onlinelowPrice)
+                formData.append('onlinehigPrice', this.onlinehigPrice)
+                formData.append('onlineoverPrice', this.onlineoverPrice)
+                axios.post('/updateProduct', formData, config)
+                .then(function (response) {
+                    currentObj.success = response.data.success
+                    currentObj.retrieveCategories()
+                    currentObj.retrieveProducts()
+                    currentObj.hide()
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
+            }else{
+                this.errorMessage = 'All fields are required!'
             }
-            let formData = new FormData();
-            formData.append('id', this.prodId)
-            formData.append('image', this.img)
-            formData.append('status', this.status)
-            formData.append('productCategory', this.prodType)
-            formData.append('productName', this.productName)
-            formData.append('lowPrice', this.lowPrice)
-            formData.append('higPrice', this.higPrice)
-            formData.append('overPrice', this.overPrice)
-            formData.append('onlinelowPrice', this.onlinelowPrice)
-            formData.append('onlinehigPrice', this.onlinehigPrice)
-            formData.append('onlineoverPrice', this.onlineoverPrice)
-            axios.post('/updateProduct', formData, config)
-            .then(function (response) {
-                currentObj.success = response.data.success
-                currentObj.retrieveCategories()
-                currentObj.retrieveProducts()
-                currentObj.hide()
-            })
-            .catch(function (error) {
-                currentObj.output = error;
-            });
         },
         productStatusUpdate(id){
             let param = {
@@ -697,25 +721,30 @@ export default {
             this.imageURL = URL.createObjectURL(e.target.files[0])
         },
         formSubmit(e) {
-            e.preventDefault();
-            let currentObj = this;
+            if(this.image !== null && this.productType !== null){
+                e.preventDefault();
+                let currentObj = this;
 
-            const config = {
-                headers: { 'content-type': 'multipart/form-data' }
+                const config = {
+                    headers: { 'content-type': 'multipart/form-data' }
+                }
+
+                let formData = new FormData();
+                formData.append('image', this.image)
+                formData.append('productCategory', this.productType)
+                axios.post('/addCategory', formData, config).then(function (response) {
+                    currentObj.success = response.data.success
+                    currentObj.retrieveCategories()
+                    currentObj.retrieveProducts()
+                    currentObj.hide()
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
+            }else{
+                this.errorMessage = 'All fields are required!'
             }
-
-            let formData = new FormData();
-            formData.append('image', this.image)
-            formData.append('productCategory', this.productType)
-            axios.post('/addCategory', formData, config).then(function (response) {
-                currentObj.success = response.data.success
-                currentObj.retrieveCategories()
-                currentObj.retrieveProducts()
-                currentObj.hide()
-            })
-            .catch(function (error) {
-                currentObj.output = error;
-            });
+            
         },
         product(event){
             if(this.secondEvent !== event.target){
@@ -831,15 +860,20 @@ export default {
             ROUTER.push(route).catch(() => {});
         },
         addAddOns() {
-            let param = {
-                addOns: this.inputAddOns,
-                price: this.addOnsPrice,
-                status: 'Available'
-            };
-            this.$axios.post(AUTH.url + "addingAddOns", param).then(response => {
-                this.retrieveAddOns()
-                this.hide()
-            });
+            if(this.addOnsPrice !== null && this.inputAddOns !== null){
+                let param = {
+                    addOns: this.inputAddOns,
+                    price: this.addOnsPrice,
+                    status: 'Available'
+                };
+                this.$axios.post(AUTH.url + "addingAddOns", param).then(response => {
+                    this.retrieveAddOns()
+                    this.hide()
+                });
+            }else{
+                this.errorMessage = 'All fields are required!'
+            }
+            
         },
         retrieveAddOns() {
             this.$axios.post(AUTH.url + "retrievingAddOns").then(response => {
@@ -855,16 +889,21 @@ export default {
             this.idAddOns = item.id
         },
         editAddOnsData(){
-            let param = {
-                id: this.idAddOns,
-                addOns: this.inputAddOns,
-                price: this.addOnsPrice,
-                status: this.addOnsStat
-            };
-            this.$axios.post(AUTH.url + "updateAddOns", param).then(response => {
-                this.retrieveAddOns()
-                this.hide()
-            });
+            if(this.addOnsPrice !== null && this.inputAddOns !== null){
+                let param = {
+                    id: this.idAddOns,
+                    addOns: this.inputAddOns,
+                    price: this.addOnsPrice,
+                    status: this.addOnsStat
+                };
+                this.$axios.post(AUTH.url + "updateAddOns", param).then(response => {
+                    this.retrieveAddOns()
+                    this.hide()
+                });
+            }else{
+                this.errorMessage = 'All fields are required!'
+            }
+            
         },
         NAStatusUpdate(id){
             let param = {

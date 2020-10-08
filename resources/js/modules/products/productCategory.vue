@@ -8,7 +8,8 @@
                             <img v-if="customerType === 'walkin'" style="width: 70px; height: 50px; border: solid 1px black" src="@/assets/walkin.jpg">
                             <img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda.png">
                             <img v-if="customerType === 'grab'" style="width: 70px; height: 50px;" src="@/assets/grab.png">
-                            <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb.jpeg">
+                            <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb.jpeg"><br>
+                            <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
                             <table class="table table-responsive table-bordered" id="myTable">
                                 <tr>
                                     <th style="width: 45%;">Product Name</th>
@@ -81,7 +82,7 @@ input{
     /* height: 35px; */
     /* margin-top: -50px; */
     /* margin-bottom: 15px; */
-    width: 100px;
+    width: 80px;
     border-radius: 5px;
 }
 ::-webkit-scrollbar {
@@ -113,6 +114,10 @@ th {
    width: 100%;
 }
 @media screen and (max-width: 800px) {
+    input{
+        width: 60px;
+        margin-left: -15px;
+    }
     .firstCol{
         border-radius: 5px;
         box-shadow: 5px 5px gray;
@@ -167,7 +172,8 @@ export default {
             change: 0,
             subTotalPrice: 0,
             cash: null,
-            fee: ''
+            fee: '',
+            error: false
         }
     },
     mounted(){
@@ -242,7 +248,7 @@ export default {
                 this.retrieveProduct()
             })
         },
-        checkoutOrder(){
+        checkoutMethod(){
             let params = {
                 id: localStorage.getItem('customerId'),
                 status: 'complete'
@@ -269,6 +275,23 @@ export default {
                     })
                 })
             })
+        },
+        checkoutOrder(){
+            if(this.customerType !== 'fb'){
+                if(this.convertTotalPrice() > 0 && this.cash !== null && this.convertChange() >= 0){
+                    this.error = false
+                    this.checkoutMethod()
+                }else{
+                    this.error = true
+                }
+            }else{
+                if(this.getSubTotal() > 0 && this.fee !== '' && this.convertTotalPrice() > 0){
+                    this.error = false
+                    this.checkoutMethod()
+                }else{
+                    this.error = true
+                }
+            }
         }
     }
 }

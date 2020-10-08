@@ -165,6 +165,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -179,7 +184,8 @@ __webpack_require__.r(__webpack_exports__);
       change: 0,
       subTotalPrice: 0,
       cash: null,
-      fee: ''
+      fee: '',
+      error: false
     };
   },
   mounted: function mounted() {
@@ -263,7 +269,7 @@ __webpack_require__.r(__webpack_exports__);
         _this3.retrieveProduct();
       });
     },
-    checkoutOrder: function checkoutOrder() {
+    checkoutMethod: function checkoutMethod() {
       var _this4 = this;
 
       var params = {
@@ -293,6 +299,23 @@ __webpack_require__.r(__webpack_exports__);
           });
         });
       });
+    },
+    checkoutOrder: function checkoutOrder() {
+      if (this.customerType !== 'fb') {
+        if (this.convertTotalPrice() > 0 && this.cash !== null && this.convertChange() >= 0) {
+          this.error = false;
+          this.checkoutMethod();
+        } else {
+          this.error = true;
+        }
+      } else {
+        if (this.getSubTotal() > 0 && this.fee !== '' && this.convertTotalPrice() > 0) {
+          this.error = false;
+          this.checkoutMethod();
+        } else {
+          this.error = true;
+        }
+      }
     }
   }
 });
@@ -311,7 +334,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.dataStyle[data-v-3cd12d30]{\r\n    height: 700px;\r\n    overflow-y: scroll;\n}\n.checkout[data-v-3cd12d30]{\r\n    margin-top: 3%;\r\n    height: 40% !important;\r\n    font-size: 20px; width: 200px;\n}\n.btn[data-v-3cd12d30]{\r\n    height: 33px;\r\n    width: 150px;\n}\ninput[data-v-3cd12d30]{\r\n    /* height: 35px; */\r\n    /* margin-top: -50px; */\r\n    /* margin-bottom: 15px; */\r\n    width: 100px;\r\n    border-radius: 5px;\n}\n[data-v-3cd12d30]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.pStyle[data-v-3cd12d30]{\r\n    font-weight: bold;\n}\np[data-v-3cd12d30]{\r\n    margin-top: -10%;\n}\n.firstRow[data-v-3cd12d30]{\r\n    margin-bottom: 5%;\r\n    margin-top: 3%;\n}\n.sudlanan[data-v-3cd12d30]{\r\n    background-color: black;\r\n    height: 92.8vh;\r\n    overflow: hidden;\n}\ntable[data-v-3cd12d30]{\r\n    height: 450px;\r\n    width: 100%;\n}\n.table tr[data-v-3cd12d30]{\r\n   text-align: center;\n}\nth[data-v-3cd12d30] {\r\n   width: 100%;\n}\n@media screen and (max-width: 800px) {\n.firstCol[data-v-3cd12d30]{\r\n        border-radius: 5px;\r\n        box-shadow: 5px 5px gray;\r\n        width: 90%;\r\n        margin-top: 5%;\r\n        background-color:white;\r\n        height: 600px !important;\n}\ntable[data-v-3cd12d30]{\r\n        height: 350px;\r\n        width: 100%;\n}\n.dataStyle[data-v-3cd12d30]{\r\n        height: 490px !important;\r\n        overflow-y: scroll;\n}\n}\n.firstCol[data-v-3cd12d30]{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    width: 90%;\r\n    margin-top: 5%;\r\n    background-color:white;\r\n    height: 650px;\n}\n.secondCol[data-v-3cd12d30]{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    margin-top: 5%;\r\n    margin-right: 2%;\r\n    margin-left: 3%;\r\n    height: 150px;\r\n    background-color: white;\n}\n.imgItem[data-v-3cd12d30]{\r\n    height: 150px;\r\n    width: 100%;\n}\r\n", ""]);
+exports.push([module.i, "\n.dataStyle[data-v-3cd12d30]{\r\n    height: 700px;\r\n    overflow-y: scroll;\n}\n.checkout[data-v-3cd12d30]{\r\n    margin-top: 3%;\r\n    height: 40% !important;\r\n    font-size: 20px; width: 200px;\n}\n.btn[data-v-3cd12d30]{\r\n    height: 33px;\r\n    width: 150px;\n}\ninput[data-v-3cd12d30]{\r\n    /* height: 35px; */\r\n    /* margin-top: -50px; */\r\n    /* margin-bottom: 15px; */\r\n    width: 80px;\r\n    border-radius: 5px;\n}\n[data-v-3cd12d30]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.pStyle[data-v-3cd12d30]{\r\n    font-weight: bold;\n}\np[data-v-3cd12d30]{\r\n    margin-top: -10%;\n}\n.firstRow[data-v-3cd12d30]{\r\n    margin-bottom: 5%;\r\n    margin-top: 3%;\n}\n.sudlanan[data-v-3cd12d30]{\r\n    background-color: black;\r\n    height: 92.8vh;\r\n    overflow: hidden;\n}\ntable[data-v-3cd12d30]{\r\n    height: 450px;\r\n    width: 100%;\n}\n.table tr[data-v-3cd12d30]{\r\n   text-align: center;\n}\nth[data-v-3cd12d30] {\r\n   width: 100%;\n}\n@media screen and (max-width: 800px) {\ninput[data-v-3cd12d30]{\r\n        width: 60px;\r\n        margin-left: -15px;\n}\n.firstCol[data-v-3cd12d30]{\r\n        border-radius: 5px;\r\n        box-shadow: 5px 5px gray;\r\n        width: 90%;\r\n        margin-top: 5%;\r\n        background-color:white;\r\n        height: 600px !important;\n}\ntable[data-v-3cd12d30]{\r\n        height: 350px;\r\n        width: 100%;\n}\n.dataStyle[data-v-3cd12d30]{\r\n        height: 490px !important;\r\n        overflow-y: scroll;\n}\n}\n.firstCol[data-v-3cd12d30]{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    width: 90%;\r\n    margin-top: 5%;\r\n    background-color:white;\r\n    height: 650px;\n}\n.secondCol[data-v-3cd12d30]{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    margin-top: 5%;\r\n    margin-right: 2%;\r\n    margin-left: 3%;\r\n    height: 150px;\r\n    background-color: white;\n}\n.imgItem[data-v-3cd12d30]{\r\n    height: 150px;\r\n    width: 100%;\n}\r\n", ""]);
 
 // exports
 
@@ -405,6 +428,17 @@ var render = function() {
                         staticStyle: { width: "70px", height: "50px" },
                         attrs: { src: __webpack_require__(/*! @/assets/fb.jpeg */ "./resources/assets/fb.jpeg") }
                       })
+                    : _vm._e(),
+                  _c("br"),
+                  _vm._v(" "),
+                  _vm.error
+                    ? _c(
+                        "span",
+                        {
+                          staticStyle: { color: "red", "font-style": "italic" }
+                        },
+                        [_vm._v("All data are required!")]
+                      )
                     : _vm._e(),
                   _vm._v(" "),
                   _c(
