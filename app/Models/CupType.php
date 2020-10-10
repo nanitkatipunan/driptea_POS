@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class CupType extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    protected $table = 'cup_type';
     protected $fillable = [
-        'productName', 'lowPrice', 'highPrice', 'overPrice', 'onlinelowPrice', 'onlinehighPrice', 'onlineoverPrice', 'image', 'productCategory', 'status'
+        'cupTypeName', 'cupTypePrice', 'cupQuantity', 'status'
     ];
 }

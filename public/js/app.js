@@ -35993,7 +35993,11 @@ __webpack_require__.r(__webpack_exports__);
     path: '/login',
     name: 'login',
     component: function component(resolve) {
+<<<<<<< HEAD
       return Promise.all(/*! AMD require */[__webpack_require__.e(10), __webpack_require__.e(6)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/login */ "./resources/js/basic/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+=======
+      return Promise.all(/*! AMD require */[__webpack_require__.e(8), __webpack_require__.e(5)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/login */ "./resources/js/basic/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+>>>>>>> e7ed02b2c94a41da246f5e39f7c1abce3ebcb8ae
     },
     meta: {
       tokenRequired: false
@@ -36035,9 +36039,10 @@ __webpack_require__.r(__webpack_exports__);
       tokenRequired: true
     }
   }, {
-    path: '/addProduct',
-    name: 'addProduct',
+    path: '/addProductCategoryAddOns',
+    name: 'addProductCategoryAddOns',
     component: function component(resolve) {
+<<<<<<< HEAD
       return __webpack_require__.e(/*! AMD require */ 9).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/addProducts */ "./resources/js/modules/addingAdmin/addProducts.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
@@ -36057,6 +36062,9 @@ __webpack_require__.r(__webpack_exports__);
     name: 'addAddOns',
     component: function component(resolve) {
       return __webpack_require__.e(/*! AMD require */ 3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/addAddOns */ "./resources/js/modules/addingAdmin/addAddOns.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+=======
+      return __webpack_require__.e(/*! AMD require */ 7).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/add */ "./resources/js/modules/addingAdmin/add.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+>>>>>>> e7ed02b2c94a41da246f5e39f7c1abce3ebcb8ae
     },
     meta: {
       tokenRequired: true

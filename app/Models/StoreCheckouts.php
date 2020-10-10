@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class StoreCheckouts extends Model
 {
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'productName', 'lowPrice', 'highPrice', 'overPrice', 'onlinelowPrice', 'onlinehighPrice', 'onlineoverPrice', 'image', 'productCategory', 'status'
+        'customerId', 'subTotal', 'deliveryFee', 'total', 'incash', 'change'
     ];
 }

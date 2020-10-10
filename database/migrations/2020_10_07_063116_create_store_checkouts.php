@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAddAddOns extends Migration
+class CreateStoreCheckouts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateAddAddOns extends Migration
      */
     public function up()
     {
-        Schema::create('add_add_ons', function (Blueprint $table) {
+        Schema::create('store_checkouts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('addons_name');
-            $table->double('addons_price');
-            $table->string('status');
+            $table->bigInteger('customerId');
+            $table->double('subTotal')->nullable();
+            $table->integer('deliveryFee')->nullable();
+            $table->string('total');
+            $table->string('incash')->nullable();
+            $table->string('change')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +33,6 @@ class CreateAddAddOns extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('add_add_ons');
+        Schema::dropIfExists('store_checkouts');
     }
 }

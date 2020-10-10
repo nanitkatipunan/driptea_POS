@@ -49,25 +49,9 @@ export default {
             }
         },
         {
-            path: '/addProduct',
-            name: 'addProduct',
-            component: resolve => require(['@/js/modules/addingAdmin/addProducts'], resolve),
-            meta: {
-                tokenRequired: true
-            }
-        },
-        {
-            path: '/addCategories',
-            name: 'addCategories',
-            component: resolve => require(['@/js/modules/addingAdmin/addCategories'], resolve),
-            meta: {
-                tokenRequired: true
-            }
-        },
-        {
-            path: '/addAddOns',
-            name: 'addAddOns',
-            component: resolve => require(['@/js/modules/addingAdmin/addAddOns'], resolve),
+            path: '/addProductCategoryAddOns',
+            name: 'addProductCategoryAddOns',
+            component: resolve => require(['@/js/modules/addingAdmin/add'], resolve),
             meta: {
                 tokenRequired: true
             }
