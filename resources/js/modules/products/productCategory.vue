@@ -61,6 +61,7 @@
                     </div>
                 </div>
             </div>
+            <receipt v-if="receiptShow"></receipt>
        </div>
     </div>
 </template>
@@ -160,6 +161,7 @@ th {
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
+import receipt from '../order/receipt.vue'
 export default {
     data(){
         return{
@@ -176,11 +178,17 @@ export default {
             error: false
         }
     },
+    components: {
+        receipt
+    },
     mounted(){
         this.retrieveCategory()
         this.retrieveProduct()
     },
     methods: {
+        hideReceipt(){
+            this.receiptShow = false
+        },
         addingFee(){
             this.deliveryFee = this.fee
         },
