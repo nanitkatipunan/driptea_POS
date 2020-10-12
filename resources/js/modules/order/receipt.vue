@@ -2,7 +2,7 @@
 <div id="modal" class="blurred-background">
     <div class="alert-box">
         <center>
-            <img style="width: 80px" src="@/assets/driptea.png">
+            <img style="width: 80px" src="@/assets/logo.png">
             <h6><b>Driptea</b></h6>
             <h6>A.C. Cortes Avenue Across UCLM, Mandaue City, 6014 Cebu</h6>
            <div id="app" style="font-size:12px" class="float-right">
@@ -12,12 +12,14 @@
         <table class="table table-responsive" id="myTable">
             <tr>
                 <th style="width: 260px; font-size:12px">Product Name</th>
+                <th style="font-size:12px">Add ons</th>
                 <th style="font-size:12px">Unit Price</th>
                 <th style="font-size:12px">Quantity</th>
                 <th style="font-size:12px">Total</th>
             </tr>
             <tr v-for="(item, i) in myTable" :key="i">
                 <td style="font-size:12px">{{item.ProductName}}</td>
+                <td style="font-size:12px">{{item.Add_ons}}</td>
                 <td style="font-size:12px">{{item.Unit_price}}</td>
                 <td style="font-size:12px">{{item.Qty}}</td>
                 <td style="font-size:12px">{{item.Price}}</td>
@@ -84,18 +86,21 @@ export default {
           datetime:moment().format('MMMM Do YYYY, h:mm:ss a'),
             myTable: [{
                     ProductName: 'Okinawa',
+                    Add_ons: 'Pearl',
                     Unit_price: '79',
                     Qty: '2',
                     Price: '158'
                 },
                 {
                     ProductName: 'Hokkaido',
+                    Add_ons: 'Pearl',
                     Unit_price: '79',
                     Qty: '3',
                     Price: '158'
                 },
                 {
                     ProductName: 'Pearl Milktea',
+                    Add_ons: 'Pearl',
                     Unit_price: '79',
                     Qty: '4',
                     Price: '158'
