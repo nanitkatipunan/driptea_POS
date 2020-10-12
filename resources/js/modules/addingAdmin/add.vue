@@ -112,7 +112,7 @@
                     </table>
                 </div>
                 <div v-if="cup" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped addOnsTable" id="myTable">
+                    <table class="table table-bordered table-striped cupTable" id="myTable">
                         <thead class="thead-light">
                             <tr class="header">
                                 <th scope="col">#</th>
@@ -445,6 +445,11 @@ label{
 }
 .addOnsTable{
     width: 50%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.cupTable{
+    width: 60%;
     margin-top: 5%;
     margin-bottom: 5%;
 }

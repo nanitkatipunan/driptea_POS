@@ -216,8 +216,8 @@ export default {
                 this.errorMessage8 = null
                 if(this.userType === ''){
                     this.errorMessage8 = 'Usertype is required.'
-                } else if(this.userType.toLowerCase() !== 'admin' && this.userType.toLowerCase() !== 'casher'){
-                    this.errorMessage8 = 'Usertype should only be Admin or Casher.'
+                } else if(this.userType.toLowerCase() !== 'admin' && this.userType.toLowerCase() !== 'cashier'){
+                    this.errorMessage8 = 'Usertype should only be Admin or Cashier.'
                 } else {
                     this.errorMessage8 = null
                 }

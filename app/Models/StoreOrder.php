@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Order extends Model
+class StoreOrder extends Model
 {
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'customerId', 'cashierId', 'productId', 'quantity', 'size', 'cupType', 'sugarLevel', 'subTotal', 'choosenPrice', 'status'
+        'customerId', 'cashierId', 'storeCheckoutsId', 'productId', 'quantity', 'size', 'cupType', 'sugarLevel', 'subTotal', 'choosenPrice', 'status'
     ];
 
     public function orderProduct(){
@@ -19,10 +19,14 @@ class Order extends Model
     }
 
     public function sameOrder(){
-        return $this->hasMany('App\Models\AddOns','orderId','id');
+        return $this->hasMany('App\Models\StoreAddOn','storeOrderId','id');
     }
 
     public function getCashier(){
         return $this->hasMany('App\Models\User','id','cashierId');
+    }
+
+    public function getCheckouts(){
+        return $this->hasMany('App\Models\StoreCheckouts','id','storeCheckoutsId');
     }
 }

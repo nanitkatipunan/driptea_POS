@@ -8,7 +8,7 @@ export default {
     imageSelected: null,
     token: null,
     user: {
-        casherId: null,
+        cashierId: null,
         fullname: null,
         userType: null
     },
@@ -23,9 +23,12 @@ export default {
                   Authorization: 'Bearer ' + token
                 }
             }).then(res => {
-                this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
-                if (routes !== null) {
-                    ROUTER.push(routes)
+                if(res.data.user.account_type.toUpperCase() === 'ADMIN'){
+                    this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
+                    ROUTER.push('/addProductCategoryAddOns')
+                }else{
+                    this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
+                    ROUTER.push('/casherDashboard')
                 }
             })
             return true
@@ -33,9 +36,13 @@ export default {
             return false
         }
     },
-    setUser(casherId, fullname, userType) {
-        localStorage.setItem('casherId', casherId)
-        this.user.casherId = casherId
+    setUser(cashierId, fullname, userType) {
+        if(userType.toUpperCase() === 'ADMIN'){
+            localStorage.setItem('adminId', cashierId)
+        }else{
+            localStorage.setItem('cashierId', cashierId)
+        }
+        this.user.cashierId = cashierId
         this.user.fullname = fullname
         this.user.userType = userType
     },
@@ -54,7 +61,7 @@ export default {
       },
     deaunthenticate(){
         localStorage.removeItem('userToken')
-        localStorage.removeItem('casherId')
+        localStorage.removeItem('cashierId')
         this.setUser(null)
         axios.post(this.url+'deaunthenticate')
         this.token = null

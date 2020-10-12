@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Order;
-use App\Models\AddOns;
+use App\Models\StoreOrder;
+use App\Models\StoreAddOn;
 use App\Models\StoreCheckouts;
 
 use Illuminate\Http\Request;
@@ -12,19 +12,42 @@ class StoreCheckoutsController extends Controller
 {
     public function addCheckout(Request $request){
         $data = $request->all();
-        $storeCheckouts = new StoreCheckouts($data);
+        $storeCheckouts = new StoreCheckouts();
+        $storeCheckouts->customerId = $data['customerId'];
+        $storeCheckouts->subTotal = $data['subTotal'];
+        $storeCheckouts->deliveryFee = $data['deliveryFee'];
+        $storeCheckouts->total = $data['total'];
+        $storeCheckouts->incash = $data['incash'];
+        $storeCheckouts->change = $data['change'];
         $storeCheckouts->save();
+        $dataOrder = $data['order'];
+        foreach($dataOrder as $value) {
+            $storeOrder = new StoreOrder();
+            $dataAddOns = $value['same_order'];
+            $storeOrder->storeCheckoutsId = $storeCheckouts['id'];
+            $storeOrder->customerId = $value['customerId'];
+            $storeOrder->cashierId = $value['cashierId'];
+            $storeOrder->productId = $value['productId'];
+            $storeOrder->quantity = $value['quantity'];
+            $storeOrder->size = $value['size'];
+            $storeOrder->sugarLevel = $value['sugarLevel'];
+            $storeOrder->cupType = $value['cupType'];
+            $storeOrder->choosenPrice = $value['choosenPrice'];
+            $storeOrder->subTotal = $value['subTotal'];
+            $storeOrder->status = $value['status'];
+            $storeOrder->save();
+            foreach ($dataAddOns as $val) {
+                $storeAddOns = new StoreAddOn();
+                $storeAddOns->storeOrderId = $storeOrder['id'];
+                $storeAddOns->addOns = $val['addOns'];
+                $storeAddOns->save();
+            }
+        }
         return response()->json(compact('storeCheckouts'));
     }
 
     public function retrieveCheckouts(Request $request){
-        $storeCheckouts = StoreCheckouts::where('customerId', $request['id'])->get();
-        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'complete')->where('deleted_at', null)->get();
-        $count = 1;
-        foreach($order as $value) {
-            $storeCheckouts[0]['order'.$count] = $value;
-            $count++;
-        }
-        return response()->json(compact('storeCheckouts'));
+        $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('storeCheckoutsId', $request->id)->where('deleted_at', null)->get();
+        return response()->json(compact('storeOrder'));
     }
 }

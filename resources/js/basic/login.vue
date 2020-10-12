@@ -127,7 +127,7 @@ export default {
             }
             this.$axios.post(AUTH.url + 'login', credentials).then(response => {
                 AUTH.setToken(response.data.token)
-                AUTH.authenticateForAll('/casherDashboard')
+                AUTH.authenticateForAll()
             }).catch(err => {
                 if(err.response.status === 400){
                     this.errorMessage = 'Invalid credentials!'

@@ -2,11 +2,11 @@
 <div id="modal" class="blurred-background">
     <div class="alert-box">
         <center>
-            <img style="width: 80px" src="@/assets/driptea.png">
+            <img style="width: 80px" src="@/assets/logo.png">
             <h6><b>Driptea</b></h6>
             <h6>A.C. Cortes Avenue Across UCLM, Mandaue City, 6014 Cebu</h6>
            <div id="app" style="font-size:12px" class="float-right">
-               {{ datetime}}
+               {{ datetime }}
             </div>
         </center>
         <table class="table table-responsive" id="myTable">
@@ -37,9 +37,6 @@
     </div>
 </div>
 </template>
-
-
-
 <style scoped>
 hr {
     border: 1px solid gray;
@@ -75,13 +72,15 @@ label {
     box-shadow: 5px 5px gray;
 }
 </style>
-
 <script>
 import moment from 'moment'
+import AUTH from '../../services/auth'
+import ROUTER from '../../router'
 export default {
     data() {
         return {
-          datetime:moment().format('MMMM Do YYYY, h:mm:ss a'),
+            data: null,
+            datetime:moment().format('MMMM Do YYYY, h:mm:ss a'),
             myTable: [{
                     ProductName: 'Okinawa',
                     Unit_price: '79',
@@ -110,9 +109,13 @@ export default {
             }]
         }
     },
-   
+    props: ['showData'],
     mounted() {
-        console.log('Sample gawas')
+    console.log(this.showData)
+    // this.retrieveProduct()
+    // localStorage.removeItem('customerId')
+    // localStorage.removeItem('customerType')
+    // ROUTER.push('/casherDashboard').catch(()=>{})
     },
 
     methods: {

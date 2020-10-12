@@ -58,7 +58,7 @@ class ProductController extends Controller
 
     public function retrieveProduct(Request $request){
         $type = $request['type'];
-        $product = Product::where('productCategory', $type)->get();
+        $product = Product::where('productCategory', $type)->where('status', 'Available')->get();
         return response()->json(compact('product'));
     }
 
