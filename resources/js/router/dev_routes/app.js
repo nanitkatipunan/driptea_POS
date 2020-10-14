@@ -57,6 +57,14 @@ export default {
             }
         },
         {
+            path: '/salesInventory',
+            name: 'salesInventory',
+            component: resolve => require(['@/js/modules/inventory/salesInventory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
             path: '/productCategory/:image?',
             name: 'productCategory',
             component: resolve => require(['@/js/modules/products/productCategory'], resolve),

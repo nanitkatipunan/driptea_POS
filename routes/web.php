@@ -28,6 +28,7 @@ Route::post('updateStatusProduct','App\Http\Controllers\ProductController@update
 Route::post('addCategory','App\Http\Controllers\AddCategoryController@addCategory');
 Route::post('updateCategory','App\Http\Controllers\AddCategoryController@updateCategory');
 Route::post('retrieveCategory','App\Http\Controllers\AddCategoryController@retrieveCategory');
+Route::post('retrieveCategoryAscending','App\Http\Controllers\AddCategoryController@retrieveCategoryAscending');
 
 Route::post('addCustomer','App\Http\Controllers\CustomerDetailsController@insertCustomer');
 

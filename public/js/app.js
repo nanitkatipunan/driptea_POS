@@ -35993,7 +35993,7 @@ __webpack_require__.r(__webpack_exports__);
     path: '/login',
     name: 'login',
     component: function component(resolve) {
-      return Promise.all(/*! AMD require */[__webpack_require__.e(9), __webpack_require__.e(6)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/login */ "./resources/js/basic/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+      return Promise.all(/*! AMD require */[__webpack_require__.e(10), __webpack_require__.e(6)]).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/basic/login */ "./resources/js/basic/login.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: false
@@ -36039,6 +36039,15 @@ __webpack_require__.r(__webpack_exports__);
     name: 'addProductCategoryAddOns',
     component: function component(resolve) {
       return __webpack_require__.e(/*! AMD require */ 8).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/addingAdmin/add */ "./resources/js/modules/addingAdmin/add.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
+    },
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/salesInventory',
+    name: 'salesInventory',
+    component: function component(resolve) {
+      return __webpack_require__.e(/*! AMD require */ 9).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! @/js/modules/inventory/salesInventory */ "./resources/js/modules/inventory/salesInventory.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
     meta: {
       tokenRequired: true

@@ -373,6 +373,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -408,7 +410,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ['showData'],
   mounted: function mounted() {
-    console.log(this.showData); // this.retrieveProduct()
+    console.log('---------------tae------', this.showData);
+    console.log('---------------yakssss------', this.showData.same_order); // this.retrieveProduct()
     // localStorage.removeItem('customerId')
     // localStorage.removeItem('customerType')
     // ROUTER.push('/casherDashboard').catch(()=>{})
@@ -417,6 +420,13 @@ __webpack_require__.r(__webpack_exports__);
     hide: function hide() {
       console.log('sadfsadfsdaf');
       this.$parent.hideReceipt();
+    },
+    getAddOns: function getAddOns(item) {
+      console.log('------bolbol', item); // let storeAddOns = ""
+      // item.forEach(el => {
+      //     storeAddOns += el.addOns + ", "
+      // })
+      // return storeAddOns
     }
   }
 });
@@ -912,22 +922,26 @@ var render = function() {
             [
               _vm._m(0),
               _vm._v(" "),
-              _vm._l(_vm.myTable, function(item, i) {
+              _vm._l(_vm.showData, function(item, i) {
                 return _c("tr", { key: i }, [
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.ProductName))
+                    _vm._v(_vm._s(item.order_product))
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.Unit_price))
+                    _vm._v(_vm._s(_vm.getAddOns(item)))
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.Qty))
+                    _vm._v(_vm._s(item.choosenPrice))
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.Price))
+                    _vm._v(_vm._s(item.quantity))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticStyle: { "font-size": "12px" } }, [
+                    _vm._v(_vm._s(item.subTotal))
                   ])
                 ])
               })
@@ -978,6 +992,10 @@ var staticRenderFns = [
     return _c("tr", [
       _c("th", { staticStyle: { width: "260px", "font-size": "12px" } }, [
         _vm._v("Product Name")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticStyle: { width: "260px", "font-size": "12px" } }, [
+        _vm._v("Add-ons")
       ]),
       _vm._v(" "),
       _c("th", { staticStyle: { "font-size": "12px" } }, [

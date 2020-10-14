@@ -41,4 +41,9 @@ class AddCategoryController extends Controller
         $addCategory = AddCategory::orderBy('id','DESC')->get();
         return response()->json(compact('addCategory'));
     }
+
+    public function retrieveCategoryAscending(Request $request){
+        $addCategory = AddCategory::orderBy('id','ASC')->get();
+        return response()->json(compact('addCategory'));
+    }
 }
