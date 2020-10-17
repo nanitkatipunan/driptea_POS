@@ -43,11 +43,13 @@ Route::post('retrievingAddOns','App\Http\Controllers\AddAddOnsController@retriev
 Route::post('updateStatusAddOns','App\Http\Controllers\AddAddOnsController@updateStatusAvailable');
 Route::post('updateAddOns','App\Http\Controllers\AddAddOnsController@updateAddOns');
 Route::post('retrieveOneAddOn','App\Http\Controllers\AddAddOnsController@retrieveOneAddOn');
+Route::post('retrieveAllAddOns','App\Http\Controllers\AddAddOnsController@retrieveAllAddOns');
 
 Route::post('addingCupType','App\Http\Controllers\CupTypeController@addingCupType');
 Route::post('retrieveCupType','App\Http\Controllers\CupTypeController@retrieveCupType');
 Route::post('updateAvailableCupType','App\Http\Controllers\CupTypeController@updateAvailableCupType');
 Route::post('editingCupType','App\Http\Controllers\CupTypeController@editingCupType');
+Route::post('retrieveAllCupType','App\Http\Controllers\CupTypeController@retrieveAllCupType');
 
 Route::post('addCheckout','App\Http\Controllers\StoreCheckoutsController@addCheckout');
 Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveCheckouts');

@@ -735,7 +735,7 @@ __webpack_require__.r(__webpack_exports__);
         };
 
         _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCheckouts', parameter).then(function (response) {
-          console.log(response.data.storeOrder[0]);
+          // console.log(response.data.storeOrder[0])
           _this4.receiptData = response.data.storeOrder[0];
           _this4.receiptShow = true; // this.retrieveProduct()
           // localStorage.removeItem('customerId')

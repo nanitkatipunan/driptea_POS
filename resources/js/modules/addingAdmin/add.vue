@@ -560,7 +560,7 @@ export default {
             });
         },
         retrieveCupType(){
-            this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
+            this.$axios.post(AUTH.url + "retrieveAllCupType").then(response => {
                 this.cupData = response.data.cupType
             });
         },
@@ -691,10 +691,10 @@ export default {
                 formData.append('productCategory', this.prodType)
                 formData.append('productName', this.productName)
                 formData.append('lowPrice', this.lowPrice)
-                formData.append('higPrice', this.higPrice)
+                formData.append('highPrice', this.highPrice)
                 formData.append('overPrice', this.overPrice)
                 formData.append('onlinelowPrice', this.onlinelowPrice)
-                formData.append('onlinehigPrice', this.onlinehigPrice)
+                formData.append('onlinehighPrice', this.onlinehighPrice)
                 formData.append('onlineoverPrice', this.onlineoverPrice)
                 axios.post('/updateProduct', formData, config)
                 .then(function (response) {
@@ -892,7 +892,7 @@ export default {
             
         },
         retrieveAddOns() {
-            this.$axios.post(AUTH.url + "retrievingAddOns").then(response => {
+            this.$axios.post(AUTH.url + "retrieveAllAddOns").then(response => {
                 this.datas = response.data.addons;
             });
         },

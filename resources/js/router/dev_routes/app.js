@@ -49,6 +49,14 @@ export default {
             }
         },
         {
+            path: '/productOnline/:itemChosen',
+            name: 'productOnline',
+            component: resolve => require(['@/js/modules/onlineOrder/productOnline'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
             path: '/addProductCategoryAddOns',
             name: 'addProductCategoryAddOns',
             component: resolve => require(['@/js/modules/addingAdmin/add'], resolve),
@@ -60,6 +68,14 @@ export default {
             path: '/salesInventory',
             name: 'salesInventory',
             component: resolve => require(['@/js/modules/inventory/salesInventory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/onlineDashboard',
+            name: 'onlineDashboard',
+            component: resolve => require(['@/js/modules/dashboard/onlineOrderDashboard'], resolve),
             meta: {
                 tokenRequired: true
             }

@@ -27,6 +27,12 @@ class QuantityCupsController extends Controller
             $quantityCups->onRockLowDose = ($data['incomingLowDose'] + $quantity['remainingLowDose']);
             $quantityCups->onRockHighDose = ($data['incomingHighDose'] + $quantity['remainingHighDose']);
             $quantityCups->onRockOverDose = ($data['incomingOverDose'] + $quantity['remainingOverDose']);
+            $quantityCups->usedCupsLowDose = 0;
+            $quantityCups->usedCupsHighDose = 0;
+            $quantityCups->usedCupsOverDose = 0;
+            $quantityCups->remainingLowDose = ($data['incomingLowDose'] + $quantity['remainingLowDose']);
+            $quantityCups->remainingHighDose = ($data['incomingHighDose'] + $quantity['remainingHighDose']);
+            $quantityCups->remainingOverDose = ($data['incomingOverDose'] + $quantity['remainingOverDose']);
             $quantityCups->save();
         }else{
             $data = $request->all();
@@ -37,6 +43,12 @@ class QuantityCupsController extends Controller
             $quantityCups->onRockLowDose = $data['incomingLowDose'];
             $quantityCups->onRockHighDose = $data['incomingHighDose'];
             $quantityCups->onRockOverDose = $data['incomingOverDose'];
+            $quantityCups->usedCupsLowDose = 0;
+            $quantityCups->usedCupsHighDose = 0;
+            $quantityCups->usedCupsOverDose = 0;
+            $quantityCups->remainingLowDose = $data['incomingLowDose'];
+            $quantityCups->remainingHighDose = $data['incomingHighDose'];
+            $quantityCups->remainingOverDose = $data['incomingOverDose'];
             $quantityCups->save();
         }
         return response()->json(compact('quantityCups'));
