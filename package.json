@@ -26,6 +26,10 @@
         "bootstrap": "^4.1.1",
         "vue": "^2.6.12",
         "vue-router": "^3.4.3",
-        "vuetify": "^2.3.14"
+        "vuetify": "^2.3.14",
+        "apexcharts": "^3.22.0",
+        "json-schema": "^0.2.5",
+        "moment": "^2.29.1",
+        "vue-apexcharts": "^1.6.0"
     }
 }

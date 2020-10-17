@@ -54,6 +54,23 @@ Route::post('retrieveAllCupType','App\Http\Controllers\CupTypeController@retriev
 Route::post('addCheckout','App\Http\Controllers\StoreCheckoutsController@addCheckout');
 Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveCheckouts');
 
+Route::post('addIncomingCups','App\Http\Controllers\QuantityCupsController@addIncomingCups');
+Route::post('retrieveCupSize','App\Http\Controllers\QuantityCupsController@retrieveCupSize');
+
+
+
+Route::post('retrieveYear','App\Http\Controllers\StoreCheckoutsController@retrieveYear');
+
+//SalesInventory
+
+Route::post('retrieveDailySales','App\Http\Controllers\StoreCheckoutsController@retrieveDailySales');
+
+
+
+
+
+
+
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
 });

@@ -51,6 +51,7 @@ class QuantityCupsController extends Controller
             $quantityCups->remainingOverDose = $data['incomingOverDose'];
             $quantityCups->save();
         }
+        dd($quantityCups);
         return response()->json(compact('quantityCups'));
     }
 
@@ -68,8 +69,11 @@ class QuantityCupsController extends Controller
         return response()->json(compact('quantityCups'));
     }
 
-    public function retrieveCups(){
-        $quantityCups = QuantityCups::get();
-        return response()-json(compact('quantityCups'));
+    public function retrieveCupSize(Request $request){
+
+        $quantityCupsInDB = QuantityCups::get();
+        // dd($quantityCupsInDB);
+        return response()->json(compact('quantityCupsInDB'));
+
     }
 }

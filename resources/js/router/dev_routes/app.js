@@ -65,13 +65,22 @@ export default {
             }
         },
         {
-            path: '/salesInventory',
-            name: 'salesInventory',
-            component: resolve => require(['@/js/modules/inventory/salesInventory'], resolve),
+            path: '/adminDashboard',
+            name: 'adminDashboard',
+            component: resolve => require(['@/js/modules/dashboard/adminDashboard'], resolve),
             meta: {
                 tokenRequired: true
             }
         },
+        {
+            path: '/salesInventory',
+            name: 'salesInventory',
+            component: resolve => require(['@/js/modules/inventory/cupsInventory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        
         {
             path: '/onlineDashboard',
             name: 'onlineDashboard',

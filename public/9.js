@@ -488,6 +488,142 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -519,6 +655,7 @@ __webpack_require__.r(__webpack_exports__);
       showProductModal: false,
       showCategoryModal: false,
       showCupTypeModal: false,
+      showCupSizeModal: false,
       btnCupType: false,
       btnEditCupType: false,
       inputCupPrice: null,
@@ -530,6 +667,7 @@ __webpack_require__.r(__webpack_exports__);
       cat: true,
       ons: false,
       cup: false,
+      size: false,
       secondEvent: '',
       productAdd: false,
       productEdit: false,
@@ -537,7 +675,11 @@ __webpack_require__.r(__webpack_exports__);
       prodId: null,
       priceEvent: '',
       online: false,
-      errorMessage: null
+      errorMessage: null,
+      lowDoseCup: null,
+      highDoseCup: null,
+      overDoseCup: null,
+      cupSizeData: null
     };
   },
   mounted: function mounted() {
@@ -545,10 +687,12 @@ __webpack_require__.r(__webpack_exports__);
     this.$refs.on.click();
     this.$refs.pro.click();
     this.$refs.cate.click();
+    this.$refs.size.click();
     this.retrieveProducts();
     this.retrieveCategories();
     this.retrieveAddOns();
     this.retrieveCupType();
+    this.retrieveCupSize();
   },
   methods: {
     NACupUpdate: function NACupUpdate(id) {
@@ -582,8 +726,15 @@ __webpack_require__.r(__webpack_exports__);
         _this3.cupData = response.data.cupType;
       });
     },
-    addingCupType: function addingCupType() {
+    retrieveCupSize: function retrieveCupSize() {
       var _this4 = this;
+
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupSize").then(function (response) {
+        _this4.cupSizeData = response.data.quantityCupsInDB;
+      });
+    },
+    addingCupType: function addingCupType() {
+      var _this5 = this;
 
       if (this.inputCupPrice !== null && this.inputCup !== null) {
         var param = {
@@ -593,16 +744,38 @@ __webpack_require__.r(__webpack_exports__);
           status: 'Available'
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingCupType", param).then(function (response) {
-          _this4.retrieveCupType();
+          _this5.retrieveCupType();
 
-          _this4.hide();
+          _this5.hide();
         });
       } else {
         this.errorMessage = 'All fields are required!';
       }
     },
+    addingCupSize: function addingCupSize() {
+      var _this6 = this;
+
+      console.log('sud');
+
+      if (this.lowDoseCup !== null && this.highDoseCup !== null && this.overDoseCup !== null) {
+        var param = {
+          incomingLowDose: this.lowDoseCup,
+          incomingHighDose: this.highDoseCup,
+          incomingOverDose: this.overDoseCup
+        };
+        console.log(param);
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addIncomingCups", param).then(function (response) {
+          _this6.retrieveCupSize();
+
+          _this6.hide();
+        });
+      } else {
+        console.log('error');
+        this.errorMessage = 'All fields are required!';
+      }
+    },
     editingCupType: function editingCupType() {
-      var _this5 = this;
+      var _this7 = this;
 
       if (this.inputCupPrice !== null && this.inputCup !== null) {
         var param = {
@@ -613,9 +786,9 @@ __webpack_require__.r(__webpack_exports__);
           status: this.cupStatus
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "editingCupType", param).then(function (response) {
-          _this5.retrieveCupType();
+          _this7.retrieveCupType();
 
-          _this5.hide();
+          _this7.hide();
         });
       } else {
         this.errorMessage = 'All fields are required!';
@@ -737,27 +910,27 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     productStatusUpdate: function productStatusUpdate(id) {
-      var _this6 = this;
+      var _this8 = this;
 
       var param = {
         id: id,
         status: 'Not Available'
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param).then(function (response) {
-        _this6.retrieveProducts();
+        _this8.retrieveProducts();
 
         console.log('updated successfully!');
       });
     },
     productStatusAvailable: function productStatusAvailable(id) {
-      var _this7 = this;
+      var _this9 = this;
 
       var param = {
         id: id,
         status: 'Available'
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param).then(function (response) {
-        _this7.retrieveProducts();
+        _this9.retrieveProducts();
 
         console.log('updated successfully!');
       });
@@ -806,6 +979,25 @@ __webpack_require__.r(__webpack_exports__);
       this.cat = false;
       this.ons = false;
       this.cup = false;
+      this.size = false;
+    },
+    cupSize: function cupSize(event) {
+      if (this.secondEvent !== event.target) {
+        event.target.classList.add('borderStyle');
+        event.target.classList.remove('btnBorderStyle1');
+
+        if (this.secondEvent !== '') {
+          this.secondEvent.classList.add('btnBorderStyle1');
+          this.secondEvent.classList.remove('borderStyle');
+        }
+      }
+
+      this.secondEvent = event.target;
+      this.size = true;
+      this.prod = false;
+      this.cat = false;
+      this.ons = false;
+      this.cup = false;
     },
     category: function category(event) {
       if (this.secondEvent !== event.target) {
@@ -823,6 +1015,7 @@ __webpack_require__.r(__webpack_exports__);
       this.cat = true;
       this.ons = false;
       this.cup = false;
+      this.size = false;
     },
     addOnsShow: function addOnsShow(event) {
       if (this.secondEvent !== event.target) {
@@ -840,6 +1033,7 @@ __webpack_require__.r(__webpack_exports__);
       this.cat = false;
       this.ons = true;
       this.cup = false;
+      this.size = false;
     },
     addCupType: function addCupType(event) {
       if (this.secondEvent !== event.target) {
@@ -857,12 +1051,20 @@ __webpack_require__.r(__webpack_exports__);
       this.cat = false;
       this.ons = false;
       this.cup = true;
+      this.size = false;
     },
     showAddOns: function showAddOns() {
       this.showAddOnsModal = true;
       this.addonsShow = true;
       this.inputAddOns = null;
       this.addOnsPrice = null;
+    },
+    showCupSize: function showCupSize() {
+      this.showCupSizeModal = true;
+      this.cupSizeShow = true;
+      this.lowDoseCup = null;
+      this.highDoseCup = null;
+      this.overDoseCup = null;
     },
     showProduct: function showProduct() {
       this.showProductModal = true;
@@ -908,12 +1110,13 @@ __webpack_require__.r(__webpack_exports__);
       this.showCupTypeModal = false;
       this.btnCupType = false;
       this.btnEditCupType = false;
+      this.showCupSizeModal = false;
     },
     redirect: function redirect(route) {
       _router__WEBPACK_IMPORTED_MODULE_1__["default"].push(route)["catch"](function () {});
     },
     addAddOns: function addAddOns() {
-      var _this8 = this;
+      var _this10 = this;
 
       if (this.addOnsPrice !== null && this.inputAddOns !== null) {
         var param = {
@@ -922,19 +1125,19 @@ __webpack_require__.r(__webpack_exports__);
           status: 'Available'
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingAddOns", param).then(function (response) {
-          _this8.retrieveAddOns();
+          _this10.retrieveAddOns();
 
-          _this8.hide();
+          _this10.hide();
         });
       } else {
         this.errorMessage = 'All fields are required!';
       }
     },
     retrieveAddOns: function retrieveAddOns() {
-      var _this9 = this;
+      var _this11 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllAddOns").then(function (response) {
-        _this9.datas = response.data.addons;
+        _this11.datas = response.data.addons;
       });
     },
     editAddOns: function editAddOns(item) {
@@ -946,7 +1149,7 @@ __webpack_require__.r(__webpack_exports__);
       this.idAddOns = item.id;
     },
     editAddOnsData: function editAddOnsData() {
-      var _this10 = this;
+      var _this12 = this;
 
       if (this.addOnsPrice !== null && this.inputAddOns !== null) {
         var param = {
@@ -956,48 +1159,48 @@ __webpack_require__.r(__webpack_exports__);
           status: this.addOnsStat
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAddOns", param).then(function (response) {
-          _this10.retrieveAddOns();
+          _this12.retrieveAddOns();
 
-          _this10.hide();
+          _this12.hide();
         });
       } else {
         this.errorMessage = 'All fields are required!';
       }
     },
     NAStatusUpdate: function NAStatusUpdate(id) {
-      var _this11 = this;
+      var _this13 = this;
 
       var param = {
         id: id,
         status: 'Not Available'
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusAddOns", param).then(function (response) {
-        _this11.retrieveAddOns();
+        _this13.retrieveAddOns();
       });
     },
     availableStatusUpdate: function availableStatusUpdate(id) {
-      var _this12 = this;
+      var _this14 = this;
 
       var param = {
         id: id,
         status: 'Available'
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusAddOns", param).then(function (response) {
-        _this12.retrieveAddOns();
+        _this14.retrieveAddOns();
       });
     },
     retrieveProducts: function retrieveProducts() {
-      var _this13 = this;
+      var _this15 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllProduct").then(function (response) {
-        _this13.productData = response.data.product;
+        _this15.productData = response.data.product;
       });
     },
     retrieveCategories: function retrieveCategories() {
-      var _this14 = this;
+      var _this16 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCategory").then(function (response) {
-        _this14.categoryData = response.data.addCategory;
+        _this16.categoryData = response.data.addCategory;
       });
     }
   }
@@ -1017,7 +1220,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.errorColor[data-v-62e92aac]{\r\n    color: red;\n}\n[data-v-62e92aac]::-webkit-scrollbar {\r\n  width: 2px;\n}\n.my-custom-scrollbar[data-v-62e92aac][data-v-62e92aac] {\r\n    position: relative;\r\n    height: 500px;\r\n    width: 100%;\r\n    overflow: auto;\n}\n.fileStyle[data-v-62e92aac]{\r\n    font-size: 17px !important;\r\n    width: 97px;\r\n    margin-top: 3%;\r\n    margin-bottom: 3%;\n}\n.addOnsImage[data-v-62e92aac]{\r\n    width: 250px !important; \r\n    height: 250px !important; \r\n    margin-top: 2% !important;\n}\n.navButton[data-v-62e92aac]{\r\n    float: left;\r\n    width: 200px;\n}\n.borderStyle1[data-v-62e92aac]{\r\n    border-left: 1px solid #d8dce3;\r\n    border-top: 1px solid #d8dce3;\r\n    border-right: 1px solid #d8dce3;\n}\n.btnBorderStyle[data-v-62e92aac]{\r\n    margin-top: -0.7%;\r\n    border-bottom: 1px solid #d8dce3;\n}\n.borderStyle[data-v-62e92aac]{\r\n    border-left: 3px solid grey;\r\n    border-top: 3px solid grey;\r\n    border-right: 3px solid grey;\n}\n.btnBorderStyle1[data-v-62e92aac]{\r\n    border-bottom: 3px solid grey;\n}\n.table tr[data-v-62e92aac]{\r\n   text-align: center;\n}\nimg[data-v-62e92aac]{\r\n    height: 50px;\r\n    width: 100px;\n}\nhr[data-v-62e92aac]{\r\n    border: 1px solid gray;\n}\nlabel[data-v-62e92aac]{\r\n    font-size: 20px !important;\n}\n.blurred-background[data-v-62e92aac] {\r\n    position: fixed;\r\n    box-sizing: border-box;\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: 1;\r\n    top: 0;\r\n    left: 0;\r\n    text-align: center;\r\n    background: rgb(54, 54, 54, .7);\n}\n.alert-box[data-v-62e92aac] {\r\n    width: 400px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 180px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 30px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.alert-box2[data-v-62e92aac] {\r\n    width: 550px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 150px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 30px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.alert-box3[data-v-62e92aac] {\r\n    width: 550px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 50px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 20px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.productTable[data-v-62e92aac] {\r\n    width: 100%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.categoryTable[data-v-62e92aac]{\r\n    width: 70%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.addOnsTable[data-v-62e92aac]{\r\n    width: 50%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.cupTable[data-v-62e92aac]{\r\n    width: 60%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.my-custom-scrollbar[data-v-62e92aac] {\r\n    position: relative;\r\n    height: 500px;\r\n    width:70%;\r\n    overflow: auto;\n}\n.table-wrapper-scroll-y[data-v-62e92aac] {\r\n    display: contents;\n}\n.div[data-v-62e92aac] {\r\n    /* border-style: solid; */\r\n    margin-top: 3%;\r\n    margin-bottom: 5%;\n}\n.btnModal[data-v-62e92aac]{\r\n    float: right;\r\n    margin-right: 1%;\n}\n#buttonAdd[data-v-62e92aac] {\r\n    float: right;\n}\r\n", ""]);
+exports.push([module.i, "\n.errorColor[data-v-62e92aac]{\r\n    color: red;\n}\n[data-v-62e92aac]::-webkit-scrollbar {\r\n  width: 2px;\n}\n.my-custom-scrollbar[data-v-62e92aac][data-v-62e92aac] {\r\n    position: relative;\r\n    height: 500px;\r\n    width: 100%;\r\n    overflow: auto;\n}\n.fileStyle[data-v-62e92aac]{\r\n    font-size: 17px !important;\r\n    width: 97px;\r\n    margin-top: 3%;\r\n    margin-bottom: 3%;\n}\n.addOnsImage[data-v-62e92aac]{\r\n    width: 250px !important; \r\n    height: 250px !important; \r\n    margin-top: 2% !important;\n}\n.navButton[data-v-62e92aac]{\r\n    float: left;\r\n    width: 200px;\n}\n.borderStyle1[data-v-62e92aac]{\r\n    border-left: 1px solid #d8dce3;\r\n    border-top: 1px solid #d8dce3;\r\n    border-right: 1px solid #d8dce3;\n}\n.btnBorderStyle[data-v-62e92aac]{\r\n    margin-top: -0.7%;\r\n    border-bottom: 1px solid #d8dce3;\n}\n.borderStyle[data-v-62e92aac]{\r\n    border-left: 3px solid grey;\r\n    border-top: 3px solid grey;\r\n    border-right: 3px solid grey;\n}\n.btnBorderStyle1[data-v-62e92aac]{\r\n    border-bottom: 3px solid grey;\n}\n.table tr[data-v-62e92aac]{\r\n   text-align: center;\n}\nimg[data-v-62e92aac]{\r\n    height: 50px;\r\n    width: 100px;\n}\nhr[data-v-62e92aac]{\r\n    border: 1px solid gray;\n}\nlabel[data-v-62e92aac]{\r\n    font-size: 20px !important;\n}\n.blurred-background[data-v-62e92aac] {\r\n    position: fixed;\r\n    box-sizing: border-box;\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: 1;\r\n    top: 0;\r\n    left: 0;\r\n    text-align: center;\r\n    background: rgb(54, 54, 54, .7);\n}\n#alert-box[data-v-62e92aac] {\r\n    width: 400px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 180px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 30px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.alert-box2[data-v-62e92aac] {\r\n    width: 550px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 150px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 30px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n#alert-box3[data-v-62e92aac] {\r\n    width: 550px;\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 50px;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 20px;\r\n    padding: 20px;\r\n    transition: .2s;\r\n    text-align: left;\r\n    box-shadow: 5px 5px gray;\n}\n.productTable[data-v-62e92aac] {\r\n    width: 100%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.categoryTable[data-v-62e92aac]{\r\n    width: 70%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.addOnsTable[data-v-62e92aac]{\r\n    width: 50%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.cupTable[data-v-62e92aac]{\r\n    width: 60%;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.my-custom-scrollbar[data-v-62e92aac] {\r\n    position: relative;\r\n    height: 500px;\r\n    width:70%;\r\n    overflow: auto;\n}\n.table-wrapper-scroll-y[data-v-62e92aac] {\r\n    display: contents;\n}\n.div[data-v-62e92aac] {\r\n    /* border-style: solid; */\r\n    margin-top: 3%;\r\n    margin-bottom: 5%;\n}\n.btnModal[data-v-62e92aac]{\r\n    float: right;\r\n    margin-right: 1%;\n}\n#buttonAdd[data-v-62e92aac] {\r\n    float: right;\n}\r\n", ""]);
 
 // exports
 
@@ -1125,6 +1328,18 @@ var render = function() {
                 },
                 [_vm._v("+ Cup Type")]
               )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.size
+            ? _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary btnModal",
+                  attrs: { type: "button" },
+                  on: { click: _vm.showCupSize }
+                },
+                [_vm._v("+ Cup Size Quantity")]
+              )
             : _vm._e()
         ])
       ],
@@ -1192,6 +1407,21 @@ var render = function() {
           }
         },
         [_vm._v("Cup Type")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          ref: "size",
+          staticClass: "btn navButton btnBorderStyle1",
+          attrs: { type: "button" },
+          on: {
+            click: function($event) {
+              return _vm.cupSize($event)
+            }
+          }
+        },
+        [_vm._v("Cup Size ")]
       )
     ]),
     _vm._v(" "),
@@ -1199,6 +1429,126 @@ var render = function() {
       "div",
       [
         _c("center", [
+          _vm.size
+            ? _c("div", { staticClass: "my-custom-scrollbar" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-bordered table-striped categoryTable",
+                    attrs: { id: "myTable" }
+                  },
+                  [
+                    _c("thead", { staticClass: "thead-light" }, [
+                      _c("tr", { staticClass: "header" }, [
+                        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Date")]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { colspan: "4" } }, [
+                          _vm._v("Incoming Cups")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { colspan: "4" } }, [
+                          _vm._v("Cups Onrack")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { colspan: "4" } }, [
+                          _vm._v("Used Cups")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { colspan: "4" } }, [
+                          _vm._v("Remaining Cups")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      [
+                        _c("tr", [
+                          _c("td", { attrs: { colspan: "2" } }, [
+                            _vm._v("Date")
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Low Dose (LD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("High Dose (HD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Over Dose (OD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Total Cups")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Low Dose (LD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("High Dose (HD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Over Dose (OD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Total Cups")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Low Dose (LD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("High Dose (HD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Over Dose (OD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Total Cups")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Low Dose (LD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("High Dose (HD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Over Dose (OD)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Total Cups")])
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.cupSizeData, function(item, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", { attrs: { colspan: "2" } }, [
+                              _vm._v(_vm._s(item.created_at))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.incomingLowDose))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.incomingHighDose))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.incomingOverDose))]),
+                            _vm._v(" "),
+                            _c("td"),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.onRockLowDose))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.onRockHighDose))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.onRockOverDose))]),
+                            _vm._v(" "),
+                            _c("td"),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.usedLowDose))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.usedHighDose))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.usedOverDose))]),
+                            _vm._v(" "),
+                            _c("td"),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.remainingLowDose))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.remainingHighDose))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.remainingOverDose))]),
+                            _vm._v(" "),
+                            _c("td")
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  ]
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
           _vm.cat
             ? _c("div", { staticClass: "my-custom-scrollbar" }, [
                 _c(
@@ -1651,150 +2001,152 @@ var render = function() {
           [
             _c(
               "div",
-              { staticClass: "alert-box" },
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
-                _c("center", [_c("h1", [_vm._v("Adding Cup Type")])]),
-                _c("hr"),
-                _vm._v(" "),
-                _c("form", { attrs: { action: "" } }, [
-                  _vm.errorMessage !== null
-                    ? _c("span", { staticClass: "errorColor" }, [
-                        _vm._v(_vm._s(_vm.errorMessage))
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("form", { attrs: { action: "" } }, [
+                      _vm.errorMessage !== null
+                        ? _c("span", { staticClass: "errorColor" }, [
+                            _vm._v(_vm._s(_vm.errorMessage))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "cup" } }, [
+                          _vm._v("Cup Type :")
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.inputCup,
+                              expression: "inputCup"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "text", id: "addOns" },
+                          domProps: { value: _vm.inputCup },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.inputCup = $event.target.value
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "quantity" } }, [
+                          _vm._v("Cup Quantity :")
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.inputCupQuantity,
+                              expression: "inputCupQuantity"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", id: "addOns" },
+                          domProps: { value: _vm.inputCupQuantity },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.inputCupQuantity = $event.target.value
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "cupPrice" } }, [
+                          _vm._v("Additional Price :")
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.inputCupPrice,
+                              expression: "inputCupPrice"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", min: "1", id: "price" },
+                          domProps: { value: _vm.inputCupPrice },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.inputCupPrice = $event.target.value
+                            }
+                          }
+                        })
                       ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "cup" } }, [
-                      _vm._v("Cup Type :")
-                    ]),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.inputCup,
-                          expression: "inputCup"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text", id: "addOns" },
-                      domProps: { value: _vm.inputCup },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.inputCup = $event.target.value
-                        }
-                      }
-                    })
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "quantity" } }, [
-                      _vm._v("Cup Quantity :")
-                    ]),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.inputCupQuantity,
-                          expression: "inputCupQuantity"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "number", id: "addOns" },
-                      domProps: { value: _vm.inputCupQuantity },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.hide()
                           }
-                          _vm.inputCupQuantity = $event.target.value
                         }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "cupPrice" } }, [
-                      _vm._v("Additional Price :")
-                    ]),
+                      },
+                      [_vm._v("Close")]
+                    ),
                     _vm._v(" "),
-                    _c("br"),
+                    _vm.btnCupType
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "button" },
+                            on: { click: _vm.addingCupType }
+                          },
+                          [_vm._v("Add Cup Type")]
+                        )
+                      : _vm._e(),
                     _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.inputCupPrice,
-                          expression: "inputCupPrice"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "number", min: "1", id: "price" },
-                      domProps: { value: _vm.inputCupPrice },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.inputCupPrice = $event.target.value
-                        }
-                      }
-                    })
+                    _vm.btnEditCupType
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "button" },
+                            on: { click: _vm.editingCupType }
+                          },
+                          [_vm._v("Edit Cup Type")]
+                        )
+                      : _vm._e()
                   ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "text-align": "right" } }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-secondary",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          return _vm.hide()
-                        }
-                      }
-                    },
-                    [_vm._v("Close")]
-                  ),
-                  _vm._v(" "),
-                  _vm.btnCupType
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "button" },
-                          on: { click: _vm.addingCupType }
-                        },
-                        [_vm._v("Add Cup Type")]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.btnEditCupType
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "button" },
-                          on: { click: _vm.editingCupType }
-                        },
-                        [_vm._v("Edit Cup Type")]
-                      )
-                    : _vm._e()
                 ])
-              ],
-              1
+              ]
             )
           ]
         )
@@ -1807,120 +2159,284 @@ var render = function() {
           [
             _c(
               "div",
-              { staticClass: "alert-box" },
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
-                _c("center", [_c("h1", [_vm._v("Adding Add-ons")])]),
-                _c("hr"),
-                _vm._v(" "),
-                _c("form", { attrs: { action: "" } }, [
-                  _vm.errorMessage !== null
-                    ? _c("span", { staticClass: "errorColor" }, [
-                        _vm._v(_vm._s(_vm.errorMessage))
-                      ])
-                    : _vm._e(),
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(1),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "addOns" } }, [
-                      _vm._v("Add-ons :")
-                    ]),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.inputAddOns,
-                          expression: "inputAddOns"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text", id: "addOns" },
-                      domProps: { value: _vm.inputAddOns },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("form", { attrs: { action: "" } }, [
+                      _vm.errorMessage !== null
+                        ? _c("span", { staticClass: "errorColor" }, [
+                            _vm._v(_vm._s(_vm.errorMessage))
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "addOns" } }, [
+                          _vm._v("Add-ons :")
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.inputAddOns,
+                              expression: "inputAddOns"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "text", id: "addOns" },
+                          domProps: { value: _vm.inputAddOns },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.inputAddOns = $event.target.value
+                            }
                           }
-                          _vm.inputAddOns = $event.target.value
-                        }
-                      }
-                    })
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "price" } }, [
+                          _vm._v("Price :")
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.addOnsPrice,
+                              expression: "addOnsPrice"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", min: "1", id: "price" },
+                          domProps: { value: _vm.addOnsPrice },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.addOnsPrice = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "price" } }, [
-                      _vm._v("Price :")
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.hide()
+                          }
+                        }
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _vm.addonsShow
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "button" },
+                            on: { click: _vm.addAddOns }
+                          },
+                          [_vm._v("Add Add-ons")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.editAddOnsShow
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "button" },
+                            on: { click: _vm.editAddOnsData }
+                          },
+                          [_vm._v("Edit Add-ons")]
+                        )
+                      : _vm._e()
+                  ])
+                ])
+              ]
+            )
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.showCupSizeModal
+      ? _c(
+          "div",
+          { staticClass: "blurred-background", attrs: { id: "modal" } },
+          [
+            _c(
+              "div",
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
+              [
+                _c(
+                  "div",
+                  { staticClass: "modal-content", attrs: { id: "alert-box3" } },
+                  [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-body" }, [
+                      _c("form", { attrs: { action: "" } }, [
+                        _vm.errorMessage !== null
+                          ? _c("span", { staticClass: "errorColor" }, [
+                              _vm._v(_vm._s(_vm.errorMessage))
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "lowDose" } }, [
+                            _vm._v("Low Dose Cups :")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.lowDoseCup,
+                                expression: "lowDoseCup"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "number",
+                              min: "0",
+                              id: "lowDoseCup"
+                            },
+                            domProps: { value: _vm.lowDoseCup },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.lowDoseCup = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "highDose" } }, [
+                            _vm._v("High Dose Cups :")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.highDoseCup,
+                                expression: "highDoseCup"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "number",
+                              min: "0",
+                              id: "highDoseCup"
+                            },
+                            domProps: { value: _vm.highDoseCup },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.highDoseCup = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "lowDose" } }, [
+                            _vm._v("Over Dose Cups :")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.overDoseCup,
+                                expression: "overDoseCup"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "number",
+                              min: "0",
+                              id: "overDoseCup"
+                            },
+                            domProps: { value: _vm.overDoseCup },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.overDoseCup = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ])
                     ]),
                     _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.addOnsPrice,
-                          expression: "addOnsPrice"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "number", min: "1", id: "price" },
-                      domProps: { value: _vm.addOnsPrice },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.hide()
+                            }
                           }
-                          _vm.addOnsPrice = $event.target.value
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "text-align": "right" } }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-secondary",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          return _vm.hide()
-                        }
-                      }
-                    },
-                    [_vm._v("Close")]
-                  ),
-                  _vm._v(" "),
-                  _vm.addonsShow
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "button" },
-                          on: { click: _vm.addAddOns }
                         },
-                        [_vm._v("Add Add-ons")]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.editAddOnsShow
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "button" },
-                          on: { click: _vm.editAddOnsData }
-                        },
-                        [_vm._v("Edit Add-ons")]
-                      )
-                    : _vm._e()
-                ])
-              ],
-              1
+                        [_vm._v("Close")]
+                      ),
+                      _vm._v(" "),
+                      _vm.cupSizeShow
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "button" },
+                              on: { click: _vm.addingCupSize }
+                            },
+                            [_vm._v("Add Cup Size")]
+                          )
+                        : _vm._e()
+                    ])
+                  ]
+                )
+              ]
             )
           ]
         )
@@ -1933,561 +2449,576 @@ var render = function() {
           [
             _c(
               "div",
-              { staticClass: "alert-box3" },
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
-                _c("center", [_c("h1", [_vm._v("Adding Product")])]),
-                _c("hr"),
-                _vm._v(" "),
-                _c(
-                  "form",
-                  {
-                    attrs: { enctype: "multipart/form-data", action: "" },
-                    on: { submit: _vm.formSubmitProduct }
-                  },
-                  [
-                    _c("div", { staticClass: "row" }, [
-                      _vm.errorMessage !== null
-                        ? _c("span", { staticClass: "errorColor" }, [
-                            _vm._v(_vm._s(_vm.errorMessage))
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", { attrs: { for: "pCat" } }, [
-                            _vm._v("Product Category:")
-                          ]),
-                          _vm._v(" "),
-                          _c("br"),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.prodType,
-                                  expression: "prodType"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.prodType = $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                }
-                              }
-                            },
-                            _vm._l(_vm.categoryData, function(item, index) {
-                              return _c(
-                                "option",
-                                {
-                                  key: index,
-                                  domProps: { value: item.productCategory }
-                                },
-                                [_vm._v(_vm._s(item.productCategory))]
-                              )
-                            }),
-                            0
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", { attrs: { for: "pname" } }, [
-                            _vm._v("Product name:")
-                          ]),
-                          _vm._v(" "),
-                          _c("br"),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.productName,
-                                expression: "productName"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "text", required: "" },
-                            domProps: { value: _vm.productName },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.productName = $event.target.value
-                              }
-                            }
-                          })
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _vm.priceEvent === ""
-                      ? _c(
-                          "button",
-                          {
-                            ref: "norm",
-                            staticClass: "btn borderStyle1",
-                            staticStyle: {
-                              "margin-left": "1%",
-                              "background-color": "#ffffff",
-                              cursor: "pointer"
-                            },
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                return _vm.normalPrice($event)
-                              }
-                            }
-                          },
-                          [_vm._v("Normal Price")]
-                        )
-                      : _c(
-                          "button",
-                          {
-                            ref: "norm",
-                            staticClass: "btn",
-                            staticStyle: {
-                              "margin-left": "1%",
-                              "background-color": "#ffffff",
-                              cursor: "pointer"
-                            },
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                return _vm.normalPrice($event)
-                              }
-                            }
-                          },
-                          [_vm._v("Normal Price")]
-                        ),
-                    _vm._v(" "),
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
                     _c(
-                      "button",
+                      "form",
                       {
-                        ref: "online",
-                        staticClass: "btn btnBorderStyle",
-                        staticStyle: {
-                          display: "inline-block",
-                          "background-color": "#ffffff",
-                          cursor: "pointer"
-                        },
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.onlinePrice($event)
-                          }
-                        }
+                        attrs: { enctype: "multipart/form-data", action: "" },
+                        on: { submit: _vm.formSubmitProduct }
                       },
-                      [_vm._v("Online Price")]
-                    ),
-                    _vm._v(" "),
-                    !_vm.online
-                      ? _c(
-                          "div",
-                          {
-                            staticStyle: {
-                              border: "1px solid #d8dce3",
-                              "margin-top": "-0.5%"
-                            }
-                          },
-                          [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "row",
-                                staticStyle: { "margin-top": "5%" }
-                              },
-                              [
-                                _c("div", { staticClass: "col-md-6" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "form-group",
-                                      staticStyle: { "margin-left": "3%" }
-                                    },
-                                    [
-                                      _c(
-                                        "label",
-                                        { attrs: { for: "lowPrice" } },
-                                        [_vm._v("Low Dose Price:")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("br"),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.lowPrice,
-                                            expression: "lowPrice"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: {
-                                          type: "number",
-                                          min: "0",
-                                          required: ""
-                                        },
-                                        domProps: { value: _vm.lowPrice },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.lowPrice = $event.target.value
-                                          }
-                                        }
-                                      })
-                                    ]
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col-md-6" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "form-group",
-                                      staticStyle: { "margin-right": "3%" }
-                                    },
-                                    [
-                                      _c(
-                                        "label",
-                                        { attrs: { for: "highPrice" } },
-                                        [_vm._v("High Dose Price:")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("br"),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.highPrice,
-                                            expression: "highPrice"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: {
-                                          type: "number",
-                                          min: "0",
-                                          required: ""
-                                        },
-                                        domProps: { value: _vm.highPrice },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.highPrice = $event.target.value
-                                          }
-                                        }
-                                      })
-                                    ]
-                                  )
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "row" }, [
-                              _c("div", { staticClass: "col-md-6" }, [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "form-group",
-                                    staticStyle: { "margin-left": "3%" }
-                                  },
-                                  [
-                                    _c(
-                                      "label",
-                                      { attrs: { for: "overPrice" } },
-                                      [_vm._v("Over Dose Price:")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("br"),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.overPrice,
-                                          expression: "overPrice"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      attrs: {
-                                        type: "number",
-                                        min: "0",
-                                        required: ""
-                                      },
-                                      domProps: { value: _vm.overPrice },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.overPrice = $event.target.value
-                                        }
-                                      }
-                                    })
-                                  ]
-                                )
-                              ])
-                            ])
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.online
-                      ? _c(
-                          "div",
-                          {
-                            staticStyle: {
-                              border: "1px solid #d8dce3",
-                              "margin-top": "-0.5%"
-                            }
-                          },
-                          [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "row",
-                                staticStyle: { "margin-top": "5%" }
-                              },
-                              [
-                                _c("div", { staticClass: "col-md-6" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "form-group",
-                                      staticStyle: { "margin-left": "3%" }
-                                    },
-                                    [
-                                      _c(
-                                        "label",
-                                        { attrs: { for: "onlinelowPrice" } },
-                                        [_vm._v("Online Low Dose Price:")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("br"),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.onlinelowPrice,
-                                            expression: "onlinelowPrice"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: {
-                                          type: "number",
-                                          min: "0",
-                                          required: ""
-                                        },
-                                        domProps: { value: _vm.onlinelowPrice },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.onlinelowPrice =
-                                              $event.target.value
-                                          }
-                                        }
-                                      })
-                                    ]
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col-md-6" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "form-group",
-                                      staticStyle: { "margin-right": "3%" }
-                                    },
-                                    [
-                                      _c(
-                                        "label",
-                                        { attrs: { for: "onlinehighPrice" } },
-                                        [_vm._v("Online High Dose Price:")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("br"),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.onlinehighPrice,
-                                            expression: "onlinehighPrice"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: {
-                                          type: "number",
-                                          min: "0",
-                                          required: ""
-                                        },
-                                        domProps: {
-                                          value: _vm.onlinehighPrice
-                                        },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.onlinehighPrice =
-                                              $event.target.value
-                                          }
-                                        }
-                                      })
-                                    ]
-                                  )
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "row" }, [
-                              _c("div", { staticClass: "col-md-6" }, [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "form-group",
-                                    staticStyle: { "margin-left": "3%" }
-                                  },
-                                  [
-                                    _c(
-                                      "label",
-                                      { attrs: { for: "onlineoverPrice" } },
-                                      [_vm._v("Online Over Dose Price:")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("br"),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.onlineoverPrice,
-                                          expression: "onlineoverPrice"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      attrs: {
-                                        type: "number",
-                                        min: "0",
-                                        required: ""
-                                      },
-                                      domProps: { value: _vm.onlineoverPrice },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.onlineoverPrice =
-                                            $event.target.value
-                                        }
-                                      }
-                                    })
-                                  ]
-                                )
-                              ])
-                            ])
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
                       [
-                        _c("center", [
-                          _c("img", {
-                            staticClass: "addOnsImage",
-                            attrs: { src: _vm.imgURL }
-                          }),
-                          _c("br"),
+                        _c("div", { staticClass: "row" }, [
+                          _vm.errorMessage !== null
+                            ? _c("span", { staticClass: "errorColor" }, [
+                                _vm._v(_vm._s(_vm.errorMessage))
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
-                          _c("input", {
-                            staticClass: "fileStyle",
-                            attrs: { type: "file", required: "" },
-                            on: { change: _vm.onImgChange }
-                          }),
-                          _c("br")
-                        ])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticStyle: { "text-align": "right" } }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-secondary",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              return _vm.hide()
-                            }
-                          }
-                        },
-                        [_vm._v("Close")]
-                      ),
-                      _vm._v(" "),
-                      _vm.productAdd
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary",
-                              attrs: { type: "submit" }
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", { attrs: { for: "pCat" } }, [
+                                _vm._v("Product Category:")
+                              ]),
+                              _vm._v(" "),
+                              _c("br"),
+                              _vm._v(" "),
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.prodType,
+                                      expression: "prodType"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.prodType = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    }
+                                  }
+                                },
+                                _vm._l(_vm.categoryData, function(item, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: { value: item.productCategory }
+                                    },
+                                    [_vm._v(_vm._s(item.productCategory))]
+                                  )
+                                }),
+                                0
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", { attrs: { for: "pname" } }, [
+                                _vm._v("Product name:")
+                              ]),
+                              _vm._v(" "),
+                              _c("br"),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.productName,
+                                    expression: "productName"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text", required: "" },
+                                domProps: { value: _vm.productName },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.productName = $event.target.value
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _vm.priceEvent === ""
+                          ? _c(
+                              "button",
+                              {
+                                ref: "norm",
+                                staticClass: "btn borderStyle1",
+                                staticStyle: {
+                                  "margin-left": "1%",
+                                  "background-color": "#ffffff",
+                                  cursor: "pointer"
+                                },
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.normalPrice($event)
+                                  }
+                                }
+                              },
+                              [_vm._v("Normal Price")]
+                            )
+                          : _c(
+                              "button",
+                              {
+                                ref: "norm",
+                                staticClass: "btn",
+                                staticStyle: {
+                                  "margin-left": "1%",
+                                  "background-color": "#ffffff",
+                                  cursor: "pointer"
+                                },
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.normalPrice($event)
+                                  }
+                                }
+                              },
+                              [_vm._v("Normal Price")]
+                            ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            ref: "online",
+                            staticClass: "btn btnBorderStyle",
+                            staticStyle: {
+                              display: "inline-block",
+                              "background-color": "#ffffff",
+                              cursor: "pointer"
                             },
-                            [_vm._v("Add Product")]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.productEdit
-                        ? _c(
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.onlinePrice($event)
+                              }
+                            }
+                          },
+                          [_vm._v("Online Price")]
+                        ),
+                        _vm._v(" "),
+                        !_vm.online
+                          ? _c(
+                              "div",
+                              {
+                                staticStyle: {
+                                  border: "1px solid #d8dce3",
+                                  "margin-top": "-0.5%"
+                                }
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "row",
+                                    staticStyle: { "margin-top": "5%" }
+                                  },
+                                  [
+                                    _c("div", { staticClass: "col-md-6" }, [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "form-group",
+                                          staticStyle: { "margin-left": "3%" }
+                                        },
+                                        [
+                                          _c(
+                                            "label",
+                                            { attrs: { for: "lowPrice" } },
+                                            [_vm._v("Low Dose Price:")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("br"),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.lowPrice,
+                                                expression: "lowPrice"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              min: "0",
+                                              required: ""
+                                            },
+                                            domProps: { value: _vm.lowPrice },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.lowPrice =
+                                                  $event.target.value
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "col-md-6" }, [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "form-group",
+                                          staticStyle: { "margin-right": "3%" }
+                                        },
+                                        [
+                                          _c(
+                                            "label",
+                                            { attrs: { for: "highPrice" } },
+                                            [_vm._v("High Dose Price:")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("br"),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.highPrice,
+                                                expression: "highPrice"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              min: "0",
+                                              required: ""
+                                            },
+                                            domProps: { value: _vm.highPrice },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.highPrice =
+                                                  $event.target.value
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "row" }, [
+                                  _c("div", { staticClass: "col-md-6" }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "form-group",
+                                        staticStyle: { "margin-left": "3%" }
+                                      },
+                                      [
+                                        _c(
+                                          "label",
+                                          { attrs: { for: "overPrice" } },
+                                          [_vm._v("Over Dose Price:")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("br"),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.overPrice,
+                                              expression: "overPrice"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            type: "number",
+                                            min: "0",
+                                            required: ""
+                                          },
+                                          domProps: { value: _vm.overPrice },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.overPrice =
+                                                $event.target.value
+                                            }
+                                          }
+                                        })
+                                      ]
+                                    )
+                                  ])
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.online
+                          ? _c(
+                              "div",
+                              {
+                                staticStyle: {
+                                  border: "1px solid #d8dce3",
+                                  "margin-top": "-0.5%"
+                                }
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "row",
+                                    staticStyle: { "margin-top": "5%" }
+                                  },
+                                  [
+                                    _c("div", { staticClass: "col-md-6" }, [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "form-group",
+                                          staticStyle: { "margin-left": "3%" }
+                                        },
+                                        [
+                                          _c(
+                                            "label",
+                                            {
+                                              attrs: { for: "onlinelowPrice" }
+                                            },
+                                            [_vm._v("Online Low Dose Price:")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("br"),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.onlinelowPrice,
+                                                expression: "onlinelowPrice"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              min: "0",
+                                              required: ""
+                                            },
+                                            domProps: {
+                                              value: _vm.onlinelowPrice
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.onlinelowPrice =
+                                                  $event.target.value
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "col-md-6" }, [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "form-group",
+                                          staticStyle: { "margin-right": "3%" }
+                                        },
+                                        [
+                                          _c(
+                                            "label",
+                                            {
+                                              attrs: { for: "onlinehighPrice" }
+                                            },
+                                            [_vm._v("Online High Dose Price:")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("br"),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.onlinehighPrice,
+                                                expression: "onlinehighPrice"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              min: "0",
+                                              required: ""
+                                            },
+                                            domProps: {
+                                              value: _vm.onlinehighPrice
+                                            },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.onlinehighPrice =
+                                                  $event.target.value
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "row" }, [
+                                  _c("div", { staticClass: "col-md-6" }, [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "form-group",
+                                        staticStyle: { "margin-left": "3%" }
+                                      },
+                                      [
+                                        _c(
+                                          "label",
+                                          { attrs: { for: "onlineoverPrice" } },
+                                          [_vm._v("Online Over Dose Price:")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("br"),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.onlineoverPrice,
+                                              expression: "onlineoverPrice"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            type: "number",
+                                            min: "0",
+                                            required: ""
+                                          },
+                                          domProps: {
+                                            value: _vm.onlineoverPrice
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.onlineoverPrice =
+                                                $event.target.value
+                                            }
+                                          }
+                                        })
+                                      ]
+                                    )
+                                  ])
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c("center", [
+                              _c("img", {
+                                staticClass: "addOnsImage",
+                                attrs: { src: _vm.imgURL }
+                              }),
+                              _c("br"),
+                              _vm._v(" "),
+                              _c("input", {
+                                staticClass: "fileStyle",
+                                attrs: { type: "file", required: "" },
+                                on: { change: _vm.onImgChange }
+                              }),
+                              _c("br")
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "modal-footer" }, [
+                          _c(
                             "button",
                             {
-                              staticClass: "btn btn-primary",
+                              staticClass: "btn btn-secondary",
                               attrs: { type: "button" },
                               on: {
                                 click: function($event) {
-                                  return _vm.updateProduct($event)
+                                  return _vm.hide()
                                 }
                               }
                             },
-                            [_vm._v("Edit Product")]
-                          )
-                        : _vm._e()
-                    ])
-                  ]
-                )
-              ],
-              1
+                            [_vm._v("Close")]
+                          ),
+                          _vm._v(" "),
+                          _vm.productAdd
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: { type: "submit" }
+                                },
+                                [_vm._v("Add Product")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.productEdit
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.updateProduct($event)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Edit Product")]
+                              )
+                            : _vm._e()
+                        ])
+                      ]
+                    )
+                  ])
+                ])
+              ]
             )
           ]
         )
@@ -2500,111 +3031,219 @@ var render = function() {
           [
             _c(
               "div",
-              { staticClass: "alert-box2" },
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
-                _c("center", [_c("h1", [_vm._v("Adding Category")])]),
-                _c("hr"),
-                _vm._v(" "),
-                _c(
-                  "form",
-                  {
-                    attrs: { enctype: "multipart/form-data", action: "" },
-                    on: { submit: _vm.formSubmit }
-                  },
-                  [
-                    _vm.errorMessage !== null
-                      ? _c("span", { staticClass: "errorColor" }, [
-                          _vm._v(_vm._s(_vm.errorMessage))
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "addOns" } }, [
-                        _vm._v("Product Category:")
-                      ]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.productType,
-                            expression: "productType"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "text", required: "" },
-                        domProps: { value: _vm.productType },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.productType = $event.target.value
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
                     _c(
-                      "div",
-                      { staticClass: "form-group" },
+                      "form",
+                      {
+                        attrs: { enctype: "multipart/form-data", action: "" },
+                        on: { submit: _vm.formSubmit }
+                      },
                       [
-                        _c("center", [
-                          _c("img", {
-                            staticClass: "addOnsImage",
-                            attrs: { src: _vm.imageURL }
-                          }),
+                        _vm.errorMessage !== null
+                          ? _c("span", { staticClass: "errorColor" }, [
+                              _vm._v(_vm._s(_vm.errorMessage))
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "addOns" } }, [
+                            _vm._v("Product Category:")
+                          ]),
+                          _vm._v(" "),
                           _c("br"),
                           _vm._v(" "),
                           _c("input", {
-                            staticClass: "fileStyle",
-                            attrs: { type: "file", required: "" },
-                            on: { change: _vm.onImageChange }
-                          }),
-                          _c("br")
-                        ])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticStyle: { "text-align": "right" } }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-secondary",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              return _vm.hide()
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.productType,
+                                expression: "productType"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", required: "" },
+                            domProps: { value: _vm.productType },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.productType = $event.target.value
+                              }
                             }
-                          }
-                        },
-                        [_vm._v("Close")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "submit" }
-                        },
-                        [_vm._v("Add Category")]
-                      )
-                    ])
-                  ]
-                )
-              ],
-              1
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c("center", [
+                              _c("img", {
+                                staticClass: "addOnsImage",
+                                attrs: { src: _vm.imageURL }
+                              }),
+                              _c("br"),
+                              _vm._v(" "),
+                              _c("input", {
+                                staticClass: "fileStyle",
+                                attrs: { type: "file", required: "" },
+                                on: { change: _vm.onImageChange }
+                              }),
+                              _c("br")
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticStyle: { "text-align": "right" } }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-secondary",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.hide()
+                                }
+                              }
+                            },
+                            [_vm._v("Close")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "submit" }
+                            },
+                            [_vm._v("Add Category")]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                ])
+              ]
             )
           ]
         )
       : _vm._e()
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
