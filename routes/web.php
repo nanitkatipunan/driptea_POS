@@ -43,14 +43,33 @@ Route::post('retrievingAddOns','App\Http\Controllers\AddAddOnsController@retriev
 Route::post('updateStatusAddOns','App\Http\Controllers\AddAddOnsController@updateStatusAvailable');
 Route::post('updateAddOns','App\Http\Controllers\AddAddOnsController@updateAddOns');
 Route::post('retrieveOneAddOn','App\Http\Controllers\AddAddOnsController@retrieveOneAddOn');
+Route::post('retrieveAllAddOns','App\Http\Controllers\AddAddOnsController@retrieveAllAddOns');
 
 Route::post('addingCupType','App\Http\Controllers\CupTypeController@addingCupType');
 Route::post('retrieveCupType','App\Http\Controllers\CupTypeController@retrieveCupType');
 Route::post('updateAvailableCupType','App\Http\Controllers\CupTypeController@updateAvailableCupType');
 Route::post('editingCupType','App\Http\Controllers\CupTypeController@editingCupType');
+Route::post('retrieveAllCupType','App\Http\Controllers\CupTypeController@retrieveAllCupType');
 
 Route::post('addCheckout','App\Http\Controllers\StoreCheckoutsController@addCheckout');
 Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveCheckouts');
+
+Route::post('addIncomingCups','App\Http\Controllers\QuantityCupsController@addIncomingCups');
+Route::post('retrieveCupSize','App\Http\Controllers\QuantityCupsController@retrieveCupSize');
+
+
+
+Route::post('retrieveYear','App\Http\Controllers\StoreCheckoutsController@retrieveYear');
+
+//SalesInventory
+
+Route::post('retrieveDailySales','App\Http\Controllers\StoreCheckoutsController@retrieveDailySales');
+
+
+
+
+
+
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
