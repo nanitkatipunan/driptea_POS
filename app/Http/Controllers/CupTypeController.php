@@ -18,7 +18,7 @@ class CupTypeController extends Controller
     }
     
     public function retrieveCupType(Request $request){
-        $cupType = CupType::all();
+        $cupType = CupType::where('status', 'Available')->get();
         return response()->json(compact('cupType'));
     }
 

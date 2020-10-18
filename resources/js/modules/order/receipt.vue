@@ -6,7 +6,7 @@
             <h6><b>Driptea</b></h6>
             <h6>A.C. Cortes Avenue Across UCLM, Mandaue City, 6014 Cebu</h6>
            <div id="app" style="font-size:12px" class="float-right">
-               {{ datetime}}
+               {{ datetime }}
             </div>
         </center>
         <table class="table table-responsive" id="myTable">
@@ -18,8 +18,8 @@
                 <th style="font-size:12px">Total</th>
             </tr>
             <tr v-for="(item, i) in myTable" :key="i">
-                <td style="font-size:12px">{{item.ProductName}}</td>
-                <td style="font-size:12px">{{item.Add_ons}}</td>
+                <td>{{item.order_product[0].productName}}</td>
+                <td>{{getAddOns(item.Add_ons)}}</td>
                 <td style="font-size:12px">{{item.Unit_price}}</td>
                 <td style="font-size:12px">{{item.Qty}}</td>
                 <td style="font-size:12px">{{item.Price}}</td>
@@ -39,9 +39,6 @@
     </div>
 </div>
 </template>
-
-
-
 <style scoped>
 hr {
     border: 1px solid gray;
@@ -77,13 +74,15 @@ label {
     box-shadow: 5px 5px gray;
 }
 </style>
-
 <script>
 import moment from 'moment'
+import AUTH from '../../services/auth'
+import ROUTER from '../../router'
 export default {
     data() {
         return {
-          datetime:moment().format('MMMM Do YYYY, h:mm:ss a'),
+            data: null,
+            datetime:moment().format('MMMM Do YYYY, h:mm:ss a'),
             myTable: [{
                     ProductName: 'Okinawa',
                     Add_ons: 'Pearl',
@@ -106,6 +105,13 @@ export default {
                     Price: '158'
                 },
             ],
+             getAddOns(item){
+            let storeAddOns = ""
+            item.forEach(el => {
+                storeAddOns += el.addOns + ", "
+            })
+            return storeAddOns
+        },
             summary: [{
                 Subtotal: '1422',
                 Delivery_Fee: '79',
@@ -115,9 +121,13 @@ export default {
             }]
         }
     },
-   
+    props: ['showData'],
     mounted() {
-        console.log('Sample gawas')
+    console.log(this.showData)
+    // this.retrieveProduct()
+    // localStorage.removeItem('customerId')
+    // localStorage.removeItem('customerType')
+    // ROUTER.push('/casherDashboard').catch(()=>{})
     },
 
     methods: {

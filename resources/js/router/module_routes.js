@@ -4,7 +4,12 @@ let beforeEnter = (to, from, next) => {
   // localStorage.setItem('usertoken', 'abcde')
   // TODO Redirect if no token when token is required in meta.tokenRequired
   AUTH.currentPath = to.path
-  let userID = localStorage.getItem('casherId')
+  let userID = null
+  if(localStorage.getItem('cashierId') === null){
+    userID = localStorage.getItem('adminId')
+  }else{
+    userID = localStorage.getItem('cashierId')
+  }
   let token = localStorage.getItem('userToken')
   if(token !== null && userID > 0){
     if(to.path === '/' || to.meta.tokenRequired === false){

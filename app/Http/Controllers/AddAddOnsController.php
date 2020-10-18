@@ -18,7 +18,7 @@ class AddAddOnsController extends Controller
     }
     
     public function retrieveAddOns(Request $request){
-        $addons = AddAddOns::all();
+        $addons = AddAddOns::where('status', 'Available')->get();
         return response()->json(compact('addons'));
     }
 

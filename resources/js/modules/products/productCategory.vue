@@ -61,7 +61,7 @@
                     </div>
                 </div>
             </div>
-            <receipt v-if="receiptShow"></receipt>
+            <receipt v-if="receiptShow" :showData="receiptData"></receipt>
        </div>
     </div>
 </template>
@@ -175,7 +175,9 @@ export default {
             subTotalPrice: 0,
             cash: null,
             fee: '',
-            error: false
+            error: false,
+            receiptShow: false,
+            receiptData: null
         }
     },
     components: {
@@ -248,7 +250,6 @@ export default {
             item.forEach(el => {
                 storeAddOns += el.addOns + ", "
             })
-            console.log(storeAddOns)
             return storeAddOns
         },
         deleteOrder(prodId){
@@ -257,32 +258,35 @@ export default {
             })
         },
         checkoutMethod(){
-            let params = {
-                id: localStorage.getItem('customerId'),
-                status: 'complete'
-            }
-            this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
+            // let params = {
+            //     id: localStorage.getItem('customerId'),
+            //     status: 'complete'
+            // }
+            // this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
                 let params = {
                     customerId: localStorage.getItem('customerId'),
                     subTotal: this.getSubTotal(),
                     deliveryFee: this.fee,
                     total: this.convertTotalPrice(),
                     incash: this.cash,
-                    change: this.convertChange()
+                    change: this.convertChange(),
+                    order: this.tableData
                 }
                 this.$axios.post(AUTH.url + 'addCheckout', params).then(res => {
                     let parameter = {
-                        id: localStorage.getItem('customerId'),
+                        id: res.data.storeCheckouts.id,
                     }
                     this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
-                        console.log(response.data)
+                        console.log(response.data.storeOrder[0])
+                        this.receiptData = response.data.storeOrder[0]
+                        this.receiptShow = true
                         // this.retrieveProduct()
                         // localStorage.removeItem('customerId')
                         // localStorage.removeItem('customerType')
                         // ROUTER.push('/casherDashboard').catch(()=>{})
                     })
                 })
-            })
+            // })
         },
         checkoutOrder(){
             if(this.customerType !== 'fb'){

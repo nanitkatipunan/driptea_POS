@@ -11,7 +11,7 @@ class Order extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'customerId', 'productId', 'quantity', 'size', 'cupType', 'sugarLevel', 'subTotal', 'choosenPrice', 'status'
+        'customerId', 'cashierId', 'productId', 'quantity', 'size', 'cupType', 'sugarLevel', 'subTotal', 'choosenPrice', 'status'
     ];
 
     public function orderProduct(){
@@ -20,5 +20,9 @@ class Order extends Model
 
     public function sameOrder(){
         return $this->hasMany('App\Models\AddOns','orderId','id');
+    }
+
+    public function getCashier(){
+        return $this->hasMany('App\Models\User','id','cashierId');
     }
 }
