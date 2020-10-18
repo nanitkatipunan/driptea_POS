@@ -41,6 +41,14 @@ export default {
             }
         },
         {
+            path: '/adminDashboard',
+            name: 'adminDashboard',
+            component: resolve => require(['@/js/modules/dashboard/adminDashboard'], resolve),
+            meta: {
+                tokenRequired: false
+            }
+        },
+        {
             path: '/chosenCategory/:itemChosen',
             name: 'chosenCategory',
             component: resolve => require(['@/js/modules/products/chosenCategory'], resolve),

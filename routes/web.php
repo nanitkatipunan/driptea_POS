@@ -51,6 +51,14 @@ Route::post('editingCupType','App\Http\Controllers\CupTypeController@editingCupT
 Route::post('addCheckout','App\Http\Controllers\StoreCheckoutsController@addCheckout');
 Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveCheckouts');
 
+Route::post('getDailySales','App\Http\Controllers\StoreCheckoutsController@retrieveDailySales');
+Route::post('getmonthlySales','App\Http\Controllers\StoreCheckoutsController@retrieveMonthlySales');
+Route::post('getQuarterlySales','App\Http\Controllers\StoreCheckoutsController@retrieveQuarterSales');
+Route::post('getSemi-AnnualSales','App\Http\Controllers\StoreCheckoutsController@retrieveSemiSales');
+Route::post('getAnnualSales','App\Http\Controllers\StoreCheckoutsController@retrieveAnnualSales');
+Route::post('getyears','App\Http\Controllers\StoreCheckoutsController@retrieveYears');
+Route::post('getTopProd','App\Http\Controllers\OrderController@retrieveTopProducts');
+
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
 });
