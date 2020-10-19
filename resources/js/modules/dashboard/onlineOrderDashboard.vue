@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+        <div>
+            <img :src="image" >
+        </div>
         <div class="row">
             <div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
                 <img class="imgItem" :src="item.image" @click="redirect(item.productCategory)">
@@ -28,10 +31,12 @@
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
+import image from '../../../assets/home.jpeg'
 export default {
     data(){
         return{
-            data: null
+            data: null,
+            image: image
         }
     },
     mounted(){

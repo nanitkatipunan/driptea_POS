@@ -681,7 +681,7 @@ export default {
         this.retrieveCategories()
         this.retrieveAddOns()
         this.retrieveCupType()
-        this. retrieveCupSize()
+        this.retrieveCupSize()
     },
     methods: {
         NACupUpdate(id){
@@ -712,10 +712,6 @@ export default {
          retrieveCupSize(){
             this.$axios.post(AUTH.url + "retrieveCupSize").then(response => {
                this.cupSizeData = response.data.quantityCupsInDB
-
-                
-                   
-                
             });
         },
         addingCupType(){

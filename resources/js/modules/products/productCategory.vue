@@ -42,7 +42,7 @@
                                 <input v-if="customerType === 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="fee">
                                 <p style="display: inline;" class="pStyle">Total:&emsp;&emsp;&emsp;&emsp;</p>
                                 <p style="display: inline;" class="pStyle">₱ {{convertTotalPrice()}}</p><br>
-                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Incash:&emsp;&emsp;&emsp;&nbsp;</p>
+                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Amount:&emsp;&emsp;&nbsp;&nbsp;&nbsp;</p>
                                 <input v-if="customerType !== 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
                                 <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
                                 <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
@@ -247,8 +247,13 @@ export default {
         },
         getAddOns(item){
             let storeAddOns = ""
+            let index = item.length
             item.forEach(el => {
-                storeAddOns += el.addOns + ", "
+                if(item.indexOf(el) >= (index - 1)){
+                    storeAddOns += el.addOns
+                }else{
+                    storeAddOns += el.addOns + ", "
+                }
             })
             return storeAddOns
         },
@@ -258,11 +263,11 @@ export default {
             })
         },
         checkoutMethod(){
-            // let params = {
-            //     id: localStorage.getItem('customerId'),
-            //     status: 'complete'
-            // }
-            // this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
+            let params = {
+                id: localStorage.getItem('customerId'),
+                status: 'complete'
+            }
+            this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
                 let params = {
                     customerId: localStorage.getItem('customerId'),
                     subTotal: this.getSubTotal(),
@@ -277,8 +282,8 @@ export default {
                         id: res.data.storeCheckouts.id,
                     }
                     this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
-                        // console.log(response.data.storeOrder[0])
-                        this.receiptData = response.data.storeOrder[0]
+                        console.log(response.data)
+                        this.receiptData = response.data.storeOrder
                         this.receiptShow = true
                         // this.retrieveProduct()
                         // localStorage.removeItem('customerId')
@@ -286,7 +291,7 @@ export default {
                         // ROUTER.push('/casherDashboard').catch(()=>{})
                     })
                 })
-            // })
+            })
         },
         checkoutOrder(){
             if(this.customerType !== 'fb'){
