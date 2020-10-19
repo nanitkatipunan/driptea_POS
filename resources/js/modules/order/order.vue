@@ -36,7 +36,7 @@
                 <div class="col-md-4">
                     <center>
                         <h3>Add-ons</h3>
-                        <button class="btn" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">{{item.addons_name}}</button>
+                        <button class="btn" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">(₱ {{item.addons_price}}) {{item.addons_name}}</button>
                         <!-- <button class="btn" @click="addAddOns('pudding', $event)">Pudding</button>
                         <button class="btn" @click="addAddOns('nataJelly', $event)">Nata Jelly</button>
                         <button class="btn" @click="addAddOns('mousse', $event)">Mousse</button>

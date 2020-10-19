@@ -1,22 +1,19 @@
 <template>
-    <div class="container">
-        <div class="row" style="margin-top: 15%">
-            <div class="col-md-6" style="text-align: right">
-                <img style="width: 300px; height: 200px; border: solid 1px black" src="@/assets/walkin.jpg" @click="redirect('walkin')">
-            </div>
-            <div class="col-md-6">
-                <img style="width: 300px; height: 200px;" src="@/assets/fb.jpeg" @click="redirect('fb')">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6" style="text-align: right">
-                <img style="width: 300px; height: 200px; margin-top: 5%; border: solid 1px black" src="@/assets/foodpanda.png" @click="redirect('foodpanda')">
-            </div>
-            <div class="col-md-6">
-                <img style="width: 300px; height: 200px; margin-top: 5%;" src="@/assets/grab.png" @click="redirect('grab')">
-            </div>
-        </div>
-    </div>
+  <v-container class="pa-4 text-center">
+    <v-row
+      class="fill-height" >
+      <template v-for="(item, i) in items">
+        <v-col :key="i" cols="12" md="3">
+          <v-hover v-slot:default="{ hover }">
+            <v-card :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }"  height="320" max-width="320">
+              <v-img :src="item.img" height="320px" @click="goTo(item.link)" ></v-img>
+            </v-card> 
+          </v-hover>
+        </v-col>
+      </template>
+      
+    </v-row>
+  </v-container>
 </template>
 <script>
 import AUTH from '../../services/auth'
@@ -24,6 +21,29 @@ import ROUTER from '../../router'
 export default {
     data(){
         return{
+         
+      items: [
+        {
+          img: 'https://www.freeiconspng.com/thumbs/walking-icon/walking-icon-6.jpg',
+          link:'/walkin'
+        },
+        {
+      
+          img: 'https://dustinstout.com/wp-content/uploads/2016/04/facebook-icon-1920x1080-920x518.jpg',
+           link:'/fb'
+        },
+        {
+       
+          img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTKtrva2NAQo7PXmhWITqpeRGDiql1U6u2DIQ&usqp=CAU',
+           link:'/grab'
+        },
+        {
+        
+          img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQbzIv9yJMCwep7bOqWOMiW9mcY9jh6o-UttA&usqp=CAU',
+           link:'/foodpanda'
+        },
+      ],
+      transparent: 'rgba(255, 255, 255, 0)',
 
         }
     },
@@ -41,8 +61,24 @@ export default {
             }else{
                 ROUTER.push('/productCategory/'+param).catch(()=>{})
             }
+        },
+        goTo(link){
+          this.$router.push(link);
         }
     }
 }
 </script>
 
+<style scoped>
+.v-card {
+  transition: opacity .4s ease-in-out;
+}
+
+.v-card:not(.on-hover) {
+  opacity: 0.6;
+ }
+
+.show-btns {
+  color: rgba(255, 255, 255, 1) !important;
+}
+</style>

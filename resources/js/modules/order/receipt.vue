@@ -12,17 +12,17 @@
         <table class="table table-responsive" id="myTable">
             <tr>
                 <th style="width: 260px; font-size:12px">Product Name</th>
-                <th style="font-size:12px">Add ons</th>
+                <th style="width: 260px; font-size:12px">Add-ons</th>
                 <th style="font-size:12px">Unit Price</th>
                 <th style="font-size:12px">Quantity</th>
                 <th style="font-size:12px">Total</th>
             </tr>
-            <tr v-for="(item, i) in myTable" :key="i">
-                <td>{{item.order_product[0].productName}}</td>
-                <td>{{getAddOns(item.Add_ons)}}</td>
-                <td style="font-size:12px">{{item.Unit_price}}</td>
-                <td style="font-size:12px">{{item.Qty}}</td>
-                <td style="font-size:12px">{{item.Price}}</td>
+            <tr v-for="(item, i) in showData" :key="i">
+                <td style="font-size:12px">{{item.order_product}}</td>
+                <td style="font-size:12px">{{getAddOns(item)}}</td>
+                <td style="font-size:12px">{{item.choosenPrice}}</td>
+                <td style="font-size:12px">{{item.quantity}}</td>
+                <td style="font-size:12px">{{item.subTotal}}</td>
             </tr>
         </table>
         <div class="col-md-6" id="summary"></div>
@@ -123,7 +123,8 @@ export default {
     },
     props: ['showData'],
     mounted() {
-    console.log(this.showData)
+    console.log('---------------tae------', this.showData)
+    console.log('---------------yakssss------', this.showData.same_order)
     // this.retrieveProduct()
     // localStorage.removeItem('customerId')
     // localStorage.removeItem('customerType')
@@ -134,6 +135,14 @@ export default {
         hide() {
             console.log('sadfsadfsdaf')
             this.$parent.hideReceipt()
+        },
+        getAddOns(item){
+            console.log('------bolbol', item)
+            // let storeAddOns = ""
+            // item.forEach(el => {
+            //     storeAddOns += el.addOns + ", "
+            // })
+            // return storeAddOns
         }
     },
 

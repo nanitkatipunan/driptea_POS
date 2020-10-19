@@ -22,6 +22,11 @@ class CupTypeController extends Controller
         return response()->json(compact('cupType'));
     }
 
+    public function retrieveAllCupType(Request $request){
+        $cupType = CupType::get();
+        return response()->json(compact('cupType'));
+    }
+
     public function updateAvailableCupType(Request $request){
         $data = $request->all();
         $cupType = CupType::firstOrCreate(['id' => $data['id']]);
