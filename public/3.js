@@ -97,50 +97,41 @@ __webpack_require__.r(__webpack_exports__);
     return {
       data: null,
       datetime: moment__WEBPACK_IMPORTED_MODULE_0___default()().format('MMMM Do YYYY, h:mm:ss a'),
-      myTable: [{
-        ProductName: 'Okinawa',
-        Unit_price: '79',
-        Qty: '2',
-        Price: '158'
-      }, {
-        ProductName: 'Hokkaido',
-        Unit_price: '79',
-        Qty: '3',
-        Price: '158'
-      }, {
-        ProductName: 'Pearl Milktea',
-        Unit_price: '79',
-        Qty: '4',
-        Price: '158'
-      }],
-      summary: [{
-        Subtotal: '1422',
-        Delivery_Fee: '79',
-        Total: '9',
-        Incash: '1501',
-        Change: '0'
-      }]
+      Change: null,
+      Subtotal: null,
+      Delivery_Fee: null,
+      Total: null,
+      Amount: null,
+      customerType: localStorage.getItem('customerType')
     };
   },
   props: ['showData'],
   mounted: function mounted() {
-    console.log('---------------tae------', this.showData);
-    console.log('---------------yakssss------', this.showData.same_order); // this.retrieveProduct()
-    // localStorage.removeItem('customerId')
-    // localStorage.removeItem('customerType')
-    // ROUTER.push('/casherDashboard').catch(()=>{})
+    this.Change = this.showData[0].get_checkouts[0].change;
+    this.Subtotal = this.showData[0].get_checkouts[0].subTotal;
+    this.Delivery_Fee = this.showData[0].get_checkouts[0].deliveryFee;
+    this.Total = this.showData[0].get_checkouts[0].total;
+    this.Amount = this.showData[0].get_checkouts[0].incash;
   },
   methods: {
     hide: function hide() {
-      console.log('sadfsadfsdaf');
       this.$parent.hideReceipt();
+      this.$parent.retrieveProduct();
+      localStorage.removeItem('customerId');
+      localStorage.removeItem('customerType');
+      _router__WEBPACK_IMPORTED_MODULE_2__["default"].push('/casherDashboard')["catch"](function () {});
     },
     getAddOns: function getAddOns(item) {
-      console.log('------bolbol', item); // let storeAddOns = ""
-      // item.forEach(el => {
-      //     storeAddOns += el.addOns + ", "
-      // })
-      // return storeAddOns
+      var storeAddOns = "";
+      var index = item.length;
+      item.forEach(function (el) {
+        if (item.indexOf(el) >= index - 1) {
+          storeAddOns += el.addOns;
+        } else {
+          storeAddOns += el.addOns + ", ";
+        }
+      });
+      return storeAddOns;
     }
   }
 });
@@ -412,8 +403,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     getAddOns: function getAddOns(item) {
       var storeAddOns = "";
+      var index = item.length;
       item.forEach(function (el) {
-        storeAddOns += el.addOns + ", ";
+        if (item.indexOf(el) >= index - 1) {
+          storeAddOns += el.addOns;
+        } else {
+          storeAddOns += el.addOns + ", ";
+        }
       });
       return storeAddOns;
     },
@@ -429,34 +425,36 @@ __webpack_require__.r(__webpack_exports__);
     checkoutMethod: function checkoutMethod() {
       var _this4 = this;
 
-      // let params = {
-      //     id: localStorage.getItem('customerId'),
-      //     status: 'complete'
-      // }
-      // this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
       var params = {
-        customerId: localStorage.getItem('customerId'),
-        subTotal: this.getSubTotal(),
-        deliveryFee: this.fee,
-        total: this.convertTotalPrice(),
-        incash: this.cash,
-        change: this.convertChange(),
-        order: this.tableData
+        id: localStorage.getItem('customerId'),
+        status: 'complete'
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addCheckout', params).then(function (res) {
-        var parameter = {
-          id: res.data.storeCheckouts.id
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'updateStatus', params).then(function (res) {
+        var params = {
+          customerId: localStorage.getItem('customerId'),
+          subTotal: _this4.getSubTotal(),
+          deliveryFee: _this4.fee,
+          total: _this4.convertTotalPrice(),
+          incash: _this4.cash,
+          change: _this4.convertChange(),
+          order: _this4.tableData
         };
 
-        _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCheckouts', parameter).then(function (response) {
-          // console.log(response.data.storeOrder[0])
-          _this4.receiptData = response.data.storeOrder[0];
-          _this4.receiptShow = true; // this.retrieveProduct()
-          // localStorage.removeItem('customerId')
-          // localStorage.removeItem('customerType')
-          // ROUTER.push('/casherDashboard').catch(()=>{})
+        _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addCheckout', params).then(function (res) {
+          var parameter = {
+            id: res.data.storeCheckouts.id
+          };
+
+          _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCheckouts', parameter).then(function (response) {
+            console.log(response.data);
+            _this4.receiptData = response.data.storeOrder;
+            _this4.receiptShow = true; // this.retrieveProduct()
+            // localStorage.removeItem('customerId')
+            // localStorage.removeItem('customerType')
+            // ROUTER.push('/casherDashboard').catch(()=>{})
+          });
         });
-      }); // })
+      });
     },
     checkoutOrder: function checkoutOrder() {
       if (this.customerType !== 'fb') {
@@ -941,23 +939,33 @@ var render = function() {
               _vm._l(_vm.showData, function(item, i) {
                 return _c("tr", { key: i }, [
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.order_product))
+                    _vm._v(
+                      _vm._s(
+                        item.order_product
+                          ? item.order_product[0].productName
+                          : ""
+                      )
+                    )
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(_vm.getAddOns(item)))
+                    _vm._v(
+                      _vm._s(
+                        item.same_order ? _vm.getAddOns(item.same_order) : ""
+                      )
+                    )
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.choosenPrice))
+                    _vm._v(_vm._s(item.choosenPrice ? item.choosenPrice : ""))
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.quantity))
+                    _vm._v(_vm._s(item.quantity ? item.quantity : ""))
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.subTotal))
+                    _vm._v(_vm._s(item.subTotal ? item.subTotal : ""))
                   ])
                 ])
               })
@@ -967,19 +975,25 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "col-md-6", attrs: { id: "summary" } }),
           _vm._v(" "),
-          _vm._l(_vm.summary, function(items, i) {
-            return _c("div", { key: i, staticStyle: { "font-size": "12px" } }, [
-              _c("p", [_vm._v("Change: " + _vm._s(items.Change))]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Incash: " + _vm._s(items.Incash))]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Total: " + _vm._s(items.Total))]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Delivery Fee: " + _vm._s(items.Delivery_Fee))]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Subtotal: " + _vm._s(items.Subtotal))])
-            ])
-          }),
+          _c("div", { staticStyle: { "font-size": "12px" } }, [
+            _vm.customerType === "fb"
+              ? _c("p", [_vm._v("Subtotal: " + _vm._s(_vm.Subtotal))])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.customerType === "fb"
+              ? _c("p", [_vm._v("Delivery Fee: " + _vm._s(_vm.Delivery_Fee))])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("p", [_vm._v("Total: " + _vm._s(_vm.Total))]),
+            _vm._v(" "),
+            _vm.customerType !== "fb"
+              ? _c("p", [_vm._v("Amount: " + _vm._s(_vm.Amount))])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.customerType !== "fb"
+              ? _c("p", [_vm._v("Change: " + _vm._s(_vm.Change))])
+              : _vm._e()
+          ]),
           _vm._v(" "),
           _c(
             "button",
@@ -995,7 +1009,7 @@ var render = function() {
             [_vm._v("Close")]
           )
         ],
-        2
+        1
       )
     ]
   )
@@ -1256,7 +1270,7 @@ var render = function() {
                                 staticClass: "pStyle",
                                 staticStyle: { display: "inline" }
                               },
-                              [_vm._v("Incash:    ")]
+                              [_vm._v("Amount:     ")]
                             )
                           : _vm._e(),
                         _vm._v(" "),

@@ -37,12 +37,6 @@
                     <center>
                         <h3>Add-ons</h3>
                         <button class="btn" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">(₱ {{item.addons_price}}) {{item.addons_name}}</button>
-                        <!-- <button class="btn" @click="addAddOns('pudding', $event)">Pudding</button>
-                        <button class="btn" @click="addAddOns('nataJelly', $event)">Nata Jelly</button>
-                        <button class="btn" @click="addAddOns('mousse', $event)">Mousse</button>
-                        <button class="btn" @click="addAddOns('coffeeJelly', $event)">Coffee Jelly</button>
-                        <button class="btn" @click="addAddOns('crushedOreo', $event)">Crushed Oreo</button>
-                        <button class="btn" @click="addAddOns('crushedCookies', $event)">Crushed Cookies</button> -->
                     </center>
                 </div>
             </div>
@@ -179,12 +173,23 @@ export default {
                 event.target.classList.remove('normalColor')
                 event.target.classList.add('color')
                 this.cupSize = params
-                if(params === 'highDose'){
-                    this.total = this.highPrice
-                }else if(params === 'overDose'){
-                    this.total = this.overPrice
-                }else if(params === 'lowDose'){
-                    this.total = this.lowPrice
+                let customerType = localStorage.getItem('customerType')
+                if(customerType === 'foodpanda' || customerType === 'grab'){
+                    if(params === 'highDose'){
+                        this.total = this.onlinehighPrice
+                    }else if(params === 'overDose'){
+                        this.total = this.onlineoverPrice
+                    }else if(params === 'lowDose'){
+                        this.total = this.onlinelowPrice
+                    }
+                }else{
+                    if(params === 'highDose'){
+                        this.total = this.highPrice
+                    }else if(params === 'overDose'){
+                        this.total = this.overPrice
+                    }else if(params === 'lowDose'){
+                        this.total = this.lowPrice
+                    }
                 }
                 if(this.cupEvent !== ''){
                     this.cupEvent.classList.add('normalColor')

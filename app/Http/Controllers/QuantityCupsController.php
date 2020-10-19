@@ -20,7 +20,7 @@ class QuantityCupsController extends Controller
         $quantity = QuantityCups::where('id', $id)->get();
         if(sizeof($quantity) > 0){
             $data = $request->all();
-            $quantityCups = new QuantityCUps();
+            $quantityCups = new QuantityCups();
             $quantityCups->incomingLowDose = ($data['incomingLowDose']);
             $quantityCups->incomingHighDose = ($data['incomingHighDose']);
             $quantityCups->incomingOverDose = ($data['incomingOverDose']);
@@ -36,7 +36,7 @@ class QuantityCupsController extends Controller
             $quantityCups->save();
         }else{
             $data = $request->all();
-            $quantityCups = new QuantityCUps();
+            $quantityCups = new QuantityCups();
             $quantityCups->incomingLowDose = $data['incomingLowDose'];
             $quantityCups->incomingHighDose = $data['incomingHighDose'];
             $quantityCups->incomingOverDose = $data['incomingOverDose'];
@@ -59,7 +59,7 @@ class QuantityCupsController extends Controller
         $id = $this->getId();
         $data = $request->all();
         $quantity = QuantityCups::where('id', $id)->get();
-        $quantityCups = QuantityCupsCups::firstOrCreate(['id' => $id]);
+        $quantityCups = QuantityCups::firstOrCreate(['id' => $id]);
         $quantityCups->usedCupsLowDose = ($data['usedCupsLowDose'] + $quantity['usedCupsLowDose']);
         $quantityCups->usedCupsHighDose = ($data['usedCupsHighDose'] + $quantity['usedCupsHighDose']);
         $quantityCups->usedCupsOverDose = ($data['usedCupsOverDose'] + $quantity['usedCupsOverDose']);
@@ -70,7 +70,6 @@ class QuantityCupsController extends Controller
     }
 
     public function retrieveCupSize(Request $request){
-
         $quantityCupsInDB = QuantityCups::get();
         // dd($quantityCupsInDB);
         return response()->json(compact('quantityCupsInDB'));

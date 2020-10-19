@@ -18,21 +18,21 @@
                 <th style="font-size:12px">Total</th>
             </tr>
             <tr v-for="(item, i) in showData" :key="i">
-                <td style="font-size:12px">{{item.order_product}}</td>
-                <td style="font-size:12px">{{getAddOns(item)}}</td>
-                <td style="font-size:12px">{{item.choosenPrice}}</td>
-                <td style="font-size:12px">{{item.quantity}}</td>
-                <td style="font-size:12px">{{item.subTotal}}</td>
+                <td style="font-size:12px">{{item.order_product ? item.order_product[0].productName : ''}}</td>
+                <td style="font-size:12px">{{item.same_order ? getAddOns(item.same_order) : ''}}</td>
+                <td style="font-size:12px">{{item.choosenPrice ? item.choosenPrice : ''}}</td>
+                <td style="font-size:12px">{{item.quantity ? item.quantity : ''}}</td>
+                <td style="font-size:12px">{{item.subTotal ? item.subTotal : ''}}</td>
             </tr>
         </table>
         <div class="col-md-6" id="summary"></div>
 
-        <div style="font-size:12px;" v-for="(items, i) in summary" :key="i">
-            <p>Change: {{items.Change}}</p>
-            <p>Incash: {{items.Incash}}</p>
-            <p>Total: {{items.Total}}</p>
-            <p>Delivery Fee: {{items.Delivery_Fee}}</p>
-            <p>Subtotal: {{items.Subtotal}}</p>
+        <div style="font-size:12px;">
+            <p v-if="customerType === 'fb'">Subtotal: {{Subtotal}}</p>
+            <p v-if="customerType === 'fb'">Delivery Fee: {{Delivery_Fee}}</p>
+            <p>Total: {{Total}}</p>
+            <p v-if="customerType !== 'fb'">Amount: {{Amount}}</p>
+            <p v-if="customerType !== 'fb'">Change: {{Change}}</p>
         </div>
         <button type="button" class="btn btn-primary float-right" @click="hide()">Close</button>
 
@@ -83,56 +83,42 @@ export default {
         return {
             data: null,
             datetime:moment().format('MMMM Do YYYY, h:mm:ss a'),
-            myTable: [{
-                    ProductName: 'Okinawa',
-                    Unit_price: '79',
-                    Qty: '2',
-                    Price: '158'
-                },
-                {
-                    ProductName: 'Hokkaido',
-                    Unit_price: '79',
-                    Qty: '3',
-                    Price: '158'
-                },
-                {
-                    ProductName: 'Pearl Milktea',
-                    Unit_price: '79',
-                    Qty: '4',
-                    Price: '158'
-                },
-            ],
-            summary: [{
-                Subtotal: '1422',
-                Delivery_Fee: '79',
-                Total: '9',
-                Incash: '1501',
-                Change: '0'
-            }]
+            Change: null,
+            Subtotal: null,
+            Delivery_Fee: null,
+            Total: null,
+            Amount: null,
+            customerType: localStorage.getItem('customerType')
         }
     },
     props: ['showData'],
     mounted() {
-    console.log('---------------tae------', this.showData)
-    console.log('---------------yakssss------', this.showData.same_order)
-    // this.retrieveProduct()
-    // localStorage.removeItem('customerId')
-    // localStorage.removeItem('customerType')
-    // ROUTER.push('/casherDashboard').catch(()=>{})
+        this.Change = this.showData[0].get_checkouts[0].change
+        this.Subtotal = this.showData[0].get_checkouts[0].subTotal
+        this.Delivery_Fee =this.showData[0].get_checkouts[0].deliveryFee
+        this.Total = this.showData[0].get_checkouts[0].total
+        this.Amount = this.showData[0].get_checkouts[0].incash
     },
 
     methods: {
         hide() {
-            console.log('sadfsadfsdaf')
             this.$parent.hideReceipt()
+            this.$parent.retrieveProduct()
+            localStorage.removeItem('customerId')
+            localStorage.removeItem('customerType')
+            ROUTER.push('/casherDashboard').catch(()=>{})
         },
         getAddOns(item){
-            console.log('------bolbol', item)
-            // let storeAddOns = ""
-            // item.forEach(el => {
-            //     storeAddOns += el.addOns + ", "
-            // })
-            // return storeAddOns
+            let storeAddOns = ""
+            let index = item.length
+            item.forEach(el => {
+                if(item.indexOf(el) >= (index - 1)){
+                    storeAddOns += el.addOns
+                }else{
+                    storeAddOns += el.addOns + ", "
+                }
+            })
+            return storeAddOns
         }
     },
 
