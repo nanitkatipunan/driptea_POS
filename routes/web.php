@@ -56,6 +56,7 @@ Route::post('addCheckout','App\Http\Controllers\StoreCheckoutsController@addChec
 Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveCheckouts');
 
 Route::post('addIncomingCups','App\Http\Controllers\QuantityCupsController@addIncomingCups');
+Route::post('updateRemainingCups','App\Http\Controllers\QuantityCupsController@updateRemainingCups');
 Route::post('retrieveCupSize','App\Http\Controllers\QuantityCupsController@retrieveCupSize');
 
 

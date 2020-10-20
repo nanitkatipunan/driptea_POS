@@ -174,7 +174,7 @@ export default {
             change: 0,
             subTotalPrice: 0,
             cash: null,
-            fee: '',
+            fee: 0,
             error: false,
             receiptShow: false,
             receiptData: null
@@ -270,32 +270,49 @@ export default {
             this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
                 let params = {
                     customerId: localStorage.getItem('customerId'),
-                    subTotal: this.getSubTotal(),
+                    cashierId: localStorage.getItem('cashierId'),
+                    subTotal: parseInt(this.getSubTotal()),
                     deliveryFee: this.fee,
-                    total: this.convertTotalPrice(),
+                    total: parseInt(this.convertTotalPrice()),
                     incash: this.cash,
-                    change: this.convertChange(),
+                    change: parseInt(this.convertChange()),
                     order: this.tableData
                 }
+                console.log(this.tableData)
                 this.$axios.post(AUTH.url + 'addCheckout', params).then(res => {
-                    let parameter = {
-                        id: res.data.storeCheckouts.id,
+                    let low = 0
+                    let high = 0
+                    let over = 0
+                    this.tableData.forEach(el => {
+                        if(el.size === 'lowDose'){
+                            low += el.quantity
+                        }else if(el.size === 'highDose'){
+                            high += el.quantity
+                        }else if(el.size === 'overDose'){
+                            over += el.quantity
+                        }
+                    })
+                    let param = {
+                        usedCupsLowDose: low,
+                        usedCupsHighDose: high,
+                        usedCupsOverDose: over
                     }
-                    this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
-                        console.log(response.data)
-                        this.receiptData = response.data.storeOrder
-                        this.receiptShow = true
-                        // this.retrieveProduct()
-                        // localStorage.removeItem('customerId')
-                        // localStorage.removeItem('customerType')
-                        // ROUTER.push('/casherDashboard').catch(()=>{})
+                    this.$axios.post(AUTH.url + 'updateRemainingCups', param).then(response => {
+                        let parameter = {
+                            id: res.data.storeCheckouts.id,
+                        }
+                        this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
+                            this.receiptData = response.data.storeOrder
+                            this.receiptShow = true
+                        })
                     })
                 })
             })
         },
         checkoutOrder(){
             if(this.customerType !== 'fb'){
-                if(this.convertTotalPrice() > 0 && this.cash !== null && this.convertChange() >= 0){
+                console.log(this.convertTotalPrice(), this.cash, this.convertChange())
+                if(this.convertTotalPrice() !== null && this.cash !== null && this.convertChange() >= 0){
                     this.error = false
                     this.checkoutMethod()
                 }else{

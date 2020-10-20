@@ -28,7 +28,7 @@ class StoreCheckoutsController extends Controller
             $dataAddOns = $value['same_order'];
             $storeOrder->storeCheckoutsId = $storeCheckouts['id'];
             $storeOrder->customerId = $value['customerId'];
-            $storeOrder->cashierId = $value['cashierId'];
+            $storeOrder->cashierId = $data['cashierId'];
             $storeOrder->productId = $value['productId'];
             $storeOrder->quantity = $value['quantity'];
             $storeOrder->size = $value['size'];

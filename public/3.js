@@ -325,7 +325,7 @@ __webpack_require__.r(__webpack_exports__);
       change: 0,
       subTotalPrice: 0,
       cash: null,
-      fee: '',
+      fee: 0,
       error: false,
       receiptShow: false,
       receiptData: null
@@ -432,33 +432,55 @@ __webpack_require__.r(__webpack_exports__);
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'updateStatus', params).then(function (res) {
         var params = {
           customerId: localStorage.getItem('customerId'),
-          subTotal: _this4.getSubTotal(),
+          cashierId: localStorage.getItem('cashierId'),
+          subTotal: parseInt(_this4.getSubTotal()),
           deliveryFee: _this4.fee,
-          total: _this4.convertTotalPrice(),
+          total: parseInt(_this4.convertTotalPrice()),
           incash: _this4.cash,
-          change: _this4.convertChange(),
+          change: parseInt(_this4.convertChange()),
           order: _this4.tableData
         };
+        console.log(_this4.tableData);
 
         _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addCheckout', params).then(function (res) {
-          var parameter = {
-            id: res.data.storeCheckouts.id
+          var low = 0;
+          var high = 0;
+          var over = 0;
+
+          _this4.tableData.forEach(function (el) {
+            if (el.size === 'lowDose') {
+              low += el.quantity;
+            } else if (el.size === 'highDose') {
+              high += el.quantity;
+            } else if (el.size === 'overDose') {
+              over += el.quantity;
+            }
+          });
+
+          var param = {
+            usedCupsLowDose: low,
+            usedCupsHighDose: high,
+            usedCupsOverDose: over
           };
 
-          _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCheckouts', parameter).then(function (response) {
-            console.log(response.data);
-            _this4.receiptData = response.data.storeOrder;
-            _this4.receiptShow = true; // this.retrieveProduct()
-            // localStorage.removeItem('customerId')
-            // localStorage.removeItem('customerType')
-            // ROUTER.push('/casherDashboard').catch(()=>{})
+          _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'updateRemainingCups', param).then(function (response) {
+            var parameter = {
+              id: res.data.storeCheckouts.id
+            };
+
+            _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCheckouts', parameter).then(function (response) {
+              _this4.receiptData = response.data.storeOrder;
+              _this4.receiptShow = true;
+            });
           });
         });
       });
     },
     checkoutOrder: function checkoutOrder() {
       if (this.customerType !== 'fb') {
-        if (this.convertTotalPrice() > 0 && this.cash !== null && this.convertChange() >= 0) {
+        console.log(this.convertTotalPrice(), this.cash, this.convertChange());
+
+        if (this.convertTotalPrice() !== null && this.cash !== null && this.convertChange() >= 0) {
           this.error = false;
           this.checkoutMethod();
         } else {

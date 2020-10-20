@@ -148,7 +148,8 @@
                             <tr class="header">
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Price</th>
+                                <th scope="col">Normal Price</th>
+                                <th scope="col">Online Price</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -159,6 +160,7 @@
                                     <td scope="row">{{index+1}}</td>
                                     <td>{{item.addons_name}}</td>
                                     <td>{{item.addons_price}}</td>
+                                    <td>{{item.onlineAddOnsPrice}}</td>
                                     <td>{{item.status}}</td>
                                     <td>
                                         <div style="text-align: left">
@@ -333,7 +335,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
+                        <!-- <h5 class="modal-title">Modal title</h5> -->
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hide()">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -702,13 +704,11 @@ export default {
                 id: id,
                 status: 'Not Available'
             }
-            console.log(param)
             this.$axios.post(AUTH.url + "updateAvailableCupType", param).then(response => {
                 this.retrieveCupType()
             });
         },
         availableCupUpdate(id){
-            console.log(param)
             let param = {
                 id: id,
                 status: 'Available'
@@ -744,7 +744,6 @@ export default {
             }
         },
         addingCupSize(){
-            console.log('sud');
             if(this.lowDoseCup !== null && this.highDoseCup !== null && this.overDoseCup !== null){
                 let param = {
                     incomingLowDose: this.lowDoseCup,
@@ -752,13 +751,11 @@ export default {
                     incomingOverDose: this.overDoseCup,
                     
                 };
-                console.log(param)
                 this.$axios.post(AUTH.url + "addIncomingCups", param).then(response => {
                     this.retrieveCupSize()
                     this.hide()
                 });
             }else{
-                console.log('error')
                 this.errorMessage = 'All fields are required!'
             }
         },
@@ -828,7 +825,6 @@ export default {
                 formData.append('onlinelowPrice', this.onlinelowPrice)
                 formData.append('onlinehighPrice', this.onlinehighPrice)
                 formData.append('onlineoverPrice', this.onlineoverPrice)
-                console.log(formData)
                 axios.post('/formSubmit', formData, config).then(function (response) {
                     currentObj.success = response.data.success
                     currentObj.retrieveCategories()
@@ -902,7 +898,6 @@ export default {
             }
             this.$axios.post(AUTH.url + "updateStatusProduct", param).then(response => {
                 this.retrieveProducts()
-                console.log('updated successfully!')
             });
         },
         productStatusAvailable(id){
@@ -912,7 +907,6 @@ export default {
             }
             this.$axios.post(AUTH.url + "updateStatusProduct", param).then(response => {
                 this.retrieveProducts()
-                console.log('updated successfully!')
             });
         },
         onImageChange(e){
@@ -1034,6 +1028,7 @@ export default {
             this.showAddOnsModal = true
             this.addonsShow = true
             this.inputAddOns = null
+            this.onlineAddOnsPrice = null
             this.addOnsPrice = null
         },
          showCupSize(){
@@ -1067,6 +1062,7 @@ export default {
             this.showCupTypeModal = true
             this.btnCupType = true
             this.inputCupPrice = null
+            this.inputCupOnlinePrice = null
             this.inputCup = null
             this.inputCupQuantity = null
 

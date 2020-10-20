@@ -634,6 +634,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -715,7 +717,6 @@ __webpack_require__.r(__webpack_exports__);
         id: id,
         status: 'Not Available'
       };
-      console.log(param);
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAvailableCupType", param).then(function (response) {
         _this.retrieveCupType();
       });
@@ -723,7 +724,6 @@ __webpack_require__.r(__webpack_exports__);
     availableCupUpdate: function availableCupUpdate(id) {
       var _this2 = this;
 
-      console.log(param);
       var param = {
         id: id,
         status: 'Available'
@@ -768,22 +768,18 @@ __webpack_require__.r(__webpack_exports__);
     addingCupSize: function addingCupSize() {
       var _this6 = this;
 
-      console.log('sud');
-
       if (this.lowDoseCup !== null && this.highDoseCup !== null && this.overDoseCup !== null) {
         var param = {
           incomingLowDose: this.lowDoseCup,
           incomingHighDose: this.highDoseCup,
           incomingOverDose: this.overDoseCup
         };
-        console.log(param);
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addIncomingCups", param).then(function (response) {
           _this6.retrieveCupSize();
 
           _this6.hide();
         });
       } else {
-        console.log('error');
         this.errorMessage = 'All fields are required!';
       }
     },
@@ -860,7 +856,6 @@ __webpack_require__.r(__webpack_exports__);
         formData.append('onlinelowPrice', this.onlinelowPrice);
         formData.append('onlinehighPrice', this.onlinehighPrice);
         formData.append('onlineoverPrice', this.onlineoverPrice);
-        console.log(formData);
         axios.post('/formSubmit', formData, config).then(function (response) {
           currentObj.success = response.data.success;
           currentObj.retrieveCategories();
@@ -934,8 +929,6 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param).then(function (response) {
         _this8.retrieveProducts();
-
-        console.log('updated successfully!');
       });
     },
     productStatusAvailable: function productStatusAvailable(id) {
@@ -947,8 +940,6 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param).then(function (response) {
         _this9.retrieveProducts();
-
-        console.log('updated successfully!');
       });
     },
     onImageChange: function onImageChange(e) {
@@ -1073,6 +1064,7 @@ __webpack_require__.r(__webpack_exports__);
       this.showAddOnsModal = true;
       this.addonsShow = true;
       this.inputAddOns = null;
+      this.onlineAddOnsPrice = null;
       this.addOnsPrice = null;
     },
     showCupSize: function showCupSize() {
@@ -1105,6 +1097,7 @@ __webpack_require__.r(__webpack_exports__);
       this.showCupTypeModal = true;
       this.btnCupType = true;
       this.inputCupPrice = null;
+      this.inputCupOnlinePrice = null;
       this.inputCup = null;
       this.inputCupQuantity = null;
     },
@@ -1803,7 +1796,11 @@ var render = function() {
                         _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [
-                          _vm._v("Price")
+                          _vm._v("Normal Price")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { scope: "col" } }, [
+                          _vm._v("Online Price")
                         ]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [
@@ -1828,6 +1825,8 @@ var render = function() {
                             _c("td", [_vm._v(_vm._s(item.addons_name))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(item.addons_price))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.onlineAddOnsPrice))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(item.status))]),
                             _vm._v(" "),
@@ -2598,10 +2597,6 @@ var render = function() {
               [
                 _c("div", { staticClass: "modal-content" }, [
                   _c("div", { staticClass: "modal-header" }, [
-                    _c("h5", { staticClass: "modal-title" }, [
-                      _vm._v("Modal title")
-                    ]),
-                    _vm._v(" "),
                     _c(
                       "button",
                       {

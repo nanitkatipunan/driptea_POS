@@ -243,7 +243,6 @@ export default {
         },
         retrieveAddOns() {
             this.$axios.post(AUTH.url + "retrievingAddOns").then(response => {
-                console.log(response.data.addons)
                 this.addOnsData = response.data.addons;
             });
         },
@@ -257,7 +256,6 @@ export default {
         },
         retrieveProduct(){
             this.$axios.post(AUTH.url + 'retrieveAllProductAscending').then(res => {
-                console.log(res.data.product)
                 this.productData = res.data.product
             })
         },
@@ -304,7 +302,6 @@ export default {
                     addOns: this.addOns,
                     subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
                 }
-                console.log(parameter)
                 this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
                     ROUTER.push('/productCategory/'+localStorage.getItem('customerType')).catch(()=>{})
                 })

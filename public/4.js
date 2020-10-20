@@ -259,7 +259,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrievingAddOns").then(function (response) {
-        console.log(response.data.addons);
         _this2.addOnsData = response.data.addons;
       });
     },
@@ -277,7 +276,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveAllProductAscending').then(function (res) {
-        console.log(res.data.product);
         _this4.productData = res.data.product;
       });
     },
@@ -331,7 +329,6 @@ __webpack_require__.r(__webpack_exports__);
           addOns: this.addOns,
           subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
         };
-        console.log(parameter);
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
           _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + localStorage.getItem('customerType'))["catch"](function () {});
         });

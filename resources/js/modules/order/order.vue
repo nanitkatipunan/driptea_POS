@@ -12,8 +12,7 @@
                         <button class="btn" @click="getCupSize('overDose', $event)">Over Dose</button>
                         <h3 class="cupType">Cup Type</h3>
                         <span class="errorColor" v-if="errorMessage1 !== null">{{errorMessage1}}</span>
-                        <button class="btn" v-for="(item, index) in cupData" :key="index" @click="getCupType(item, $event)">{{item.cupTypeName}}</button>
-                        <!-- <button class="btn" @click="getCupType('reusable', $event)">Reusable</button> -->
+                        <button class="btn" v-for="(item, index) in cupData" :key="index" @click="getCupType(item, $event)">{{getCupTypeName(item)}}</button>
                     </center>
                 </div>
                 <div class="col-md-4">
@@ -29,17 +28,18 @@
                         <h3 class="quantity">Quantity of Order</h3>
                         <span class="errorColor" v-if="errorMessage3 !== null">{{errorMessage3}}</span>
                         <input type="number" class="form-control" min="1" v-model="quantity">
-
-                        <button class="btn addCart" @click="addToCart">Add to Cart</button>
                     </center>
                 </div>
                 <div class="col-md-4">
                     <center>
                         <h3>Add-ons</h3>
-                        <button class="btn" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">(₱ {{item.addons_price}}) {{item.addons_name}}</button>
+                        <button class="btn" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">{{getAddOnsName(item)}}</button>
                     </center>
                 </div>
             </div>
+            <center>
+                <button class="btn addCart" @click="addToCart">Add to Cart</button>
+            </center>
         </center>
     </div>
 </template>
@@ -48,7 +48,10 @@
     color: red;
 }
 .addCart{
-    margin-top: 20% !important;
+    /* margin-top: 20% !important; */
+    width: 300px !important;
+    height: 45px !important;
+    margin-top: -150px !important;
     background-color: #11c408 !important;
 }
 .quantity{
@@ -131,7 +134,8 @@ export default {
             errorMessage: null,
             errorMessage1: null,
             errorMessage2: null,
-            errorMessage3: null
+            errorMessage3: null,
+            customerType: localStorage.getItem('customerType')
         }
     },
     mounted(){
@@ -141,6 +145,28 @@ export default {
         this.retrieveCupType()
     },
     methods: {
+        getCupTypeName(item){
+            let value = ''
+            if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+                value = (item.cupTypeName + ' (+' + item.inputCupOnlinePrice + ')')
+            }else{
+                if(item.cupTypePrice === 0){
+                    value = (item.cupTypeName)
+                }else{
+                    value = (item.cupTypeName + ' (+' + item.cupTypePrice + ')')
+                }
+            }
+            return value
+        },
+        getAddOnsName(item){
+            let value = ''
+            if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+                value = (item.addons_name + ' (+' + item.onlineAddOnsPrice + ')')
+            }else{
+                value = (item.addons_name + ' (+' + item.addons_price + ')')
+            }
+            return value
+        },
         retrieveProducts() {
             this.$axios.post(AUTH.url + "retrieveAllProduct").then(response => {
                 this.productData = response.data.product;
@@ -173,8 +199,7 @@ export default {
                 event.target.classList.remove('normalColor')
                 event.target.classList.add('color')
                 this.cupSize = params
-                let customerType = localStorage.getItem('customerType')
-                if(customerType === 'foodpanda' || customerType === 'grab'){
+                if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
                     if(params === 'highDose'){
                         this.total = this.onlinehighPrice
                     }else if(params === 'overDose'){
@@ -219,13 +244,22 @@ export default {
                     this.cupTypeEvent.classList.add('normalColor')
                     this.cupTypeEvent.classList.remove('color')
                 }
-                this.cupPrice = params.cupTypePrice
+                if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+                    this.cupPrice = params.inputCupOnlinePrice
+                }else{
+                    this.cupPrice = params.cupTypePrice
+                }
+                console.log(this.cupPrice)
             }
             this.cupTypeEvent = event.target
         },
         addAddOns(params, event){
             this.$axios.post(AUTH.url + "retrieveOneAddOn", {id: params.id}).then(response => {
-                this.addOnsPrice = response.data.addons.addons_price
+                if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+                    this.addOnsPrice = response.data.addons.onlineAddOnsPrice
+                }else{
+                    this.addOnsPrice = response.data.addons.addons_price
+                }
                 if(this.addOns.includes(params.addons_name)){
                     event.target.classList.remove('color')
                     this.addOns.splice(this.addOns.indexOf(params.addons_name), 1)
@@ -235,6 +269,7 @@ export default {
                     this.addOns.push(params.addons_name)
                     this.addOnsAmount += this.addOnsPrice
                 }
+                console.log(this.addOnsPrice)
             });
         },
         addToCart(){
@@ -264,7 +299,6 @@ export default {
                     addOns: this.addOns,
                     subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
                 }
-                console.log(parameter)
                 this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
                     ROUTER.push('/productCategory/'+localStorage.getItem('customerType')).catch(()=>{})
                 })
