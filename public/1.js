@@ -28,8 +28,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-<<<<<<< HEAD
-=======
 //
 //
 //
@@ -66,32 +64,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
->>>>>>> 64d6e4548306d01f8320910215af55fc68b92ae2
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-<<<<<<< HEAD
-      items: [{
-        img: 'https://www.freeiconspng.com/thumbs/walking-icon/walking-icon-6.jpg',
-        link: '/walkin'
-      }, {
-        img: 'https://dustinstout.com/wp-content/uploads/2016/04/facebook-icon-1920x1080-920x518.jpg',
-        link: '/fb'
-      }, {
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTKtrva2NAQo7PXmhWITqpeRGDiql1U6u2DIQ&usqp=CAU',
-        link: '/grab'
-      }, {
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQbzIv9yJMCwep7bOqWOMiW9mcY9jh6o-UttA&usqp=CAU',
-        link: '/foodpanda'
-      }],
-      transparent: 'rgba(255, 255, 255, 0)'
-=======
       fullName: null,
       address: null,
       contactNumber: null
->>>>>>> 64d6e4548306d01f8320910215af55fc68b92ae2
     };
   },
   methods: {
@@ -107,10 +88,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-<<<<<<< HEAD
-    goTo: function goTo(link) {
-      this.$router.push(link);
-=======
     continueFb: function continueFb() {
       var param = {
         customerType: 'fb',
@@ -123,7 +100,6 @@ __webpack_require__.r(__webpack_exports__);
         localStorage.setItem('customerType', response.data.customerDetails.customerType);
         _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/fb')["catch"](function () {});
       });
->>>>>>> 64d6e4548306d01f8320910215af55fc68b92ae2
     }
   }
 });
@@ -194,300 +170,325 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-<<<<<<< HEAD
   return _c(
-    "v-container",
-    { staticClass: "pa-4 text-center" },
+    "v-div",
+    { staticClass: "container" },
     [
-=======
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row", staticStyle: { "margin-top": "15%" } }, [
       _c(
-        "div",
-        { staticClass: "col-md-6", staticStyle: { "text-align": "right" } },
+        "v-div",
+        { staticClass: "row", staticStyle: { "margin-top": "15%" } },
         [
-          _c("img", {
-            staticStyle: {
-              width: "300px",
-              height: "200px",
-              border: "solid 1px black"
-            },
-            attrs: { src: __webpack_require__(/*! @/assets/walkin.jpg */ "./resources/assets/walkin.jpg") },
-            on: {
-              click: function($event) {
-                return _vm.redirect("walkin")
+          _c(
+            "v-div",
+            { staticClass: "col-md-6", staticStyle: { "text-align": "right" } },
+            [
+              _c("img", {
+                staticStyle: {
+                  width: "300px",
+                  height: "200px",
+                  border: "solid 1px black"
+                },
+                attrs: { src: __webpack_require__(/*! @/assets/walkin.jpg */ "./resources/assets/walkin.jpg") },
+                on: {
+                  click: function($event) {
+                    return _vm.redirect("walkin")
+                  }
+                }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c("v-div", { staticClass: "col-md-6" }, [
+            _c("img", {
+              staticStyle: { width: "300px", height: "200px" },
+              attrs: {
+                "data-toggle": "modal",
+                "data-target": "#viewDetails",
+                src: __webpack_require__(/*! @/assets/fb.jpeg */ "./resources/assets/fb.jpeg")
+              },
+              on: {
+                click: function($event) {
+                  return _vm.redirect("fb")
+                }
               }
-            }
-          })
-        ]
+            })
+          ])
+        ],
+        1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("img", {
-          staticStyle: { width: "300px", height: "200px" },
-          attrs: {
-            "data-toggle": "modal",
-            "data-target": "#viewDetails",
-            src: __webpack_require__(/*! @/assets/fb.jpeg */ "./resources/assets/fb.jpeg")
-          },
-          on: {
-            click: function($event) {
-              return _vm.redirect("fb")
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
->>>>>>> 64d6e4548306d01f8320910215af55fc68b92ae2
       _c(
-        "v-row",
-        { staticClass: "fill-height" },
+        "v-div",
+        { staticClass: "row" },
         [
-          _vm._l(_vm.items, function(item, i) {
-            return [
+          _c(
+            "v-div",
+            { staticClass: "col-md-6", staticStyle: { "text-align": "right" } },
+            [
+              _c("img", {
+                staticStyle: {
+                  width: "300px",
+                  height: "200px",
+                  "margin-top": "5%",
+                  border: "solid 1px black"
+                },
+                attrs: { src: __webpack_require__(/*! @/assets/foodpanda.png */ "./resources/assets/foodpanda.png") },
+                on: {
+                  click: function($event) {
+                    return _vm.redirect("foodpanda")
+                  }
+                }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c("v-div", { staticClass: "col-md-6" }, [
+            _c("img", {
+              staticStyle: {
+                width: "300px",
+                height: "200px",
+                "margin-top": "5%"
+              },
+              attrs: { src: __webpack_require__(/*! @/assets/grab.png */ "./resources/assets/grab.png") },
+              on: {
+                click: function($event) {
+                  return _vm.redirect("grab")
+                }
+              }
+            })
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-div",
+        {
+          staticClass: "modal fade",
+          attrs: { id: "viewDetails", role: "dialog" }
+        },
+        [
+          _c(
+            "v-div",
+            { staticClass: "modal-dialog modal-lg" },
+            [
               _c(
-                "v-col",
-                { key: i, attrs: { cols: "12", md: "3" } },
+                "v-div",
+                { staticClass: "modal-content" },
                 [
-                  _c("v-hover", {
-                    scopedSlots: _vm._u(
-                      [
-                        {
-                          key: "default",
-                          fn: function(ref) {
-                            var hover = ref.hover
-                            return [
+                  _c("v-div", { staticClass: "modal-header" }, [
+                    _c("h3", [_vm._v("Customer Information")]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [_vm._v("×")]
+                    ),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-div",
+                    { staticClass: "modal-body" },
+                    [
+                      _c("v-div", [
+                        _c(
+                          "form",
+                          [
+                            _c("v-div", { staticClass: "form-group" }, [
                               _c(
-                                "v-card",
+                                "label",
                                 {
-                                  class: { "on-hover": hover },
-                                  attrs: {
-                                    elevation: hover ? 12 : 2,
-                                    height: "320",
-                                    "max-width": "320"
-                                  }
+                                  staticStyle: {
+                                    "font-size": "15px",
+                                    "font-weight": "bold"
+                                  },
+                                  attrs: { for: "fName" }
                                 },
-                                [
-                                  _c("v-img", {
-                                    attrs: { src: item.img, height: "320px" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.goTo(item.link)
-                                      }
-                                    }
-                                  })
+                                [_vm._v("Fullname:")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.fullName,
+                                    expression: "fullName"
+                                  }
                                 ],
-                                1
-                              )
-                            ]
+                                staticClass: "form-control",
+                                attrs: { type: "text" },
+                                domProps: { value: _vm.fullName },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.fullName = $event.target.value
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("v-div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticStyle: {
+                                    "font-size": "15px",
+                                    "font-weight": "bold"
+                                  },
+                                  attrs: { for: "address" }
+                                },
+                                [_vm._v("Address:")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.address,
+                                    expression: "address"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text" },
+                                domProps: { value: _vm.address },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.address = $event.target.value
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("v-div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticStyle: {
+                                    "font-size": "15px",
+                                    "font-weight": "bold"
+                                  },
+                                  attrs: { for: "contactNumber" }
+                                },
+                                [_vm._v("Contact Number:")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.contactNumber,
+                                    expression: "contactNumber"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text" },
+                                domProps: { value: _vm.contactNumber },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.contactNumber = $event.target.value
+                                  }
+                                }
+                              })
+                            ])
+                          ],
+                          1
+                        )
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                        on: {
+                          click: function($event) {
+                            return _vm.continueFb()
                           }
                         }
-                      ],
-                      null,
-                      true
+                      },
+                      [_vm._v("Continue")]
                     )
-                  })
+                  ])
                 ],
                 1
               )
-            ]
-          })
-<<<<<<< HEAD
+            ],
+            1
+          )
         ],
-        2
+        1
       )
     ],
     1
   )
-=======
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("img", {
-          staticStyle: { width: "300px", height: "200px", "margin-top": "5%" },
-          attrs: { src: __webpack_require__(/*! @/assets/grab.png */ "./resources/assets/grab.png") },
-          on: {
-            click: function($event) {
-              return _vm.redirect("grab")
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: { id: "viewDetails", role: "dialog" }
-      },
-      [
-        _c("div", { staticClass: "modal-dialog modal-lg" }, [
-          _c("div", { staticClass: "modal-content" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-body" }, [
-              _c("div", [
-                _c("form", [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c(
-                      "label",
-                      {
-                        staticStyle: {
-                          "font-size": "15px",
-                          "font-weight": "bold"
-                        },
-                        attrs: { for: "fName" }
-                      },
-                      [_vm._v("Fullname:")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.fullName,
-                          expression: "fullName"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: _vm.fullName },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.fullName = $event.target.value
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c(
-                      "label",
-                      {
-                        staticStyle: {
-                          "font-size": "15px",
-                          "font-weight": "bold"
-                        },
-                        attrs: { for: "address" }
-                      },
-                      [_vm._v("Address:")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.address,
-                          expression: "address"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: _vm.address },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.address = $event.target.value
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c(
-                      "label",
-                      {
-                        staticStyle: {
-                          "font-size": "15px",
-                          "font-weight": "bold"
-                        },
-                        attrs: { for: "contactNumber" }
-                      },
-                      [_vm._v("Contact Number:")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.contactNumber,
-                          expression: "contactNumber"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: _vm.contactNumber },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.contactNumber = $event.target.value
-                        }
-                      }
-                    })
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-footer" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button", "data-dismiss": "modal" },
-                  on: {
-                    click: function($event) {
-                      return _vm.continueFb()
-                    }
-                  }
-                },
-                [_vm._v("Continue")]
-              )
-            ])
-          ])
-        ])
-      ]
-    )
-  ])
->>>>>>> 64d6e4548306d01f8320910215af55fc68b92ae2
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h3", [_vm._v("Customer Information")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("×")]
-      ),
-      _c("br")
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
+
+/***/ }),
+
+/***/ "./resources/assets/fb.jpeg":
+/*!**********************************!*\
+  !*** ./resources/assets/fb.jpeg ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/fb.jpeg?7e0e07d9d8d59c08fb811c51b0e3338b";
+
+/***/ }),
+
+/***/ "./resources/assets/foodpanda.png":
+/*!****************************************!*\
+  !*** ./resources/assets/foodpanda.png ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/foodpanda.png?844b251b92d883a0725a4e8275450576";
+
+/***/ }),
+
+/***/ "./resources/assets/grab.png":
+/*!***********************************!*\
+  !*** ./resources/assets/grab.png ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/grab.png?8779ede2cc6b005dedfdc4b8cc05f2aa";
+
+/***/ }),
+
+/***/ "./resources/assets/walkin.jpg":
+/*!*************************************!*\
+  !*** ./resources/assets/walkin.jpg ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/walkin.jpg?e225ba36f9a7baac8aac3abe6dac6ddd";
 
 /***/ }),
 

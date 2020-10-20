@@ -1,14 +1,15 @@
 <template>
-    <div class="sudlanan">
-        <div class="row firstRow">
-            <div class="col-md-6">
+    <v-div class="sudlanan">
+        <v-div class="row firstRow">
+            <v-div class="col-md-6">
                 <center>
-                    <div class="firstCol">
+                    <v-div class="firstCol">    
                         <center>
-                            <img v-if="customerType === 'walkin'" style="width: 70px; height: 50px; border: solid 1px black" src="@/assets/walkin.jpg">
-                            <img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda.png">
-                            <img v-if="customerType === 'grab'" style="width: 70px; height: 50px;" src="@/assets/grab.png">
-                            <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb.jpeg"><br>
+                        
+                            <v-img v-if="customerType === 'walkin'" style="width: 70px; height: 50px; border: solid 1px black" src="@/assets/walkin.jpg">
+                            <v-img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda.png">
+                            <v-img v-if="customerType === 'grab'" style="width: 70px; height: 50px;" src="@/assets/grab.png">
+                            <v-img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb.jpeg"><br>
                             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
                             <table class="table table-responsive table-bordered" id="myTable">
                                 <tr>
@@ -27,15 +28,15 @@
                                         <td>{{item.quantity}}</td>
                                         <td>{{item.subTotal}}</td>
                                         <td>
-                                            <button style="font-size: 10px" type="button" aria-expanded="false" @click="deleteOrder(item.id)">❌</button>
+                                            <v-button style="font-size: 10px" type="v-button" aria-expanded="false" @click="deleteOrder(item.id)">❌</v-button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </center>
-                        <div class="row">
-                            <div class="col-md-6"></div>
-                            <div class="col-md-6" style="text-align:left;">
+                        <v-div class="row">
+                            <v-div class="col-md-6"></v-div>
+                            <v-div class="col-md-6" style="text-align:left;">
                                 <p v-if="customerType === 'fb'" style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
                                 <p v-if="customerType === 'fb'" style="display: inline;">₱ {{getSubTotal()}}</p><br>
                                 <p v-if="customerType === 'fb'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
@@ -46,24 +47,25 @@
                                 <input v-if="customerType !== 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
                                 <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
                                 <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary checkout" @click="checkoutOrder">Checkout</button>
+                            </v-div>
+                        </v-div>
+                    </v-div>
+                    <v-button class="btn btn-primary checkout" @click="checkoutOrder">Checkout</v-button>
                 </center>
-            </div>
-            <div class="col-md-6">
-                <div class="dataStyle">
-                    <div class="row">
-                        <div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
-                            <img class="imgItem" :src="item.image" @click="redirect(item.productCategory)">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </v-div>
+            <v-div class="col-md-6">
+                <v-div class="dataStyle">
+                    <v-div class="row">
+                        <v-div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
+                            <v-img class="v-imgItem" :src="item.image" @click="redirect(item.productCategory)">
+                        </v-div>
+                    </v-div>
+                </v-div>           
+            </v-div>
+
             <receipt v-if="receiptShow" :showData="receiptData"></receipt>
-       </div>
-    </div>
+       </v-div>
+    </v-div>
 </template>
 <style scoped>
 .dataStyle{
@@ -100,7 +102,7 @@ p{
     margin-top: 3%;
 }
 .sudlanan{
-    background-color: black;
+    background-color: white;
     height: 92.8vh;
     overflow: hidden;
 }
@@ -153,7 +155,7 @@ th {
     height: 150px;
     background-color: white;
 }
-.imgItem{
+.v-imgItem{
     height: 150px;
     width: 100%;
 }

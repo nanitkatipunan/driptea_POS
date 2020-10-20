@@ -83,51 +83,12 @@ export default {
         return {
             data: null,
             datetime:moment().format('MMMM Do YYYY, h:mm:ss a'),
-<<<<<<< HEAD
-            myTable: [{
-                    ProductName: 'Okinawa',
-                    Add_ons: 'Pearl',
-                    Unit_price: '79',
-                    Qty: '2',
-                    Price: '158'
-                },
-                {
-                    ProductName: 'Hokkaido',
-                    Add_ons: 'Pearl',
-                    Unit_price: '79',
-                    Qty: '3',
-                    Price: '158'
-                },
-                {
-                    ProductName: 'Pearl Milktea',
-                    Add_ons: 'Pearl',
-                    Unit_price: '79',
-                    Qty: '4',
-                    Price: '158'
-                },
-            ],
-             getAddOns(item){
-            let storeAddOns = ""
-            item.forEach(el => {
-                storeAddOns += el.addOns + ", "
-            })
-            return storeAddOns
-        },
-            summary: [{
-                Subtotal: '1422',
-                Delivery_Fee: '79',
-                Total: '9',
-                Incash: '1501',
-                Change: '0'
-            }]
-=======
             Change: null,
             Subtotal: null,
             Delivery_Fee: null,
             Total: null,
             Amount: null,
             customerType: localStorage.getItem('customerType')
->>>>>>> 64d6e4548306d01f8320910215af55fc68b92ae2
         }
     },
     props: ['showData'],
