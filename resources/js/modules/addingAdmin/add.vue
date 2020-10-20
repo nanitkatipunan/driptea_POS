@@ -7,6 +7,8 @@
                 <button v-if="prod" type="button" class="btn btn-primary btnModal" @click="showProduct">+ Product</button>
                 <button v-if="cat" type="button" class="btn btn-primary btnModal" @click="showCategory">+ Categories</button>
                 <button v-if="cup" type="button" class="btn btn-primary btnModal" @click="showCupType">+ Cup Type</button>
+                <button v-if="size" type="button" class="btn btn-primary btnModal" @click="showCupSize">+ Cup Size Quantity</button>
+
             </center>
         </div><br><br>
         <div>
@@ -14,9 +16,66 @@
             <button type="button" ref="pro" class="btn navButton btnBorderStyle1" @click="product($event)">Product</button>
             <button type="button" ref="on" class="btn navButton btnBorderStyle1" @click="addOnsShow($event)">Add-ons</button>
             <button type="button" ref="cup" class="btn navButton btnBorderStyle1" @click="addCupType($event)">Cup Type</button>
+            <button type="button" ref="size" class="btn navButton btnBorderStyle1" @click="cupSize($event)">Cup Size </button>
+
         </div>
         <div>
             <center>
+                <div v-if="size" class="my-custom-scrollbar">
+                    <table class="table table-bordered table-striped categoryTable" id="myTable">
+                         <thead class="thead-light">
+                            <tr class="header">
+                                <th colspan="2">Date</th>
+                                <th colspan="4">Incoming Cups</th>
+                                <th colspan="4">Cups Onrack</th>
+                                <th colspan="4">Used Cups</th>
+                                <th colspan="4">Remaining Cups</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                               <td colspan="2">Date</td>
+                               <td>Low Dose (LD)</td>
+                               <td>High Dose (HD)</td>
+                               <td>Over Dose (OD)</td>
+                               <td>Total Cups</td>
+                               <td>Low Dose (LD)</td>
+                               <td>High Dose (HD)</td>
+                               <td>Over Dose (OD)</td>
+                               <td>Total Cups</td>
+                               <td>Low Dose (LD)</td>
+                               <td>High Dose (HD)</td>
+                               <td>Over Dose (OD)</td>
+                               <td>Total Cups</td>
+                               <td>Low Dose (LD)</td>
+                               <td>High Dose (HD)</td>
+                               <td>Over Dose (OD)</td>
+                               <td>Total Cups</td>
+                           </tr>
+                           <tr v-for="(item, index) in cupSizeData" :key="index">
+                               <td colspan="2">{{item.created_at}}</td>
+                               <td>{{item.incomingLowDose}}</td>
+                               <td>{{item.incomingHighDose}}</td>
+                               <td>{{item.incomingOverDose}}</td>
+                               <td></td>
+                               <td>{{item.onRockLowDose}}</td>
+                               <td>{{item.onRockHighDose}}</td>
+                               <td>{{item.onRockOverDose}}</td>
+                               <td></td>
+                               <td>{{item.usedLowDose}}</td>
+                               <td>{{item.usedHighDose}}</td>
+                               <td>{{item.usedOverDose}}</td>
+                               <td></td>
+                               <td>{{item.remainingLowDose}}</td>
+                               <td>{{item.remainingHighDose}}</td>
+                               <td>{{item.remainingOverDose}}</td>
+                               <td></td>
+                           </tr>
+                        </tbody>
+                        </table>
+
+                </div>
+
                 <div v-if="cat" class="my-custom-scrollbar">
                     <table class="table table-bordered table-striped categoryTable" id="myTable">
                         <thead class="thead-light">
@@ -147,67 +206,135 @@
         </div>
         
         <!-- Modal -->
+
+<!-- Modalfor adding cup type -->
         <div v-if="showCupTypeModal" id="modal" class="blurred-background">
-            <div class="alert-box">
-                <center>
-                    <h1>Adding Cup Type</h1>
-                </center><hr>
-                <form action>
-                    <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                    <div class="form-group">
-                        <label for="cup">Cup Type :</label>
-                        <br>
-                        <input v-model="inputCup" type="text" class="form-control" id="addOns">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="quantity">Cup Quantity :</label>
-                        <br>
-                        <input v-model="inputCupQuantity" type="number" class="form-control" id="addOns">
+                    <div class="modal-body">
+                        <form action>
+                            <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
+                            <div class="form-group">
+                                <label for="cup">Cup Type :</label>
+                                <br>
+                                <input v-model="inputCup" type="text" class="form-control" id="addOns">
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Cup Quantity :</label>
+                                <br>
+                                <input v-model="inputCupQuantity" type="number" class="form-control" id="addOns">
+                            </div>
+                            <div class="form-group">
+                                <label for="cupPrice">Additional Price :</label>
+                                <br>
+                                <input v-model="inputCupPrice" type="number" min="1" class="form-control" id="price">
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="cupPrice">Additional Price :</label>
-                        <br>
-                        <input v-model="inputCupPrice" type="number" min="1" class="form-control" id="price">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
+                        <button v-if="btnCupType" type="button" class="btn btn-primary" @click="addingCupType">Add Cup Type</button>
+                        <button v-if="btnEditCupType" type="button" class="btn btn-primary" @click="editingCupType">Edit Cup Type</button>
                     </div>
-                </form>
-                <div style="text-align: right">
-                    <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                    <button v-if="btnCupType" type="button" class="btn btn-primary" @click="addingCupType">Add Cup Type</button>
-                    <button v-if="btnEditCupType" type="button" class="btn btn-primary" @click="editingCupType">Edit Cup Type</button>
                 </div>
             </div>
         </div>
+
+<!-- Modal for adding addons -->
         <div v-if="showAddOnsModal" id="modal" class="blurred-background">
-            <div class="alert-box">
-                <center>
-                    <h1>Adding Add-ons</h1>
-                </center><hr>
-                <form action>
-                    <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                    <div class="form-group">
-                        <label for="addOns">Add-ons :</label>
-                        <br>
-                        <input v-model="inputAddOns" type="text" class="form-control" id="addOns">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="price">Price :</label>
-                        <br>
-                        <input v-model="addOnsPrice" type="number" min="1" class="form-control" id="price">
+                    <div class="modal-body">
+                        <form action>
+                            <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
+                            <div class="form-group">
+                                <label for="addOns">Add-ons :</label>
+                                <br>
+                                <input v-model="inputAddOns" type="text" class="form-control" id="addOns">
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Price :</label>
+                                <br>
+                                <input v-model="addOnsPrice" type="number" min="1" class="form-control" id="price">
+                            </div>
+                        </form>
                     </div>
-                </form>
-                <div style="text-align: right">
-                    <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                    <button v-if="addonsShow" type="button" class="btn btn-primary" @click="addAddOns">Add Add-ons</button>
-                    <button v-if="editAddOnsShow" type="button" class="btn btn-primary" @click="editAddOnsData">Edit Add-ons</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
+                        <button v-if="addonsShow" type="button" class="btn btn-primary" @click="addAddOns">Add Add-ons</button>
+                        <button v-if="editAddOnsShow" type="button" class="btn btn-primary" @click="editAddOnsData">Edit Add-ons</button>
+                    </div>    
                 </div>
             </div>
         </div>
+
+<!-- Modal for adding cup size -->
+
+         <div v-if="showCupSizeModal" id="modal" class="blurred-background">
+             <div class="modal-dialog" role="document">
+                <div class="modal-content" id="alert-box3">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                         <form action>
+                    <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
+                    
+                    <div class="form-group">
+                        <label for="lowDose">Low Dose Cups :</label>
+                        <br>
+                        <input v-model="lowDoseCup" type="number" min="0" class="form-control" id="lowDoseCup">
+                    </div>
+                    <div class="form-group">
+                        <label for="highDose">High Dose Cups :</label>
+                        <br>
+                        <input v-model="highDoseCup" type="number" min="0" class="form-control" id="highDoseCup">
+                    </div>
+                    <div class="form-group">
+                        <label for="lowDose">Over Dose Cups :</label>
+                        <br>
+                        <input v-model="overDoseCup" type="number" min="0" class="form-control" id="overDoseCup">
+                    </div>
+                </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
+                    <button v-if="cupSizeShow" type="button" class="btn btn-primary" @click="addingCupSize">Add Cup Size</button>
+                    <!-- <button v-if="editAddOnsShow" type="button" class="btn btn-primary" @click="editAddOnsData">Edit Add-ons</button> -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- Modal for adding Product -->
+
         <div v-if="showProductModal" id="modal" class="blurred-background">
-            <div class="alert-box3">
-                <center>
-                    <h1>Adding Product</h1>
-                </center><hr>
-                <form @submit="formSubmitProduct" enctype="multipart/form-data" action>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form @submit="formSubmitProduct" enctype="multipart/form-data" action>
                     <div class="row">
                         <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
                         <div class="col-md-6">
@@ -290,37 +417,46 @@
                             <input type="file" class="fileStyle" v-on:change="onImgChange" required><br>
                         </center>
                     </div>
-                    <div style="text-align: right">
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
                         <button v-if="productAdd" type="submit" class="btn btn-primary">Add Product</button>
                         <button v-if="productEdit" type="button" class="btn btn-primary" @click="updateProduct($event)">Edit Product</button>
-                    </div>
+                 </div>
                 </form>
             </div>
         </div>
+    </div>
+        </div>
         <div v-if="showCategoryModal" id="modal" class="blurred-background">
-            <div class="alert-box2">
-                <center>
-                    <h1>Adding Category</h1>
-                </center><hr>
-                <form @submit="formSubmit" enctype="multipart/form-data" action>
-                    <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                    <div class="form-group">
-                        <label for="addOns">Product Category:</label>
-                        <br>
-                        <input type="text" class="form-control" v-model="productType" required>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <center>
-                            <img class="addOnsImage" :src="imageURL"><br>
-                            <input type="file" class="fileStyle" v-on:change="onImageChange" required><br>
-                        </center>
+                    <div class="modal-body">
+                         <form @submit="formSubmit" enctype="multipart/form-data" action>
+                            <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
+                            <div class="form-group">
+                                <label for="addOns">Product Category:</label>
+                                <br>
+                                <input type="text" class="form-control" v-model="productType" required>
+                            </div>
+                            <div class="form-group">
+                                <center>
+                                    <img class="addOnsImage" :src="imageURL"><br>
+                                    <input type="file" class="fileStyle" v-on:change="onImageChange" required><br>
+                                </center>
+                            </div>
+                            <div style="text-align: right">
+                                <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
+                                <button type="submit" class="btn btn-primary">Add Category</button>
+                            </div>
+                        </form>
                     </div>
-                    <div style="text-align: right">
-                        <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Category</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -394,7 +530,7 @@ label{
     text-align: center;
     background: rgb(54, 54, 54, .7);
 }
-.alert-box {
+#alert-box {
     width: 400px;
     background: white;
     display: inline-block;
@@ -420,7 +556,7 @@ label{
     text-align: left;
     box-shadow: 5px 5px gray;
 }
-.alert-box3 {
+#alert-box3 {
     width: 550px;
     background: white;
     display: inline-block;
@@ -507,6 +643,7 @@ export default {
             showProductModal: false,
             showCategoryModal: false,
             showCupTypeModal: false,
+            showCupSizeModal: false,
             btnCupType: false,
             btnEditCupType: false,
             inputCupPrice: null,
@@ -518,6 +655,7 @@ export default {
             cat: true,
             ons: false,
             cup: false,
+            size:false,
             secondEvent: '',
             productAdd: false,
             productEdit: false,
@@ -525,7 +663,11 @@ export default {
             prodId: null,
             priceEvent: '',
             online: false,
-            errorMessage: null
+            errorMessage: null,
+            lowDoseCup:null,
+            highDoseCup:null,
+            overDoseCup:null,
+            cupSizeData:null,
         };
     },
     mounted() {
@@ -533,10 +675,13 @@ export default {
         this.$refs.on.click()
         this.$refs.pro.click()
         this.$refs.cate.click()
+        this.$refs.size.click()
+
         this.retrieveProducts()
         this.retrieveCategories()
         this.retrieveAddOns()
         this.retrieveCupType()
+        this. retrieveCupSize()
     },
     methods: {
         NACupUpdate(id){
@@ -560,8 +705,17 @@ export default {
             });
         },
         retrieveCupType(){
-            this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
+            this.$axios.post(AUTH.url + "retrieveAllCupType").then(response => {
                 this.cupData = response.data.cupType
+            });
+        },
+         retrieveCupSize(){
+            this.$axios.post(AUTH.url + "retrieveCupSize").then(response => {
+               this.cupSizeData = response.data.quantityCupsInDB
+
+                
+                   
+                
             });
         },
         addingCupType(){
@@ -577,6 +731,25 @@ export default {
                     this.hide()
                 });
             }else{
+                this.errorMessage = 'All fields are required!'
+            }
+        },
+        addingCupSize(){
+            console.log('sud');
+            if(this.lowDoseCup !== null && this.highDoseCup !== null && this.overDoseCup !== null){
+                let param = {
+                    incomingLowDose: this.lowDoseCup,
+                    incomingHighDose: this.highDoseCup,
+                    incomingOverDose: this.overDoseCup,
+                    
+                };
+                console.log(param)
+                this.$axios.post(AUTH.url + "addIncomingCups", param).then(response => {
+                    this.retrieveCupSize()
+                    this.hide()
+                });
+            }else{
+                console.log('error')
                 this.errorMessage = 'All fields are required!'
             }
         },
@@ -691,10 +864,10 @@ export default {
                 formData.append('productCategory', this.prodType)
                 formData.append('productName', this.productName)
                 formData.append('lowPrice', this.lowPrice)
-                formData.append('higPrice', this.higPrice)
+                formData.append('highPrice', this.highPrice)
                 formData.append('overPrice', this.overPrice)
                 formData.append('onlinelowPrice', this.onlinelowPrice)
-                formData.append('onlinehigPrice', this.onlinehigPrice)
+                formData.append('onlinehighPrice', this.onlinehighPrice)
                 formData.append('onlineoverPrice', this.onlineoverPrice)
                 axios.post('/updateProduct', formData, config)
                 .then(function (response) {
@@ -774,6 +947,24 @@ export default {
             this.cat = false
             this.ons = false
             this.cup = false
+            this.size = false
+
+        },
+         cupSize(event){
+            if(this.secondEvent !== event.target){
+                event.target.classList.add('borderStyle')
+                event.target.classList.remove('btnBorderStyle1')
+                if(this.secondEvent !== ''){
+                    this.secondEvent.classList.add('btnBorderStyle1')
+                    this.secondEvent.classList.remove('borderStyle')
+                }
+            }
+            this.secondEvent = event.target
+            this.size = true
+            this.prod = false
+            this.cat = false
+            this.ons = false
+            this.cup = false
         },
         category(event){
             if(this.secondEvent !== event.target){
@@ -789,6 +980,8 @@ export default {
             this.cat = true
             this.ons = false
             this.cup = false
+            this.size = false
+
         },
         addOnsShow(event){
             if(this.secondEvent !== event.target){
@@ -804,6 +997,8 @@ export default {
             this.cat = false
             this.ons = true
             this.cup = false
+            this.size = false
+
         },
         addCupType(event){
             if(this.secondEvent !== event.target){
@@ -819,12 +1014,23 @@ export default {
             this.cat = false
             this.ons = false
             this.cup = true
+            this.size = false
+
+
         },
         showAddOns(){
             this.showAddOnsModal = true
             this.addonsShow = true
             this.inputAddOns = null
             this.addOnsPrice = null
+        },
+         showCupSize(){
+            this.showCupSizeModal = true
+            this.cupSizeShow = true
+            this.lowDoseCup = null
+            this.highDoseCup = null
+            this.overDoseCup = null
+
         },
         showProduct(){
             this.showProductModal = true
@@ -871,6 +1077,7 @@ export default {
             this.showCupTypeModal = false
             this.btnCupType = false
             this.btnEditCupType = false
+            this.showCupSizeModal = false
         },
         redirect(route) {
             ROUTER.push(route).catch(() => {});
@@ -892,7 +1099,7 @@ export default {
             
         },
         retrieveAddOns() {
-            this.$axios.post(AUTH.url + "retrievingAddOns").then(response => {
+            this.$axios.post(AUTH.url + "retrieveAllAddOns").then(response => {
                 this.datas = response.data.addons;
             });
         },

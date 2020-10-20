@@ -1,78 +1,73 @@
 <template>
-    <div id="app">
-        <nav v-if="auth.currentPath !== '/'" class="navbar navbar-expand-sm navbar-dark" style="background-color: black"> 
-            <img style="height: 50px; margin-left: 2%; border: 1px solid white" :src="image" v-on:click="redirect('/')">
-            <a class="navbar-brand dripteaWord" style="color:white" v-on:click="redirect('/')">Driptea</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-2" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbar-list-2">
-                <ul class="navbar-nav ml-auto"> 
-                    <li class="nav-item" v-on:click="redirect('/register')"><a class="nav-link">Register</a></li>
-                    <li class="nav-item" v-on:click="redirect('/login')"><a class="nav-link">Login</a></li>
-                </ul>
-            </div>
-        </nav>
-        <div>
-            <router-view></router-view>
-        </div>
-        <!-- <footer> -->
-        <!-- <footer style="position: absolute; bottom: 0; width: 100%; height: 0rem;">
-            <div style="background-color: #DEDEDE;">
-                <nav class="navbar navbar-expand-sm navbar-light"> 
-                    <img class="footer" style="height: 50px; margin-left: 2%;" :src="image" v-on:click="redirect('/')">
-                    <a class="navbar-brand footer" href="#">Driptea</a>
-                    <ul class="navbar-nav ml-auto footer"> 
-                        <li class="nav-item" v-on:click="redirect('/')"><a class="nav-link">Facebook</a></li>
-                        <li class="nav-item" v-on:click="redirect('/')"><a class="nav-link">Twitter</a></li>
-                        <li class="nav-item" v-on:click="redirect('/')"><a class="nav-link">Blog</a></li>
-                    </ul> 
-                </nav>
-                <center>
-                    <span class="copyright">
-                        <label>Copyright @Driptea. All rights reserved.</label>
-                    </span>
-                </center>
-            </div>
-        </footer> -->
-    </div>
+  <v-app id="inspire">
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      color="light-blue darken-4"
+    >
+        <center>
+            <v-sheet color="light-blue darken-4" class="pa-5">
+            <v-avatar class="mb-10" color="grey darken-1" size="64"></v-avatar>
+            <div style="color:white">Aeromel Laure</div>
+            </v-sheet>
+        </center>
+        <v-divider></v-divider>
+        <v-list>
+        <v-list-item-group active-class="sky blue blue--text">
+            <v-list-item
+                v-for="(item, index) in employee"
+                :key="index"
+                link
+                @click="redirect(item.route)"
+            >
+                <v-list-item-icon >
+                    <v-icon color="white darken-2">{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-content>
+                    <v-list-item-title class="white--text lighten-1--text">{{ item.text }}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+            </v-list-item-group>
+        </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar app>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Application</v-toolbar-title>
+    </v-app-bar>
+
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+  </v-app>
 </template>
-<style>
-#app{
-    font-family: Roboto Slab;
-}
-.footer{
-    margin-top: 2%;
-}
-.copyright {
-    font-size: 13px;
-}
-ul {
-    margin-right: 2%;
-}
-a {
-    font-weight: bold;
-}
-li, .dripteaWord, img {
-    cursor: pointer;
-}
-</style>
+
 <script>
 import image from "../assets/logo.png"
 import AUTH from "./services/auth"
 import ROUTER from './router'
+import { mdiAccount } from '@mdi/js'
 export default {
-    name: "app",
-    data(){
-        return {
-            image: image,
-            auth: AUTH,
-            token: null
-        }
-    },
-    components: {
-        // header,
-    },
+    data: () => ({ 
+        svgPath: mdiAccount,
+        drawer: null,
+        image: image,
+        auth: AUTH,
+        token: null,
+        employee: [
+            { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
+            { icon: "mdi-apps", text: "Dashboard", route: "/Dashboard" },
+            { icon: "mdi-calendar-edit", text: "Leave Request", route: "/Leave" },
+            { icon: "mdi-calendar-account", text: "Shift Change Request", route: "/ShiftChange" },
+            { icon: "mdi-calendar-clock", text: "Overtime Request", route: "/Overtime" },
+            { icon: "mdi-account-cash", text: "Petty Cash Request", route: "/PettyCash" },
+            { icon: "mdi-account-cash-outline", text: "Budget Request", route: "/Budget" },
+            { icon: "mdi-airplane", text: "Travel Authorization", route: "/TravelAuthorization" },
+            { icon: "mdi-logout", text: "LogOut", route: "/TravelAuthorization" }
+        ],
+    }),
     methods: {
         redirect(route){
             ROUTER.push(route).catch(()=>{})

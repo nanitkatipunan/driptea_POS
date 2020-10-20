@@ -57,9 +57,42 @@ export default {
             }
         },
         {
+            path: '/productOnline/:itemChosen',
+            name: 'productOnline',
+            component: resolve => require(['@/js/modules/onlineOrder/productOnline'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
             path: '/addProductCategoryAddOns',
             name: 'addProductCategoryAddOns',
             component: resolve => require(['@/js/modules/addingAdmin/add'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/adminDashboard',
+            name: 'adminDashboard',
+            component: resolve => require(['@/js/modules/dashboard/adminDashboard'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/salesInventory',
+            name: 'salesInventory',
+            component: resolve => require(['@/js/modules/inventory/cupsInventory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        
+        {
+            path: '/onlineDashboard',
+            name: 'onlineDashboard',
+            component: resolve => require(['@/js/modules/dashboard/onlineOrderDashboard'], resolve),
             meta: {
                 tokenRequired: true
             }

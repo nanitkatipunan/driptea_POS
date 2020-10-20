@@ -22,6 +22,11 @@ class AddAddOnsController extends Controller
         return response()->json(compact('addons'));
     }
 
+    public function retrieveAllAddOns(Request $request){
+        $addons = AddAddOns::get();
+        return response()->json(compact('addons'));
+    }
+
     public function retrieveOneAddOn(Request $request){
         $addons = AddAddOns::find($request->id);
         return response()->json(compact('addons'));
