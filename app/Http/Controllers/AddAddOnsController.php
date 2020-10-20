@@ -12,6 +12,7 @@ class AddAddOnsController extends Controller
         $addOns = AddAddOns::create([
             'addons_name' => $request['addOns'],
             'addons_price'=> $request['price'],
+            'onlineAddOnsPrice'=> $request['onlineAddOnsPrice'],
             'status'=> $request['status']
         ]);
         return response()->json(compact('addOns'));
@@ -43,6 +44,7 @@ class AddAddOnsController extends Controller
         $addons = AddAddOns::firstOrCreate(['id' => $request->id]);
         $addons->addons_name = $request['addOns'];
         $addons->addons_price = $request['price'];
+        $addons->onlineAddOnsPrice = $request['onlineAddOnsPrice'];
         $addons->status = $request['status'];
         $addons->save();
         return response()->json(['success' => 'successfully updated!']);

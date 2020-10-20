@@ -23,6 +23,7 @@ Route::post('updateProduct','App\Http\Controllers\ProductController@updateProduc
 Route::post('retrieveProduct','App\Http\Controllers\ProductController@retrieveProduct');
 Route::post('retrieveOneProduct','App\Http\Controllers\ProductController@retrieveOneProduct');
 Route::post('retrieveAllProduct','App\Http\Controllers\ProductController@retrieveAllProduct');
+Route::post('retrieveAllProductAscending','App\Http\Controllers\ProductController@retrieveAllProductAscending');
 Route::post('updateStatusProduct','App\Http\Controllers\ProductController@updateStatusProduct');
 
 Route::post('addCategory','App\Http\Controllers\AddCategoryController@addCategory');

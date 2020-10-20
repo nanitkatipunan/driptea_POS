@@ -624,6 +624,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -659,11 +669,13 @@ __webpack_require__.r(__webpack_exports__);
       btnCupType: false,
       btnEditCupType: false,
       inputCupPrice: null,
+      inputCupOnlinePrice: null,
       inputCup: null,
       cupStatus: null,
       idCup: null,
       cupData: null,
       prod: false,
+      description: null,
       cat: true,
       ons: false,
       cup: false,
@@ -679,7 +691,8 @@ __webpack_require__.r(__webpack_exports__);
       lowDoseCup: null,
       highDoseCup: null,
       overDoseCup: null,
-      cupSizeData: null
+      cupSizeData: null,
+      onlineAddOnsPrice: null
     };
   },
   mounted: function mounted() {
@@ -739,7 +752,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.inputCupPrice !== null && this.inputCup !== null) {
         var param = {
           cupType: this.inputCup,
-          cupQuantity: this.inputCupQuantity,
+          inputCupOnlinePrice: this.inputCupOnlinePrice,
           price: this.inputCupPrice,
           status: 'Available'
         };
@@ -781,7 +794,7 @@ __webpack_require__.r(__webpack_exports__);
         var param = {
           id: this.idCup,
           cupType: this.inputCup,
-          cupQuantity: this.inputCupQuantity,
+          inputCupOnlinePrice: this.inputCupOnlinePrice,
           price: this.inputCupPrice,
           status: this.cupStatus
         };
@@ -839,6 +852,7 @@ __webpack_require__.r(__webpack_exports__);
         formData.append('image', this.img);
         formData.append('productCategory', this.prodType);
         formData.append('productName', this.productName);
+        formData.append('description', this.description);
         formData.append('status', 'Available');
         formData.append('lowPrice', this.lowPrice);
         formData.append('highPrice', this.highPrice);
@@ -862,6 +876,7 @@ __webpack_require__.r(__webpack_exports__);
     editProduct: function editProduct(item) {
       this.showProductModal = true;
       this.productName = item.productName;
+      this.description = item.description;
       this.prodType = item.productCategory;
       this.img = item.image;
       this.lowPrice = item.lowPrice;
@@ -891,6 +906,7 @@ __webpack_require__.r(__webpack_exports__);
         formData.append('status', this.status);
         formData.append('productCategory', this.prodType);
         formData.append('productName', this.productName);
+        formData.append('description', this.description);
         formData.append('lowPrice', this.lowPrice);
         formData.append('highPrice', this.highPrice);
         formData.append('overPrice', this.overPrice);
@@ -1097,7 +1113,7 @@ __webpack_require__.r(__webpack_exports__);
       this.btnEditCupType = true;
       this.idCup = item.id;
       this.inputCup = item.cupTypeName;
-      this.inputCupQuantity = item.cupQuantity;
+      this.inputCupOnlinePrice = item.inputCupOnlinePrice;
       this.inputCupPrice = item.cupTypePrice;
       this.cupStatus = item.status;
     },
@@ -1121,6 +1137,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.addOnsPrice !== null && this.inputAddOns !== null) {
         var param = {
           addOns: this.inputAddOns,
+          onlineAddOnsPrice: this.onlineAddOnsPrice,
           price: this.addOnsPrice,
           status: 'Available'
         };
@@ -1144,6 +1161,7 @@ __webpack_require__.r(__webpack_exports__);
       this.showAddOnsModal = true;
       this.inputAddOns = item.addons_name;
       this.addOnsPrice = item.addons_price;
+      this.onlineAddOnsPrice = item.onlineAddOnsPrice;
       this.addOnsStat = item.status;
       this.editAddOnsShow = true;
       this.idAddOns = item.id;
@@ -1155,6 +1173,7 @@ __webpack_require__.r(__webpack_exports__);
         var param = {
           id: this.idAddOns,
           addOns: this.inputAddOns,
+          onlineAddOnsPrice: this.onlineAddOnsPrice,
           price: this.addOnsPrice,
           status: this.addOnsStat
         };
@@ -1647,6 +1666,10 @@ var render = function() {
                         _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [
+                          _vm._v("Description")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { scope: "col" } }, [
                           _vm._v("Low Dose Price")
                         ]),
                         _vm._v(" "),
@@ -1684,6 +1707,8 @@ var render = function() {
                             _c("td", [_vm._v(_vm._s(item.productCategory))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(item.productName))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.description))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(item.lowPrice))]),
                             _vm._v(" "),
@@ -1894,7 +1919,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [
-                          _vm._v("Cup Quantity")
+                          _vm._v("Additional Online Price")
                         ]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [
@@ -1920,7 +1945,9 @@ var render = function() {
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(item.cupTypePrice))]),
                             _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(item.cupQuantity))]),
+                            _c("td", [
+                              _vm._v(_vm._s(item.inputCupOnlinePrice))
+                            ]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(item.status))]),
                             _vm._v(" "),
@@ -2004,107 +2031,140 @@ var render = function() {
               { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
                 _c("div", { staticClass: "modal-content" }, [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "modal-body" }, [
-                    _c("form", { attrs: { action: "" } }, [
-                      _vm.errorMessage !== null
-                        ? _c("span", { staticClass: "errorColor" }, [
-                            _vm._v(_vm._s(_vm.errorMessage))
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "cup" } }, [
-                          _vm._v("Cup Type :")
-                        ]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.inputCup,
-                              expression: "inputCup"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "text", id: "addOns" },
-                          domProps: { value: _vm.inputCup },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.inputCup = $event.target.value
-                            }
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: {
+                          type: "button",
+                          "data-dismiss": "modal",
+                          "aria-label": "Close"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.hide()
                           }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "quantity" } }, [
-                          _vm._v("Cup Quantity :")
-                        ]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.inputCupQuantity,
-                              expression: "inputCupQuantity"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "number", id: "addOns" },
-                          domProps: { value: _vm.inputCupQuantity },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.inputCupQuantity = $event.target.value
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "cupPrice" } }, [
-                          _vm._v("Additional Price :")
-                        ]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.inputCupPrice,
-                              expression: "inputCupPrice"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "number", min: "1", id: "price" },
-                          domProps: { value: _vm.inputCupPrice },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.inputCupPrice = $event.target.value
-                            }
-                          }
-                        })
-                      ])
-                    ])
+                        }
+                      },
+                      [
+                        _c("span", { attrs: { "aria-hidden": "true" } }, [
+                          _vm._v("×")
+                        ])
+                      ]
+                    )
                   ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "modal-body",
+                      staticStyle: { "text-align": "left" }
+                    },
+                    [
+                      _c("form", { attrs: { action: "" } }, [
+                        _vm.errorMessage !== null
+                          ? _c("span", { staticClass: "errorColor" }, [
+                              _vm._v(_vm._s(_vm.errorMessage))
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "cup" } }, [
+                            _vm._v("Cup Type :")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.inputCup,
+                                expression: "inputCup"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", id: "addOns" },
+                            domProps: { value: _vm.inputCup },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.inputCup = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "cupPrice" } }, [
+                            _vm._v("Additional Price :")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.inputCupPrice,
+                                expression: "inputCupPrice"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", min: "1", id: "price" },
+                            domProps: { value: _vm.inputCupPrice },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.inputCupPrice = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "cupOnlinePrice" } }, [
+                            _vm._v("Additional Online Price :")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.inputCupOnlinePrice,
+                                expression: "inputCupOnlinePrice"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "number",
+                              min: "1",
+                              id: "onlineCupPrice"
+                            },
+                            domProps: { value: _vm.inputCupOnlinePrice },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.inputCupOnlinePrice = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
                     _c(
@@ -2162,77 +2222,140 @@ var render = function() {
               { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
                 _c("div", { staticClass: "modal-content" }, [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "modal-body" }, [
-                    _c("form", { attrs: { action: "" } }, [
-                      _vm.errorMessage !== null
-                        ? _c("span", { staticClass: "errorColor" }, [
-                            _vm._v(_vm._s(_vm.errorMessage))
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "addOns" } }, [
-                          _vm._v("Add-ons :")
-                        ]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.inputAddOns,
-                              expression: "inputAddOns"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "text", id: "addOns" },
-                          domProps: { value: _vm.inputAddOns },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.inputAddOns = $event.target.value
-                            }
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: {
+                          type: "button",
+                          "data-dismiss": "modal",
+                          "aria-label": "Close"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.hide()
                           }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "price" } }, [
-                          _vm._v("Price :")
-                        ]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.addOnsPrice,
-                              expression: "addOnsPrice"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "number", min: "1", id: "price" },
-                          domProps: { value: _vm.addOnsPrice },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.addOnsPrice = $event.target.value
-                            }
-                          }
-                        })
-                      ])
-                    ])
+                        }
+                      },
+                      [
+                        _c("span", { attrs: { "aria-hidden": "true" } }, [
+                          _vm._v("×")
+                        ])
+                      ]
+                    )
                   ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "modal-body",
+                      staticStyle: { "text-align": "left" }
+                    },
+                    [
+                      _c("form", { attrs: { action: "" } }, [
+                        _vm.errorMessage !== null
+                          ? _c("span", { staticClass: "errorColor" }, [
+                              _vm._v(_vm._s(_vm.errorMessage))
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "addOns" } }, [
+                            _vm._v("Add-ons :")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.inputAddOns,
+                                expression: "inputAddOns"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", id: "addOns" },
+                            domProps: { value: _vm.inputAddOns },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.inputAddOns = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "price" } }, [
+                            _vm._v("Price :")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.addOnsPrice,
+                                expression: "addOnsPrice"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", min: "1", id: "price" },
+                            domProps: { value: _vm.addOnsPrice },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.addOnsPrice = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "onlineAddOnsPrice" } }, [
+                            _vm._v("Online Price :")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.onlineAddOnsPrice,
+                                expression: "onlineAddOnsPrice"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "number",
+                              min: "1",
+                              id: "onlineAddOnsPrice"
+                            },
+                            domProps: { value: _vm.onlineAddOnsPrice },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.onlineAddOnsPrice = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
                     _c(
@@ -2293,7 +2416,29 @@ var render = function() {
                   "div",
                   { staticClass: "modal-content", attrs: { id: "alert-box3" } },
                   [
-                    _vm._m(2),
+                    _c("div", { staticClass: "modal-header" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "close",
+                          attrs: {
+                            type: "button",
+                            "data-dismiss": "modal",
+                            "aria-label": "Close"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.hide()
+                            }
+                          }
+                        },
+                        [
+                          _c("span", { attrs: { "aria-hidden": "true" } }, [
+                            _vm._v("×")
+                          ])
+                        ]
+                      )
+                    ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "modal-body" }, [
                       _c("form", { attrs: { action: "" } }, [
@@ -2452,7 +2597,33 @@ var render = function() {
               { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
                 _c("div", { staticClass: "modal-content" }, [
-                  _vm._m(3),
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c("h5", { staticClass: "modal-title" }, [
+                      _vm._v("Modal title")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: {
+                          type: "button",
+                          "data-dismiss": "modal",
+                          "aria-label": "Close"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.hide()
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { attrs: { "aria-hidden": "true" } }, [
+                          _vm._v("×")
+                        ])
+                      ]
+                    )
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-body" }, [
                     _c(
@@ -2520,6 +2691,36 @@ var render = function() {
                                 }),
                                 0
                               )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", { attrs: { for: "description" } }, [
+                                _vm._v("Product Description:")
+                              ]),
+                              _vm._v(" "),
+                              _c("br"),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.description,
+                                    expression: "description"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text", required: "" },
+                                domProps: { value: _vm.description },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.description = $event.target.value
+                                  }
+                                }
+                              })
                             ])
                           ]),
                           _vm._v(" "),
@@ -3034,7 +3235,33 @@ var render = function() {
               { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
                 _c("div", { staticClass: "modal-content" }, [
-                  _vm._m(4),
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c("h5", { staticClass: "modal-title" }, [
+                      _vm._v("Modal title")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: {
+                          type: "button",
+                          "data-dismiss": "modal",
+                          "aria-label": "Close"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.hide()
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { attrs: { "aria-hidden": "true" } }, [
+                          _vm._v("×")
+                        ])
+                      ]
+                    )
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-body" }, [
                     _c(
@@ -3137,113 +3364,7 @@ var render = function() {
       : _vm._e()
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

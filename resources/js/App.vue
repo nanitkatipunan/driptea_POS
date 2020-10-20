@@ -37,7 +37,7 @@
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         
     </v-app-bar>
-    <nav v-else class="navbar navbar-expand-lg navbar-light" style="background-color: orange">
+    <nav v-if="cashier !== null" class="navbar navbar-expand-lg navbar-light" style="background-color: orange">
         <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -72,6 +72,7 @@ import { mdiAccount } from '@mdi/js'
 export default {
     data: () => ({
         admin: localStorage.getItem('adminId'),
+        cashier: localStorage.getItem('cashierId'),
         svgPath: mdiAccount,
         drawer: null,
         image: image,
