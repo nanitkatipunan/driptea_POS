@@ -5,14 +5,19 @@ import App from '@/js/App.vue'
 import Router from './router'
 import 'bootstrap/dist/css/bootstrap.css'
 import axios from 'axios'
-// import '@fortawesome/fontawesome-free'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import '@mdi/font/css/materialdesignicons.css'
 
+Vue.use(Vuetify)
 Vue.prototype.$axios = axios
 const app = new Vue({
-    icons: {
-        iconfont: 'fa'
-    },
     el: '#app',
+    vuetify: new Vuetify({
+        icons: {
+            iconfont: 'mdi',
+        },
+    }),
     router: Router,
     render: h => h(App)
 });

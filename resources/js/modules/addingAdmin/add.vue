@@ -1,334 +1,295 @@
 <template>
     <div class=" container div">
+        <center> <h1>Add Products, Categories and Add-ons</h1><br></center>
+        
+        <template>
+            <v-bottom-navigation style="background-color:#ff5b04" >
+                 <button type="button" ref="cate" class="btn navButton borderStyle" @click="category($event)">Categories</button>
+                <button type="button" ref="pro" class="btn navButton btnBorderStyle1" @click="product($event)">Product</button>
+                <button type="button" ref="on" class="btn navButton btnBorderStyle1" @click="addOnsShow($event)">Add-ons</button>
+                <button type="button" ref="cup" class="btn navButton btnBorderStyle1" @click="addCupType($event)">Cup Type</button>
+                <button type="button" ref="size" class="btn navButton btnBorderStyle1" @click="cupSize($event)">Cup Size </button>
+            </v-bottom-navigation>
+        </template>
         <div>
-            <center><br>
-                <h1>Add Products, Categories and Add-ons</h1><br>
-                <button v-if="ons" type="button" class="btn btn-primary btnModal" @click="showAddOns">+ Add ons</button>
-                <button v-if="prod" type="button" class="btn btn-primary btnModal" @click="showProduct">+ Product</button>
-                <button v-if="cat" type="button" class="btn btn-primary btnModal" @click="showCategory">+ Categories</button>
-                <button v-if="cup" type="button" class="btn btn-primary btnModal" @click="showCupType">+ Cup Type</button>
-                <button v-if="size" type="button" class="btn btn-primary btnModal" @click="showCupSize">+ Cup Size Quantity</button>
-
-            </center>
-        </div><br><br>
-        <div>
-            <button type="button" ref="cate" class="btn navButton borderStyle" @click="category($event)">Categories</button>
-            <button type="button" ref="pro" class="btn navButton btnBorderStyle1" @click="product($event)">Product</button>
-            <button type="button" ref="on" class="btn navButton btnBorderStyle1" @click="addOnsShow($event)">Add-ons</button>
-            <button type="button" ref="cup" class="btn navButton btnBorderStyle1" @click="addCupType($event)">Cup Type</button>
-            <button type="button" ref="size" class="btn navButton btnBorderStyle1" @click="cupSize($event)">Cup Size </button>
-
-        </div>
-        <div>
+          
             <center>
-                <div v-if="size" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped categoryTable" id="myTable">
-                         <thead class="thead-light">
-                            <tr class="header">
-                                <th colspan="2">Date</th>
-                                <th colspan="4">Incoming Cups</th>
-                                <th colspan="4">Cups Onrack</th>
-                                <th colspan="4">Used Cups</th>
-                                <th colspan="4">Remaining Cups</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           <tr>
-                               <td colspan="2">Date</td>
-                               <td>Low Dose (LD)</td>
-                               <td>High Dose (HD)</td>
-                               <td>Over Dose (OD)</td>
-                               <td>Total Cups</td>
-                               <td>Low Dose (LD)</td>
-                               <td>High Dose (HD)</td>
-                               <td>Over Dose (OD)</td>
-                               <td>Total Cups</td>
-                               <td>Low Dose (LD)</td>
-                               <td>High Dose (HD)</td>
-                               <td>Over Dose (OD)</td>
-                               <td>Total Cups</td>
-                               <td>Low Dose (LD)</td>
-                               <td>High Dose (HD)</td>
-                               <td>Over Dose (OD)</td>
-                               <td>Total Cups</td>
-                           </tr>
-                           <tr v-for="(item, index) in cupSizeData" :key="index">
-                               <td colspan="2">{{item.created_at}}</td>
-                               <td>{{item.incomingLowDose}}</td>
-                               <td>{{item.incomingHighDose}}</td>
-                               <td>{{item.incomingOverDose}}</td>
-                               <td></td>
-                               <td>{{item.onRockLowDose}}</td>
-                               <td>{{item.onRockHighDose}}</td>
-                               <td>{{item.onRockOverDose}}</td>
-                               <td></td>
-                               <td>{{item.usedLowDose}}</td>
-                               <td>{{item.usedHighDose}}</td>
-                               <td>{{item.usedOverDose}}</td>
-                               <td></td>
-                               <td>{{item.remainingLowDose}}</td>
-                               <td>{{item.remainingHighDose}}</td>
-                               <td>{{item.remainingOverDose}}</td>
-                               <td></td>
-                           </tr>
-                        </tbody>
-                        </table>
+               
 
+                <!-- Table for Cup Size -->
+                <div v-if="size" class="my-custom-scrollbar" >
+                     <v-data-table :headers="headersForCupSize" :items="cupSizeData" :items-per-page="5" :search="search" class="elevation-3">
+                        <template v-slot:top>
+                            <v-toolbar class="mb-1" color="blue darken-1" dark flat>
+                                <v-toolbar-title class="col pa-3 py-4 white--text">MILK TEA CUP SIZE</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <v-text-field
+                                    v-model="search"
+                                clearable
+                                flat
+                                solo-inverted
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                ></v-text-field>
+                                <v-divider class="mx-4" vertical></v-divider>
+                              <v-btn color="primary"  v-if="size" type="button" class="btn btn-primary btnModal" dark @click="dialogForCupSize = true">+ CUP SIZE</v-btn>
+                            
+                            </v-toolbar>
+                        </template>
+                       
+                          <template v-slot:item.actions="{ item }">
+                        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+                    </template>
+                    </v-data-table>
+                    
                 </div>
 
-                <div v-if="cat" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped categoryTable" id="myTable">
-                        <thead class="thead-light">
-                            <tr class="header">
-                                <th scope="col">#</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template>
-                                <tr v-for="(item, index) in categoryData" :key="index">
-                                    <td scope="row">{{index+1}}</td>
-                                    <td><img :src="item.image"></td>
-                                    <td>{{item.productCategory}}</td>
-                                    <td>
-                                        <div style="text-align: left">
-                                            <button class="btn btn-success" @click="editCategories(item)">Edit</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
+                <!-- Table for Category -->
+                <div v-if="cat">
+                    <v-data-table :headers="headersForCategory" :items="categoryData" :items-per-page="5" :search="search" class="elevation-3">
+                        <template v-slot:top>
+                            <v-toolbar class="mb-1" color="blue darken-1" dark flat>
+                                <v-toolbar-title class="col pa-3 py-4 white--text">MILK TEA CATEGORY</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <v-text-field
+                                    v-model="search"
+                                clearable
+                                flat
+                                solo-inverted
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                ></v-text-field>
+                                <v-divider class="mx-4" vertical></v-divider>
+                               <v-btn color="primary"  v-if="cat" type="button" class="btn btn-primary btnModal" dark @click="dialogForCategory = true">+ CATEGORY</v-btn>
+                            
+                            </v-toolbar>
+                        </template>
+                        <template v-slot:item.image="{ item }">
+                        <v-img :src="item.image" style="width:50px;hieght:50px"></v-img>
+                        </template>
+                         <template v-slot:item.actions="{ item }">
+                        <v-icon small class="mr-2" @click="editCategories(item)">mdi-pencil</v-icon>
+                        <!-- <v-icon small @click="deleteItem(item)">mdi-delete</v-icon> -->
+                    </template>
+                    </v-data-table>
                 </div>
-                <div v-if="prod" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped productTable" id="myTable">
-                        <thead class="thead-light">
-                            <tr class="header">
-                                <th scope="col">#</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Low Dose Price</th>
-                                <th scope="col">High Dose Price</th>
-                                <th scope="col">Over Dose Price</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template>
-                                <tr v-for="(item, index) in productData" :key="index">
-                                    <td scope="row">{{index+1}}</td>
-                                    <td><img :src="item.image"></td>
-                                    <td>{{item.productCategory}}</td>
-                                    <td>{{item.productName}}</td>
-                                    <td>{{item.lowPrice}}</td>
-                                    <td>{{item.highPrice}}</td>
-                                    <td>{{item.overPrice}}</td>
-                                    <td>{{item.status}}</td>
-                                    <td>
-                                        <div style="text-align: left">
-                                            <button class="btn btn-success" @click="editProduct(item)">Edit</button>
-                                            <button v-if="item.status === 'Available'" class="btn btn-warning" style="color: red; display: inline-block;" @click="productStatusUpdate(item.id)">N/A</button>
-                                            <button v-else class="btn btn-warning" style="color: red; display: inline-block;" @click="productStatusAvailable(item.id)">Available</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
+                    
+
+                <!-- Table for product -->
+                <div v-if="prod">
+                    <v-data-table :headers="headersForProduct" :items="productData" :items-per-page="5" :search="search" class="elevation-3">
+                        <template v-slot:top>
+                            <v-toolbar class="mb-1" color="blue darken-1" dark flat>
+                                <v-toolbar-title class="col pa-3 py-4 white--text">MILK TEA PRODUCT</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <v-text-field
+                                    v-model="search"
+                                clearable
+                                flat
+                                solo-inverted
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                ></v-text-field>
+                                <v-divider class="mx-4" vertical></v-divider>
+                                <v-btn v-if="prod" type="button" color="primary" @click="showProduct">+ PRODUCT</v-btn>
+                            
+                            </v-toolbar>
+                        </template>
+                        <template v-slot:item.image="{ item }">
+                        <v-img :src="item.image" style="width:50px;hieght:50px"></v-img>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                            <v-icon small class="mr-2" @click="editProduct(item)">mdi-pencil</v-icon>
+                            <v-icon v-if="item.status === 'Available'" small  @click="productStatusUpdate(item.id)">mdi-window-close</v-icon>
+                            <v-icon v-else class="btn btn-warning"  small @click="productStatusAvailable(item.id)">mdi-check</v-icon>
+                        </template>
+                    </v-data-table>
                 </div>
-                <div v-if="ons" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped addOnsTable" id="myTable">
-                        <thead class="thead-light">
-                            <tr class="header">
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template>
-                                <tr v-for="(item, index) in datas" :key="index">
-                                    <td scope="row">{{index+1}}</td>
-                                    <td>{{item.addons_name}}</td>
-                                    <td>{{item.addons_price}}</td>
-                                    <td>{{item.status}}</td>
-                                    <td>
-                                        <div style="text-align: left">
-                                            <button class="btn btn-success" @click="editAddOns(item)">Edit</button>
-                                            <button v-if="item.status === 'Available'" class="btn btn-warning" style="color: red; display: inline-block;" @click="NAStatusUpdate(item.id)">N/A</button>
-                                            <button v-else class="btn btn-warning" style="color: red; display: inline-block;" @click="availableStatusUpdate(item.id)">Available</button>
-                                        </div>
-                                    </td>
-                                </tr>
+                    
+                   
+                <!-- Table for Add ons -->
+                 <div v-if="ons">
+                     <v-data-table :headers="headersForAddOns" :items="datas" :items-per-page="5" :search="search" class="elevation-3">
+                        <template v-slot:top>
+                            <v-toolbar class="mb-1" color="blue darken-1" dark flat>
+                                <v-toolbar-title class="col pa-3 py-4 white--text">MILK TEA ADDONS</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <v-text-field
+                                    v-model="search"
+                                clearable
+                                flat
+                                solo-inverted
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                ></v-text-field>
+                                <v-divider class="mx-4" vertical></v-divider>
+                               <v-btn color="primary"  v-if="ons" type="button" class="btn btn-primary btnModal" dark @click="dialogForAddOns = true">+ ADD ONS</v-btn>
+                            
+                            </v-toolbar>
+                        </template>
+                         <template v-slot:item.image="{ item }">
+                            <v-img :src="item.image" style="width:50px;hieght:50px"></v-img>
                             </template>
-                        </tbody>
-                    </table>
+                            <template v-slot:item.actions="{ item }">
+                                <v-icon small class="mr-2" @click="editAddOns(item)">mdi-pencil</v-icon>
+                                <v-icon v-if="item.status === 'Available'" small @click="NAStatusUpdate(item.id)">mdi-delete</v-icon>
+                                <v-icon v-else class="btn btn-warning" small  @click="availableStatusUpdate(item.id)">mdi-pencil</v-icon>
+                    </template>
+                    </v-data-table>
                 </div>
-                <div v-if="cup" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped cupTable" id="myTable">
-                        <thead class="thead-light">
-                            <tr class="header">
-                                <th scope="col">#</th>
-                                <th scope="col">Cup Type</th>
-                                <th scope="col">Additional Price</th>
-                                <th scope="col">Cup Quantity</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template>
-                                <tr v-for="(item, index) in cupData" :key="index">
-                                    <td scope="row">{{index+1}}</td>
-                                    <td>{{item.cupTypeName}}</td>
-                                    <td>{{item.cupTypePrice}}</td>
-                                    <td>{{item.cupQuantity}}</td>
-                                    <td>{{item.status}}</td>
-                                    <td>
-                                        <div style="text-align: left">
-                                            <button class="btn btn-success" @click="editCup(item)">Edit</button>
-                                            <button v-if="item.status === 'Available'" class="btn btn-warning" style="color: red; display: inline-block;" @click="NACupUpdate(item.id)">N/A</button>
-                                            <button v-else class="btn btn-warning" style="color: red; display: inline-block;" @click="availableCupUpdate(item.id)">Available</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
+                  
+                <!-- Table for Cup Type -->
+                <div v-if="cup">
+                    <v-data-table  :headers="headersForCupType" :items="cupData" :search="search"  :items-per-page="5" class="elevation-3">
+                        <template v-slot:top>
+                            <v-toolbar class="mb-1" color="blue darken-1" dark flat>
+                                <v-toolbar-title class="col pa-3 py-4 white--text">MILK TEA PRODUCT</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <v-text-field
+                                    v-model="search"
+                                clearable
+                                flat
+                                solo-inverted
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                ></v-text-field>
+                                <v-divider class="mx-4" vertical></v-divider>
+                                  <v-btn color="primary"  v-if="cup" type="button" class="btn btn-primary btnModal" dark @click="dialogForCupType = true">+ CUP TYPE</v-btn>
+                            
+                            </v-toolbar>
+                        </template>
+                           <template v-slot:item.actions="{ item }">
+                                <v-icon small class="mr-2" @click="editCup(item)">mdi-pencil</v-icon>
+                                <v-icon v-if="item.status === 'Available'" small @click="NACupUpdate(item.id)">mdi-delete</v-icon>
+                                <v-icon v-else class="btn btn-warning" small  @click="availableCupUpdate(item.id)">mdi-pencil</v-icon>
+                        </template>
+                    </v-data-table>
+                   
                 </div>
+                       
             </center>
         </div>
         
         <!-- Modal -->
 
-<!-- Modalfor adding cup type -->
-        <div v-if="showCupTypeModal" id="modal" class="blurred-background">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action>
-                            <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                            <div class="form-group">
-                                <label for="cup">Cup Type :</label>
-                                <br>
-                                <input v-model="inputCup" type="text" class="form-control" id="addOns">
-                            </div>
-                            <div class="form-group">
-                                <label for="quantity">Cup Quantity :</label>
-                                <br>
-                                <input v-model="inputCupQuantity" type="number" class="form-control" id="addOns">
-                            </div>
-                            <div class="form-group">
-                                <label for="cupPrice">Additional Price :</label>
-                                <br>
-                                <input v-model="inputCupPrice" type="number" min="1" class="form-control" id="price">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                        <button v-if="btnCupType" type="button" class="btn btn-primary" @click="addingCupType">Add Cup Type</button>
-                        <button v-if="btnEditCupType" type="button" class="btn btn-primary" @click="editingCupType">Edit Cup Type</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- Modalfor adding cup type doNE -->
+    <div>
+        <template>
+        <v-row justify="center">
+            <v-dialog v-model="dialogForCupType" persistent max-width="600px">
+                <v-card>
+                    <v-card-title>
+                    <span class="headline">ADD CUP TYPE</span>
+                    </v-card-title>
+                    <v-card-text>
+                       <v-form>
+                           <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
+                            <v-container>
+                            <v-row>
+                                <v-text-field label="Cup Type Name" outlined dense v-model="inputCup" type="text" id="cupName"></v-text-field>
+                            </v-row>
+                            <v-row>    
+                                <v-text-field label="Quantity" outlined dense v-model="inputCupQuantity" type="number"></v-text-field>
+                            </v-row>  
+                            <v-row>    
+                                <v-text-field label="Quantity Price" outlined dense v-model="inputCupPrice" type="number" min="1"  id="price"></v-text-field> 
+                            </v-row>
+                        </v-container>
+                       </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="dialogForCupType = false"> Close</v-btn>
+                        <v-btn color="blue darken-1" text v-if="dialogForCupType" type="button" class="btn btn-primary" @click="addingCupType">Add Cup Type</v-btn>
+                        <v-btn color="blue darken-1" text  v-if="btnEditCupType" type="button" class="btn btn-primary" @click="editingCupType">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
+    </template>
+    </div>
+    
 
-<!-- Modal for adding addons -->
-        <div v-if="showAddOnsModal" id="modal" class="blurred-background">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action>
-                            <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                            <div class="form-group">
-                                <label for="addOns">Add-ons :</label>
-                                <br>
-                                <input v-model="inputAddOns" type="text" class="form-control" id="addOns">
-                            </div>
-                            <div class="form-group">
-                                <label for="price">Price :</label>
-                                <br>
-                                <input v-model="addOnsPrice" type="number" min="1" class="form-control" id="price">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                        <button v-if="addonsShow" type="button" class="btn btn-primary" @click="addAddOns">Add Add-ons</button>
-                        <button v-if="editAddOnsShow" type="button" class="btn btn-primary" @click="editAddOnsData">Edit Add-ons</button>
-                    </div>    
-                </div>
-            </div>
-        </div>
+<!-- Modal for adding addons  -->
 
+    <div>
+         <template>
+        <v-row justify="center">
+            <v-dialog v-model="dialogForAddOns" persistent max-width="600px">
+                <v-card>
+                    <v-card-title>
+                    <span class="headline">ADD ADD ONS</span>
+                    </v-card-title>
+                    <v-card-text>
+                       <v-form>
+                           <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
+                            <v-container>
+                            <v-row>
+                                <v-text-field label="Add Ons Name" outlined dense v-model="inputAddOns" type="text" id="cupName"></v-text-field>
+                            </v-row>
+                            <v-row>    
+                                <v-text-field label="Addons Price" outlined dense v-model="addOnsPrice" type="number"></v-text-field>
+                            </v-row>  
+                        </v-container>
+                       </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="dialogForAddOns = false"> Close</v-btn>
+                        <v-btn color="blue darken-1" text v-if="dialogForAddOns" type="button" class="btn btn-primary" @click="addAddOns">Add Add Ons</v-btn>
+                        <v-btn color="blue darken-1" text  v-if="editAddOnsShow" type="button" class="btn btn-primary" @click="editAddOnsData">Edt Add Ons</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
+    </template>
+    </div>
+   
+
+   
 <!-- Modal for adding cup size -->
+    <div>
+        <template>
+        <v-row justify="center">
+            <v-dialog v-model="dialogForCupSize" persistent max-width="600px">
+                <v-card>
+                    <v-card-title>
+                    <span class="headline">ADD CUP SIZE</span>
+                    </v-card-title>
+                    <v-card-text>
+                       <v-form>
+                           <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
+                            <v-container>
+                            <v-row>
+                                <v-text-field label="Low Dose Cup" outlined dense v-model="lowDoseCup" type="number"  min=0 id="lowDoseCup"></v-text-field>
+                            </v-row>
+                            <v-row>    
+                                <v-text-field label="High Dose Cup" outlined dense v-model="highDoseCup" type="number" min=0 id="highDoseCup"></v-text-field>
+                            </v-row>  
+                            <v-row>    
+                                <v-text-field label="Over Dose Cup" outlined dense v-model="overDoseCup" type="number" min=0 id="overDoseCup"></v-text-field> 
+                            </v-row>
+                        </v-container>
+                       </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="dialogForCupSize = false"> Close</v-btn>
+                        <v-btn color="blue darken-1" text  type="button" class="btn btn-primary" @click="addingCupSize">Add Cup Size</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
+    </template>
+    </div>
+    
 
-         <div v-if="showCupSizeModal" id="modal" class="blurred-background">
-             <div class="modal-dialog" role="document">
-                <div class="modal-content" id="alert-box3">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                         <form action>
-                    <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                    
-                    <div class="form-group">
-                        <label for="lowDose">Low Dose Cups :</label>
-                        <br>
-                        <input v-model="lowDoseCup" type="number" min="0" class="form-control" id="lowDoseCup">
-                    </div>
-                    <div class="form-group">
-                        <label for="highDose">High Dose Cups :</label>
-                        <br>
-                        <input v-model="highDoseCup" type="number" min="0" class="form-control" id="highDoseCup">
-                    </div>
-                    <div class="form-group">
-                        <label for="lowDose">Over Dose Cups :</label>
-                        <br>
-                        <input v-model="overDoseCup" type="number" min="0" class="form-control" id="overDoseCup">
-                    </div>
-                </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                    <button v-if="cupSizeShow" type="button" class="btn btn-primary" @click="addingCupSize">Add Cup Size</button>
-                    <!-- <button v-if="editAddOnsShow" type="button" class="btn btn-primary" @click="editAddOnsData">Edit Add-ons</button> -->
-
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
 <!-- Modal for adding Product -->
 
+   
         <div v-if="showProductModal" id="modal" class="blurred-background">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog" role="document" style="overflow-y: scroll;max-height:85%;  margin-top: 50px; margin-bottom:50px;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
+                        <h5 class="modal-title">Adding P</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -423,45 +384,61 @@
                         <button v-if="productEdit" type="button" class="btn btn-primary" @click="updateProduct($event)">Edit Product</button>
                  </div>
                 </form>
-            </div>
-        </div>
-    </div>
-        </div>
-        <div v-if="showCategoryModal" id="modal" class="blurred-background">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                         <form @submit="formSubmit" enctype="multipart/form-data" action>
-                            <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                            <div class="form-group">
-                                <label for="addOns">Product Category:</label>
-                                <br>
-                                <input type="text" class="form-control" v-model="productType" required>
-                            </div>
-                            <div class="form-group">
-                                <center>
-                                    <img class="addOnsImage" :src="imageURL"><br>
-                                    <input type="file" class="fileStyle" v-on:change="onImageChange" required><br>
-                                </center>
-                            </div>
-                            <div style="text-align: right">
-                                <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                                <button type="submit" class="btn btn-primary">Add Category</button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
+           
+    
+       
+    <!-- Modal for adding category hide -->
+    <div>
+          <template>``
+        <v-row justify="center">
+            <v-dialog v-model="dialogForCategory" persistent max-width="600px">
+                <v-card>
+                    <v-card-title>
+                    <span class="headline">ADDING PRODUCT CATEGORY</span>
+                    </v-card-title>
+                    <v-card-text>
+                       <v-form @submit="formSubmit" enctype="multipart/form-data" action>
+                            <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
+                            <v-container>
+                                <v-row>
+                                    <v-text-field label="Cup Type Name" outlined dense v-model="productType" type="text" required></v-text-field>
+                                </v-row>
+                                <v-row>
+                                <center>
+                                        <v-img class="addOnsImage" :src="imageURL"></v-img><br>
+                                        <input type="file" class="fileStyle" v-on:change="onImageChange" required><br>
+                                </center>
+                                </v-row>  
+                            </v-container>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="dialogForCategory = false"> Close</v-btn>
+                                    <v-btn color="blue darken-1" text  type="submit" class="btn btn-primary">Add Category</v-btn>
+                                </v-card-actions>
+                       </v-form>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
+        </v-row>
+    </template>
     </div>
+  
+``
+
+
+
+    </div>
+    </div>
+
 </template>
 <style scoped>
+.v-input__slot {
+    margin-bottom: -35px;
+
+}
 .errorColor{
     color: red;
 }
@@ -516,6 +493,10 @@ img{
 hr{
     border: 1px solid gray;
 }
+th{
+    text-align:center;
+    font-size:30px;
+}
 label{
     font-size: 20px !important;
 }
@@ -530,7 +511,14 @@ label{
     text-align: center;
     background: rgb(54, 54, 54, .7);
 }
-#alert-box {
+.table{
+    width:90%;
+    margin-top:60px;
+
+}
+.searchInput{
+    width:50%
+}#alert-box {
     width: 400px;
     background: white;
     display: inline-block;
@@ -648,6 +636,7 @@ export default {
             btnEditCupType: false,
             inputCupPrice: null,
             inputCup: null,
+            inputCupQuantity:null,
             cupStatus: null,
             idCup: null,
             cupData: null,
@@ -668,6 +657,60 @@ export default {
             highDoseCup:null,
             overDoseCup:null,
             cupSizeData:null,
+            search:null,
+            dialogForCupType:false,
+            dialogForCategory:false,
+            dialogForAddOns:false,
+            dialogForCupSize:false,
+
+            headersForAddOns:[
+                {text:'Id',value:'id'},
+                {text:'Add Ons Name',value:'addons_name'},
+                {text:'Add Ons Price',value:'addons_price'},
+                {text:'Status',value:'status'},
+                {text: 'ACTION',value:'actions',sortable:false}
+
+
+            ],
+            headersForCupType:[
+                {text:'#', value: 'id' },
+                {text:'Cup Type', value: 'cupTypeName' },
+                {text:'Additional Price', value: 'cupTypePrice' },
+                {text:'Cup Quantity', value: 'cupQuantity' },
+                {text:'Status', value: 'status' },
+                {text: 'ACTION',value:'actions',sortable:false}
+                
+
+            ],
+            headersForCategory:[
+                {text:'#', value: 'id'},
+                {text:'images', value: 'image'},
+                {text:'Product Category', value: 'productCategory'},
+                {text: 'ACTION',value:'actions',sortable:false}
+
+            ],
+            
+            headersForProduct:[
+                {text:'#', value: 'id'},
+                {text:'images', value: 'image' },
+                {text:'Product Name', value: 'productName'},
+                {text:'Product Category', value: 'productCategory'},
+                {text:'Low Dose Price', value: 'lowPrice'},
+                {text:'High Dose Price', value: 'highPrice'},
+                {text:'Over Dose Price', value: 'overPrice'},
+                {text:'Status', value: 'status' },
+                {text: 'ACTION',value:'actions',sortable:false}
+            ],
+            headersForCupSize:[
+                {text:'Date', value:'created_at'},
+                {text:'Low Dose Cup', value:'incomingLowDose'},
+                {text:'High Dose Cup', value:'incomingHighDose'},
+                {text:'Over Dose Cup', value:'incomingOverDose'},
+                {text:'Total IncomingCup', value:'incomingOverDose'+ ''},
+
+
+
+            ]
         };
     },
     mounted() {
@@ -713,6 +756,14 @@ export default {
             this.$axios.post(AUTH.url + "retrieveCupSize").then(response => {
                this.cupSizeData = response.data.quantityCupsInDB
 
+            response.data.quantityCupsInDB.forEach( element => {
+                console.log(element.incomingLowDose)
+
+            })
+
+                    let totalCup =  response.data.quantityCupsInDB.incomingOverDose
+                    console.log(totalCup);
+
                 
                    
                 
@@ -728,7 +779,7 @@ export default {
                 };
                 this.$axios.post(AUTH.url + "addingCupType", param).then(response => {
                     this.retrieveCupType()
-                    this.hide()
+                    this.dialogForCupType = false
                 });
             }else{
                 this.errorMessage = 'All fields are required!'
@@ -864,10 +915,10 @@ export default {
                 formData.append('productCategory', this.prodType)
                 formData.append('productName', this.productName)
                 formData.append('lowPrice', this.lowPrice)
-                formData.append('higPrice', this.higPrice)
+                formData.append('highPrice', this.highPrice)
                 formData.append('overPrice', this.overPrice)
                 formData.append('onlinelowPrice', this.onlinelowPrice)
-                formData.append('onlinehigPrice', this.onlinehigPrice)
+                formData.append('onlinehighPrice', this.onlinehighPrice)
                 formData.append('onlineoverPrice', this.onlineoverPrice)
                 axios.post('/updateProduct', formData, config)
                 .then(function (response) {
@@ -924,6 +975,9 @@ export default {
                     currentObj.retrieveCategories()
                     currentObj.retrieveProducts()
                     currentObj.hide()
+                    this.dialogForCategory=false
+
+                    
                 })
                 .catch(function (error) {
                     currentObj.output = error;
@@ -1091,7 +1145,7 @@ export default {
                 };
                 this.$axios.post(AUTH.url + "addingAddOns", param).then(response => {
                     this.retrieveAddOns()
-                    this.hide()
+                    this.dialogForAddOns=false
                 });
             }else{
                 this.errorMessage = 'All fields are required!'

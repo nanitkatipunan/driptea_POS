@@ -277,7 +277,7 @@ export default {
                         id: res.data.storeCheckouts.id,
                     }
                     this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
-                        console.log(response.data.storeOrder[0])
+                        // console.log(response.data.storeOrder[0])
                         this.receiptData = response.data.storeOrder[0]
                         this.receiptShow = true
                         // this.retrieveProduct()

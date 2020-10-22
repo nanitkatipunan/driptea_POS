@@ -88,7 +88,7 @@ p{
 import ROUTER from '../router'
 import AUTH from '../services/auth'
 import image from '../../assets/logo.png'
-import { validate } from 'json-schema';
+// import { validate } from 'json-schema';
 export default {
     name: "app",
     data(){
@@ -108,8 +108,8 @@ export default {
             ROUTER.push(route).catch(()=>{})
         },
         login(){
-            validate('userName')
-            validate('password')
+            this.validate('userName')
+            this.validate('password')
             let parameter = {
                 name: this.userName,
                 password: this.password,

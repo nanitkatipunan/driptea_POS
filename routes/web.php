@@ -57,9 +57,13 @@ Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@r
 Route::post('addIncomingCups','App\Http\Controllers\QuantityCupsController@addIncomingCups');
 Route::post('retrieveCupSize','App\Http\Controllers\QuantityCupsController@retrieveCupSize');
 
+Route::post('retrieveCupToDisplay','App\Http\Controllers\QuantityCupsController@retrieveCupToDisplay');
+
+
 
 
 Route::post('retrieveYear','App\Http\Controllers\StoreCheckoutsController@retrieveYear');
+
 
 //SalesInventory
 
