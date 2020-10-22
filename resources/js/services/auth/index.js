@@ -26,9 +26,12 @@ export default {
                 if(res.data.user.account_type.toUpperCase() === 'ADMIN'){
                     this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
                     ROUTER.push('/addProductCategoryAddOns')
-                }else{
+                }else if(res.data.user.account_type.toUpperCase() === 'CASHIER'){
                     this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
                     ROUTER.push('/casherDashboard')
+                }else{
+                    this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
+                    ROUTER.push('/onlineDashboard')
                 }
             })
             return true
@@ -39,8 +42,10 @@ export default {
     setUser(cashierId, fullname, userType) {
         if(userType.toUpperCase() === 'ADMIN'){
             localStorage.setItem('adminId', cashierId)
-        }else{
+        }else if(userType.toUpperCase() === 'CASHIER'){
             localStorage.setItem('cashierId', cashierId)
+        }else{
+            localStorage.setItem('customerId', cashierId)
         }
         this.user.cashierId = cashierId
         this.user.fullname = fullname

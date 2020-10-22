@@ -87,9 +87,9 @@
                                 <center>
                                     <img class="imageSize2" :src="image">
                                     <div><br>
-                                        <h3>(₱ {{price}})</h3>
+                                        <h3>Base Price (₱{{price}})</h3>
                                         <h3>{{productName}}</h3>
-                                        <p class="productDescription">Description</p>
+                                        <p class="productDescription">{{description}}</p>
                                     </div>
                                 </center>
                             </div>
@@ -97,21 +97,21 @@
                                 <div class="modalDiv">
                                     <form>
                                         <div class="form-group">
-                                            <label for="size" style="font-size: 15px; font-weight: bold">Size : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                            <select class="form-control" v-model="size">
-                                                <option value="lowDose">Low Dose</option>
+                                            <label for="size" style="font-size: 15px; font-weight: bold">Size :</label>
+                                            <select class="form-control" v-model="size" @change="getSizePrice()">
+                                                <option value="lowDose" selected>Low Dose</option>
                                                 <option value="highDose">High Dose</option>
                                                 <option value="overDose">Over Dose</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="cupType" style="font-size: 15px; font-weight: bold">Cup Type : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                            <select class="form-control" v-model="cupType">
-                                                <option v-for="(item, index) in cupData" :key="index" :value="item.cupTypeName">{{item.cupTypeName}}</option>
+                                            <label for="cupType" style="font-size: 15px; font-weight: bold">Cup Type :</label>
+                                            <select class="form-control" v-model="cupType" @change="getCupPrice()">
+                                                <option v-for="(item, index) in cupData" :key="index" :value="item.cupTypeName">{{item.cupTypeName}} (+ ₱{{item.inputCupOnlinePrice}})</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="sugarLevel" style="font-size: 15px; font-weight: bold">Sugar Level: &nbsp;&nbsp;</label>
+                                            <label for="sugarLevel" style="font-size: 15px; font-weight: bold">Sugar Level:</label>
                                             <select class="form-control" v-model="sugarLevel">
                                                 <option value="extra">100%(Normal Sugar)</option>
                                                 <option value="normal">75%(Three fourth Sugar)</option>
@@ -124,8 +124,8 @@
                                             <label for="size" style="font-size: 15px; font-weight: bold">Add&nbsp;Ons(Optional):</label><br>
                                             <div class="checkboxStyle">
                                                 <div v-for="(item, index) in addOnsData" :key="index">
-                                                    <input type="checkbox" :id="item.addons_name" :value="item.addons_name" v-model="addOns" @click="addTotalPrice($event)">
-                                                    <label :for="item.addons_name">{{item.addons_name}}</label><br>
+                                                    <input type="checkbox" :id="item.addons_name" :value="item.addons_name" v-model="addOns" @click="addTotalPrice(item, $event)">
+                                                    <label :for="item.addons_name">{{item.addons_name}} (+ ₱{{item.onlineAddOnsPrice}})</label><br>
                                                 </div>
                                                 <!-- <input type="checkbox" id="coffeeJelly" value="coffeeJelly" v-model="addOns" @click="addTotalPrice($event)">
                                                 <label for="coffeeJelly">Coffee Jelly</label><br>
@@ -146,13 +146,13 @@
                         <center>
                             <div style="text-align: center;">
                                 <label for="quantity" style="font-size: 15px; font-weight: bold; display: inline;">Quantity:</label>
-                                <input v-model="quantity" type="number" @change="addQuantity" min="1" style="width:100px; display: inline;" class="form-control">
+                                <input v-model="quantity" type="number" min="1" style="width:100px; display: inline;" class="form-control" @change="getQuantity()">
                             </div>
                         </center>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal" @click="cancel">Cancel</button>
-                        <center><button type="submit" class="btn btn-success btnRegister" @click="addToCart">Add to Cart - Php price</button></center>                        
+                        <center><button type="submit" class="btn btn-success btnRegister" @click="addToCart()">Add to Cart - {{priceShown}}</button></center>                        
                     </div>
                 </div>
             </div>
@@ -210,6 +210,7 @@
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
+import $ from 'jquery'
 // import image from '../../../assets/home.jpeg'
 export default {
     data(){
@@ -218,15 +219,24 @@ export default {
             productData: null,
             image: null,
             success: null,
-            size: null,
+            size: 'lowDose',
             cupType: null,
             sugarLevel: null,
             addOns: [],
-            quantity: null,
+            quantity: 1,
             productName: null,
             price: null,
+            highprice: null,
+            overprice: null,
             addOnsData: null,
-            cupData: null
+            cupData: null,
+            total: 0,
+            description: null,
+            addOnsPrice: 0,
+            totalAddOns: 0,
+            totalPrice: 0,
+            cupTypePrice: 0,
+            priceShown: 0
         }
     },
     mounted(){
@@ -236,6 +246,25 @@ export default {
         this.retrieveCupType()
     },
     methods: {
+        getSizePrice(){
+            if(this.size === 'highDose'){
+                this.total = this.highprice
+            }else if(this.size === 'overDose'){
+                this.total = this.overprice
+            }else if(this.size === 'lowDose'){
+                this.total = this.price
+            }
+            this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
+        },
+        getCupPrice(){
+            this.$axios.post(AUTH.url + 'retrieveOneCupType', {cupType: this.cupType}).then(res => {
+                this.cupTypePrice = res.data.cupType[0].inputCupOnlinePrice
+                this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
+            })
+        },
+        getQuantity(){
+            this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
+        },
         retrieveCupType(){
             this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
                 this.cupData = response.data.cupType
@@ -259,28 +288,22 @@ export default {
                 this.productData = res.data.product
             })
         },
-        addTotalPrice(event){
-            if(event.target.checked){
-                this.totalPrice += 20
-                this.mainPrice += 20
-            }else{
-                this.mainPrice -= 20
-                this.totalPrice -= 20
-            }
-            this.addQuantity()
-        },
-        addQuantity(){
-            let pr = 0
-            for (let i = 1; i <= this.quantity; i++) {
-                pr += this.totalPrice
-            }
-            this.mainPrice = pr
+        addTotalPrice(item, event){
+            this.$axios.post(AUTH.url + "retrieveOneAddOn", {id: item.id}).then(response => {
+                this.addOnsPrice = response.data.addons.onlineAddOnsPrice
+                if(event.target.checked){
+                    this.totalAddOns += this.addOnsPrice
+                }else{
+                    this.totalAddOns -= this.addOnsPrice
+                }
+                this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
+            })
         },
         addToCart(){
             if(this.quantity <= 0){
                 this.errorMessage3 = 'quantity must be greater than 0!'
             }
-            if(this.cupSize === null){
+            if(this.size === null){
                 this.errorMessage = 'cup size is required!'
             }
             if(this.sugarLevel === null){
@@ -289,32 +312,47 @@ export default {
             if(this.cupType === null){
                 this.errorMessage1 = 'cup type is required!'
             }
-            if(this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null){
+            if(this.quantity > 0 && this.size !== null && this.sugarLevel !== null && this.cupType !== null){
                 let parameter = {
                     customerId: localStorage.getItem('customerId'),
                     productId: this.itemId,
                     quantity: this.quantity,
-                    size: this.cupSize,
+                    size: this.size,
                     sugarLevel: this.sugarLevel,
                     choosenPrice: this.total,
                     cupType: this.cupType,
-                    status: 'pending',
+                    status: 'incart',
                     addOns: this.addOns,
-                    subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
+                    subTotal: this.priceShown
                 }
+                console.log(parameter)
                 this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
-                    ROUTER.push('/productCategory/'+localStorage.getItem('customerType')).catch(()=>{})
+                    console.log(response.data.order)
+                    $('#viewDetails').modal('hide')
                 })
             }
         },
         cancel(){
-            // this.sinkers = []
             this.addOns = []
         },
         showModal(item){
+            this.size = 'lowDose'
+            this.sugarLevel = null
+            this.cupType = null
+            this.addOns = []
+            this.quantity = 1
+            this.total = 0
+            this.totalAddOns = 0
+            this.cupTypePrice = 0
             this.price = item.onlinelowPrice
+            this.highprice = item.onlinehighPrice
+            this.overprice = item.onlineoverPrice
             this.productName = item.productName
             this.image = item.image
+            this.description = item.description
+            this.itemId = item.id
+            this.getSizePrice()
+
         }
     }
 }

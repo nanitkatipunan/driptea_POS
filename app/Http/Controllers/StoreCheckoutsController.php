@@ -53,6 +53,10 @@ class StoreCheckoutsController extends Controller
         return response()->json(compact('storeOrder'));
     }
     
+    public function retrieveAllCheckouts(Request $request){
+        $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('deleted_at', null)->get()->groupBy('storeCheckoutsId');
+        return response()->json(compact('storeOrder'));
+    }
 
     public function retrieveYear(Request $request){
        

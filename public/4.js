@@ -11,6 +11,8 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/auth */ "./resources/js/services/auth/index.js");
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../router */ "./resources/js/router/index.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery */ "../../../node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
@@ -220,6 +222,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
  // import image from '../../../assets/home.jpeg'
 
@@ -230,15 +233,24 @@ __webpack_require__.r(__webpack_exports__);
       productData: null,
       image: null,
       success: null,
-      size: null,
+      size: 'lowDose',
       cupType: null,
       sugarLevel: null,
       addOns: [],
-      quantity: null,
+      quantity: 1,
       productName: null,
       price: null,
+      highprice: null,
+      overprice: null,
       addOnsData: null,
-      cupData: null
+      cupData: null,
+      total: 0,
+      description: null,
+      addOnsPrice: 0,
+      totalAddOns: 0,
+      totalPrice: 0,
+      cupTypePrice: 0,
+      priceShown: 0
     };
   },
   mounted: function mounted() {
@@ -248,63 +260,84 @@ __webpack_require__.r(__webpack_exports__);
     this.retrieveCupType();
   },
   methods: {
-    retrieveCupType: function retrieveCupType() {
+    getSizePrice: function getSizePrice() {
+      if (this.size === 'highDose') {
+        this.total = this.highprice;
+      } else if (this.size === 'overDose') {
+        this.total = this.overprice;
+      } else if (this.size === 'lowDose') {
+        this.total = this.price;
+      }
+
+      this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice);
+    },
+    getCupPrice: function getCupPrice() {
       var _this = this;
 
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOneCupType', {
+        cupType: this.cupType
+      }).then(function (res) {
+        _this.cupTypePrice = res.data.cupType[0].inputCupOnlinePrice;
+        _this.priceShown = _this.quantity * (_this.total + _this.totalAddOns + _this.cupTypePrice);
+      });
+    },
+    getQuantity: function getQuantity() {
+      this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice);
+    },
+    retrieveCupType: function retrieveCupType() {
+      var _this2 = this;
+
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupType").then(function (response) {
-        _this.cupData = response.data.cupType;
+        _this2.cupData = response.data.cupType;
       });
     },
     retrieveAddOns: function retrieveAddOns() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrievingAddOns").then(function (response) {
-        _this2.addOnsData = response.data.addons;
+        _this3.addOnsData = response.data.addons;
       });
     },
     retrieveCategory: function retrieveCategory() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCategoryAscending').then(function (res) {
-        _this3.data = res.data.addCategory;
+        _this4.data = res.data.addCategory;
       });
     },
     redirect: function redirect(param) {
       _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productOnline/' + param)["catch"](function () {});
     },
     retrieveProduct: function retrieveProduct() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveAllProductAscending').then(function (res) {
-        _this4.productData = res.data.product;
+        _this5.productData = res.data.product;
       });
     },
-    addTotalPrice: function addTotalPrice(event) {
-      if (event.target.checked) {
-        this.totalPrice += 20;
-        this.mainPrice += 20;
-      } else {
-        this.mainPrice -= 20;
-        this.totalPrice -= 20;
-      }
+    addTotalPrice: function addTotalPrice(item, event) {
+      var _this6 = this;
 
-      this.addQuantity();
-    },
-    addQuantity: function addQuantity() {
-      var pr = 0;
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveOneAddOn", {
+        id: item.id
+      }).then(function (response) {
+        _this6.addOnsPrice = response.data.addons.onlineAddOnsPrice;
 
-      for (var i = 1; i <= this.quantity; i++) {
-        pr += this.totalPrice;
-      }
+        if (event.target.checked) {
+          _this6.totalAddOns += _this6.addOnsPrice;
+        } else {
+          _this6.totalAddOns -= _this6.addOnsPrice;
+        }
 
-      this.mainPrice = pr;
+        _this6.priceShown = _this6.quantity * (_this6.total + _this6.totalAddOns + _this6.cupTypePrice);
+      });
     },
     addToCart: function addToCart() {
       if (this.quantity <= 0) {
         this.errorMessage3 = 'quantity must be greater than 0!';
       }
 
-      if (this.cupSize === null) {
+      if (this.size === null) {
         this.errorMessage = 'cup size is required!';
       }
 
@@ -316,32 +349,46 @@ __webpack_require__.r(__webpack_exports__);
         this.errorMessage1 = 'cup type is required!';
       }
 
-      if (this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null) {
+      if (this.quantity > 0 && this.size !== null && this.sugarLevel !== null && this.cupType !== null) {
         var parameter = {
           customerId: localStorage.getItem('customerId'),
           productId: this.itemId,
           quantity: this.quantity,
-          size: this.cupSize,
+          size: this.size,
           sugarLevel: this.sugarLevel,
           choosenPrice: this.total,
           cupType: this.cupType,
-          status: 'pending',
+          status: 'incart',
           addOns: this.addOns,
-          subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
+          subTotal: this.priceShown
         };
+        console.log(parameter);
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
-          _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + localStorage.getItem('customerType'))["catch"](function () {});
+          console.log(response.data.order);
+          jquery__WEBPACK_IMPORTED_MODULE_2___default()('#viewDetails').modal('hide');
         });
       }
     },
     cancel: function cancel() {
-      // this.sinkers = []
       this.addOns = [];
     },
     showModal: function showModal(item) {
+      this.size = 'lowDose';
+      this.sugarLevel = null;
+      this.cupType = null;
+      this.addOns = [];
+      this.quantity = 1;
+      this.total = 0;
+      this.totalAddOns = 0;
+      this.cupTypePrice = 0;
       this.price = item.onlinelowPrice;
+      this.highprice = item.onlinehighPrice;
+      this.overprice = item.onlineoverPrice;
       this.productName = item.productName;
       this.image = item.image;
+      this.description = item.description;
+      this.itemId = item.id;
+      this.getSizePrice();
     }
   }
 });
@@ -602,12 +649,14 @@ var render = function() {
                           _c("div", [
                             _c("br"),
                             _vm._v(" "),
-                            _c("h3", [_vm._v("(₱ " + _vm._s(_vm.price) + ")")]),
+                            _c("h3", [
+                              _vm._v("Base Price (₱" + _vm._s(_vm.price) + ")")
+                            ]),
                             _vm._v(" "),
                             _c("h3", [_vm._v(_vm._s(_vm.productName))]),
                             _vm._v(" "),
                             _c("p", { staticClass: "productDescription" }, [
-                              _vm._v("Description")
+                              _vm._v(_vm._s(_vm.description))
                             ])
                           ])
                         ])
@@ -628,7 +677,7 @@ var render = function() {
                                 },
                                 attrs: { for: "size" }
                               },
-                              [_vm._v("Size :               ")]
+                              [_vm._v("Size :")]
                             ),
                             _vm._v(" "),
                             _c(
@@ -644,26 +693,35 @@ var render = function() {
                                 ],
                                 staticClass: "form-control",
                                 on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.size = $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  }
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.size = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                    function($event) {
+                                      return _vm.getSizePrice()
+                                    }
+                                  ]
                                 }
                               },
                               [
-                                _c("option", { attrs: { value: "lowDose" } }, [
-                                  _vm._v("Low Dose")
-                                ]),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "lowDose", selected: "" } },
+                                  [_vm._v("Low Dose")]
+                                ),
                                 _vm._v(" "),
                                 _c("option", { attrs: { value: "highDose" } }, [
                                   _vm._v("High Dose")
@@ -686,7 +744,7 @@ var render = function() {
                                 },
                                 attrs: { for: "cupType" }
                               },
-                              [_vm._v("Cup Type :               ")]
+                              [_vm._v("Cup Type :")]
                             ),
                             _vm._v(" "),
                             _c(
@@ -702,20 +760,27 @@ var render = function() {
                                 ],
                                 staticClass: "form-control",
                                 on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.cupType = $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  }
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.cupType = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                    function($event) {
+                                      return _vm.getCupPrice()
+                                    }
+                                  ]
                                 }
                               },
                               _vm._l(_vm.cupData, function(item, index) {
@@ -725,7 +790,14 @@ var render = function() {
                                     key: index,
                                     domProps: { value: item.cupTypeName }
                                   },
-                                  [_vm._v(_vm._s(item.cupTypeName))]
+                                  [
+                                    _vm._v(
+                                      _vm._s(item.cupTypeName) +
+                                        " (+ ₱" +
+                                        _vm._s(item.inputCupOnlinePrice) +
+                                        ")"
+                                    )
+                                  ]
                                 )
                               }),
                               0
@@ -742,7 +814,7 @@ var render = function() {
                                 },
                                 attrs: { for: "sugarLevel" }
                               },
-                              [_vm._v("Sugar Level:   ")]
+                              [_vm._v("Sugar Level:")]
                             ),
                             _vm._v(" "),
                             _c(
@@ -839,7 +911,7 @@ var render = function() {
                                     },
                                     on: {
                                       click: function($event) {
-                                        return _vm.addTotalPrice($event)
+                                        return _vm.addTotalPrice(item, $event)
                                       },
                                       change: function($event) {
                                         var $$a = _vm.addOns,
@@ -867,7 +939,14 @@ var render = function() {
                                   _c(
                                     "label",
                                     { attrs: { for: item.addons_name } },
-                                    [_vm._v(_vm._s(item.addons_name))]
+                                    [
+                                      _vm._v(
+                                        _vm._s(item.addons_name) +
+                                          " (+ ₱" +
+                                          _vm._s(item.onlineAddOnsPrice) +
+                                          ")"
+                                      )
+                                    ]
                                   ),
                                   _c("br")
                                 ])
@@ -909,7 +988,9 @@ var render = function() {
                         attrs: { type: "number", min: "1" },
                         domProps: { value: _vm.quantity },
                         on: {
-                          change: _vm.addQuantity,
+                          change: function($event) {
+                            return _vm.getQuantity()
+                          },
                           input: function($event) {
                             if ($event.target.composing) {
                               return
@@ -944,9 +1025,13 @@ var render = function() {
                       {
                         staticClass: "btn btn-success btnRegister",
                         attrs: { type: "submit" },
-                        on: { click: _vm.addToCart }
+                        on: {
+                          click: function($event) {
+                            return _vm.addToCart()
+                          }
+                        }
                       },
-                      [_vm._v("Add to Cart - Php price")]
+                      [_vm._v("Add to Cart - " + _vm._s(_vm.priceShown))]
                     )
                   ])
                 ],
