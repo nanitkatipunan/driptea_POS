@@ -38,7 +38,7 @@
                 </div>
             </div>
             <center>
-                <button class="btn addCart" @click="addToCart">Add to Cart</button>
+                <button class="btn addCart" @click="addToCart()">Add to Cart</button>
             </center>
         </center>
     </div>
@@ -51,7 +51,7 @@
     /* margin-top: 20% !important; */
     width: 300px !important;
     height: 45px !important;
-    margin-top: -150px !important;
+    /* margin-top: -150px !important; */
     background-color: #11c408 !important;
 }
 .quantity{
@@ -72,7 +72,7 @@
 }
 .row{
     width: 90%;
-    height: 650px;
+    /* height: 650px; */
     overflow-y: scroll;
     margin-top: 3%;
     /* background-color: white; */
@@ -273,6 +273,7 @@ export default {
             });
         },
         addToCart(){
+            console.log('add')
             if(this.quantity <= 0){
                 this.errorMessage3 = 'quantity must be greater than 0!'
             }
@@ -286,6 +287,7 @@ export default {
                 this.errorMessage1 = 'cup type is required!'
             }
             if(this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null){
+                console.log('sulod')
                 let parameter = {
                     customerId: localStorage.getItem('customerId'),
                     cashierId: localStorage.getItem('cashierId'),

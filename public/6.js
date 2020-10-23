@@ -321,6 +321,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addToCart: function addToCart() {
+      console.log('add');
+
       if (this.quantity <= 0) {
         this.errorMessage3 = 'quantity must be greater than 0!';
       }
@@ -338,6 +340,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null) {
+        console.log('sulod');
         var parameter = {
           customerId: localStorage.getItem('customerId'),
           cashierId: localStorage.getItem('cashierId'),
@@ -373,7 +376,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.errorColor[data-v-766d0737]{\r\n    color: red;\n}\n.addCart[data-v-766d0737]{\r\n    /* margin-top: 20% !important; */\r\n    width: 300px !important;\r\n    height: 45px !important;\r\n    margin-top: -150px !important;\r\n    background-color: #11c408 !important;\n}\n.quantity[data-v-766d0737]{\r\n    margin-top: 9%;\r\n    margin-bottom: 5%;\n}\n.form-control[data-v-766d0737]{\r\n    text-align: center;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\n}\n[data-v-766d0737]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.cupType[data-v-766d0737]{\r\n    margin-top: 25%;\n}\n.row[data-v-766d0737]{\r\n    width: 90%;\r\n    height: 650px;\r\n    overflow-y: scroll;\r\n    margin-top: 3%;\r\n    /* background-color: white; */\n}\n.btn[data-v-766d0737]{\r\n    margin-top: 5%;\r\n    width: 35px;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\r\n    background-color: #edf0ee;\n}\n.sudlanan[data-v-766d0737]{\r\n    background-color: black;\r\n    height: 92.8vh;\r\n    overflow: hidden;\r\n    color:white;\r\n    font-family: Roboto Slab;\n}\n.color[data-v-766d0737]{\r\n    background: #89AFE8;\n}\n.normalColor[data-v-766d0737]{\r\n    background: #edf0ee;\n}\r\n", ""]);
+exports.push([module.i, "\n.errorColor[data-v-766d0737]{\r\n    color: red;\n}\n.addCart[data-v-766d0737]{\r\n    /* margin-top: 20% !important; */\r\n    width: 300px !important;\r\n    height: 45px !important;\r\n    /* margin-top: -150px !important; */\r\n    background-color: #11c408 !important;\n}\n.quantity[data-v-766d0737]{\r\n    margin-top: 9%;\r\n    margin-bottom: 5%;\n}\n.form-control[data-v-766d0737]{\r\n    text-align: center;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\n}\n[data-v-766d0737]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.cupType[data-v-766d0737]{\r\n    margin-top: 25%;\n}\n.row[data-v-766d0737]{\r\n    width: 90%;\r\n    /* height: 650px; */\r\n    overflow-y: scroll;\r\n    margin-top: 3%;\r\n    /* background-color: white; */\n}\n.btn[data-v-766d0737]{\r\n    margin-top: 5%;\r\n    width: 35px;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\r\n    background-color: #edf0ee;\n}\n.sudlanan[data-v-766d0737]{\r\n    background-color: black;\r\n    height: 92.8vh;\r\n    overflow: hidden;\r\n    color:white;\r\n    font-family: Roboto Slab;\n}\n.color[data-v-766d0737]{\r\n    background: #89AFE8;\n}\n.normalColor[data-v-766d0737]{\r\n    background: #edf0ee;\n}\r\n", ""]);
 
 // exports
 
@@ -830,7 +833,14 @@ var render = function() {
           _c("center", [
             _c(
               "button",
-              { staticClass: "btn addCart", on: { click: _vm.addToCart } },
+              {
+                staticClass: "btn addCart",
+                on: {
+                  click: function($event) {
+                    return _vm.addToCart()
+                  }
+                }
+              },
               [_vm._v("Add to Cart")]
             )
           ])
