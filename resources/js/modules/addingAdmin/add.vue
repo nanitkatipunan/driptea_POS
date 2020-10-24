@@ -110,6 +110,7 @@
                                 <th scope="col">Image</th>
                                 <th scope="col">Category</th>
                                 <th scope="col">Name</th>
+                                <th scope="col">Description</th>
                                 <th scope="col">Low Dose Price</th>
                                 <th scope="col">High Dose Price</th>
                                 <th scope="col">Over Dose Price</th>
@@ -124,6 +125,7 @@
                                     <td><img :src="item.image"></td>
                                     <td>{{item.productCategory}}</td>
                                     <td>{{item.productName}}</td>
+                                    <td>{{item.description}}</td>
                                     <td>{{item.lowPrice}}</td>
                                     <td>{{item.highPrice}}</td>
                                     <td>{{item.overPrice}}</td>
@@ -146,7 +148,8 @@
                             <tr class="header">
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Price</th>
+                                <th scope="col">Normal Price</th>
+                                <th scope="col">Online Price</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -157,6 +160,7 @@
                                     <td scope="row">{{index+1}}</td>
                                     <td>{{item.addons_name}}</td>
                                     <td>{{item.addons_price}}</td>
+                                    <td>{{item.onlineAddOnsPrice}}</td>
                                     <td>{{item.status}}</td>
                                     <td>
                                         <div style="text-align: left">
@@ -177,7 +181,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Cup Type</th>
                                 <th scope="col">Additional Price</th>
-                                <th scope="col">Cup Quantity</th>
+                                <th scope="col">Additional Online Price</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -188,7 +192,7 @@
                                     <td scope="row">{{index+1}}</td>
                                     <td>{{item.cupTypeName}}</td>
                                     <td>{{item.cupTypePrice}}</td>
-                                    <td>{{item.cupQuantity}}</td>
+                                    <td>{{item.inputCupOnlinePrice}}</td>
                                     <td>{{item.status}}</td>
                                     <td>
                                         <div style="text-align: left">
@@ -207,17 +211,17 @@
         
         <!-- Modal -->
 
-<!-- Modalfor adding cup type -->
+        <!-- Modalfor adding cup type -->
         <div v-if="showCupTypeModal" id="modal" class="blurred-background">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <!-- <h5 class="modal-title">Modal title</h5> -->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hide()">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="text-align: left">
                         <form action>
                             <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
                             <div class="form-group">
@@ -226,14 +230,14 @@
                                 <input v-model="inputCup" type="text" class="form-control" id="addOns">
                             </div>
                             <div class="form-group">
-                                <label for="quantity">Cup Quantity :</label>
-                                <br>
-                                <input v-model="inputCupQuantity" type="number" class="form-control" id="addOns">
-                            </div>
-                            <div class="form-group">
                                 <label for="cupPrice">Additional Price :</label>
                                 <br>
                                 <input v-model="inputCupPrice" type="number" min="1" class="form-control" id="price">
+                            </div>
+                            <div class="form-group">
+                                <label for="cupOnlinePrice">Additional Online Price :</label>
+                                <br>
+                                <input v-model="inputCupOnlinePrice" type="number" min="1" class="form-control" id="onlineCupPrice">
                             </div>
                         </form>
                     </div>
@@ -246,17 +250,17 @@
             </div>
         </div>
 
-<!-- Modal for adding addons -->
+        <!-- Modal for adding addons -->
         <div v-if="showAddOnsModal" id="modal" class="blurred-background">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <!-- <h5 class="modal-title">Modal title</h5> -->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hide()">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="text-align: left">
                         <form action>
                             <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
                             <div class="form-group">
@@ -269,6 +273,11 @@
                                 <br>
                                 <input v-model="addOnsPrice" type="number" min="1" class="form-control" id="price">
                             </div>
+                            <div class="form-group">
+                                <label for="onlineAddOnsPrice">Online Price :</label>
+                                <br>
+                                <input v-model="onlineAddOnsPrice" type="number" min="1" class="form-control" id="onlineAddOnsPrice">
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -280,14 +289,13 @@
             </div>
         </div>
 
-<!-- Modal for adding cup size -->
-
+        <!-- Modal for adding cup size -->
          <div v-if="showCupSizeModal" id="modal" class="blurred-background">
              <div class="modal-dialog" role="document">
                 <div class="modal-content" id="alert-box3">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <!-- <h5 class="modal-title">Modal title</h5> -->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hide()">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -314,7 +322,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                    <button v-if="cupSizeShow" type="button" class="btn btn-primary" @click="addingCupSize">Add Cup Size</button>
+                        <button v-if="cupSizeShow" type="button" class="btn btn-primary" @click="addingCupSize">Add Cup Size</button>
                     <!-- <button v-if="editAddOnsShow" type="button" class="btn btn-primary" @click="editAddOnsData">Edit Add-ons</button> -->
 
                     </div>
@@ -322,14 +330,13 @@
             </div>
         </div>
 
-<!-- Modal for adding Product -->
-
+        <!-- Modal for adding Product -->
         <div v-if="showProductModal" id="modal" class="blurred-background">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <!-- <h5 class="modal-title">Modal title</h5> -->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hide()">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -344,6 +351,11 @@
                                 <select class="form-control" v-model="prodType">
                                     <option v-for="(item, index) in categoryData" :key="index" :value="item.productCategory">{{item.productCategory}}</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Product Description:</label>
+                                <br>
+                                <input type="text" class="form-control" v-model="description" required>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -432,7 +444,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hide()">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -647,11 +659,13 @@ export default {
             btnCupType: false,
             btnEditCupType: false,
             inputCupPrice: null,
+            inputCupOnlinePrice: null,
             inputCup: null,
             cupStatus: null,
             idCup: null,
             cupData: null,
             prod: false,
+            description: null,
             cat: true,
             ons: false,
             cup: false,
@@ -664,10 +678,11 @@ export default {
             priceEvent: '',
             online: false,
             errorMessage: null,
-            lowDoseCup:null,
-            highDoseCup:null,
-            overDoseCup:null,
-            cupSizeData:null,
+            lowDoseCup: null,
+            highDoseCup: null,
+            overDoseCup: null,
+            cupSizeData: null,
+            onlineAddOnsPrice: null
         };
     },
     mounted() {
@@ -681,7 +696,7 @@ export default {
         this.retrieveCategories()
         this.retrieveAddOns()
         this.retrieveCupType()
-        this. retrieveCupSize()
+        this.retrieveCupSize()
     },
     methods: {
         NACupUpdate(id){
@@ -689,13 +704,11 @@ export default {
                 id: id,
                 status: 'Not Available'
             }
-            console.log(param)
             this.$axios.post(AUTH.url + "updateAvailableCupType", param).then(response => {
                 this.retrieveCupType()
             });
         },
         availableCupUpdate(id){
-            console.log(param)
             let param = {
                 id: id,
                 status: 'Available'
@@ -712,17 +725,13 @@ export default {
          retrieveCupSize(){
             this.$axios.post(AUTH.url + "retrieveCupSize").then(response => {
                this.cupSizeData = response.data.quantityCupsInDB
-
-                
-                   
-                
             });
         },
         addingCupType(){
             if(this.inputCupPrice !== null && this.inputCup !== null){
                 let param = {
                     cupType: this.inputCup,
-                    cupQuantity: this.inputCupQuantity,
+                    inputCupOnlinePrice: this.inputCupOnlinePrice,
                     price: this.inputCupPrice,
                     status: 'Available'
                 };
@@ -735,7 +744,6 @@ export default {
             }
         },
         addingCupSize(){
-            console.log('sud');
             if(this.lowDoseCup !== null && this.highDoseCup !== null && this.overDoseCup !== null){
                 let param = {
                     incomingLowDose: this.lowDoseCup,
@@ -743,13 +751,11 @@ export default {
                     incomingOverDose: this.overDoseCup,
                     
                 };
-                console.log(param)
                 this.$axios.post(AUTH.url + "addIncomingCups", param).then(response => {
                     this.retrieveCupSize()
                     this.hide()
                 });
             }else{
-                console.log('error')
                 this.errorMessage = 'All fields are required!'
             }
         },
@@ -758,7 +764,7 @@ export default {
                 let param = {
                     id: this.idCup,
                     cupType: this.inputCup,
-                    cupQuantity: this.inputCupQuantity,
+                    inputCupOnlinePrice: this.inputCupOnlinePrice,
                     price: this.inputCupPrice,
                     status: this.cupStatus
                 };
@@ -811,6 +817,7 @@ export default {
                 formData.append('image', this.img)
                 formData.append('productCategory', this.prodType)
                 formData.append('productName', this.productName)
+                formData.append('description', this.description)
                 formData.append('status', 'Available')
                 formData.append('lowPrice', this.lowPrice)
                 formData.append('highPrice', this.highPrice)
@@ -818,7 +825,6 @@ export default {
                 formData.append('onlinelowPrice', this.onlinelowPrice)
                 formData.append('onlinehighPrice', this.onlinehighPrice)
                 formData.append('onlineoverPrice', this.onlineoverPrice)
-                console.log(formData)
                 axios.post('/formSubmit', formData, config).then(function (response) {
                     currentObj.success = response.data.success
                     currentObj.retrieveCategories()
@@ -835,6 +841,7 @@ export default {
         editProduct(item){
             this.showProductModal = true
             this.productName = item.productName
+            this.description = item.description
             this.prodType = item.productCategory
             this.img = item.image
             this.lowPrice = item.lowPrice
@@ -863,6 +870,7 @@ export default {
                 formData.append('status', this.status)
                 formData.append('productCategory', this.prodType)
                 formData.append('productName', this.productName)
+                formData.append('description', this.description)
                 formData.append('lowPrice', this.lowPrice)
                 formData.append('highPrice', this.highPrice)
                 formData.append('overPrice', this.overPrice)
@@ -890,7 +898,6 @@ export default {
             }
             this.$axios.post(AUTH.url + "updateStatusProduct", param).then(response => {
                 this.retrieveProducts()
-                console.log('updated successfully!')
             });
         },
         productStatusAvailable(id){
@@ -900,7 +907,6 @@ export default {
             }
             this.$axios.post(AUTH.url + "updateStatusProduct", param).then(response => {
                 this.retrieveProducts()
-                console.log('updated successfully!')
             });
         },
         onImageChange(e){
@@ -1022,6 +1028,7 @@ export default {
             this.showAddOnsModal = true
             this.addonsShow = true
             this.inputAddOns = null
+            this.onlineAddOnsPrice = null
             this.addOnsPrice = null
         },
          showCupSize(){
@@ -1055,6 +1062,7 @@ export default {
             this.showCupTypeModal = true
             this.btnCupType = true
             this.inputCupPrice = null
+            this.inputCupOnlinePrice = null
             this.inputCup = null
             this.inputCupQuantity = null
 
@@ -1064,7 +1072,7 @@ export default {
             this.btnEditCupType = true
             this.idCup = item.id
             this.inputCup = item.cupTypeName
-            this.inputCupQuantity = item.cupQuantity
+            this.inputCupOnlinePrice = item.inputCupOnlinePrice
             this.inputCupPrice = item.cupTypePrice
             this.cupStatus = item.status
         },
@@ -1086,6 +1094,7 @@ export default {
             if(this.addOnsPrice !== null && this.inputAddOns !== null){
                 let param = {
                     addOns: this.inputAddOns,
+                    onlineAddOnsPrice: this.onlineAddOnsPrice,
                     price: this.addOnsPrice,
                     status: 'Available'
                 };
@@ -1107,6 +1116,7 @@ export default {
             this.showAddOnsModal = true
             this.inputAddOns = item.addons_name
             this.addOnsPrice = item.addons_price
+            this.onlineAddOnsPrice = item.onlineAddOnsPrice
             this.addOnsStat = item.status
             this.editAddOnsShow = true
             this.idAddOns = item.id
@@ -1116,6 +1126,7 @@ export default {
                 let param = {
                     id: this.idAddOns,
                     addOns: this.inputAddOns,
+                    onlineAddOnsPrice: this.onlineAddOnsPrice,
                     price: this.addOnsPrice,
                     status: this.addOnsStat
                 };

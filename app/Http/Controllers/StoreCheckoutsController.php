@@ -27,7 +27,7 @@ class StoreCheckoutsController extends Controller
             $dataAddOns = $value['same_order'];
             $storeOrder->storeCheckoutsId = $storeCheckouts['id'];
             $storeOrder->customerId = $value['customerId'];
-            $storeOrder->cashierId = $value['cashierId'];
+            $storeOrder->cashierId = $data['cashierId'];
             $storeOrder->productId = $value['productId'];
             $storeOrder->quantity = $value['quantity'];
             $storeOrder->size = $value['size'];
@@ -105,10 +105,11 @@ class StoreCheckoutsController extends Controller
         $from = $request->from;
         $to = $request->to;
         $subtotal = StoreCheckouts::select(array(DB::raw('SUM(subTotal) as sub'),DB::raw('YEAR(created_at) as year')))
-            ->whereYearBetween('created_at', [$from,$to])
+            // ->whereBetween('created_at', [$from, $to])
             ->groupBy('year')
+            // ->orderBy('year', 'asc')
             ->get();
-
+        // dd($subtotal);
         return response()->JSON(compact('subtotal'));
     }
 }

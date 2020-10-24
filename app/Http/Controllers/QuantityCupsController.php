@@ -20,23 +20,23 @@ class QuantityCupsController extends Controller
         $quantity = QuantityCups::where('id', $id)->get();
         if(sizeof($quantity) > 0){
             $data = $request->all();
-            $quantityCups = new QuantityCUps();
+            $quantityCups = new QuantityCups();
             $quantityCups->incomingLowDose = ($data['incomingLowDose']);
             $quantityCups->incomingHighDose = ($data['incomingHighDose']);
             $quantityCups->incomingOverDose = ($data['incomingOverDose']);
-            $quantityCups->onRockLowDose = ($data['incomingLowDose'] + $quantity['remainingLowDose']);
-            $quantityCups->onRockHighDose = ($data['incomingHighDose'] + $quantity['remainingHighDose']);
-            $quantityCups->onRockOverDose = ($data['incomingOverDose'] + $quantity['remainingOverDose']);
+            $quantityCups->onRockLowDose = ($data['incomingLowDose'] + $quantity[0]['remainingLowDose']);
+            $quantityCups->onRockHighDose = ($data['incomingHighDose'] + $quantity[0]['remainingHighDose']);
+            $quantityCups->onRockOverDose = ($data['incomingOverDose'] + $quantity[0]['remainingOverDose']);
             $quantityCups->usedCupsLowDose = 0;
             $quantityCups->usedCupsHighDose = 0;
             $quantityCups->usedCupsOverDose = 0;
-            $quantityCups->remainingLowDose = ($data['incomingLowDose'] + $quantity['remainingLowDose']);
-            $quantityCups->remainingHighDose = ($data['incomingHighDose'] + $quantity['remainingHighDose']);
-            $quantityCups->remainingOverDose = ($data['incomingOverDose'] + $quantity['remainingOverDose']);
+            $quantityCups->remainingLowDose = ($data['incomingLowDose'] + $quantity[0]['remainingLowDose']);
+            $quantityCups->remainingHighDose = ($data['incomingHighDose'] + $quantity[0]['remainingHighDose']);
+            $quantityCups->remainingOverDose = ($data['incomingOverDose'] + $quantity[0]['remainingOverDose']);
             $quantityCups->save();
         }else{
             $data = $request->all();
-            $quantityCups = new QuantityCUps();
+            $quantityCups = new QuantityCups();
             $quantityCups->incomingLowDose = $data['incomingLowDose'];
             $quantityCups->incomingHighDose = $data['incomingHighDose'];
             $quantityCups->incomingOverDose = $data['incomingOverDose'];
@@ -59,18 +59,18 @@ class QuantityCupsController extends Controller
         $id = $this->getId();
         $data = $request->all();
         $quantity = QuantityCups::where('id', $id)->get();
-        $quantityCups = QuantityCupsCups::firstOrCreate(['id' => $id]);
-        $quantityCups->usedCupsLowDose = ($data['usedCupsLowDose'] + $quantity['usedCupsLowDose']);
-        $quantityCups->usedCupsHighDose = ($data['usedCupsHighDose'] + $quantity['usedCupsHighDose']);
-        $quantityCups->usedCupsOverDose = ($data['usedCupsOverDose'] + $quantity['usedCupsOverDose']);
-        $quantityCups->remainingLowDose = ($quantity['onRockLowDose'] - $data['remainingLowDose']);
-        $quantityCups->remainingHighDose = ($quantity['onRockHighDose'] - $data['remainingHighDose']);
-        $quantityCups->remainingOverDose = ($quantity['onRockOverDose'] - $data['remainingOverDose']);
+        $quantityCups = QuantityCups::firstOrCreate(['id' => $id]);
+        $quantityCups->usedCupsLowDose = ($data['usedCupsLowDose'] + $quantity[0]['usedCupsLowDose']);
+        $quantityCups->usedCupsHighDose = ($data['usedCupsHighDose'] + $quantity[0]['usedCupsHighDose']);
+        $quantityCups->usedCupsOverDose = ($data['usedCupsOverDose'] + $quantity[0]['usedCupsOverDose']);
+        $quantityCups->remainingLowDose = ($quantity[0]['onRockLowDose'] - $data['usedCupsLowDose']);
+        $quantityCups->remainingHighDose = ($quantity[0]['onRockHighDose'] - $data['usedCupsHighDose']);
+        $quantityCups->remainingOverDose = ($quantity[0]['onRockOverDose'] - $data['usedCupsOverDose']);
+        $quantityCups->save();
         return response()->json(compact('quantityCups'));
     }
 
     public function retrieveCupSize(Request $request){
-
         $quantityCupsInDB = QuantityCups::get();
         // dd($quantityCupsInDB);
         return response()->json(compact('quantityCupsInDB'));

@@ -1,21 +1,25 @@
 <template>
   <div>
     <div class="row body">
+      <div class="welcome">
+          <b>WELCOME, <span class="Cname">DRIPTEA ADMIN</span></b>
+        </div>
       <div class="col-sm-8">
         <v-card class="subhead">
-          <v-toolbar color="#ff5b04" dark>
+          <v-toolbar color="#f2f2f2" dark>
             <div class="form-group filter">
               <select
-                class="form-control "
+                class="form-control"
                 v-model="thefilter"
                 name="filter"
                 id="filters"
-                v-on:change="onFilter()"
+                v-on:change="onFilter"
               >
                 <option value="Daily">Daily</option>
                 <option value="Monthly">Monthly</option>
                 <option value="Quarterly">Quarterly</option>
                 <option value="Semi-Annual">Semi-Annual</option>
+                <option value="Annual">Annual</option>
               </select>
             </div>
             <div class="form-group firstOpt" v-show="ok">
@@ -24,11 +28,20 @@
                 type="month"
                 v-model="thedate"
                 id="calendar"
-                v-on:change="onChangeDate()"
+                v-on:change="onChangeDate"
               >
             </div>
             <div class="form-group secondOpt" v-show="ok2">
-              <select class="form-control" v-on:change="onChangeYear()" v-model="yrvalue">
+              <select class="form-control" v-on:change="onChangeYear" v-model="yrvalue">
+                <option
+                  v-for="year in years"
+                  v-bind:value="year.value"
+                  v-bind:key="year.value"
+                >{{ year.text }}</option>
+              </select>
+            </div>
+            <div v-show="ok3" class="forannualInput">
+              <select class="form-control" v-on:change="onChanging" v-model="Multiyrvalue" multiple>
                 <option
                   v-for="year in years"
                   v-bind:value="year.value"
@@ -46,10 +59,15 @@
             :options="options"
             :series="series"
           ></salesChart>
+          <div class="title">
+            <h name="theTitle">{{MonthLabel}}</h>
+          </div>
         </div>
       </div>
       <div class="col-sm-4 top3">
-        <v-toolbar color="#ff5b04" dark class="TB3"><span class="text1">TOP 3 SALABLE PRODUCTS</span></v-toolbar>
+        <v-toolbar color="#f2f2f2" dark class="TB3">
+          <span class="text1">TOP 3 SALABLE PRODUCTS</span>
+        </v-toolbar>
         <div class="prods">
           <v-card>
             <div>
@@ -75,14 +93,43 @@
 </template>
 
 <style>
-.text1{
-  margin: 15%;
-  text-align: center;
+.welcome {
+  font-size: 35px;
+  margin-bottom: 10px;
+  margin-left: 1%;
 }
-.firstOpt, .secondOpt {
+.forannualInput {
+  width: 30%;
+}
+.title {
+  margin-left: 48%;
+}
+.annualDateCal1,
+.annualDateCal2,
+.yearMenu {
+  color: black;
+
+  /* background-color: rgb(202, 25, 25); */
+}
+.YRcal {
+  color: black;
+}
+.Cname{
+  color: #ff5b04;
+}
+.text1 {
+  margin: 20%;
+  text-align: center;
+  color: #ff5b04;
+}
+.firstOpt,
+.secondOpt {
   float: left;
   align-self: center;
   width: 30%;
+}
+.firstOpt {
+  margin-left: 30%;
 }
 .TB3 {
   margin-bottom: 20px;
@@ -127,12 +174,22 @@
 import salesChart from "vue-apexcharts";
 import Axios from "axios";
 import AUTH from "../../services/auth";
+import Datepicker from "vuejs-datepicker";
+import { arch } from "os";
+import swal from "sweetalert";
 
 export default {
   data() {
     return {
+      Multiyrvalue: [],
+      date: ["2019-09-10", "2019-09-20"],
+      menu: false,
+      modal: false,
+      YearEnd: null,
+      YearStart: null,
       ok: true,
       ok2: false,
+      ok3: false,
       yrfrmdb: null,
       yrvalue: null,
       theMonth: null,
@@ -141,7 +198,7 @@ export default {
       thefilter: "Daily",
       xlabels: [],
       options: {
-        colors: ["#28a745"],
+        colors: ["#ff5b04"],
         chart: {
           id: "sales-summary"
         },
@@ -162,19 +219,20 @@ export default {
       points: [],
       thedate: null,
       years: [],
+      MonthLabel: null,
       mnths: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
+        "January",
+        "February",
+        "March",
+        "April",
         "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sept",
-        "Oct",
-        "Nov",
-        "Dec"
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
       ],
       quarter: ["Jan-Mar", "Apr-Jun", "Jul-Sept", "Oct-Dec"],
       semi: ["Jan-Jun", "Jul-Dec"],
@@ -186,13 +244,29 @@ export default {
       first_Half: null,
       second_Half: null,
       semi_Data: [],
-      topProdArr: []
+      topProdArr: [],
+      defaultDate: null,
+      DatePickerFormat: "yyyy"
     };
   },
   components: {
-    salesChart
+    salesChart,
+    Datepicker
+  },
+  computed: {
+    dateRangeText() {
+      return this.dates.join(" ~ ");
+    }
   },
   mounted() {
+    let date = new Date();
+    let month =
+      date.getMonth() + 1 > 9
+        ? date.getMonth() + 1
+        : "0" + (date.getMonth() + 1);
+    this.thedate = date.getFullYear() + "-" + month;
+    this.MonthLabel = this.mnths[month - 1];
+    console.log("--------> " + month);
     this.getTop3();
     this.yrvalue = new Date().getFullYear();
     this.getYears();
@@ -200,8 +274,19 @@ export default {
     this.xvalues();
     this.getDailySummary();
     this.categories = [];
+    this.yearlyCal();
   },
+  created() {},
   methods: {
+    yearlyCal() {
+      // let currentDate = new Date();
+      // this.YY = new Date();
+      // document.getElementById("datepicker").datepicker({
+      //   format: "yyyy",
+      //   viewMode: "years",
+      //   minViewMode: "years"
+      // });
+    },
     getDailySummary() {
       this.points = [];
       let params = {
@@ -260,28 +345,40 @@ export default {
     },
     onFilter() {
       if (this.thefilter == "Daily") {
-        this.getDate();
-        this.xvalues();
+        // this.getDate();
+        // this.xvalues();
         this.getDailySummary();
         this.ok = true;
         this.ok2 = false;
+        this.ok3 = false;
         this.options.xaxis.categories = [];
       } else if (this.thefilter == "Weekly") {
       } else if (this.thefilter == "Monthly") {
         this.getMonthlySummary(this.yrvalue);
         this.ok = false;
         this.ok2 = true;
+        this.ok3 = false;
       } else if (this.thefilter == "Quarterly") {
         this.getQuarterlySummary(this.yrvalue);
         this.ok = false;
         this.ok2 = true;
+        this.ok3 = false;
       } else if (this.thefilter == "Semi-Annual") {
         this.getSemi_AnnualSummary(this.yrvalue);
         this.ok = false;
         this.ok2 = true;
+        this.ok3 = false;
       } else if (this.thefilter == "Annual") {
         this.ok = false;
-        this.ok2 = true;
+        this.ok2 = false;
+        this.ok3 = true;
+        swal({
+          title: "Ctrl + click(select)",
+          text:
+            "After Selecting Year start, Press Ctrl + Click to Select Year End",
+          icon: "warning",
+          dangerMode: true
+        });
       }
     },
     onChangeDate() {
@@ -290,6 +387,7 @@ export default {
       this.theMonth =
         d.getMonth() + 1 > 9 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1);
       this.theYear = d.getFullYear();
+      this.MonthLabel = this.mnths[this.theMonth - 1];
       let lastDate = new Date(this.theYear, this.theMonth, 0).getDate();
       this.lastDate = lastDate;
       this.xvalues();
@@ -304,6 +402,9 @@ export default {
         this.getSemi_AnnualSummary(this.yrvalue);
       } else if (this.thefilter == "Annual") {
       }
+    },
+    onChanging() {
+      this.getAnnualSummary(this.Multiyrvalue);
     },
     getYears() {
       let params = {
@@ -479,8 +580,35 @@ export default {
       this.first_Half = [];
       this.second_Half = [];
     },
-    getAnnualSummary() {
-      Axios.post(AUTH.url + "getAnnualSales", params).then(response => {});
+    getAnnualSummary(values) {
+      this.points = [];
+      let startingYR = values[0];
+      let endYear = values[1];
+      console.log("************* 1 " + startingYR);
+      let gap = endYear - startingYR;
+      console.log("************* 2 " + gap);
+
+      let array = [];
+      let params = {
+        from: startingYR,
+        to: endYear
+      };
+      Axios.post(AUTH.url + "getAnnualSales", params).then(response => {
+        response.data.subtotal.forEach(element => {
+          if (element.year <= endYear && element.year == startingYR) {
+            array.push(element.sub);
+            startingYR++;
+          }
+        });
+        this.points = array;
+        console.log("--------------- " + this.points);
+        this.series = [
+          {
+            data: this.points
+          }
+        ];
+        // console.log("--------------- "+array);
+      });
     },
     getTop3() {
       let params = {

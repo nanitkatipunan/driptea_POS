@@ -31,11 +31,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      fullName: null,
+      address: null,
+      contactNumber: null
+    };
   },
   methods: {
     redirect: function redirect(type) {
@@ -48,9 +85,20 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.setItem('customerType', res.data.customerDetails.customerType);
           _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + res.data.customerDetails.customerType)["catch"](function () {});
         });
-      } else {
-        _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + param)["catch"](function () {});
       }
+    },
+    continueFb: function continueFb() {
+      var param = {
+        customerType: 'fb',
+        customerName: this.fullName,
+        customerAddress: this.address,
+        customerContactNumber: this.contactNumber
+      };
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addCustomer', param).then(function (response) {
+        localStorage.setItem('customerId', response.data.customerDetails.id);
+        localStorage.setItem('customerType', response.data.customerDetails.customerType);
+        _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/fb')["catch"](function () {});
+      });
     }
   }
 });
@@ -97,7 +145,11 @@ var render = function() {
       _c("div", { staticClass: "col-md-6" }, [
         _c("img", {
           staticStyle: { width: "300px", height: "200px" },
-          attrs: { src: __webpack_require__(/*! @/assets/fb.jpeg */ "./resources/assets/fb.jpeg") },
+          attrs: {
+            "data-toggle": "modal",
+            "data-target": "#viewDetails",
+            src: __webpack_require__(/*! @/assets/fb.jpeg */ "./resources/assets/fb.jpeg")
+          },
           on: {
             click: function($event) {
               return _vm.redirect("fb")
@@ -140,10 +192,174 @@ var render = function() {
           }
         })
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: { id: "viewDetails", role: "dialog" }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("div", [
+                _c("form", [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticStyle: {
+                          "font-size": "15px",
+                          "font-weight": "bold"
+                        },
+                        attrs: { for: "fName" }
+                      },
+                      [_vm._v("Fullname:")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.fullName,
+                          expression: "fullName"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.fullName },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.fullName = $event.target.value
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticStyle: {
+                          "font-size": "15px",
+                          "font-weight": "bold"
+                        },
+                        attrs: { for: "address" }
+                      },
+                      [_vm._v("Address:")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.address,
+                          expression: "address"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.address },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.address = $event.target.value
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticStyle: {
+                          "font-size": "15px",
+                          "font-weight": "bold"
+                        },
+                        attrs: { for: "contactNumber" }
+                      },
+                      [_vm._v("Contact Number:")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.contactNumber,
+                          expression: "contactNumber"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.contactNumber },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.contactNumber = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button", "data-dismiss": "modal" },
+                  on: {
+                    click: function($event) {
+                      return _vm.continueFb()
+                    }
+                  }
+                },
+                [_vm._v("Continue")]
+              )
+            ])
+          ])
+        ])
+      ]
+    )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h3", [_vm._v("Customer Information")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("×")]
+      ),
+      _c("br")
+    ])
+  }
+]
 render._withStripped = true
 
 

@@ -23,6 +23,7 @@ Route::post('updateProduct','App\Http\Controllers\ProductController@updateProduc
 Route::post('retrieveProduct','App\Http\Controllers\ProductController@retrieveProduct');
 Route::post('retrieveOneProduct','App\Http\Controllers\ProductController@retrieveOneProduct');
 Route::post('retrieveAllProduct','App\Http\Controllers\ProductController@retrieveAllProduct');
+Route::post('retrieveAllProductAscending','App\Http\Controllers\ProductController@retrieveAllProductAscending');
 Route::post('updateStatusProduct','App\Http\Controllers\ProductController@updateStatusProduct');
 
 Route::post('addCategory','App\Http\Controllers\AddCategoryController@addCategory');
@@ -61,6 +62,23 @@ Route::post('getSemi-AnnualSales','App\Http\Controllers\StoreCheckoutsController
 Route::post('getAnnualSales','App\Http\Controllers\StoreCheckoutsController@retrieveAnnualSales');
 Route::post('getyears','App\Http\Controllers\StoreCheckoutsController@retrieveYears');
 Route::post('getTopProd','App\Http\Controllers\OrderController@retrieveTopProducts');
+Route::post('addIncomingCups','App\Http\Controllers\QuantityCupsController@addIncomingCups');
+Route::post('updateRemainingCups','App\Http\Controllers\QuantityCupsController@updateRemainingCups');
+Route::post('retrieveCupSize','App\Http\Controllers\QuantityCupsController@retrieveCupSize');
+
+
+
+Route::post('retrieveYear','App\Http\Controllers\StoreCheckoutsController@retrieveYear');
+
+//SalesInventory
+
+Route::post('retrieveDailySales','App\Http\Controllers\StoreCheckoutsController@retrieveDailySales');
+
+
+
+
+
+
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
