@@ -123,6 +123,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -563,7 +564,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.errorColor[data-v-766d0737] {\r\n  color: red;\n}\n.addCart[data-v-766d0737]{\r\n    /* margin-top: 20% !important; */\r\n    width: 300px !important;\r\n    height: 45px !important;\r\n    /* margin-top: -150px !important; */\r\n    background-color: #11c408 !important;\n}\n.quantity[data-v-766d0737] {\r\n  margin-top: 9%;\r\n  margin-bottom: 5%;\n}\n.form-control[data-v-766d0737] {\r\n  text-align: center;\r\n  width: 90%;\r\n  font-weight: bold;\r\n  font-size: 20px;\n}\n[data-v-766d0737]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.cupType[data-v-766d0737] {\r\n  margin-top: 25%;\n}\n.row[data-v-766d0737]{\r\n    width: 90%;\r\n    /* height: 650px; */\r\n    overflow-y: scroll;\r\n    margin-top: 3%;\r\n    /* background-color: white; */\n}\n.btn[data-v-766d0737] {\r\n  margin-top: 5%;\r\n  width: 35px;\r\n  width: 90%;\r\n  font-weight: bold;\r\n  font-size: 20px;\r\n  background-color: #edf0ee;\n}\n.sudlanan[data-v-766d0737] {\r\n  background-color: black;\r\n  height: 92.8vh;\r\n  overflow: hidden;\r\n  color: white;\r\n  font-family: Roboto Slab;\n}\n.color[data-v-766d0737] {\r\n  background: #89afe8;\n}\n.normalColor[data-v-766d0737] {\r\n  background: #edf0ee;\n}\r\n", ""]);
+exports.push([module.i, "\n.errorColor[data-v-766d0737]{\r\n    color: red;\n}\n.addCart[data-v-766d0737]{\r\n    /* margin-top: 20% !important; */\r\n    width: 300px !important;\r\n    height: 45px !important;\r\n    /* margin-top: -150px !important; */\r\n    background-color: #11c408 !important;\n}\n.quantity[data-v-766d0737]{\r\n    margin-top: 9%;\r\n    margin-bottom: 5%;\n}\n.form-control[data-v-766d0737]{\r\n    text-align: center;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\n}\n[data-v-766d0737]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.cupType[data-v-766d0737]{\r\n    margin-top: 25%;\n}\n.row[data-v-766d0737]{\r\n    width: 90%;\r\n    /* height: 650px; */\r\n    overflow-y: scroll;\r\n    margin-top: 3%;\r\n    /* background-color: white; */\n}\n.btn[data-v-766d0737]{\r\n    margin-top: 5%;\r\n    width: 35px;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\r\n    background-color: #E65100;\n}\n.sudlanan[data-v-766d0737]{\r\n    background-color: white;\r\n    height: 92.8vh;\r\n    color:white;\r\n    font-family: Roboto Slab;\n}\n.color[data-v-766d0737]{\r\n    background: #89AFE8;\n}\n.normalColor[data-v-766d0737]{\r\n    background: #edf0ee;\n}\r\n", ""]);
 
 // exports
 
@@ -782,7 +783,7 @@ var render = function() {
       _c(
         "center",
         [
-          _c("h1", { staticStyle: { "margin-top": "2%" } }, [
+          _c("h1", { staticStyle: { "margin-top": "2%", color: "black" } }, [
             _vm._v(_vm._s(_vm.itemSelected))
           ]),
           _vm._v(" "),
@@ -794,7 +795,9 @@ var render = function() {
                 _c(
                   "center",
                   [
-                    _c("h3", [_vm._v("Cup's Size")]),
+                    _c("h3", { staticClass: "black--text " }, [
+                      _vm._v("Cup's Size")
+                    ]),
                     _vm._v(" "),
                     _vm.errorMessage !== null
                       ? _c("span", { staticClass: "errorColor" }, [
@@ -805,7 +808,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "btn",
+                        staticClass: "btn overline ",
                         on: {
                           click: function($event) {
                             return _vm.getCupSize("lowDose", $event)
@@ -818,7 +821,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "btn",
+                        staticClass: "btn overline",
                         on: {
                           click: function($event) {
                             return _vm.getCupSize("highDose", $event)
@@ -831,7 +834,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "btn",
+                        staticClass: "btn overline",
                         on: {
                           click: function($event) {
                             return _vm.getCupSize("overDose", $event)
@@ -841,7 +844,9 @@ var render = function() {
                       [_vm._v("Over Dose")]
                     ),
                     _vm._v(" "),
-                    _c("h3", { staticClass: "cupType" }, [_vm._v("Cup Type")]),
+                    _c("h3", { staticClass: "cupType black--text" }, [
+                      _vm._v("Cup Type")
+                    ]),
                     _vm._v(" "),
                     _vm.errorMessage1 !== null
                       ? _c("span", { staticClass: "errorColor" }, [
@@ -876,7 +881,9 @@ var render = function() {
               { staticClass: "col-md-4" },
               [
                 _c("center", [
-                  _c("h3", [_vm._v("Sugar Level")]),
+                  _c("h3", { staticClass: "black--text" }, [
+                    _vm._v("Sugar Level")
+                  ]),
                   _vm._v(" "),
                   _vm.errorMessage2 !== null
                     ? _c("span", { staticClass: "errorColor" }, [
@@ -887,7 +894,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn",
+                      staticClass: "btn overline ",
                       on: {
                         click: function($event) {
                           return _vm.getSugarLevel("0%", $event)
@@ -900,7 +907,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn",
+                      staticClass: "btn overline",
                       on: {
                         click: function($event) {
                           return _vm.getSugarLevel("25%", $event)
@@ -913,7 +920,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn",
+                      staticClass: "btn overline",
                       on: {
                         click: function($event) {
                           return _vm.getSugarLevel("50%", $event)
@@ -926,7 +933,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn",
+                      staticClass: "btn overline",
                       on: {
                         click: function($event) {
                           return _vm.getSugarLevel("75%", $event)
@@ -939,7 +946,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn",
+                      staticClass: "btn overline",
                       on: {
                         click: function($event) {
                           return _vm.getSugarLevel("100%", $event)
@@ -949,7 +956,7 @@ var render = function() {
                     [_vm._v("100%")]
                   ),
                   _vm._v(" "),
-                  _c("h3", { staticClass: "quantity" }, [
+                  _c("h3", { staticClass: "quantity black--text" }, [
                     _vm._v("Quantity of Order")
                   ]),
                   _vm._v(" "),
@@ -992,21 +999,30 @@ var render = function() {
                 _c(
                   "center",
                   [
-                    _c("h3", [_vm._v("Add-ons")]),
+                    _c("h3", { staticClass: "black--text" }, [
+                      _vm._v("Add-ons")
+                    ]),
                     _vm._v(" "),
                     _vm._l(_vm.addOnsData, function(item, index) {
                       return _c(
                         "button",
                         {
                           key: index,
-                          staticClass: "btn",
+                          staticClass: "btn overline",
                           on: {
                             click: function($event) {
                               return _vm.addAddOns(item, $event)
                             }
                           }
                         },
-                        [_vm._v(_vm._s(_vm.getAddOnsName(item)))]
+                        [
+                          _vm._v(
+                            "(₱ " +
+                              _vm._s(item.addons_price) +
+                              ") " +
+                              _vm._s(item.addons_name)
+                          )
+                        ]
                       )
                     })
                   ],
@@ -1021,7 +1037,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn addCart",
+                staticClass: "btn addCart overline",
                 on: {
                   click: function($event) {
                     return _vm.addToCart()
