@@ -3,14 +3,14 @@
         <div class="row firstRow">
             <div class="col-md-6">
                 <center>
-                    <div class="firstCol">
+                    <v-card class="ml-10">
                         <center>
                             <img v-if="customerType === 'walkin'" style="width: 70px; height: 50px; border: solid 1px black" src="@/assets/walkin.jpg">
-                            <img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda.png">
-                            <img v-if="customerType === 'grab'" style="width: 70px; height: 50px;" src="@/assets/grab.png">
-                            <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb.jpeg"><br>
+                            <img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda1.png">
+                            <img v-if="customerType === 'grab'" style="width: 70px; height: 50px;" src="@/assets/grab2.png">
+                            <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb1.png"><br>
                             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
-                            <table class="table table-responsive table-bordered" id="myTable">
+                            <table class="table table-responsive table-bordered overline" id="myTable">
                                 <tr>
                                     <th style="width: 45%;">Product Name</th>
                                     <th>Add&nbsp;ons</th>
@@ -35,7 +35,7 @@
                         </center>
                         <div class="row">
                             <div class="col-md-6"></div>
-                            <div class="col-md-6" style="text-align:left;">
+                            <div class="col-md-6 overline" style="text-align:left;">
                                 <p v-if="customerType === 'fb'" style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
                                 <p v-if="customerType === 'fb'" style="display: inline;">₱ {{getSubTotal()}}</p><br>
                                 <p v-if="customerType === 'fb'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
@@ -46,17 +46,23 @@
                                 <input v-if="customerType !== 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
                                 <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
                                 <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
+                                <div >
+                                 <button class="btn btn-primary checkout overline" @click="checkoutOrder">Checkout</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <button class="btn btn-primary checkout" @click="checkoutOrder">Checkout</button>
+                    </v-card>
+                   
                 </center>
             </div>
             <div class="col-md-6">
                 <div class="dataStyle">
                     <div class="row">
                         <div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
-                            <img class="imgItem" :src="item.image" @click="redirect(item.productCategory)">
+                          <v-card class="elevation-5" max-width="250" height="250">
+                            <v-img  max-width="250" height="250" :src="item.image" @click="redirect(item.productCategory)"></v-img>
+                             </v-card>
+
                         </div>
                     </div>
                 </div>
@@ -100,9 +106,7 @@ p{
     margin-top: 3%;
 }
 .sudlanan{
-    background-color: black;
-    height: 92.8vh;
-    overflow: hidden;
+    background-color:white;
 }
 table{
     height: 450px;
@@ -119,14 +123,7 @@ th {
         width: 60px;
         margin-left: -15px;
     }
-    .firstCol{
-        border-radius: 5px;
-        box-shadow: 5px 5px gray;
-        width: 90%;
-        margin-top: 5%;
-        background-color:white;
-        height: 600px !important;
-    }
+    
     table{
         height: 350px;
         width: 100%;
@@ -136,38 +133,22 @@ th {
         overflow-y: scroll;
     }
 }
-.firstCol{
-    border-radius: 5px;
-    box-shadow: 5px 5px gray;
-    width: 90%;
-    margin-top: 5%;
-    background-color:white;
-    height: 650px;
-}
-.secondCol{
-    border-radius: 5px;
-    box-shadow: 5px 5px gray;
-    margin-top: 5%;
-    margin-right: 2%;
-    margin-left: 3%;
-    height: 150px;
-    background-color: white;
-}
-.imgItem{
-    height: 150px;
-    width: 100%;
-}
+
+
+
 </style>
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import receipt from '../order/receipt.vue'
+import config from '../../config.js'
 export default {
     data(){
         return{
             data: null,
             tableData: null,
             customerType: this.$route.params.image,
+            config: config,
             deliveryFee: 0,
             totalPrice: 0,
             incash: 0,
@@ -177,7 +158,8 @@ export default {
             fee: 0,
             error: false,
             receiptShow: false,
-            receiptData: null
+            receiptData: null,
+            count: 0
         }
     },
     components: {
@@ -186,6 +168,18 @@ export default {
     mounted(){
         this.retrieveCategory()
         this.retrieveProduct()
+        let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
+            cluster: this.config.PUSHER_APP_CLUSTER,
+            encrypted: true
+        });
+
+        let channel = pusher.subscribe('driptea-channel')
+        channel.bind('driptea-data', (data) => {
+            if(data.order === 'pendingCustomer'){
+                this.count++
+                this.retrieveProduct()
+            }
+        })
     },
     methods: {
         hideReceipt(){
@@ -330,5 +324,3 @@ export default {
     }
 }
 </script>
-
-

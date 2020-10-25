@@ -51,6 +51,11 @@ class OrderController extends Controller
     }
 
     public function retrieveCustomerOrder(Request $request){
+        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        return response()->json(compact('order'));
+    }
+
+    public function retrieveCustomerOrder(Request $request){
         $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
         return response()->json(compact('order'));
     }
@@ -62,6 +67,7 @@ class OrderController extends Controller
             $ord->status = $request['status'];
             $ord->save();
         }
+        event(new pusherEvent($request['status']));
         return response()->json(['success' => 'successfully updated!']);
     }
 

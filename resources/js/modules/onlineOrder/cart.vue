@@ -134,7 +134,7 @@ export default {
         orderNow(){
             let params = {
                 id: localStorage.getItem('customerId'),
-                status: 'pending'
+                status: 'pendingCustomer'
             }
             this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
                 this.retrieveProduct()

@@ -156,7 +156,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var params = {
         id: localStorage.getItem('customerId'),
-        status: 'pending'
+        status: 'pendingCustomer'
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'updateStatus', params).then(function (res) {
         _this4.retrieveProduct();
