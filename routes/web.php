@@ -37,6 +37,7 @@ Route::post('addOrder','App\Http\Controllers\OrderController@addOrder');
 Route::post('updateStatus','App\Http\Controllers\OrderController@updateStatus');
 Route::post('deleteOrder','App\Http\Controllers\OrderController@deleteOrder');
 Route::post('retrieveOrder','App\Http\Controllers\OrderController@retrieveOrder');
+Route::post('retrieveCustomerOrder','App\Http\Controllers\OrderController@retrieveCustomerOrder');
 Route::post('retrieveWholeOrder','App\Http\Controllers\OrderController@retrieveWholeOrder');
 
 Route::post('addingAddOns','App\Http\Controllers\AddAddOnsController@addAddons');
@@ -48,12 +49,14 @@ Route::post('retrieveAllAddOns','App\Http\Controllers\AddAddOnsController@retrie
 
 Route::post('addingCupType','App\Http\Controllers\CupTypeController@addingCupType');
 Route::post('retrieveCupType','App\Http\Controllers\CupTypeController@retrieveCupType');
+Route::post('retrieveOneCupType','App\Http\Controllers\CupTypeController@retrieveOneCupType');
 Route::post('updateAvailableCupType','App\Http\Controllers\CupTypeController@updateAvailableCupType');
 Route::post('editingCupType','App\Http\Controllers\CupTypeController@editingCupType');
 Route::post('retrieveAllCupType','App\Http\Controllers\CupTypeController@retrieveAllCupType');
 
 Route::post('addCheckout','App\Http\Controllers\StoreCheckoutsController@addCheckout');
 Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveCheckouts');
+Route::post('retrieveAllCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveAllCheckouts');
 
 Route::post('getDailySales','App\Http\Controllers\StoreCheckoutsController@retrieveDailySales');
 Route::post('getmonthlySales','App\Http\Controllers\StoreCheckoutsController@retrieveMonthlySales');

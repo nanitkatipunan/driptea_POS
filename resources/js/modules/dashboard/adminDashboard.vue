@@ -2,8 +2,11 @@
   <div>
     <div class="row body">
       <div class="welcome">
-          <b>WELCOME, <span class="Cname">DRIPTEA ADMIN</span></b>
-        </div>
+        <b>
+          WELCOME,
+          <span class="Cname">DRIPTEA ADMIN</span>
+        </b>
+      </div>
       <div class="col-sm-8">
         <v-card class="subhead">
           <v-toolbar color="#f2f2f2" dark>
@@ -41,7 +44,12 @@
               </select>
             </div>
             <div v-show="ok3" class="forannualInput">
-              <select class="form-control" v-on:change="onChanging" v-model="Multiyrvalue" multiple>
+              <select
+                class="form-control"
+                v-on:click.ctrl.exact="onChanging"
+                v-model="Multiyrvalue"
+                multiple
+              >
                 <option
                   v-for="year in years"
                   v-bind:value="year.value"
@@ -60,7 +68,9 @@
             :series="series"
           ></salesChart>
           <div class="title">
-            <h name="theTitle">{{MonthLabel}}</h>
+            <v-toolbar color="#f2f2f2">
+              <h name="theTitle" class="GraphLabel">{{MonthLabel}}</h>
+            </v-toolbar>
           </div>
         </div>
       </div>
@@ -101,8 +111,8 @@
 .forannualInput {
   width: 30%;
 }
-.title {
-  margin-left: 48%;
+.GraphLabel {
+  margin-left: 45%;
 }
 .annualDateCal1,
 .annualDateCal2,
@@ -114,7 +124,8 @@
 .YRcal {
   color: black;
 }
-.Cname{
+.Cname,
+.GraphLabel {
   color: #ff5b04;
 }
 .text1 {
@@ -236,6 +247,7 @@ export default {
       ],
       quarter: ["Jan-Mar", "Apr-Jun", "Jul-Sept", "Oct-Dec"],
       semi: ["Jan-Jun", "Jul-Dec"],
+      annualLabels: [],
       firstQ: [],
       secondQ: [],
       thirdQ: [],
@@ -273,7 +285,7 @@ export default {
     this.getDate();
     this.xvalues();
     this.getDailySummary();
-    this.categories = [];
+    // this.categories = [];
     this.yearlyCal();
   },
   created() {},
@@ -296,7 +308,7 @@ export default {
       let i;
       let dateFrmDBarr = [];
       let totalfrmDB = [];
-      let xs = this.xlabels;
+      // let xs = this.xlabels;
       let ldate = this.lastDate;
       Axios.post(AUTH.url + "getDailySales", params).then(response => {
         response.data.total.forEach(element => {
@@ -342,11 +354,24 @@ export default {
         this.xlabels.push(i);
       }
       this.categories = this.xlabels;
+      console.log("........ " + this.categories);
     },
     onFilter() {
       if (this.thefilter == "Daily") {
-        // this.getDate();
-        // this.xvalues();
+        this.MonthLabel = this.mnths[this.theMonth - 1];
+        this.options = {
+          colors: ["#ff5b04"],
+          chart: {
+            id: "sales-summary"
+          },
+          xaxis: {
+            categories: this.xlabels
+          },
+          stroke: {
+            width: 2,
+            curve: "smooth"
+          }
+        };
         this.getDailySummary();
         this.ok = true;
         this.ok2 = false;
@@ -355,16 +380,59 @@ export default {
       } else if (this.thefilter == "Weekly") {
       } else if (this.thefilter == "Monthly") {
         this.getMonthlySummary(this.yrvalue);
+        this.MonthLabel = new Date(this.thedate).getFullYear();
+        this.options = {
+          colors: ["#ff5b04"],
+          chart: {
+            id: "sales-summary"
+          },
+          xaxis: {
+            categories: this.mnths
+          },
+          stroke: {
+            width: 2,
+            curve: "smooth"
+          }
+        };
+        console.log("monthly cat bruh " + this.categories);
         this.ok = false;
         this.ok2 = true;
         this.ok3 = false;
       } else if (this.thefilter == "Quarterly") {
+        this.MonthLabel = new Date(this.thedate).getFullYear();
         this.getQuarterlySummary(this.yrvalue);
+        this.options = {
+          colors: ["#ff5b04"],
+          chart: {
+            id: "sales-summary"
+          },
+          xaxis: {
+            categories: this.quarter
+          },
+          stroke: {
+            width: 2,
+            curve: "smooth"
+          }
+        };
         this.ok = false;
         this.ok2 = true;
         this.ok3 = false;
       } else if (this.thefilter == "Semi-Annual") {
+        this.MonthLabel = new Date(this.thedate).getFullYear();
         this.getSemi_AnnualSummary(this.yrvalue);
+        this.options = {
+          colors: ["#ff5b04"],
+          chart: {
+            id: "sales-summary"
+          },
+          xaxis: {
+            categories: this.semi
+          },
+          stroke: {
+            width: 2,
+            curve: "smooth"
+          }
+        };
         this.ok = false;
         this.ok2 = true;
         this.ok3 = false;
@@ -396,10 +464,13 @@ export default {
     onChangeYear() {
       if (this.thefilter == "Monthly") {
         this.getMonthlySummary(this.yrvalue);
+        this.MonthLabel = this.yrvalue;
       } else if (this.thefilter == "Quarterly") {
         this.getQuarterlySummary(this.yrvalue);
+        this.MonthLabel = this.yrvalue;
       } else if (this.thefilter == "Semi-Annual") {
         this.getSemi_AnnualSummary(this.yrvalue);
+        this.MonthLabel = this.yrvalue;
       } else if (this.thefilter == "Annual") {
       }
     },
@@ -584,11 +655,14 @@ export default {
       this.points = [];
       let startingYR = values[0];
       let endYear = values[1];
+      let graphLabel = startingYR + " - " + endYear;
+      this.MonthLabel = graphLabel;
       console.log("************* 1 " + startingYR);
       let gap = endYear - startingYR;
       console.log("************* 2 " + gap);
 
       let array = [];
+      let labelsArr = [];
       let params = {
         from: startingYR,
         to: endYear
@@ -597,17 +671,31 @@ export default {
         response.data.subtotal.forEach(element => {
           if (element.year <= endYear && element.year == startingYR) {
             array.push(element.sub);
+            labelsArr.push(startingYR);
             startingYR++;
           }
         });
         this.points = array;
+        this.annualLabels = labelsArr;
         console.log("--------------- " + this.points);
         this.series = [
           {
             data: this.points
           }
         ];
-        // console.log("--------------- "+array);
+        this.options = {
+          colors: ["#ff5b04"],
+          chart: {
+            id: "sales-summary"
+          },
+          xaxis: {
+            categories: this.annualLabels
+          },
+          stroke: {
+            width: 2,
+            curve: "smooth"
+          }
+        };
       });
     },
     getTop3() {

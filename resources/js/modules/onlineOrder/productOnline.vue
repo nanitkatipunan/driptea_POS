@@ -1,19 +1,46 @@
 <template>
     <div class="sudlanan">
         <center>
-            <h1 style="margin-top: 2%;">{{chosenCat}} Milktea</h1>
-            <div v-if="data !== null && data.length > 0" class="row">
-                <div class="col-md-3 imageSize" v-for="(item, index) in data" :key="index">
-                    <center>
-                        <img class="imgItem" data-toggle="modal" data-target="#viewDetails" :src="item.image" @click="showModal(item.id)">
-                        <h4>{{item.productName}}</h4>
-                    </center>
+            <div v-if="data !== null" class="row">
+                <div>
+                    <h1>Mao ni</h1>
+                    <div class="my-custom-scrollbar">
+                        <table class="table table-bordered table-striped categoryTable" id="myTable">
+                            <thead class="thead-light">
+                                <tr class="header">
+                                    <th scope="col">#</th>
+                                    <th scope="col">lowDose</th>
+                                    <th scope="col">highDose</th>
+                                    <th scope="col">overDose</th>
+                                    <th scope="col">total</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template>
+                                    <tr v-for="(item, index) in finalData" :key="index">
+                                        <td scope="row">Customer {{index+1}}</td>
+                                        <td>{{getLowDose(item)}}</td>
+                                        <td>{{getHighDose(item)}}</td>
+                                        <td>{{getOverDose(item)}}</td>
+                                        <td style="font-weight: bold">{{getTotal(item)}}</td>
+                                        <td>
+                                            <div style="text-align: left">
+                                                <button class="btn btn-primary" @click="showData()">Sample</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div v-else class="secRow">
                 <center>
                     <img class="noImage" src="@/assets/data.png">
                     <h2>No Product Yet</h2>
+                    <button class="btn btn-primary">Sample</button>
                 </center>   
             </div>
         </center>
@@ -38,7 +65,7 @@
 }
 .row{
     width: 80%;
-    height: 650px;
+    /* height: 650px; */
     overflow-y: scroll;
 }
 .secRow{
@@ -47,8 +74,6 @@
     overflow-y: scroll;
 }
 .sudlanan{
-    height: 92.8vh;
-    overflow: hidden;
     font-family: Roboto Slab;
 }
 .imageSize{
@@ -68,67 +93,65 @@ export default {
             size: null,
             sugarLevel: null,
             addOns: null,
-            quantity: null
+            quantity: null,
+            finalData: []
         }
     },
     mounted(){
         this.retrieveProduct()
     },
     methods: {
-        retrieveProduct(){
-            this.$axios.post(AUTH.url + 'retrieveProduct', {type: this.chosenCat}).then(res => {
-                this.data = res.data.product
+        getTotal(item){
+            let total = 0
+            item.forEach(el => {
+                total += el.quantity
+            })
+            return total
+        },
+        getLowDose(item){
+            let total = 0
+            item.forEach(el => {
+                if(el.size === 'lowDose'){
+                    total += el.quantity
+                }
+            })
+            return total
+        },
+        getHighDose(item){
+            let total = 0
+            item.forEach(el => {
+                if(el.size === 'highDose'){
+                    total += el.quantity
+                }
+            })
+            return total
+        },
+        getOverDose(item){
+            let total = 0
+            item.forEach(el => {
+                if(el.size === 'overDose'){
+                    total += el.quantity
+                }
+            })
+            return total
+        },
+        showData(){
+            console.log(this.finalData)
+        },
+        dataMethod(item){
+            Object.keys(item).forEach(element => {
+                // item[element].forEach(el => {
+                //     this.finalData.push({'size': el.size, 'quantity': el.quantity})
+                // })
+                this.finalData.push(item[element])
             })
         },
-        addTotalPrice(event){
-            if(event.target.checked){
-                this.totalPrice += 20
-                this.mainPrice += 20
-            }else{
-                this.mainPrice -= 20
-                this.totalPrice -= 20
-            }
-            this.addQuantity()
-        },
-        addQuantity(){
-            let pr = 0
-            for (let i = 1; i <= this.quantity; i++) {
-                pr += this.totalPrice
-            }
-            this.mainPrice = pr
-        },
-        addToCart(){
-            if(this.auth.authenticateForAll()){
-                setTimeout(() => {
-                    let parameter = {
-                        accountId: this.auth.user.userId,
-                        productId: this.productId,
-                        quantity: this.quantity,
-                        size: this.size,
-                        sugarLevel: this.sugarLevel,
-                        iceLevel: this.iceLevel,
-                        status: 'pending',
-                        // sinkers: this.sinkers,
-                        subTotal: this.mainPrice,
-                        addOns: this.addOns
-                    }
-                    this.$axios.post(AUTH.url+'addOrder', parameter).then(response => {
-                        this.success = 'successfully added to cart'
-                        setTimeout(() => ROUTER.push('/userDashboard').catch(()=>{}), 1000);
-                    })},
-                2000);
-            }
-        },
-        cancel(){
-            // this.sinkers = []
-            this.addOns = []
-        },
-        showModal(id){
-
+        retrieveProduct(){
+            this.$axios.post(AUTH.url + 'retrieveAllCheckouts').then(res => {
+                this.data = res.data.storeOrder
+                this.dataMethod(res.data.storeOrder)
+            })
         }
-        // redirect(param){
-        //     ROUTER.push('/order/product/'+param).catch(()=>{})
-        // }
     }
 }
 </script>

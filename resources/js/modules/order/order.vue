@@ -30,39 +30,34 @@
             <button class="btn" @click="getSugarLevel('75%', $event)">75%</button>
             <button class="btn" @click="getSugarLevel('100%', $event)">100%</button>
 
-            <h3 class="quantity">Quantity of Order</h3>
-            <span class="errorColor" v-if="errorMessage3 !== null">{{errorMessage3}}</span>
-            <input type="number" class="form-control" min="1" v-model="quantity">
-          </center>
-        </div>
-        <div class="col-md-4">
-          <center>
-            <h3>Add-ons</h3>
-            <button
-              class="btn"
-              v-for="(item, index) in addOnsData"
-              :key="index"
-              @click="addAddOns(item, $event)"
-            >{{getAddOnsName(item)}}</button>
-          </center>
-        </div>
-      </div>
-      <center>
-        <button class="btn addCart" @click="addToCart" type="button">Add to Cart</button>
-      </center>
-    </center>
-  </div>
+                        <h3 class="quantity">Quantity of Order</h3>
+                        <span class="errorColor" v-if="errorMessage3 !== null">{{errorMessage3}}</span>
+                        <input type="number" class="form-control" min="1" v-model="quantity">
+                    </center>
+                </div>
+                <div class="col-md-4">
+                    <center>
+                        <h3>Add-ons</h3>
+                        <button class="btn" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">{{getAddOnsName(item)}}</button>
+                    </center>
+                </div>
+            </div>
+            <center>
+                <button class="btn addCart" @click="addToCart()">Add to Cart</button>
+            </center>
+        </center>
+    </div>
 </template>
 <style scoped>
 .errorColor {
   color: red;
 }
-.addCart {
-  margin-top: 20% !important;
-  width: 300px !important;
-  height: 45px !important;
-  margin-top: -150px !important;
-  background-color: #11c408 !important;
+.addCart{
+    /* margin-top: 20% !important; */
+    width: 300px !important;
+    height: 45px !important;
+    /* margin-top: -150px !important; */
+    background-color: #11c408 !important;
 }
 .quantity {
   margin-top: 9%;
@@ -80,12 +75,12 @@
 .cupType {
   margin-top: 25%;
 }
-.row {
-  width: 90%;
-  height: 650px;
-  overflow-y: scroll;
-  margin-top: 3%;
-  /* background-color: white; */
+.row{
+    width: 90%;
+    /* height: 650px; */
+    overflow-y: scroll;
+    margin-top: 3%;
+    /* background-color: white; */
 }
 .btn {
   margin-top: 5%;
@@ -248,22 +243,170 @@ export default {
       }
       this.sugarEvent = event.target;
     },
-    getCupType(params, event) {
-      if (this.cupTypeEvent !== event.target) {
-        event.target.classList.remove("normalColor");
-        event.target.classList.add("color");
-        this.cupType = params.cupTypeName;
-        if (this.cupTypeEvent !== "") {
-          this.cupTypeEvent.classList.add("normalColor");
-          this.cupTypeEvent.classList.remove("color");
-        }
-        if (this.customerType === "foodpanda" || this.customerType === "grab") {
-          this.cupPrice = params.inputCupOnlinePrice;
-        } else {
-          this.cupPrice = params.cupTypePrice;
+    methods: {
+        getCupTypeName(item){
+            let value = ''
+            if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+                value = (item.cupTypeName + ' (+' + item.inputCupOnlinePrice + ')')
+            }else{
+                if(item.cupTypePrice === 0){
+                    value = (item.cupTypeName)
+                }else{
+                    value = (item.cupTypeName + ' (+' + item.cupTypePrice + ')')
+                }
+            }
+            return value
+        },
+        getAddOnsName(item){
+            let value = ''
+            if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+                value = (item.addons_name + ' (+' + item.onlineAddOnsPrice + ')')
+            }else{
+                value = (item.addons_name + ' (+' + item.addons_price + ')')
+            }
+            return value
+        },
+        retrieveProducts() {
+            this.$axios.post(AUTH.url + "retrieveAllProduct").then(response => {
+                this.productData = response.data.product;
+            });
+        },
+        retrieveAddOns() {
+            this.$axios.post(AUTH.url + "retrievingAddOns").then(response => {
+                this.addOnsData = response.data.addons;
+            });
+        },
+        retrieveCupType(){
+            this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
+                this.cupData = response.data.cupType
+            });
+        },
+        getProduct(){
+            this.$axios.post(AUTH.url + 'retrieveOneProduct', {id: this.itemId}).then(response => {
+                this.itemSelected = response.data.product[0].productName
+                this.lowPrice = response.data.product[0].lowPrice
+                this.highPrice = response.data.product[0].highPrice
+                this.overPrice = response.data.product[0].overPrice
+                this.onlinelowPrice = response.data.product[0].onlinelowPrice
+                this.onlinehighPrice = response.data.product[0].onlinehighPrice
+                this.onlineoverPrice = response.data.product[0].onlineoverPrice
+            })
+        },
+        getCupSize(params, event){
+            let a = 0
+            if(this.cupEvent !== event.target){
+                event.target.classList.remove('normalColor')
+                event.target.classList.add('color')
+                this.cupSize = params
+                if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+                    if(params === 'highDose'){
+                        this.total = this.onlinehighPrice
+                    }else if(params === 'overDose'){
+                        this.total = this.onlineoverPrice
+                    }else if(params === 'lowDose'){
+                        this.total = this.onlinelowPrice
+                    }
+                }else{
+                    if(params === 'highDose'){
+                        this.total = this.highPrice
+                    }else if(params === 'overDose'){
+                        this.total = this.overPrice
+                    }else if(params === 'lowDose'){
+                        this.total = this.lowPrice
+                    }
+                }
+                if(this.cupEvent !== ''){
+                    this.cupEvent.classList.add('normalColor')
+                    this.cupEvent.classList.remove('color')
+                }
+            }
+            this.cupEvent = event.target
+        },
+        getSugarLevel(params, event){
+            if(this.sugarEvent !== event.target){
+                event.target.classList.remove('normalColor')
+                event.target.classList.add('color')
+                this.sugarLevel = params
+                if(this.sugarEvent !== ''){
+                    this.sugarEvent.classList.add('normalColor')
+                    this.sugarEvent.classList.remove('color')
+                }
+            }
+            this.sugarEvent = event.target
+        },
+        getCupType(params, event){
+            if(this.cupTypeEvent !== event.target){
+                event.target.classList.remove('normalColor')
+                event.target.classList.add('color')
+                this.cupType = params.cupTypeName
+                if(this.cupTypeEvent !== ''){
+                    this.cupTypeEvent.classList.add('normalColor')
+                    this.cupTypeEvent.classList.remove('color')
+                }
+                if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+                    this.cupPrice = params.inputCupOnlinePrice
+                }else{
+                    this.cupPrice = params.cupTypePrice
+                }
+                console.log(this.cupPrice)
+            }
+            this.cupTypeEvent = event.target
+        },
+        addAddOns(params, event){
+            this.$axios.post(AUTH.url + "retrieveOneAddOn", {id: params.id}).then(response => {
+                if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+                    this.addOnsPrice = response.data.addons.onlineAddOnsPrice
+                }else{
+                    this.addOnsPrice = response.data.addons.addons_price
+                }
+                if(this.addOns.includes(params.addons_name)){
+                    event.target.classList.remove('color')
+                    this.addOns.splice(this.addOns.indexOf(params.addons_name), 1)
+                    this.addOnsAmount -= this.addOnsPrice
+                }else{
+                    event.target.classList.add('color')
+                    this.addOns.push(params.addons_name)
+                    this.addOnsAmount += this.addOnsPrice
+                }
+                console.log(this.addOnsPrice)
+            });
+        },
+        addToCart(){
+            console.log('add')
+            if(this.quantity <= 0){
+                this.errorMessage3 = 'quantity must be greater than 0!'
+            }
+            if(this.cupSize === null){
+                this.errorMessage = 'cup size is required!'
+            }
+            if(this.sugarLevel === null){
+                this.errorMessage2 = 'sugar level is required!'
+            }
+            if(this.cupType === null){
+                this.errorMessage1 = 'cup type is required!'
+            }
+            if(this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null){
+                console.log('sulod')
+                let parameter = {
+                    customerId: localStorage.getItem('customerId'),
+                    cashierId: localStorage.getItem('cashierId'),
+                    productId: this.itemId,
+                    quantity: this.quantity,
+                    size: this.cupSize,
+                    sugarLevel: this.sugarLevel,
+                    choosenPrice: this.total,
+                    cupType: this.cupType,
+                    status: 'pending',
+                    addOns: this.addOns,
+                    subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
+                }
+                this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
+                    ROUTER.push('/productCategory/'+localStorage.getItem('customerType')).catch(()=>{})
+                })
+            
         }
         console.log(this.cupPrice);
-      }
+      
       this.cupTypeEvent = event.target;
     },
     addAddOns(params, event) {
@@ -331,7 +474,6 @@ export default {
       }
     }
   }
-};
+  }
+}
 </script>
-
-

@@ -69,6 +69,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -80,77 +105,70 @@ __webpack_require__.r(__webpack_exports__);
       size: null,
       sugarLevel: null,
       addOns: null,
-      quantity: null
+      quantity: null,
+      finalData: []
     };
   },
   mounted: function mounted() {
     this.retrieveProduct();
   },
   methods: {
-    retrieveProduct: function retrieveProduct() {
+    getTotal: function getTotal(item) {
+      var total = 0;
+      item.forEach(function (el) {
+        total += el.quantity;
+      });
+      return total;
+    },
+    getLowDose: function getLowDose(item) {
+      var total = 0;
+      item.forEach(function (el) {
+        if (el.size === 'lowDose') {
+          total += el.quantity;
+        }
+      });
+      return total;
+    },
+    getHighDose: function getHighDose(item) {
+      var total = 0;
+      item.forEach(function (el) {
+        if (el.size === 'highDose') {
+          total += el.quantity;
+        }
+      });
+      return total;
+    },
+    getOverDose: function getOverDose(item) {
+      var total = 0;
+      item.forEach(function (el) {
+        if (el.size === 'overDose') {
+          total += el.quantity;
+        }
+      });
+      return total;
+    },
+    showData: function showData() {
+      console.log(this.finalData);
+    },
+    dataMethod: function dataMethod(item) {
       var _this = this;
 
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveProduct', {
-        type: this.chosenCat
-      }).then(function (res) {
-        _this.data = res.data.product;
+      Object.keys(item).forEach(function (element) {
+        // item[element].forEach(el => {
+        //     this.finalData.push({'size': el.size, 'quantity': el.quantity})
+        // })
+        _this.finalData.push(item[element]);
       });
     },
-    addTotalPrice: function addTotalPrice(event) {
-      if (event.target.checked) {
-        this.totalPrice += 20;
-        this.mainPrice += 20;
-      } else {
-        this.mainPrice -= 20;
-        this.totalPrice -= 20;
-      }
-
-      this.addQuantity();
-    },
-    addQuantity: function addQuantity() {
-      var pr = 0;
-
-      for (var i = 1; i <= this.quantity; i++) {
-        pr += this.totalPrice;
-      }
-
-      this.mainPrice = pr;
-    },
-    addToCart: function addToCart() {
+    retrieveProduct: function retrieveProduct() {
       var _this2 = this;
 
-      if (this.auth.authenticateForAll()) {
-        setTimeout(function () {
-          var parameter = {
-            accountId: _this2.auth.user.userId,
-            productId: _this2.productId,
-            quantity: _this2.quantity,
-            size: _this2.size,
-            sugarLevel: _this2.sugarLevel,
-            iceLevel: _this2.iceLevel,
-            status: 'pending',
-            // sinkers: this.sinkers,
-            subTotal: _this2.mainPrice,
-            addOns: _this2.addOns
-          };
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveAllCheckouts').then(function (res) {
+        _this2.data = res.data.storeOrder;
 
-          _this2.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
-            _this2.success = 'successfully added to cart';
-            setTimeout(function () {
-              return _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/userDashboard')["catch"](function () {});
-            }, 1000);
-          });
-        }, 2000);
-      }
-    },
-    cancel: function cancel() {
-      // this.sinkers = []
-      this.addOns = [];
-    },
-    showModal: function showModal(id) {} // redirect(param){
-    //     ROUTER.push('/order/product/'+param).catch(()=>{})
-    // }
-
+        _this2.dataMethod(res.data.storeOrder);
+      });
+    }
   }
 });
 
@@ -168,7 +186,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* width */\n[data-v-2ce7e3b8]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.noImage[data-v-2ce7e3b8]{\r\n    margin-top: 10%;\r\n    height: 200px;\r\n    width: 30%;\n}\n.imgItem[data-v-2ce7e3b8]{\r\n    height: 200px;\r\n    width: 80%;\n}\n.row[data-v-2ce7e3b8]{\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.secRow[data-v-2ce7e3b8]{\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.sudlanan[data-v-2ce7e3b8]{\r\n    height: 92.8vh;\r\n    overflow: hidden;\r\n    font-family: Roboto Slab;\n}\n.imageSize[data-v-2ce7e3b8]{\r\n    height: 250px;\r\n    margin-top: 2%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* width */\n[data-v-2ce7e3b8]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.noImage[data-v-2ce7e3b8]{\r\n    margin-top: 10%;\r\n    height: 200px;\r\n    width: 30%;\n}\n.imgItem[data-v-2ce7e3b8]{\r\n    height: 200px;\r\n    width: 80%;\n}\n.row[data-v-2ce7e3b8]{\r\n    width: 80%;\r\n    /* height: 650px; */\r\n    overflow-y: scroll;\n}\n.secRow[data-v-2ce7e3b8]{\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.sudlanan[data-v-2ce7e3b8]{\r\n    font-family: Roboto Slab;\n}\n.imageSize[data-v-2ce7e3b8]{\r\n    height: 250px;\r\n    margin-top: 2%;\n}\r\n", ""]);
 
 // exports
 
@@ -225,42 +243,97 @@ var render = function() {
     { staticClass: "sudlanan" },
     [
       _c("center", [
-        _c("h1", { staticStyle: { "margin-top": "2%" } }, [
-          _vm._v(_vm._s(_vm.chosenCat) + " Milktea")
-        ]),
-        _vm._v(" "),
-        _vm.data !== null && _vm.data.length > 0
-          ? _c(
-              "div",
-              { staticClass: "row" },
-              _vm._l(_vm.data, function(item, index) {
-                return _c(
-                  "div",
-                  { key: index, staticClass: "col-md-3 imageSize" },
-                  [
-                    _c("center", [
-                      _c("img", {
-                        staticClass: "imgItem",
-                        attrs: {
-                          "data-toggle": "modal",
-                          "data-target": "#viewDetails",
-                          src: item.image
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.showModal(item.id)
-                          }
-                        }
-                      }),
+        _vm.data !== null
+          ? _c("div", { staticClass: "row" }, [
+              _c("div", [
+                _c("h1", [_vm._v("Mao ni")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "my-custom-scrollbar" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-bordered table-striped categoryTable",
+                      attrs: { id: "myTable" }
+                    },
+                    [
+                      _c("thead", { staticClass: "thead-light" }, [
+                        _c("tr", { staticClass: "header" }, [
+                          _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { scope: "col" } }, [
+                            _vm._v("lowDose")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { scope: "col" } }, [
+                            _vm._v("highDose")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { scope: "col" } }, [
+                            _vm._v("overDose")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { scope: "col" } }, [
+                            _vm._v("total")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { scope: "col" } }, [
+                            _vm._v("Action")
+                          ])
+                        ])
+                      ]),
                       _vm._v(" "),
-                      _c("h4", [_vm._v(_vm._s(item.productName))])
-                    ])
-                  ],
-                  1
-                )
-              }),
-              0
-            )
+                      _c(
+                        "tbody",
+                        [
+                          _vm._l(_vm.finalData, function(item, index) {
+                            return _c("tr", { key: index }, [
+                              _c("td", { attrs: { scope: "row" } }, [
+                                _vm._v("Customer " + _vm._s(index + 1))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(_vm.getLowDose(item)))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(_vm.getHighDose(item)))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(_vm.getOverDose(item)))]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticStyle: { "font-weight": "bold" } },
+                                [_vm._v(_vm._s(_vm.getTotal(item)))]
+                              ),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "div",
+                                  { staticStyle: { "text-align": "left" } },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-primary",
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.showData()
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Sample")]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ])
+                          })
+                        ],
+                        2
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ])
           : _c(
               "div",
               { staticClass: "secRow" },
@@ -271,7 +344,11 @@ var render = function() {
                     attrs: { src: __webpack_require__(/*! @/assets/data.png */ "./resources/assets/data.png") }
                   }),
                   _vm._v(" "),
-                  _c("h2", [_vm._v("No Product Yet")])
+                  _c("h2", [_vm._v("No Product Yet")]),
+                  _vm._v(" "),
+                  _c("button", { staticClass: "btn btn-primary" }, [
+                    _vm._v("Sample")
+                  ])
                 ])
               ],
               1

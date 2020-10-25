@@ -51,6 +51,11 @@ class OrderController extends Controller
         return response()->json(compact('order'));
     }
 
+    public function retrieveCustomerOrder(Request $request){
+        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'incart')->where('deleted_at', null)->get();
+        return response()->json(compact('order'));
+    }
+
     public function updateStatus(Request $request){
         $order = Order::where('customerId', $request->id)->where('deleted_at', null)->get();
         foreach ($order as $value) {
