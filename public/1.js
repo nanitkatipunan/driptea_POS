@@ -65,6 +65,86 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -77,28 +157,29 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     redirect: function redirect(type) {
-      if (type !== 'fb') {
+      if (type !== "fb") {
         var parameter = {
           customerType: type
         };
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addCustomer', parameter).then(function (res) {
-          localStorage.setItem('customerId', res.data.customerDetails.id);
-          localStorage.setItem('customerType', res.data.customerDetails.customerType);
-          _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + res.data.customerDetails.customerType)["catch"](function () {});
+        console.log(parameter);
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addCustomer", parameter).then(function (res) {
+          localStorage.setItem("customerId", res.data.customerDetails.id);
+          localStorage.setItem("customerType", res.data.customerDetails.customerType);
+          _router__WEBPACK_IMPORTED_MODULE_1__["default"].push("/productCategory/" + res.data.customerDetails.customerType)["catch"](function () {});
         });
       }
     },
     continueFb: function continueFb() {
       var param = {
-        customerType: 'fb',
+        customerType: "fb",
         customerName: this.fullName,
         customerAddress: this.address,
         customerContactNumber: this.contactNumber
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addCustomer', param).then(function (response) {
-        localStorage.setItem('customerId', response.data.customerDetails.id);
-        localStorage.setItem('customerType', response.data.customerDetails.customerType);
-        _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/fb')["catch"](function () {});
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addCustomer", param).then(function (response) {
+        localStorage.setItem("customerId", response.data.customerDetails.id);
+        localStorage.setItem("customerType", response.data.customerDetails.customerType);
+        _router__WEBPACK_IMPORTED_MODULE_1__["default"].push("/productCategory/fb")["catch"](function () {});
       });
     }
   }
@@ -118,7 +199,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.v-card[data-v-418d2e43] {\r\n  transition: opacity .4s ease-in-out;\n}\n.v-card[data-v-418d2e43]:not(.on-hover) {\r\n  opacity: 0.6;\n}\n.show-btns[data-v-418d2e43] {\r\n  color: rgba(255, 255, 255, 1) !important;\n}\r\n", ""]);
+exports.push([module.i, "\n.v-card[data-v-418d2e43] {\r\n  transition: opacity 0.4s ease-in-out;\n}\n.v-card[data-v-418d2e43]:not(.on-hover) {\r\n  opacity: 0.6;\n}\n.show-btns[data-v-418d2e43] {\r\n  color: rgba(255, 255, 255, 1) !important;\n}\r\n", ""]);
 
 // exports
 
@@ -171,271 +252,363 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-div",
-    { staticClass: "container" },
+    "v-container",
+    { attrs: { "fill-height": "", fluid: "" } },
     [
       _c(
-        "v-div",
-        { staticClass: "row", staticStyle: { "margin-top": "15%" } },
+        "v-row",
+        { attrs: { justify: "center", align: "center" } },
         [
           _c(
-            "v-div",
-            { staticClass: "col-md-6", staticStyle: { "text-align": "right" } },
+            "v-col",
+            { attrs: { cols: "12", md: "4", sm: "12" } },
             [
-              _c("img", {
-                staticStyle: {
-                  width: "300px",
-                  height: "200px",
-                  border: "solid 1px black"
-                },
-                attrs: { src: __webpack_require__(/*! @/assets/walkin.jpg */ "./resources/assets/walkin.jpg") },
-                on: {
-                  click: function($event) {
-                    return _vm.redirect("walkin")
-                  }
-                }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c("v-div", { staticClass: "col-md-6" }, [
-            _c("img", {
-              staticStyle: { width: "300px", height: "200px" },
-              attrs: {
-                "data-toggle": "modal",
-                "data-target": "#viewDetails",
-                src: __webpack_require__(/*! @/assets/fb.jpeg */ "./resources/assets/fb.jpeg")
-              },
-              on: {
-                click: function($event) {
-                  return _vm.redirect("fb")
-                }
-              }
-            })
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-div",
-        { staticClass: "row" },
-        [
-          _c(
-            "v-div",
-            { staticClass: "col-md-6", staticStyle: { "text-align": "right" } },
-            [
-              _c("img", {
-                staticStyle: {
-                  width: "300px",
-                  height: "200px",
-                  "margin-top": "5%",
-                  border: "solid 1px black"
-                },
-                attrs: { src: __webpack_require__(/*! @/assets/foodpanda.png */ "./resources/assets/foodpanda.png") },
-                on: {
-                  click: function($event) {
-                    return _vm.redirect("foodpanda")
-                  }
-                }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c("v-div", { staticClass: "col-md-6" }, [
-            _c("img", {
-              staticStyle: {
-                width: "300px",
-                height: "200px",
-                "margin-top": "5%"
-              },
-              attrs: { src: __webpack_require__(/*! @/assets/grab.png */ "./resources/assets/grab.png") },
-              on: {
-                click: function($event) {
-                  return _vm.redirect("grab")
-                }
-              }
-            })
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-div",
-        {
-          staticClass: "modal fade",
-          attrs: { id: "viewDetails", role: "dialog" }
-        },
-        [
-          _c(
-            "v-div",
-            { staticClass: "modal-dialog modal-lg" },
-            [
-              _c(
-                "v-div",
-                { staticClass: "modal-content" },
-                [
-                  _c("v-div", { staticClass: "modal-header" }, [
-                    _c("h3", [_vm._v("Customer Information")]),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "close",
-                        attrs: { type: "button", "data-dismiss": "modal" }
-                      },
-                      [_vm._v("×")]
-                    ),
-                    _c("br")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "v-div",
-                    { staticClass: "modal-body" },
-                    [
-                      _c("v-div", [
+              _c("v-hover", {
+                attrs: { "open-delay": "200" },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var hover = ref.hover
+                      return [
                         _c(
-                          "form",
+                          "v-card",
+                          {
+                            class: { "on-hover": hover },
+                            attrs: {
+                              elevation: hover ? 16 : 2,
+                              height: "250",
+                              "max-width": "350"
+                            }
+                          },
                           [
-                            _c("v-div", { staticClass: "form-group" }, [
-                              _c(
-                                "label",
-                                {
-                                  staticStyle: {
-                                    "font-size": "15px",
-                                    "font-weight": "bold"
-                                  },
-                                  attrs: { for: "fName" }
-                                },
-                                [_vm._v("Fullname:")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.fullName,
-                                    expression: "fullName"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: { type: "text" },
-                                domProps: { value: _vm.fullName },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.fullName = $event.target.value
-                                  }
+                            _c("v-img", {
+                              attrs: {
+                                "max-width": "350",
+                                height: "250",
+                                src: __webpack_require__(/*! @/assets/walkin.jpg */ "./resources/assets/walkin.jpg")
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.redirect("walkin")
                                 }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("v-div", { staticClass: "form-group" }, [
-                              _c(
-                                "label",
-                                {
-                                  staticStyle: {
-                                    "font-size": "15px",
-                                    "font-weight": "bold"
-                                  },
-                                  attrs: { for: "address" }
-                                },
-                                [_vm._v("Address:")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.address,
-                                    expression: "address"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: { type: "text" },
-                                domProps: { value: _vm.address },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.address = $event.target.value
-                                  }
-                                }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("v-div", { staticClass: "form-group" }, [
-                              _c(
-                                "label",
-                                {
-                                  staticStyle: {
-                                    "font-size": "15px",
-                                    "font-weight": "bold"
-                                  },
-                                  attrs: { for: "contactNumber" }
-                                },
-                                [_vm._v("Contact Number:")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.contactNumber,
-                                    expression: "contactNumber"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: { type: "text" },
-                                domProps: { value: _vm.contactNumber },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.contactNumber = $event.target.value
-                                  }
-                                }
-                              })
-                            ])
+                              }
+                            })
                           ],
                           1
                         )
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("v-div", { staticClass: "modal-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button", "data-dismiss": "modal" },
-                        on: {
-                          click: function($event) {
-                            return _vm.continueFb()
-                          }
-                        }
-                      },
-                      [_vm._v("Continue")]
-                    )
-                  ])
-                ],
-                1
-              )
+                      ]
+                    }
+                  }
+                ])
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { attrs: { cols: "12", md: "4", sm: "12" } },
+            [
+              _c("v-hover", {
+                attrs: { "open-delay": "200" },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var hover = ref.hover
+                      return [
+                        _c(
+                          "v-card",
+                          {
+                            class: { "on-hover": hover },
+                            attrs: {
+                              elevation: hover ? 16 : 2,
+                              height: "250",
+                              "max-width": "350"
+                            }
+                          },
+                          [
+                            _c("v-img", {
+                              attrs: {
+                                "max-width": "350",
+                                height: "250",
+                                "data-toggle": "modal",
+                                "data-target": "#viewDetails",
+                                src: __webpack_require__(/*! @/assets/fb1.png */ "./resources/assets/fb1.png")
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ])
+              })
             ],
             1
           )
         ],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        { attrs: { justify: "center", align: "center" } },
+        [
+          _c(
+            "v-col",
+            { attrs: { cols: "12", md: "4", sm: "12" } },
+            [
+              _c("v-hover", {
+                attrs: { "open-delay": "200" },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var hover = ref.hover
+                      return [
+                        _c(
+                          "v-card",
+                          {
+                            class: { "on-hover": hover },
+                            attrs: {
+                              elevation: hover ? 16 : 2,
+                              height: "250",
+                              "max-width": "350"
+                            }
+                          },
+                          [
+                            _c("v-img", {
+                              attrs: {
+                                "max-width": "350",
+                                height: "250",
+                                src: __webpack_require__(/*! @/assets/foodpanda1.png */ "./resources/assets/foodpanda1.png")
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.redirect("foodpanda")
+                                }
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ])
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { attrs: { cols: "12", md: "4", sm: "12" } },
+            [
+              _c("v-hover", {
+                attrs: { "open-delay": "200" },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var hover = ref.hover
+                      return [
+                        _c(
+                          "v-card",
+                          {
+                            class: { "on-hover": hover },
+                            attrs: {
+                              elevation: hover ? 16 : 2,
+                              height: "250",
+                              "max-width": "350"
+                            }
+                          },
+                          [
+                            _c("v-img", {
+                              attrs: {
+                                "max-width": "350",
+                                height: "250",
+                                src: __webpack_require__(/*! @/assets/grab2.png */ "./resources/assets/grab2.png")
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.redirect("grab")
+                                }
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ])
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: { id: "viewDetails", role: "dialog" }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog modal-lg" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h3", [_vm._v("Customer Information")]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("\n            ×")]
+                ),
+                _c("br")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", [
+                  _c("form", [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "label",
+                        {
+                          staticStyle: {
+                            "font-size": "15px",
+                            "font-weight": "bold"
+                          },
+                          attrs: { for: "fName" }
+                        },
+                        [_vm._v("Fullname:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fullName,
+                            expression: "fullName"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.fullName },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.fullName = $event.target.value
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "label",
+                        {
+                          staticStyle: {
+                            "font-size": "15px",
+                            "font-weight": "bold"
+                          },
+                          attrs: { for: "address" }
+                        },
+                        [_vm._v("Address:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.address,
+                            expression: "address"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.address },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.address = $event.target.value
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "label",
+                        {
+                          staticStyle: {
+                            "font-size": "15px",
+                            "font-weight": "bold"
+                          },
+                          attrs: { for: "contactNumber" }
+                        },
+                        [_vm._v("Contact Number:")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.contactNumber,
+                            expression: "contactNumber"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.contactNumber },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.contactNumber = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button", "data-dismiss": "modal" },
+                    on: {
+                      click: function($event) {
+                        return _vm.continueFb()
+                      }
+                    }
+                  },
+                  [_vm._v("\n            Continue\n          ")]
+                )
+              ])
+            ])
+          ])
+        ]
       )
     ],
     1
@@ -448,36 +621,36 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/assets/fb.jpeg":
+/***/ "./resources/assets/fb1.png":
 /*!**********************************!*\
-  !*** ./resources/assets/fb.jpeg ***!
+  !*** ./resources/assets/fb1.png ***!
   \**********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/images/fb.jpeg?7e0e07d9d8d59c08fb811c51b0e3338b";
+module.exports = "/images/fb1.png?ffcb5b5d03e7882102366b4575c806bd";
 
 /***/ }),
 
-/***/ "./resources/assets/foodpanda.png":
-/*!****************************************!*\
-  !*** ./resources/assets/foodpanda.png ***!
-  \****************************************/
+/***/ "./resources/assets/foodpanda1.png":
+/*!*****************************************!*\
+  !*** ./resources/assets/foodpanda1.png ***!
+  \*****************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/images/foodpanda.png?844b251b92d883a0725a4e8275450576";
+module.exports = "/images/foodpanda1.png?e1e21d0133255c394f0b0ca4478eacb9";
 
 /***/ }),
 
-/***/ "./resources/assets/grab.png":
-/*!***********************************!*\
-  !*** ./resources/assets/grab.png ***!
-  \***********************************/
+/***/ "./resources/assets/grab2.png":
+/*!************************************!*\
+  !*** ./resources/assets/grab2.png ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/images/grab.png?8779ede2cc6b005dedfdc4b8cc05f2aa";
+module.exports = "/images/grab2.png?d1e18818f91ee4817d8719b3b72b33de";
 
 /***/ }),
 

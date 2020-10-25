@@ -5,12 +5,12 @@
             <div class="row">
                 <div class="col-md-4">
                     <center>
-                        <h3>Cup's Size</h3>
+                        <h3  class="black--text ">Cup's Size</h3>
                         <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                        <button class="btn" @click="getCupSize('lowDose', $event)">Low Dose</button>
-                        <button class="btn" @click="getCupSize('highDose', $event)">High Dose</button>
-                        <button class="btn" @click="getCupSize('overDose', $event)">Over Dose</button>
-                        <h3 class="cupType">Cup Type</h3>
+                        <button  class="btn overline " @click="getCupSize('lowDose', $event)">Low Dose</button>
+                        <button class="btn overline" @click="getCupSize('highDose', $event)">High Dose</button>
+                        <button class="btn overline" @click="getCupSize('overDose', $event)">Over Dose</button>
+                        <h3 class="cupType black--text">Cup Type</h3>
                         <span class="errorColor" v-if="errorMessage1 !== null">{{errorMessage1}}</span>
                         <button class="btn" v-for="(item, index) in cupData" :key="index" @click="getCupType(item, $event)">{{item.cupTypeName}}</button>
                         <!-- <button class="btn" @click="getCupType('reusable', $event)">Reusable</button> -->
@@ -18,25 +18,25 @@
                 </div>
                 <div class="col-md-4">
                     <center>
-                        <h3>Sugar Level</h3>
+                        <h3 class="black--text">Sugar Level</h3>
                         <span class="errorColor" v-if="errorMessage2 !== null">{{errorMessage2}}</span>
-                        <button class="btn" @click="getSugarLevel('0%', $event)">0%</button>
-                        <button class="btn" @click="getSugarLevel('25%', $event)">25%</button>
-                        <button class="btn" @click="getSugarLevel('50%', $event)">50%</button>
-                        <button class="btn" @click="getSugarLevel('75%', $event)">75%</button>
-                        <button class="btn" @click="getSugarLevel('100%', $event)">100%</button>
+                        <button class="btn overline " @click="getSugarLevel('0%', $event)">0%</button>
+                        <button class="btn overline" @click="getSugarLevel('25%', $event)">25%</button>
+                        <button class="btn overline" @click="getSugarLevel('50%', $event)">50%</button>
+                        <button class="btn overline" @click="getSugarLevel('75%', $event)">75%</button>
+                        <button class="btn overline" @click="getSugarLevel('100%', $event)">100%</button>
 
-                        <h3 class="quantity">Quantity of Order</h3>
+                        <h3 class="quantity black--text">Quantity of Order</h3>
                         <span class="errorColor" v-if="errorMessage3 !== null">{{errorMessage3}}</span>
                         <input type="number" class="form-control" min="1" v-model="quantity">
 
-                        <button class="btn addCart" @click="addToCart">Add to Cart</button>
+                        <button class="btn addCart overline" @click="addToCart">Add to Cart</button>
                     </center>
                 </div>
                 <div class="col-md-4">
                     <center>
-                        <h3>Add-ons</h3>
-                        <button class="btn" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">(₱ {{item.addons_price}}) {{item.addons_name}}</button>
+                        <h3 class="black--text">Add-ons</h3>
+                        <button class="btn overline" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">(₱ {{item.addons_price}}) {{item.addons_name}}</button>
                     </center>
                 </div>
             </div>
@@ -47,6 +47,7 @@
 .errorColor{
     color: red;
 }
+
 .addCart{
     margin-top: 20% !important;
     background-color: #11c408 !important;
@@ -80,10 +81,11 @@
     width: 90%;
     font-weight: bold;
     font-size: 20px;
-    background-color: #edf0ee;
+    background-color: #E65100;
+   
 }
 .sudlanan{
-    background-color: black;
+    background-color: white;
     height: 92.8vh;
     overflow: hidden;
     color:white;

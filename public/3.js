@@ -289,29 +289,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -327,7 +304,7 @@ __webpack_require__.r(__webpack_exports__);
       change: 0,
       subTotalPrice: 0,
       cash: null,
-      fee: '',
+      fee: 0,
       error: false,
       receiptShow: false,
       receiptData: null
@@ -434,33 +411,55 @@ __webpack_require__.r(__webpack_exports__);
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'updateStatus', params).then(function (res) {
         var params = {
           customerId: localStorage.getItem('customerId'),
-          subTotal: _this4.getSubTotal(),
+          cashierId: localStorage.getItem('cashierId'),
+          subTotal: parseInt(_this4.getSubTotal()),
           deliveryFee: _this4.fee,
-          total: _this4.convertTotalPrice(),
+          total: parseInt(_this4.convertTotalPrice()),
           incash: _this4.cash,
-          change: _this4.convertChange(),
+          change: parseInt(_this4.convertChange()),
           order: _this4.tableData
         };
+        console.log(_this4.tableData);
 
         _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addCheckout', params).then(function (res) {
-          var parameter = {
-            id: res.data.storeCheckouts.id
+          var low = 0;
+          var high = 0;
+          var over = 0;
+
+          _this4.tableData.forEach(function (el) {
+            if (el.size === 'lowDose') {
+              low += el.quantity;
+            } else if (el.size === 'highDose') {
+              high += el.quantity;
+            } else if (el.size === 'overDose') {
+              over += el.quantity;
+            }
+          });
+
+          var param = {
+            usedCupsLowDose: low,
+            usedCupsHighDose: high,
+            usedCupsOverDose: over
           };
 
-          _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCheckouts', parameter).then(function (response) {
-            console.log(response.data);
-            _this4.receiptData = response.data.storeOrder;
-            _this4.receiptShow = true; // this.retrieveProduct()
-            // localStorage.removeItem('customerId')
-            // localStorage.removeItem('customerType')
-            // ROUTER.push('/casherDashboard').catch(()=>{})
+          _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'updateRemainingCups', param).then(function (response) {
+            var parameter = {
+              id: res.data.storeCheckouts.id
+            };
+
+            _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCheckouts', parameter).then(function (response) {
+              _this4.receiptData = response.data.storeOrder;
+              _this4.receiptShow = true;
+            });
           });
         });
       });
     },
     checkoutOrder: function checkoutOrder() {
       if (this.customerType !== 'fb') {
-        if (this.convertTotalPrice() > 0 && this.cash !== null && this.convertChange() >= 0) {
+        console.log(this.convertTotalPrice(), this.cash, this.convertChange());
+
+        if (this.convertTotalPrice() !== null && this.cash !== null && this.convertChange() >= 0) {
           this.error = false;
           this.checkoutMethod();
         } else {
@@ -511,7 +510,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.dataStyle[data-v-3cd12d30]{\r\n    height: 700px;\r\n    overflow-y: scroll;\n}\n.checkout[data-v-3cd12d30]{\r\n    margin-top: 3%;\r\n    height: 40% !important;\r\n    font-size: 20px; width: 200px;\n}\n.btn[data-v-3cd12d30]{\r\n    height: 33px;\r\n    width: 150px;\n}\ninput[data-v-3cd12d30]{\r\n    /* height: 35px; */\r\n    /* margin-top: -50px; */\r\n    /* margin-bottom: 15px; */\r\n    width: 80px;\r\n    border-radius: 5px;\n}\n[data-v-3cd12d30]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.pStyle[data-v-3cd12d30]{\r\n    font-weight: bold;\n}\np[data-v-3cd12d30]{\r\n    margin-top: -10%;\n}\n.firstRow[data-v-3cd12d30]{\r\n    margin-bottom: 5%;\r\n    margin-top: 3%;\n}\n.sudlanan[data-v-3cd12d30]{\r\n    background-color: white;\r\n    height: 92.8vh;\r\n    overflow: hidden;\n}\ntable[data-v-3cd12d30]{\r\n    height: 450px;\r\n    width: 100%;\n}\n.table tr[data-v-3cd12d30]{\r\n   text-align: center;\n}\nth[data-v-3cd12d30] {\r\n   width: 100%;\n}\n@media screen and (max-width: 800px) {\ninput[data-v-3cd12d30]{\r\n        width: 60px;\r\n        margin-left: -15px;\n}\n.firstCol[data-v-3cd12d30]{\r\n        border-radius: 5px;\r\n        box-shadow: 5px 5px gray;\r\n        width: 90%;\r\n        margin-top: 5%;\r\n        background-color:white;\r\n        height: 600px !important;\n}\ntable[data-v-3cd12d30]{\r\n        height: 350px;\r\n        width: 100%;\n}\n.dataStyle[data-v-3cd12d30]{\r\n        height: 490px !important;\r\n        overflow-y: scroll;\n}\n}\n.firstCol[data-v-3cd12d30]{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    width: 90%;\r\n    margin-top: 5%;\r\n    background-color:white;\r\n    height: 650px;\n}\n.secondCol[data-v-3cd12d30]{\r\n    border-radius: 5px;\r\n    box-shadow: 5px 5px gray;\r\n    margin-top: 5%;\r\n    margin-right: 2%;\r\n    margin-left: 3%;\r\n    height: 150px;\r\n    background-color: white;\n}\n.v-imgItem[data-v-3cd12d30]{\r\n    height: 150px;\r\n    width: 100%;\n}\r\n", ""]);
+exports.push([module.i, "\n.dataStyle[data-v-3cd12d30]{\r\n    height: 700px;\r\n    overflow-y: scroll;\n}\n.checkout[data-v-3cd12d30]{\r\n    margin-top: 3%;\r\n    height: 40% !important;\r\n    font-size: 20px; width: 200px;\n}\n.btn[data-v-3cd12d30]{\r\n    height: 33px;\r\n    width: 150px;\n}\ninput[data-v-3cd12d30]{\r\n    /* height: 35px; */\r\n    /* margin-top: -50px; */\r\n    /* margin-bottom: 15px; */\r\n    width: 80px;\r\n    border-radius: 5px;\n}\n[data-v-3cd12d30]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.pStyle[data-v-3cd12d30]{\r\n    font-weight: bold;\n}\np[data-v-3cd12d30]{\r\n    margin-top: -10%;\n}\n.firstRow[data-v-3cd12d30]{\r\n    margin-bottom: 5%;\r\n    margin-top: 3%;\n}\n.sudlanan[data-v-3cd12d30]{\r\n    background-color:white;\n}\ntable[data-v-3cd12d30]{\r\n    height: 450px;\r\n    width: 100%;\n}\n.table tr[data-v-3cd12d30]{\r\n   text-align: center;\n}\nth[data-v-3cd12d30] {\r\n   width: 100%;\n}\n@media screen and (max-width: 800px) {\ninput[data-v-3cd12d30]{\r\n        width: 60px;\r\n        margin-left: -15px;\n}\ntable[data-v-3cd12d30]{\r\n        height: 350px;\r\n        width: 100%;\n}\n.dataStyle[data-v-3cd12d30]{\r\n        height: 490px !important;\r\n        overflow-y: scroll;\n}\n}\r\n\r\n\r\n\r\n", ""]);
 
 // exports
 
@@ -1057,10 +1056,402 @@ render._withStripped = true
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function () {}
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "sudlanan" }, [
+    _c(
+      "div",
+      { staticClass: "row firstRow" },
+      [
+        _c(
+          "div",
+          { staticClass: "col-md-6" },
+          [
+            _c(
+              "center",
+              [
+                _c(
+                  "v-card",
+                  { staticClass: "ml-10" },
+                  [
+                    _c("center", [
+                      _vm.customerType === "walkin"
+                        ? _c("img", {
+                            staticStyle: {
+                              width: "70px",
+                              height: "50px",
+                              border: "solid 1px black"
+                            },
+                            attrs: { src: __webpack_require__(/*! @/assets/walkin.jpg */ "./resources/assets/walkin.jpg") }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.customerType === "foodpanda"
+                        ? _c("img", {
+                            staticStyle: { width: "70px", height: "50px" },
+                            attrs: { src: __webpack_require__(/*! @/assets/foodpanda1.png */ "./resources/assets/foodpanda1.png") }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.customerType === "grab"
+                        ? _c("img", {
+                            staticStyle: { width: "70px", height: "50px" },
+                            attrs: { src: __webpack_require__(/*! @/assets/grab2.png */ "./resources/assets/grab2.png") }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.customerType === "fb"
+                        ? _c("img", {
+                            staticStyle: { width: "70px", height: "50px" },
+                            attrs: { src: __webpack_require__(/*! @/assets/fb1.png */ "./resources/assets/fb1.png") }
+                          })
+                        : _vm._e(),
+                      _c("br"),
+                      _vm._v(" "),
+                      _vm.error
+                        ? _c(
+                            "span",
+                            {
+                              staticStyle: {
+                                color: "red",
+                                "font-style": "italic"
+                              }
+                            },
+                            [_vm._v("All data are required!")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "table",
+                        {
+                          staticClass:
+                            "table table-responsive table-bordered overline",
+                          attrs: { id: "myTable" }
+                        },
+                        [
+                          _c("tr", [
+                            _c("th", { staticStyle: { width: "45%" } }, [
+                              _vm._v("Product Name")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Add ons")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Unit Price")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Quantity")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Total")]),
+                            _vm._v(" "),
+                            _c("th", { staticStyle: { width: "15px" } }, [
+                              _vm._v("❌")
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.tableData, function(item, index) {
+                              return _c("tr", { key: index }, [
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(item.order_product[0].productName)
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(_vm._s(_vm.getAddOns(item.same_order)))
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.choosenPrice))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.quantity))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.subTotal))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticStyle: { "font-size": "10px" },
+                                      attrs: {
+                                        type: "button",
+                                        "aria-expanded": "false"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.deleteOrder(item.id)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("❌")]
+                                  )
+                                ])
+                              ])
+                            }),
+                            0
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-6" }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "col-md-6 overline",
+                          staticStyle: { "text-align": "left" }
+                        },
+                        [
+                          _vm.customerType === "fb"
+                            ? _c("p", { staticStyle: { display: "inline" } }, [
+                                _vm._v("Subtotal:   ")
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.customerType === "fb"
+                            ? _c("p", { staticStyle: { display: "inline" } }, [
+                                _vm._v("₱ " + _vm._s(_vm.getSubTotal()))
+                              ])
+                            : _vm._e(),
+                          _c("br"),
+                          _vm._v(" "),
+                          _vm.customerType === "fb"
+                            ? _c("p", { staticStyle: { display: "inline" } }, [
+                                _vm._v("Delivery Fee: ")
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.customerType === "fb"
+                            ? _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.fee,
+                                    expression: "fee"
+                                  }
+                                ],
+                                staticStyle: { display: "inline" },
+                                attrs: {
+                                  type: "number",
+                                  placeholder: "₱ 0.00"
+                                },
+                                domProps: { value: _vm.fee },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.fee = $event.target.value
+                                  }
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            {
+                              staticClass: "pStyle",
+                              staticStyle: { display: "inline" }
+                            },
+                            [_vm._v("Total:    ")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            {
+                              staticClass: "pStyle",
+                              staticStyle: { display: "inline" }
+                            },
+                            [_vm._v("₱ " + _vm._s(_vm.convertTotalPrice()))]
+                          ),
+                          _c("br"),
+                          _vm._v(" "),
+                          _vm.customerType !== "fb"
+                            ? _c(
+                                "p",
+                                {
+                                  staticClass: "pStyle",
+                                  staticStyle: { display: "inline" }
+                                },
+                                [_vm._v("Amount:     ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.customerType !== "fb"
+                            ? _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.cash,
+                                    expression: "cash"
+                                  }
+                                ],
+                                staticStyle: { display: "inline" },
+                                attrs: {
+                                  type: "number",
+                                  placeholder: "₱ 0.00"
+                                },
+                                domProps: { value: _vm.cash },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.cash = $event.target.value
+                                  }
+                                }
+                              })
+                            : _vm._e(),
+                          _c("br"),
+                          _vm._v(" "),
+                          _vm.customerType !== "fb"
+                            ? _c(
+                                "p",
+                                {
+                                  staticClass: "pStyle",
+                                  staticStyle: { display: "inline" }
+                                },
+                                [_vm._v("Change:   ")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.customerType !== "fb"
+                            ? _c(
+                                "p",
+                                {
+                                  staticClass: "pStyle",
+                                  staticStyle: { display: "inline" }
+                                },
+                                [_vm._v("₱ " + _vm._s(_vm.convertChange()))]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("div", [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "btn btn-primary checkout overline",
+                                on: { click: _vm.checkoutOrder }
+                              },
+                              [_vm._v("Checkout")]
+                            )
+                          ])
+                        ]
+                      )
+                    ])
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "dataStyle" }, [
+            _c(
+              "div",
+              { staticClass: "row" },
+              _vm._l(_vm.data, function(item, index) {
+                return _c(
+                  "div",
+                  { key: index, staticClass: "col-md-5 secondCol" },
+                  [
+                    _c(
+                      "v-card",
+                      {
+                        staticClass: "elevation-5",
+                        attrs: { "max-width": "250", height: "250" }
+                      },
+                      [
+                        _c("v-img", {
+                          attrs: {
+                            "max-width": "250",
+                            height: "250",
+                            src: item.image
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.redirect(item.productCategory)
+                            }
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              }),
+              0
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm.receiptShow
+          ? _c("receipt", { attrs: { showData: _vm.receiptData } })
+          : _vm._e()
+      ],
+      1
+    )
+  ])
+}
 var staticRenderFns = []
+render._withStripped = true
 
 
+
+/***/ }),
+
+/***/ "./resources/assets/fb1.png":
+/*!**********************************!*\
+  !*** ./resources/assets/fb1.png ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/fb1.png?ffcb5b5d03e7882102366b4575c806bd";
+
+/***/ }),
+
+/***/ "./resources/assets/foodpanda1.png":
+/*!*****************************************!*\
+  !*** ./resources/assets/foodpanda1.png ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/foodpanda1.png?e1e21d0133255c394f0b0ca4478eacb9";
+
+/***/ }),
+
+/***/ "./resources/assets/grab2.png":
+/*!************************************!*\
+  !*** ./resources/assets/grab2.png ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/grab2.png?d1e18818f91ee4817d8719b3b72b33de";
+
+/***/ }),
+
+/***/ "./resources/assets/walkin.jpg":
+/*!*************************************!*\
+  !*** ./resources/assets/walkin.jpg ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/walkin.jpg?e225ba36f9a7baac8aac3abe6dac6ddd";
 
 /***/ }),
 

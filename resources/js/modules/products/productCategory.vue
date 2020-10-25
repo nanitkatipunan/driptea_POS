@@ -1,17 +1,16 @@
 <template>
-    <v-div class="sudlanan">
-        <v-div class="row firstRow">
-            <v-div class="col-md-6">
+    <div class="sudlanan">
+        <div class="row firstRow">
+            <div class="col-md-6">
                 <center>
-                    <v-div class="firstCol">    
+                    <v-card class="ml-10">
                         <center>
-                        
-                            <v-img v-if="customerType === 'walkin'" style="width: 70px; height: 50px; border: solid 1px black" src="@/assets/walkin.jpg">
-                            <v-img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda.png">
-                            <v-img v-if="customerType === 'grab'" style="width: 70px; height: 50px;" src="@/assets/grab.png">
-                            <v-img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb.jpeg"><br>
+                            <img v-if="customerType === 'walkin'" style="width: 70px; height: 50px; border: solid 1px black" src="@/assets/walkin.jpg">
+                            <img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda1.png">
+                            <img v-if="customerType === 'grab'" style="width: 70px; height: 50px;" src="@/assets/grab2.png">
+                            <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb1.png"><br>
                             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
-                            <table class="table table-responsive table-bordered" id="myTable">
+                            <table class="table table-responsive table-bordered overline" id="myTable">
                                 <tr>
                                     <th style="width: 45%;">Product Name</th>
                                     <th>Add&nbsp;ons</th>
@@ -28,15 +27,15 @@
                                         <td>{{item.quantity}}</td>
                                         <td>{{item.subTotal}}</td>
                                         <td>
-                                            <v-button style="font-size: 10px" type="v-button" aria-expanded="false" @click="deleteOrder(item.id)">❌</v-button>
+                                            <button style="font-size: 10px" type="button" aria-expanded="false" @click="deleteOrder(item.id)">❌</button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </center>
-                        <v-div class="row">
-                            <v-div class="col-md-6"></v-div>
-                            <v-div class="col-md-6" style="text-align:left;">
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6 overline" style="text-align:left;">
                                 <p v-if="customerType === 'fb'" style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
                                 <p v-if="customerType === 'fb'" style="display: inline;">₱ {{getSubTotal()}}</p><br>
                                 <p v-if="customerType === 'fb'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
@@ -47,25 +46,30 @@
                                 <input v-if="customerType !== 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
                                 <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
                                 <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
-                            </v-div>
-                        </v-div>
-                    </v-div>
-                    <v-button class="btn btn-primary checkout" @click="checkoutOrder">Checkout</v-button>
+                                <div >
+                                 <button class="btn btn-primary checkout overline" @click="checkoutOrder">Checkout</button>
+                                </div>
+                            </div>
+                        </div>
+                    </v-card>
+                   
                 </center>
-            </v-div>
-            <v-div class="col-md-6">
-                <v-div class="dataStyle">
-                    <v-div class="row">
-                        <v-div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
-                            <v-img class="v-imgItem" :src="item.image" @click="redirect(item.productCategory)">
-                        </v-div>
-                    </v-div>
-                </v-div>           
-            </v-div>
+            </div>
+            <div class="col-md-6">
+                <div class="dataStyle">
+                    <div class="row">
+                        <div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
+                          <v-card class="elevation-5" max-width="250" height="250">
+                            <v-img  max-width="250" height="250" :src="item.image" @click="redirect(item.productCategory)"></v-img>
+                             </v-card>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
             <receipt v-if="receiptShow" :showData="receiptData"></receipt>
-       </v-div>
-    </v-div>
+       </div>
+    </div>
 </template>
 <style scoped>
 .dataStyle{
@@ -102,9 +106,7 @@ p{
     margin-top: 3%;
 }
 .sudlanan{
-    background-color: white;
-    height: 92.8vh;
-    overflow: hidden;
+    background-color:white;
 }
 table{
     height: 450px;
@@ -121,14 +123,7 @@ th {
         width: 60px;
         margin-left: -15px;
     }
-    .firstCol{
-        border-radius: 5px;
-        box-shadow: 5px 5px gray;
-        width: 90%;
-        margin-top: 5%;
-        background-color:white;
-        height: 600px !important;
-    }
+    
     table{
         height: 350px;
         width: 100%;
@@ -138,27 +133,9 @@ th {
         overflow-y: scroll;
     }
 }
-.firstCol{
-    border-radius: 5px;
-    box-shadow: 5px 5px gray;
-    width: 90%;
-    margin-top: 5%;
-    background-color:white;
-    height: 650px;
-}
-.secondCol{
-    border-radius: 5px;
-    box-shadow: 5px 5px gray;
-    margin-top: 5%;
-    margin-right: 2%;
-    margin-left: 3%;
-    height: 150px;
-    background-color: white;
-}
-.v-imgItem{
-    height: 150px;
-    width: 100%;
-}
+
+
+
 </style>
 <script>
 import AUTH from '../../services/auth'
@@ -176,7 +153,7 @@ export default {
             change: 0,
             subTotalPrice: 0,
             cash: null,
-            fee: '',
+            fee: 0,
             error: false,
             receiptShow: false,
             receiptData: null
@@ -272,32 +249,49 @@ export default {
             this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
                 let params = {
                     customerId: localStorage.getItem('customerId'),
-                    subTotal: this.getSubTotal(),
+                    cashierId: localStorage.getItem('cashierId'),
+                    subTotal: parseInt(this.getSubTotal()),
                     deliveryFee: this.fee,
-                    total: this.convertTotalPrice(),
+                    total: parseInt(this.convertTotalPrice()),
                     incash: this.cash,
-                    change: this.convertChange(),
+                    change: parseInt(this.convertChange()),
                     order: this.tableData
                 }
+                console.log(this.tableData)
                 this.$axios.post(AUTH.url + 'addCheckout', params).then(res => {
-                    let parameter = {
-                        id: res.data.storeCheckouts.id,
+                    let low = 0
+                    let high = 0
+                    let over = 0
+                    this.tableData.forEach(el => {
+                        if(el.size === 'lowDose'){
+                            low += el.quantity
+                        }else if(el.size === 'highDose'){
+                            high += el.quantity
+                        }else if(el.size === 'overDose'){
+                            over += el.quantity
+                        }
+                    })
+                    let param = {
+                        usedCupsLowDose: low,
+                        usedCupsHighDose: high,
+                        usedCupsOverDose: over
                     }
-                    this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
-                        console.log(response.data)
-                        this.receiptData = response.data.storeOrder
-                        this.receiptShow = true
-                        // this.retrieveProduct()
-                        // localStorage.removeItem('customerId')
-                        // localStorage.removeItem('customerType')
-                        // ROUTER.push('/casherDashboard').catch(()=>{})
+                    this.$axios.post(AUTH.url + 'updateRemainingCups', param).then(response => {
+                        let parameter = {
+                            id: res.data.storeCheckouts.id,
+                        }
+                        this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
+                            this.receiptData = response.data.storeOrder
+                            this.receiptShow = true
+                        })
                     })
                 })
             })
         },
         checkoutOrder(){
             if(this.customerType !== 'fb'){
-                if(this.convertTotalPrice() > 0 && this.cash !== null && this.convertChange() >= 0){
+                console.log(this.convertTotalPrice(), this.cash, this.convertChange())
+                if(this.convertTotalPrice() !== null && this.cash !== null && this.convertChange() >= 0){
                     this.error = false
                     this.checkoutMethod()
                 }else{
@@ -315,5 +309,3 @@ export default {
     }
 }
 </script>
-
-

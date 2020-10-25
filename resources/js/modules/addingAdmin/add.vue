@@ -2,21 +2,21 @@
     <div class=" container div">
         <div>
             <center><br>
-                <h1>Add Products, Categories and Add-ons</h1><br>
-                <button v-if="ons" type="button" class="btn btn-primary btnModal" @click="showAddOns">+ Add ons</button>
-                <button v-if="prod" type="button" class="btn btn-primary btnModal" @click="showProduct">+ Product</button>
-                <button v-if="cat" type="button" class="btn btn-primary btnModal" @click="showCategory">+ Categories</button>
-                <button v-if="cup" type="button" class="btn btn-primary btnModal" @click="showCupType">+ Cup Type</button>
-                <button v-if="size" type="button" class="btn btn-primary btnModal" @click="showCupSize">+ Cup Size Quantity</button>
+                <h1 >Add Products, Categories and Add-ons</h1><br>
+                <button v-if="ons" type="button" class="btn btn-primary btnModal overline" @click="showAddOns">+ Add ons</button>
+                <button v-if="prod" type="button" class="btn btn-primary btnModal overline" @click="showProduct">+ Product</button>
+                <button v-if="cat" type="button" class="btn btn-primary btnModal overline" @click="showCategory">+ Categories</button>
+                <button v-if="cup" type="button" class="btn btn-primary btnModal overline" @click="showCupType">+ Cup Type</button>
+                <button v-if="size" type="button" class="btn btn-primary btnModal overline" @click="showCupSize">+ Cup Size Quantity</button>
 
             </center>
         </div><br><br>
         <div>
-            <button type="button" ref="cate" class="btn navButton borderStyle" @click="category($event)">Categories</button>
-            <button type="button" ref="pro" class="btn navButton btnBorderStyle1" @click="product($event)">Product</button>
-            <button type="button" ref="on" class="btn navButton btnBorderStyle1" @click="addOnsShow($event)">Add-ons</button>
-            <button type="button" ref="cup" class="btn navButton btnBorderStyle1" @click="addCupType($event)">Cup Type</button>
-            <button type="button" ref="size" class="btn navButton btnBorderStyle1" @click="cupSize($event)">Cup Size </button>
+            <button type="button" ref="cate" class="btn navButton borderStyle overline" @click="category($event)">Categories</button>
+            <button type="button" ref="pro" class="btn navButton btnBorderStyle1 overline" @click="product($event)">Product</button>
+            <button type="button" ref="on" class="btn navButton btnBorderStyle1 overline" @click="addOnsShow($event)">Add-ons</button>
+            <button type="button" ref="cup" class="btn navButton btnBorderStyle1 overline" @click="addCupType($event)">Cup Type</button>
+            <button type="button" ref="size" class="btn navButton btnBorderStyle1 overline" @click="cupSize($event)">Cup Size </button>
 
         </div>
         <div>
@@ -24,7 +24,7 @@
                 <div v-if="size" class="my-custom-scrollbar">
                     <table class="table table-bordered table-striped categoryTable" id="myTable">
                          <thead class="thead-light">
-                            <tr class="header">
+                            <tr class="header overline">
                                 <th colspan="2">Date</th>
                                 <th colspan="4">Incoming Cups</th>
                                 <th colspan="4">Cups Onrack</th>
@@ -79,7 +79,7 @@
                 <div v-if="cat" class="my-custom-scrollbar">
                     <table class="table table-bordered table-striped categoryTable" id="myTable">
                         <thead class="thead-light">
-                            <tr class="header">
+                            <tr class="header  overline">
                                 <th scope="col">#</th>
                                 <th scope="col">Image</th>
                                 <th scope="col">Category</th>
@@ -105,7 +105,7 @@
                 <div v-if="prod" class="my-custom-scrollbar">
                     <table class="table table-bordered table-striped productTable" id="myTable">
                         <thead class="thead-light">
-                            <tr class="header">
+                            <tr class="header overline">
                                 <th scope="col">#</th>
                                 <th scope="col">Image</th>
                                 <th scope="col">Category</th>
@@ -143,7 +143,7 @@
                 <div v-if="ons" class="my-custom-scrollbar">
                     <table class="table table-bordered table-striped addOnsTable" id="myTable">
                         <thead class="thead-light">
-                            <tr class="header">
+                            <tr class="header overline">
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Price</th>
@@ -173,7 +173,7 @@
                 <div v-if="cup" class="my-custom-scrollbar">
                     <table class="table table-bordered table-striped cupTable" id="myTable">
                         <thead class="thead-light">
-                            <tr class="header">
+                            <tr class="header overline">
                                 <th scope="col">#</th>
                                 <th scope="col">Cup Type</th>
                                 <th scope="col">Additional Price</th>
