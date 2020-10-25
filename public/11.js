@@ -1298,7 +1298,7 @@ var render = function() {
             ? _c(
                 "button",
                 {
-                  staticClass: "btn btn-primary btnModal",
+                  staticClass: "btn btn-primary btnModal overline",
                   attrs: { type: "button" },
                   on: { click: _vm.showAddOns }
                 },
@@ -1310,7 +1310,7 @@ var render = function() {
             ? _c(
                 "button",
                 {
-                  staticClass: "btn btn-primary btnModal",
+                  staticClass: "btn btn-primary btnModal overline",
                   attrs: { type: "button" },
                   on: { click: _vm.showProduct }
                 },
@@ -1322,7 +1322,7 @@ var render = function() {
             ? _c(
                 "button",
                 {
-                  staticClass: "btn btn-primary btnModal",
+                  staticClass: "btn btn-primary btnModal overline",
                   attrs: { type: "button" },
                   on: { click: _vm.showCategory }
                 },
@@ -1334,7 +1334,7 @@ var render = function() {
             ? _c(
                 "button",
                 {
-                  staticClass: "btn btn-primary btnModal",
+                  staticClass: "btn btn-primary btnModal overline",
                   attrs: { type: "button" },
                   on: { click: _vm.showCupType }
                 },
@@ -1346,7 +1346,7 @@ var render = function() {
             ? _c(
                 "button",
                 {
-                  staticClass: "btn btn-primary btnModal",
+                  staticClass: "btn btn-primary btnModal overline",
                   attrs: { type: "button" },
                   on: { click: _vm.showCupSize }
                 },
@@ -1365,7 +1365,7 @@ var render = function() {
         "button",
         {
           ref: "cate",
-          staticClass: "btn navButton borderStyle",
+          staticClass: "btn navButton borderStyle overline",
           attrs: { type: "button" },
           on: {
             click: function($event) {
@@ -1380,7 +1380,7 @@ var render = function() {
         "button",
         {
           ref: "pro",
-          staticClass: "btn navButton btnBorderStyle1",
+          staticClass: "btn navButton btnBorderStyle1 overline",
           attrs: { type: "button" },
           on: {
             click: function($event) {
@@ -1395,7 +1395,7 @@ var render = function() {
         "button",
         {
           ref: "on",
-          staticClass: "btn navButton btnBorderStyle1",
+          staticClass: "btn navButton btnBorderStyle1 overline",
           attrs: { type: "button" },
           on: {
             click: function($event) {
@@ -1410,7 +1410,7 @@ var render = function() {
         "button",
         {
           ref: "cup",
-          staticClass: "btn navButton btnBorderStyle1",
+          staticClass: "btn navButton btnBorderStyle1 overline",
           attrs: { type: "button" },
           on: {
             click: function($event) {
@@ -1425,7 +1425,7 @@ var render = function() {
         "button",
         {
           ref: "size",
-          staticClass: "btn navButton btnBorderStyle1",
+          staticClass: "btn navButton btnBorderStyle1 overline",
           attrs: { type: "button" },
           on: {
             click: function($event) {
@@ -1452,7 +1452,7 @@ var render = function() {
                   },
                   [
                     _c("thead", { staticClass: "thead-light" }, [
-                      _c("tr", { staticClass: "header" }, [
+                      _c("tr", { staticClass: "header overline" }, [
                         _c("th", { attrs: { colspan: "2" } }, [_vm._v("Date")]),
                         _vm._v(" "),
                         _c("th", { attrs: { colspan: "4" } }, [
@@ -1572,7 +1572,7 @@ var render = function() {
                   },
                   [
                     _c("thead", { staticClass: "thead-light" }, [
-                      _c("tr", { staticClass: "header" }, [
+                      _c("tr", { staticClass: "header  overline" }, [
                         _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [
@@ -1645,7 +1645,7 @@ var render = function() {
                   },
                   [
                     _c("thead", { staticClass: "thead-light" }, [
-                      _c("tr", { staticClass: "header" }, [
+                      _c("tr", { staticClass: "header overline" }, [
                         _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [
@@ -1790,7 +1790,7 @@ var render = function() {
                   },
                   [
                     _c("thead", { staticClass: "thead-light" }, [
-                      _c("tr", { staticClass: "header" }, [
+                      _c("tr", { staticClass: "header overline" }, [
                         _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
@@ -1906,7 +1906,7 @@ var render = function() {
                   },
                   [
                     _c("thead", { staticClass: "thead-light" }, [
-                      _c("tr", { staticClass: "header" }, [
+                      _c("tr", { staticClass: "header overline" }, [
                         _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [

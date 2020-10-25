@@ -1,83 +1,92 @@
 <template>
-    <div class="sudlanan">
-        <center>
-            <h1 style="margin-top: 2%;">{{chosenCat}} Milktea</h1>
-            <div v-if="data !== null && data.length > 0" class="row">
-                <div class="col-md-3 imageSize" v-for="(item, index) in data" :key="index">
-                    <center>
-                        <img class="imgItem" :src="item.image" @click="redirect(item.id)">
-                        <h4>{{item.productName}}</h4>
-                    </center>
-                </div>
-            </div>
-            <div v-else class="secRow">
-                <center>
-                    <img class="noImage" src="@/assets/data.png">
-                    <h2>No Product Yet</h2>
-                </center>   
-            </div>
-        </center>
-    </div>
+<div class="sudlanan">
+    <center>
+        <h1 style="margin-top: 2%;">{{chosenCat}} Milktea</h1>
+        <v-row v-if="data !== null && data.length > 0">
+            <v-col cols="3" v-for="(item, index) in data" :key="index">
+                <v-card class="pa-2">
+                    <v-img :src="item.image" @click="redirect(item.id)"></v-img>
+                    <p class="pa-2 overline">{{item.productName}}</p>
+                </v-card>
+            </v-col>
+        </v-row>
+
+        <div v-else class="secRow">
+            <center>
+                <img class="noImage" src="@/assets/data.png">
+                <h2>No Product Yet</h2>
+            </center>
+        </div>
+    </center>
+</div>
 </template>
+
 <style scoped>
 /* width */
 ::-webkit-scrollbar {
-  width: 1px;
+    width: 1px;
 }
 
-.noImage{
+.noImage {
     margin-top: 10%;
     height: 200px;
     width: 30%;
 }
 
-.imgItem{
+.imgItem {
     height: 200px;
     width: 80%;
 }
-.row{
+
+.row {
     width: 80%;
     height: 650px;
     overflow-y: scroll;
 }
-.secRow{
+
+.secRow {
     width: 80%;
     height: 650px;
     overflow-y: scroll;
 }
-.sudlanan{
-    background-color: black;
+
+.sudlanan {
+    background-color: white;
     height: 92.8vh;
     overflow: hidden;
-    color:white;
+    color: white;
     font-family: Roboto Slab;
 }
-.imageSize{
+
+.imageSize {
     height: 250px;
     margin-top: 2%;
 }
 </style>
+
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 export default {
-    data(){
-        return{
+    data() {
+        return {
             chosenCat: this.$route.params.itemChosen,
             data: null
         }
     },
-    mounted(){
+    mounted() {
         this.retrieveProduct()
     },
     methods: {
-        retrieveProduct(){
-            this.$axios.post(AUTH.url + 'retrieveProduct', {type: this.chosenCat}).then(res => {
+        retrieveProduct() {
+            this.$axios.post(AUTH.url + 'retrieveProduct', {
+                type: this.chosenCat
+            }).then(res => {
                 this.data = res.data.product
             })
         },
-        redirect(param){
-            ROUTER.push('/order/product/'+param).catch(()=>{})
+        redirect(param) {
+            ROUTER.push('/order/product/' + param).catch(() => {})
         }
     }
 }

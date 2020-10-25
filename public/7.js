@@ -70,6 +70,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -112,7 +119,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* width */\n[data-v-a3679af6]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.noImage[data-v-a3679af6]{\r\n    margin-top: 10%;\r\n    height: 200px;\r\n    width: 30%;\n}\n.imgItem[data-v-a3679af6]{\r\n    height: 200px;\r\n    width: 80%;\n}\n.row[data-v-a3679af6]{\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.secRow[data-v-a3679af6]{\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.sudlanan[data-v-a3679af6]{\r\n    background-color: black;\r\n    height: 92.8vh;\r\n    overflow: hidden;\r\n    color:white;\r\n    font-family: Roboto Slab;\n}\n.imageSize[data-v-a3679af6]{\r\n    height: 250px;\r\n    margin-top: 2%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* width */\n[data-v-a3679af6]::-webkit-scrollbar {\r\n    width: 1px;\n}\n.noImage[data-v-a3679af6] {\r\n    margin-top: 10%;\r\n    height: 200px;\r\n    width: 30%;\n}\n.imgItem[data-v-a3679af6] {\r\n    height: 200px;\r\n    width: 80%;\n}\n.row[data-v-a3679af6] {\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.secRow[data-v-a3679af6] {\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.sudlanan[data-v-a3679af6] {\r\n    background-color: white;\r\n    height: 92.8vh;\r\n    overflow: hidden;\r\n    color: white;\r\n    font-family: Roboto Slab;\n}\n.imageSize[data-v-a3679af6] {\r\n    height: 250px;\r\n    margin-top: 2%;\n}\r\n", ""]);
 
 // exports
 
@@ -168,55 +175,64 @@ var render = function() {
     "div",
     { staticClass: "sudlanan" },
     [
-      _c("center", [
-        _c("h1", { staticStyle: { "margin-top": "2%" } }, [
-          _vm._v(_vm._s(_vm.chosenCat) + " Milktea")
-        ]),
-        _vm._v(" "),
-        _vm.data !== null && _vm.data.length > 0
-          ? _c(
-              "div",
-              { staticClass: "row" },
-              _vm._l(_vm.data, function(item, index) {
-                return _c(
-                  "div",
-                  { key: index, staticClass: "col-md-3 imageSize" },
-                  [
-                    _c("center", [
-                      _c("img", {
-                        staticClass: "imgItem",
-                        attrs: { src: item.image },
-                        on: {
-                          click: function($event) {
-                            return _vm.redirect(item.id)
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("h4", [_vm._v(_vm._s(item.productName))])
-                    ])
-                  ],
-                  1
-                )
-              }),
-              0
-            )
-          : _c(
-              "div",
-              { staticClass: "secRow" },
-              [
-                _c("center", [
-                  _c("img", {
-                    staticClass: "noImage",
-                    attrs: { src: __webpack_require__(/*! @/assets/data.png */ "./resources/assets/data.png") }
-                  }),
-                  _vm._v(" "),
-                  _c("h2", [_vm._v("No Product Yet")])
-                ])
-              ],
-              1
-            )
-      ])
+      _c(
+        "center",
+        [
+          _c("h1", { staticStyle: { "margin-top": "2%" } }, [
+            _vm._v(_vm._s(_vm.chosenCat) + " Milktea")
+          ]),
+          _vm._v(" "),
+          _vm.data !== null && _vm.data.length > 0
+            ? _c(
+                "v-row",
+                _vm._l(_vm.data, function(item, index) {
+                  return _c(
+                    "v-col",
+                    { key: index, attrs: { cols: "3" } },
+                    [
+                      _c(
+                        "v-card",
+                        { staticClass: "pa-2" },
+                        [
+                          _c("v-img", {
+                            attrs: { src: item.image },
+                            on: {
+                              click: function($event) {
+                                return _vm.redirect(item.id)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "pa-2 overline" }, [
+                            _vm._v(_vm._s(item.productName))
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                }),
+                1
+              )
+            : _c(
+                "div",
+                { staticClass: "secRow" },
+                [
+                  _c("center", [
+                    _c("img", {
+                      staticClass: "noImage",
+                      attrs: { src: __webpack_require__(/*! @/assets/data.png */ "./resources/assets/data.png") }
+                    }),
+                    _vm._v(" "),
+                    _c("h2", [_vm._v("No Product Yet")])
+                  ])
+                ],
+                1
+              )
+        ],
+        1
+      )
     ],
     1
   )
