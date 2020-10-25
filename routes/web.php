@@ -23,6 +23,7 @@ Route::post('updateProduct','App\Http\Controllers\ProductController@updateProduc
 Route::post('retrieveProduct','App\Http\Controllers\ProductController@retrieveProduct');
 Route::post('retrieveOneProduct','App\Http\Controllers\ProductController@retrieveOneProduct');
 Route::post('retrieveAllProduct','App\Http\Controllers\ProductController@retrieveAllProduct');
+Route::post('retrieveAllProductAscending','App\Http\Controllers\ProductController@retrieveAllProductAscending');
 Route::post('updateStatusProduct','App\Http\Controllers\ProductController@updateStatusProduct');
 
 Route::post('addCategory','App\Http\Controllers\AddCategoryController@addCategory');
@@ -36,6 +37,7 @@ Route::post('addOrder','App\Http\Controllers\OrderController@addOrder');
 Route::post('updateStatus','App\Http\Controllers\OrderController@updateStatus');
 Route::post('deleteOrder','App\Http\Controllers\OrderController@deleteOrder');
 Route::post('retrieveOrder','App\Http\Controllers\OrderController@retrieveOrder');
+Route::post('retrieveCustomerOrder','App\Http\Controllers\OrderController@retrieveCustomerOrder');
 Route::post('retrieveWholeOrder','App\Http\Controllers\OrderController@retrieveWholeOrder');
 
 Route::post('addingAddOns','App\Http\Controllers\AddAddOnsController@addAddons');
@@ -47,14 +49,17 @@ Route::post('retrieveAllAddOns','App\Http\Controllers\AddAddOnsController@retrie
 
 Route::post('addingCupType','App\Http\Controllers\CupTypeController@addingCupType');
 Route::post('retrieveCupType','App\Http\Controllers\CupTypeController@retrieveCupType');
+Route::post('retrieveOneCupType','App\Http\Controllers\CupTypeController@retrieveOneCupType');
 Route::post('updateAvailableCupType','App\Http\Controllers\CupTypeController@updateAvailableCupType');
 Route::post('editingCupType','App\Http\Controllers\CupTypeController@editingCupType');
 Route::post('retrieveAllCupType','App\Http\Controllers\CupTypeController@retrieveAllCupType');
 
 Route::post('addCheckout','App\Http\Controllers\StoreCheckoutsController@addCheckout');
 Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveCheckouts');
+Route::post('retrieveAllCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveAllCheckouts');
 
 Route::post('addIncomingCups','App\Http\Controllers\QuantityCupsController@addIncomingCups');
+Route::post('updateRemainingCups','App\Http\Controllers\QuantityCupsController@updateRemainingCups');
 Route::post('retrieveCupSize','App\Http\Controllers\QuantityCupsController@retrieveCupSize');
 
 

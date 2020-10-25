@@ -17,6 +17,7 @@ class CreateAddAddOns extends Migration
             $table->increments('id');
             $table->string('addons_name');
             $table->double('addons_price');
+            $table->double('onlineAddOnsPrice');
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();

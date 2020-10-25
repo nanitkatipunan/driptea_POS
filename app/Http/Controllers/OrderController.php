@@ -14,7 +14,7 @@ class OrderController extends Controller
         $dataAddOns = $data['addOns'];
         $order = new Order();
         $order->customerId = $request['customerId'];
-        $order->cashierId = $request['cashierId'];
+        // $order->cashierId = $request['cashierId'];
         $order->productId = $request['productId'];
         $order->quantity = $request['quantity'];
         $order->size = $request['size'];
@@ -45,6 +45,11 @@ class OrderController extends Controller
 
     public function retrieveOrder(Request $request){
         $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pending')->where('deleted_at', null)->get();
+        return response()->json(compact('order'));
+    }
+
+    public function retrieveCustomerOrder(Request $request){
+        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'incart')->where('deleted_at', null)->get();
         return response()->json(compact('order'));
     }
 

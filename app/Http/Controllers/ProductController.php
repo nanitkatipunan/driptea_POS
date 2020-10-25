@@ -30,6 +30,7 @@ class ProductController extends Controller
         $product->onlinehighPrice = $data['onlinehighPrice'];
         $product->onlineoverPrice = $data['onlineoverPrice'];
         $product->productCategory = $data['productCategory'];
+        $product->description = $data['description'];
         $product->productName = $data['productName'];
         $product->status = 'Available';
         $product->image = 'images/'.$imageName;
@@ -49,6 +50,7 @@ class ProductController extends Controller
         $product->onlinehighPrice = $data['onlinehighPrice'];
         $product->onlineoverPrice = $data['onlineoverPrice'];
         $product->productCategory = $data['productCategory'];
+        $product->description = $data['description'];
         $product->productName = $data['productName'];
         $product->status = $data['productName'];
         $product->image = $data['image'];
@@ -64,6 +66,11 @@ class ProductController extends Controller
 
     public function retrieveAllProduct(Request $request){
         $product = Product::orderBy('id','DESC')->get();
+        return response()->json(compact('product'));
+    }
+
+    public function retrieveAllProductAscending(Request $request){
+        $product = Product::orderBy('id','ASC')->get();
         return response()->json(compact('product'));
     }
 

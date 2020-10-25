@@ -10,12 +10,12 @@
                     <div class="form-group">
                         <label for="userName">Username:</label><br>
                         <i><span v-if="errorMessage2 !== null" class="text-danger text-center">{{errorMessage2}}</span></i>
-                        <input v-model="userName" v-on:keyup="validate('userName')" type="text" class="form-control" id="userName">
+                        <input v-model="userName" v-on:keyup="validate('userName')" type="text" class="form-control" id="userName" placeholder="email/username">
                     </div>
                     <div class="form-group">
                         <label for="password">Password:</label><br>
                         <span v-if="errorMessage3 !== null" class="text-danger text-center">{{errorMessage3}}</span>
-                        <input v-model="password" v-on:keyup="validate('password')" type="password" class="form-control" id="password">
+                        <input v-model="password" v-on:keyup="validate('password')" type="password" class="form-control" id="password" placeholder="password">
                     </div>
                     <button type="submit" class="btn btnRegister" @click="login">Login</button>
                 </form>

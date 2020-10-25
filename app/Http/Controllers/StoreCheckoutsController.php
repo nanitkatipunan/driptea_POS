@@ -28,7 +28,7 @@ class StoreCheckoutsController extends Controller
             $dataAddOns = $value['same_order'];
             $storeOrder->storeCheckoutsId = $storeCheckouts['id'];
             $storeOrder->customerId = $value['customerId'];
-            $storeOrder->cashierId = $value['cashierId'];
+            $storeOrder->cashierId = $data['cashierId'];
             $storeOrder->productId = $value['productId'];
             $storeOrder->quantity = $value['quantity'];
             $storeOrder->size = $value['size'];
@@ -53,6 +53,10 @@ class StoreCheckoutsController extends Controller
         return response()->json(compact('storeOrder'));
     }
     
+    public function retrieveAllCheckouts(Request $request){
+        $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('deleted_at', null)->get()->groupBy('storeCheckoutsId');
+        return response()->json(compact('storeOrder'));
+    }
 
     public function retrieveYear(Request $request){
        

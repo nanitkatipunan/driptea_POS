@@ -113,6 +113,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -147,7 +149,8 @@ __webpack_require__.r(__webpack_exports__);
       errorMessage: null,
       errorMessage1: null,
       errorMessage2: null,
-      errorMessage3: null
+      errorMessage3: null,
+      customerType: localStorage.getItem('customerType')
     };
   },
   mounted: function mounted() {
@@ -157,6 +160,32 @@ __webpack_require__.r(__webpack_exports__);
     this.retrieveCupType();
   },
   methods: {
+    getCupTypeName: function getCupTypeName(item) {
+      var value = '';
+
+      if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
+        value = item.cupTypeName + ' (+' + item.inputCupOnlinePrice + ')';
+      } else {
+        if (item.cupTypePrice === 0) {
+          value = item.cupTypeName;
+        } else {
+          value = item.cupTypeName + ' (+' + item.cupTypePrice + ')';
+        }
+      }
+
+      return value;
+    },
+    getAddOnsName: function getAddOnsName(item) {
+      var value = '';
+
+      if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
+        value = item.addons_name + ' (+' + item.onlineAddOnsPrice + ')';
+      } else {
+        value = item.addons_name + ' (+' + item.addons_price + ')';
+      }
+
+      return value;
+    },
     retrieveProducts: function retrieveProducts() {
       var _this = this;
 
@@ -200,9 +229,8 @@ __webpack_require__.r(__webpack_exports__);
         event.target.classList.remove('normalColor');
         event.target.classList.add('color');
         this.cupSize = params;
-        var customerType = localStorage.getItem('customerType');
 
-        if (customerType === 'foodpanda' || customerType === 'grab') {
+        if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
           if (params === 'highDose') {
             this.total = this.onlinehighPrice;
           } else if (params === 'overDose') {
@@ -253,7 +281,13 @@ __webpack_require__.r(__webpack_exports__);
           this.cupTypeEvent.classList.remove('color');
         }
 
-        this.cupPrice = params.cupTypePrice;
+        if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
+          this.cupPrice = params.inputCupOnlinePrice;
+        } else {
+          this.cupPrice = params.cupTypePrice;
+        }
+
+        console.log(this.cupPrice);
       }
 
       this.cupTypeEvent = event.target;
@@ -264,7 +298,11 @@ __webpack_require__.r(__webpack_exports__);
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveOneAddOn", {
         id: params.id
       }).then(function (response) {
-        _this5.addOnsPrice = response.data.addons.addons_price;
+        if (_this5.customerType === 'foodpanda' || _this5.customerType === 'grab') {
+          _this5.addOnsPrice = response.data.addons.onlineAddOnsPrice;
+        } else {
+          _this5.addOnsPrice = response.data.addons.addons_price;
+        }
 
         if (_this5.addOns.includes(params.addons_name)) {
           event.target.classList.remove('color');
@@ -279,9 +317,13 @@ __webpack_require__.r(__webpack_exports__);
 
           _this5.addOnsAmount += _this5.addOnsPrice;
         }
+
+        console.log(_this5.addOnsPrice);
       });
     },
     addToCart: function addToCart() {
+      console.log('add');
+
       if (this.quantity <= 0) {
         this.errorMessage3 = 'quantity must be greater than 0!';
       }
@@ -299,6 +341,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null) {
+        console.log('sulod');
         var parameter = {
           customerId: localStorage.getItem('customerId'),
           cashierId: localStorage.getItem('cashierId'),
@@ -312,7 +355,6 @@ __webpack_require__.r(__webpack_exports__);
           addOns: this.addOns,
           subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
         };
-        console.log(parameter);
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
           _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + localStorage.getItem('customerType'))["catch"](function () {});
         });
@@ -335,7 +377,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.errorColor[data-v-766d0737]{\r\n    color: red;\n}\n.addCart[data-v-766d0737]{\r\n    margin-top: 20% !important;\r\n    background-color: #11c408 !important;\n}\n.quantity[data-v-766d0737]{\r\n    margin-top: 9%;\r\n    margin-bottom: 5%;\n}\n.form-control[data-v-766d0737]{\r\n    text-align: center;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\n}\n[data-v-766d0737]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.cupType[data-v-766d0737]{\r\n    margin-top: 25%;\n}\n.row[data-v-766d0737]{\r\n    width: 90%;\r\n    height: 650px;\r\n    overflow-y: scroll;\r\n    margin-top: 3%;\r\n    /* background-color: white; */\n}\n.btn[data-v-766d0737]{\r\n    margin-top: 5%;\r\n    width: 35px;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\r\n    background-color: #E65100;\n}\n.sudlanan[data-v-766d0737]{\r\n    background-color: white;\r\n    height: 92.8vh;\r\n    overflow: hidden;\r\n    color:white;\r\n    font-family: Roboto Slab;\n}\n.color[data-v-766d0737]{\r\n    background: #89AFE8;\n}\n.normalColor[data-v-766d0737]{\r\n    background: #edf0ee;\n}\r\n", ""]);
+exports.push([module.i, "\n.errorColor[data-v-766d0737]{\r\n    color: red;\n}\n.addCart[data-v-766d0737]{\r\n    /* margin-top: 20% !important; */\r\n    width: 300px !important;\r\n    height: 45px !important;\r\n    /* margin-top: -150px !important; */\r\n    background-color: #11c408 !important;\n}\n.quantity[data-v-766d0737]{\r\n    margin-top: 9%;\r\n    margin-bottom: 5%;\n}\n.form-control[data-v-766d0737]{\r\n    text-align: center;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\n}\n[data-v-766d0737]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.cupType[data-v-766d0737]{\r\n    margin-top: 25%;\n}\n.row[data-v-766d0737]{\r\n    width: 90%;\r\n    /* height: 650px; */\r\n    overflow-y: scroll;\r\n    margin-top: 3%;\r\n    /* background-color: white; */\n}\n.btn[data-v-766d0737]{\r\n    margin-top: 5%;\r\n    width: 35px;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\r\n    background-color: #E65100;\n}\n.sudlanan[data-v-766d0737]{\r\n    background-color: white;\r\n    height: 92.8vh;\r\n    color:white;\r\n    font-family: Roboto Slab;\n}\n.color[data-v-766d0737]{\r\n    background: #89AFE8;\n}\n.normalColor[data-v-766d0737]{\r\n    background: #edf0ee;\n}\r\n", ""]);
 
 // exports
 
@@ -551,26 +593,114 @@ var render = function() {
     "div",
     { staticClass: "sudlanan" },
     [
-      _c("center", [
-        _c("h1", { staticStyle: { "margin-top": "2%" } }, [
-          _vm._v(_vm._s(_vm.itemSelected))
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c(
-                "center",
-                [
-                  _c("h3", { staticClass: "black--text " }, [
-                    _vm._v("Cup's Size")
+      _c(
+        "center",
+        [
+          _c("h1", { staticStyle: { "margin-top": "2%", color: "black" } }, [
+            _vm._v(_vm._s(_vm.itemSelected))
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c(
+              "div",
+              { staticClass: "col-md-4" },
+              [
+                _c(
+                  "center",
+                  [
+                    _c("h3", { staticClass: "black--text " }, [
+                      _vm._v("Cup's Size")
+                    ]),
+                    _vm._v(" "),
+                    _vm.errorMessage !== null
+                      ? _c("span", { staticClass: "errorColor" }, [
+                          _vm._v(_vm._s(_vm.errorMessage))
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn overline ",
+                        on: {
+                          click: function($event) {
+                            return _vm.getCupSize("lowDose", $event)
+                          }
+                        }
+                      },
+                      [_vm._v("Low Dose")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn overline",
+                        on: {
+                          click: function($event) {
+                            return _vm.getCupSize("highDose", $event)
+                          }
+                        }
+                      },
+                      [_vm._v("High Dose")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn overline",
+                        on: {
+                          click: function($event) {
+                            return _vm.getCupSize("overDose", $event)
+                          }
+                        }
+                      },
+                      [_vm._v("Over Dose")]
+                    ),
+                    _vm._v(" "),
+                    _c("h3", { staticClass: "cupType black--text" }, [
+                      _vm._v("Cup Type")
+                    ]),
+                    _vm._v(" "),
+                    _vm.errorMessage1 !== null
+                      ? _c("span", { staticClass: "errorColor" }, [
+                          _vm._v(_vm._s(_vm.errorMessage1))
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.cupData, function(item, index) {
+                      return _c(
+                        "button",
+                        {
+                          key: index,
+                          staticClass: "btn",
+                          on: {
+                            click: function($event) {
+                              return _vm.getCupType(item, $event)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.getCupTypeName(item)))]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md-4" },
+              [
+                _c("center", [
+                  _c("h3", { staticClass: "black--text" }, [
+                    _vm._v("Sugar Level")
                   ]),
                   _vm._v(" "),
-                  _vm.errorMessage !== null
+                  _vm.errorMessage2 !== null
                     ? _c("span", { staticClass: "errorColor" }, [
-                        _vm._v(_vm._s(_vm.errorMessage))
+                        _vm._v(_vm._s(_vm.errorMessage2))
                       ])
                     : _vm._e(),
                   _vm._v(" "),
@@ -580,11 +710,11 @@ var render = function() {
                       staticClass: "btn overline ",
                       on: {
                         click: function($event) {
-                          return _vm.getCupSize("lowDose", $event)
+                          return _vm.getSugarLevel("0%", $event)
                         }
                       }
                     },
-                    [_vm._v("Low Dose")]
+                    [_vm._v("0%")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -593,11 +723,11 @@ var render = function() {
                       staticClass: "btn overline",
                       on: {
                         click: function($event) {
-                          return _vm.getCupSize("highDose", $event)
+                          return _vm.getSugarLevel("25%", $event)
                         }
                       }
                     },
-                    [_vm._v("High Dose")]
+                    [_vm._v("25%")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -606,209 +736,133 @@ var render = function() {
                       staticClass: "btn overline",
                       on: {
                         click: function($event) {
-                          return _vm.getCupSize("overDose", $event)
+                          return _vm.getSugarLevel("50%", $event)
                         }
                       }
                     },
-                    [_vm._v("Over Dose")]
+                    [_vm._v("50%")]
                   ),
                   _vm._v(" "),
-                  _c("h3", { staticClass: "cupType black--text" }, [
-                    _vm._v("Cup Type")
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn overline",
+                      on: {
+                        click: function($event) {
+                          return _vm.getSugarLevel("75%", $event)
+                        }
+                      }
+                    },
+                    [_vm._v("75%")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn overline",
+                      on: {
+                        click: function($event) {
+                          return _vm.getSugarLevel("100%", $event)
+                        }
+                      }
+                    },
+                    [_vm._v("100%")]
+                  ),
+                  _vm._v(" "),
+                  _c("h3", { staticClass: "quantity black--text" }, [
+                    _vm._v("Quantity of Order")
                   ]),
                   _vm._v(" "),
-                  _vm.errorMessage1 !== null
+                  _vm.errorMessage3 !== null
                     ? _c("span", { staticClass: "errorColor" }, [
-                        _vm._v(_vm._s(_vm.errorMessage1))
+                        _vm._v(_vm._s(_vm.errorMessage3))
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm._l(_vm.cupData, function(item, index) {
-                    return _c(
-                      "button",
+                  _c("input", {
+                    directives: [
                       {
-                        key: index,
-                        staticClass: "btn",
-                        on: {
-                          click: function($event) {
-                            return _vm.getCupType(item, $event)
-                          }
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.quantity,
+                        expression: "quantity"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "number", min: "1" },
+                    domProps: { value: _vm.quantity },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
                         }
-                      },
-                      [_vm._v(_vm._s(item.cupTypeName))]
-                    )
+                        _vm.quantity = $event.target.value
+                      }
+                    }
                   })
-                ],
-                2
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c("center", [
-                _c("h3", { staticClass: "black--text" }, [
-                  _vm._v("Sugar Level")
-                ]),
-                _vm._v(" "),
-                _vm.errorMessage2 !== null
-                  ? _c("span", { staticClass: "errorColor" }, [
-                      _vm._v(_vm._s(_vm.errorMessage2))
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md-4" },
+              [
                 _c(
-                  "button",
-                  {
-                    staticClass: "btn overline ",
-                    on: {
-                      click: function($event) {
-                        return _vm.getSugarLevel("0%", $event)
-                      }
-                    }
-                  },
-                  [_vm._v("0%")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn overline",
-                    on: {
-                      click: function($event) {
-                        return _vm.getSugarLevel("25%", $event)
-                      }
-                    }
-                  },
-                  [_vm._v("25%")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn overline",
-                    on: {
-                      click: function($event) {
-                        return _vm.getSugarLevel("50%", $event)
-                      }
-                    }
-                  },
-                  [_vm._v("50%")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn overline",
-                    on: {
-                      click: function($event) {
-                        return _vm.getSugarLevel("75%", $event)
-                      }
-                    }
-                  },
-                  [_vm._v("75%")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn overline",
-                    on: {
-                      click: function($event) {
-                        return _vm.getSugarLevel("100%", $event)
-                      }
-                    }
-                  },
-                  [_vm._v("100%")]
-                ),
-                _vm._v(" "),
-                _c("h3", { staticClass: "quantity black--text" }, [
-                  _vm._v("Quantity of Order")
-                ]),
-                _vm._v(" "),
-                _vm.errorMessage3 !== null
-                  ? _c("span", { staticClass: "errorColor" }, [
-                      _vm._v(_vm._s(_vm.errorMessage3))
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.quantity,
-                      expression: "quantity"
-                    }
+                  "center",
+                  [
+                    _c("h3", { staticClass: "black--text" }, [
+                      _vm._v("Add-ons")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.addOnsData, function(item, index) {
+                      return _c(
+                        "button",
+                        {
+                          key: index,
+                          staticClass: "btn overline",
+                          on: {
+                            click: function($event) {
+                              return _vm.addAddOns(item, $event)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "(₱ " +
+                              _vm._s(item.addons_price) +
+                              ") " +
+                              _vm._s(item.addons_name)
+                          )
+                        ]
+                      )
+                    })
                   ],
-                  staticClass: "form-control",
-                  attrs: { type: "number", min: "1" },
-                  domProps: { value: _vm.quantity },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.quantity = $event.target.value
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn addCart overline",
-                    on: { click: _vm.addToCart }
-                  },
-                  [_vm._v("Add to Cart")]
+                  2
                 )
-              ])
-            ],
-            1
-          ),
+              ],
+              1
+            )
+          ]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-4" },
-            [
-              _c(
-                "center",
-                [
-                  _c("h3", { staticClass: "black--text" }, [_vm._v("Add-ons")]),
-                  _vm._v(" "),
-                  _vm._l(_vm.addOnsData, function(item, index) {
-                    return _c(
-                      "button",
-                      {
-                        key: index,
-                        staticClass: "btn overline",
-                        on: {
-                          click: function($event) {
-                            return _vm.addAddOns(item, $event)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "(₱ " +
-                            _vm._s(item.addons_price) +
-                            ") " +
-                            _vm._s(item.addons_name)
-                        )
-                      ]
-                    )
-                  })
-                ],
-                2
-              )
-            ],
-            1
-          )
-        ])
-      ])
+          _c("center", [
+            _c(
+              "button",
+              {
+                staticClass: "btn addCart overline",
+                on: {
+                  click: function($event) {
+                    return _vm.addToCart()
+                  }
+                }
+              },
+              [_vm._v("Add to Cart")]
+            )
+          ])
+        ],
+        1
+      )
     ],
     1
   )
