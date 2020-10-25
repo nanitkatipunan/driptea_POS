@@ -13,6 +13,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../router */ "./resources/js/router/index.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery */ "../../../node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../config.js */ "./resources/js/config.js");
+//
+//
+//
 //
 //
 //
@@ -224,11 +228,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 
- // import image from '../../../assets/home.jpeg'
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      config: _config_js__WEBPACK_IMPORTED_MODULE_3__["default"],
       data: null,
       productData: null,
       image: null,
@@ -250,16 +255,32 @@ __webpack_require__.r(__webpack_exports__);
       totalAddOns: 0,
       totalPrice: 0,
       cupTypePrice: 0,
-      priceShown: 0
+      priceShown: 0,
+      count: 0
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
+    this.count = 0;
     this.retrieveCategory();
     this.retrieveProduct();
     this.retrieveAddOns();
     this.retrieveCupType();
+    var pusher = new Pusher(this.config.PUSHER_APP_KEY, {
+      cluster: this.config.PUSHER_APP_CLUSTER,
+      encrypted: true
+    }); //Subscribe to the channel we specified in our Adonis Application
+
+    var channel = pusher.subscribe('driptea-channel');
+    channel.bind('driptea-data', function (data) {
+      _this.count++;
+    });
   },
   methods: {
+    direct: function direct() {
+      _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/customerCart');
+    },
     getSizePrice: function getSizePrice() {
       if (this.size === 'highDose') {
         this.total = this.highprice;
@@ -272,64 +293,64 @@ __webpack_require__.r(__webpack_exports__);
       this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice);
     },
     getCupPrice: function getCupPrice() {
-      var _this = this;
+      var _this2 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOneCupType', {
         cupType: this.cupType
       }).then(function (res) {
-        _this.cupTypePrice = res.data.cupType[0].inputCupOnlinePrice;
-        _this.priceShown = _this.quantity * (_this.total + _this.totalAddOns + _this.cupTypePrice);
+        _this2.cupTypePrice = res.data.cupType[0].inputCupOnlinePrice;
+        _this2.priceShown = _this2.quantity * (_this2.total + _this2.totalAddOns + _this2.cupTypePrice);
       });
     },
     getQuantity: function getQuantity() {
       this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice);
     },
     retrieveCupType: function retrieveCupType() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupType").then(function (response) {
-        _this2.cupData = response.data.cupType;
+        _this3.cupData = response.data.cupType;
       });
     },
     retrieveAddOns: function retrieveAddOns() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrievingAddOns").then(function (response) {
-        _this3.addOnsData = response.data.addons;
+        _this4.addOnsData = response.data.addons;
       });
     },
     retrieveCategory: function retrieveCategory() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCategoryAscending').then(function (res) {
-        _this4.data = res.data.addCategory;
+        _this5.data = res.data.addCategory;
       });
     },
     redirect: function redirect(param) {
       _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productOnline/' + param)["catch"](function () {});
     },
     retrieveProduct: function retrieveProduct() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveAllProductAscending').then(function (res) {
-        _this5.productData = res.data.product;
+        _this6.productData = res.data.product;
       });
     },
     addTotalPrice: function addTotalPrice(item, event) {
-      var _this6 = this;
+      var _this7 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveOneAddOn", {
         id: item.id
       }).then(function (response) {
-        _this6.addOnsPrice = response.data.addons.onlineAddOnsPrice;
+        _this7.addOnsPrice = response.data.addons.onlineAddOnsPrice;
 
         if (event.target.checked) {
-          _this6.totalAddOns += _this6.addOnsPrice;
+          _this7.totalAddOns += _this7.addOnsPrice;
         } else {
-          _this6.totalAddOns -= _this6.addOnsPrice;
+          _this7.totalAddOns -= _this7.addOnsPrice;
         }
 
-        _this6.priceShown = _this6.quantity * (_this6.total + _this6.totalAddOns + _this6.cupTypePrice);
+        _this7.priceShown = _this7.quantity * (_this7.total + _this7.totalAddOns + _this7.cupTypePrice);
       });
     },
     addToCart: function addToCart() {
@@ -362,9 +383,7 @@ __webpack_require__.r(__webpack_exports__);
           addOns: this.addOns,
           subTotal: this.priceShown
         };
-        console.log(parameter);
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
-          console.log(response.data.order);
           jquery__WEBPACK_IMPORTED_MODULE_2___default()('#viewDetails').modal('hide');
         });
       }
@@ -481,6 +500,28 @@ var render = function() {
               },
               scopedSlots: _vm._u([
                 {
+                  key: "img",
+                  fn: function(ref) {
+                    var props = ref.props
+                    return [
+                      _c(
+                        "v-img",
+                        _vm._b(
+                          {
+                            attrs: {
+                              gradient:
+                                "to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
+                            }
+                          },
+                          "v-img",
+                          props,
+                          false
+                        )
+                      )
+                    ]
+                  }
+                },
+                {
                   key: "extension",
                   fn: function() {
                     return [
@@ -507,7 +548,62 @@ var render = function() {
                 }
               ])
             },
-            [_c("v-spacer")],
+            [
+              _vm._v(" "),
+              _c("v-toolbar-title", [_vm._v("Title")]),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                { staticStyle: { "margin-right": "2%" }, attrs: { icon: "" } },
+                [_c("v-icon", [_vm._v("mdi-magnify")])],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticStyle: { "margin-right": "2%" },
+                  attrs: { icon: "" },
+                  on: {
+                    click: function($event) {
+                      return _vm.direct()
+                    }
+                  }
+                },
+                [
+                  _c("v-icon", [_vm._v("mdi-cart")]),
+                  _vm._v(" "),
+                  _c("span", { staticStyle: { "margin-left": "-3%" } }, [
+                    _vm._v("Cart")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      staticStyle: {
+                        "background-color": "red",
+                        color: "white",
+                        "border-radius": "20%",
+                        "font-size": "10px",
+                        "margin-left": "-10%",
+                        "margin-top": "-20%"
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.count > 0 ? "New" : ""))]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                { staticStyle: { "margin-right": "3%" }, attrs: { icon: "" } },
+                [_c("v-icon", [_vm._v("mdi-dots-vertical")])],
+                1
+              )
+            ],
             1
           ),
           _vm._v(" "),
@@ -1076,6 +1172,24 @@ render._withStripped = true
 /***/ (function(module, exports) {
 
 module.exports = "/images/data.png?843acdc0c0b7cf274f9043b8a1604f0e";
+
+/***/ }),
+
+/***/ "./resources/js/config.js":
+/*!********************************!*\
+  !*** ./resources/js/config.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  PUSHER_APP_ID: '1095899',
+  PUSHER_APP_KEY: '426e9e5cd2a694fa7c40',
+  PUSHER_APP_SECRET: '4f62e10c794a3d0f2161',
+  PUSHER_APP_CLUSTER: 'ap1'
+});
 
 /***/ }),
 
