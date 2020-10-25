@@ -922,11 +922,13 @@ var render = function() {
                 attrs: { id: "app" }
               },
               [
-                _vm._v(
-                  "\r\n               " +
-                    _vm._s(_vm.datetime) +
-                    "\r\n            "
-                )
+                _c("b", [
+                  _vm._v(
+                    "\r\n               " +
+                      _vm._s(_vm.datetime) +
+                      "\r\n            "
+                  )
+                ])
               ]
             )
           ]),
@@ -940,33 +942,43 @@ var render = function() {
               _vm._l(_vm.showData, function(item, i) {
                 return _c("tr", { key: i }, [
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(
-                      _vm._s(
-                        item.order_product
-                          ? item.order_product[0].productName
-                          : ""
+                    _c("b", [
+                      _vm._v(
+                        _vm._s(
+                          item.order_product
+                            ? item.order_product[0].productName
+                            : ""
+                        )
                       )
-                    )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(
-                      _vm._s(
-                        item.same_order ? _vm.getAddOns(item.same_order) : ""
+                    _c("b", [
+                      _vm._v(
+                        _vm._s(
+                          item.same_order ? _vm.getAddOns(item.same_order) : ""
+                        )
                       )
-                    )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.choosenPrice ? item.choosenPrice : ""))
+                    _c("b", [
+                      _vm._v(_vm._s(item.choosenPrice ? item.choosenPrice : ""))
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.quantity ? item.quantity : ""))
+                    _c("b", [
+                      _vm._v(_vm._s(item.quantity ? item.quantity : ""))
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("td", { staticStyle: { "font-size": "12px" } }, [
-                    _vm._v(_vm._s(item.subTotal ? item.subTotal : ""))
+                    _c("b", [
+                      _vm._v(_vm._s(item.subTotal ? item.subTotal : ""))
+                    ])
                   ])
                 ])
               })
@@ -976,25 +988,38 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "col-md-6", attrs: { id: "summary" } }),
           _vm._v(" "),
-          _c("div", { staticStyle: { "font-size": "12px" } }, [
-            _vm.customerType === "fb"
-              ? _c("p", [_vm._v("Subtotal: " + _vm._s(_vm.Subtotal))])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.customerType === "fb"
-              ? _c("p", [_vm._v("Delivery Fee: " + _vm._s(_vm.Delivery_Fee))])
-              : _vm._e(),
-            _vm._v(" "),
-            _c("p", [_vm._v("Total: " + _vm._s(_vm.Total))]),
-            _vm._v(" "),
-            _vm.customerType !== "fb"
-              ? _c("p", [_vm._v("Amount: " + _vm._s(_vm.Amount))])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.customerType !== "fb"
-              ? _c("p", [_vm._v("Change: " + _vm._s(_vm.Change))])
-              : _vm._e()
-          ]),
+          _c(
+            "div",
+            {
+              staticClass: "text-end  display:block",
+              staticStyle: { "font-size": "12px" }
+            },
+            [
+              _vm.customerType === "fb"
+                ? _c("p", [
+                    _c("b", [_vm._v("Subtotal: " + _vm._s(_vm.Subtotal))])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.customerType === "fb"
+                ? _c("p", [
+                    _c("b", [
+                      _vm._v("Delivery Fee: " + _vm._s(_vm.Delivery_Fee))
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("p", [_c("b", [_vm._v("Total: " + _vm._s(_vm.Total))])]),
+              _vm._v(" "),
+              _vm.customerType !== "fb"
+                ? _c("p", [_c("b", [_vm._v("Amount: " + _vm._s(_vm.Amount))])])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.customerType !== "fb"
+                ? _c("p", [_c("b", [_vm._v("Change: " + _vm._s(_vm.Change))])])
+                : _vm._e()
+            ]
+          ),
           _vm._v(" "),
           _c(
             "button",
@@ -1126,12 +1151,11 @@ var render = function() {
                       _c(
                         "table",
                         {
-                          staticClass:
-                            "table table-responsive table-bordered overline",
+                          staticClass: "table table-responsive table-bordered ",
                           attrs: { id: "myTable" }
                         },
                         [
-                          _c("tr", [
+                          _c("tr", { staticClass: "overline" }, [
                             _c("th", { staticStyle: { width: "45%" } }, [
                               _vm._v("Product Name")
                             ]),
@@ -1151,6 +1175,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "tbody",
+                            { staticClass: "Caption" },
                             _vm._l(_vm.tableData, function(item, index) {
                               return _c("tr", { key: index }, [
                                 _c("td", [
