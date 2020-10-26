@@ -86,7 +86,7 @@ export default {
     methods: {
         retrieveProduct(){
             let params = {
-                id: localStorage.getItem('customerId')
+                id: localStorage.getItem('customerOnlineId')
             }
             this.$axios.post(AUTH.url + 'retrieveCustomerOrder', params).then(res => {
                 this.tableData = res.data.order
@@ -110,15 +110,13 @@ export default {
             })
         },
         orderNow(){
-            this.$axios.post(AUTH.url + "addCustomer", param).then((response) => {
-                let params = {
-                    id: response.data.customerDetails.id,
-                    status: 'pendingCustomer'
-                }
-                this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
-                    this.retrieveProduct()
-                })
-            });
+            let params = {
+                id: localStorage.getItem('customerOnlineId'),
+                status: 'pendingCustomer'
+            }
+            this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
+                this.retrieveProduct()
+            })
         },
         getSubTotal(){
             let total = 0

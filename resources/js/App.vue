@@ -60,13 +60,14 @@
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon x-large color="black" right>mdi-bell-ring</v-icon>
+                <v-icon large color="black" right>mdi-bell-ring</v-icon>
               </v-btn>
             </template>
-            <v-list style="max-height: 200px" class="overflow-y-auto notifDropdown">
+            <v-list style="max-height: 300px; max-width: 300px" class="overflow-y-auto notifDropdown">
               <!-- ang Click kay wala pay nay method -->
               <v-list-item v-for="(item, index) in items" :key="index" @click="ShowModal">
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title>{{ item.title }} has order</v-list-item-title>
+
               </v-list-item>
             </v-list>
           </v-menu>
@@ -89,23 +90,21 @@
     max-height: 65px;
 }
 </style>
-
-
 <script>
 import image from "../assets/logo.png";
 import AUTH from "./services/auth";
 import ROUTER from "./router";
-import { mdiAccount } from "@mdi/js";
+import config from './config.js'
 export default {
   data: () => ({
     admin: localStorage.getItem("adminId"),
     cashier: localStorage.getItem("cashierId"),
-    svgPath: mdiAccount,
     drawer: null,
     image: image,
     auth: AUTH,
     token: null,
     dialog: false,
+    config: config,
     nav: [
       {
         icon: "home",
@@ -151,10 +150,25 @@ export default {
       { title: "Click Me" },
       { title: "Click Me" },
       { title: "Click Me 2...................." }
-    ]
+    ],
+    count: 0
   }),
   mounted() {
     this.admin = localStorage.getItem("adminId");
+    this.cashier = localStorage.getItem("cashierId");
+    let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
+        cluster: this.config.PUSHER_APP_CLUSTER,
+        encrypted: true
+    });
+
+    let channel = pusher.subscribe('driptea-channel')
+    channel.bind('driptea-data', (data) => {
+        if(data.order === 'pendingCustomer'){
+            this.count++
+            // this.retrieveProduct()
+        }
+        console.log(this.count)
+    })
   },
   methods: {
     menuItems() {
@@ -163,7 +177,9 @@ export default {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
-    ShowModal() {}
+    ShowModal() {
+
+    }
   }
 };
 </script>
