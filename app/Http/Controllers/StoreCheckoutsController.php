@@ -7,7 +7,6 @@ use App\Models\StoreAddOn;
 use App\Models\StoreCheckouts;
 use Illuminate\Support\Facades\DB;
 
-
 use Illuminate\Http\Request;
 
 class StoreCheckoutsController extends Controller
@@ -47,41 +46,74 @@ class StoreCheckoutsController extends Controller
         }
         return response()->json(compact('storeCheckouts'));
     }
-
+    
     public function retrieveCheckouts(Request $request){
         $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('storeCheckoutsId', $request->id)->where('deleted_at', null)->get();
         return response()->json(compact('storeOrder'));
     }
     
+    public function retrieveYears(Request $request)
+    {
+        $years = StoreCheckouts::select(array(DB::raw('YEAR(created_at) as year')))
+                    ->groupBy('year')
+                    ->get();
+
+        return response()->JSON(compact('years'));
+
+    }
     public function retrieveAllCheckouts(Request $request){
         $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('deleted_at', null)->get()->groupBy('storeCheckoutsId');
         return response()->json(compact('storeOrder'));
     }
-
-    public function retrieveYear(Request $request){
-       
-        
-           $filterDate= StoreOrder::select(DB::raw('Year(created_at) as `year`'))
-           ->groupBy('year')
-           ->get();
-           
-
-        //    dd($dailyData);
-        return response()->json(compact('filterDate'));
-
+    public function retrieveDailySales(Request $request)
+    {
+        $total = StoreCheckouts::select(DB::raw('SUM(subTotal) as sub'),DB::raw('DAY(created_at) as `date`'),DB::raw('YEAR(created_at) as `year`'))
+                ->whereMonth('created_at', '=', $request->month)
+                ->whereYear('created_at', '=', $request->year)
+                ->groupBy('created_at')
+                 ->get();
+        return response()->JSON(compact('total'));
     }
-    public function retrieveDailySales(Request $request){
+    public function retrieveMonthlySales(Request $request)
+    {
+        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(subTotal) as sub'),DB::raw('MONTH(created_at) as month')))
+                    ->whereYear('created_at', '=', $request->year)
+                    ->groupBy('month')
+                    ->get();
 
-        // dd($request);
-        $dailyData = StoreCheckouts::select(DB::raw('sum(total) as `totalSales`'),DB::raw('Day(created_at) as `date`,Month(created_at) as `month`,Year(created_at) as `year`'))
-        ->whereYear('created_at', '=',$request->year)
-        ->whereMonth('created_at','=',$request->month)
-             ->groupby('year','month','date')
-             ->get();
-        
-        // dd($dailySales);
-        return response()->json(compact('dailyData'));
+        return response()->JSON(compact('subtotal'));
+    }
 
+    public function retrieveQuarterSales(Request $request)
+    {
+        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(subTotal) as sub'),DB::raw('MONTH(created_at) as month')))
+                    ->whereYear('created_at', '=', $request->year)
+                    ->groupBy('month')
+                    ->get();
 
+        return response()->JSON(compact('subtotal'));
+    }
+
+    public function retrieveSemiSales(Request $request)
+    {
+        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(subTotal) as sub'),DB::raw('MONTH(created_at) as month')))
+        ->whereYear('created_at', '=', $request->year)
+        ->groupBy('month')
+        ->get();
+
+        return response()->JSON(compact('subtotal'));
+    }
+
+    public function retrieveAnnualSales(Request $request)
+    {
+        $from = $request->from;
+        $to = $request->to;
+        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(subTotal) as sub'),DB::raw('YEAR(created_at) as year')))
+            // ->whereBetween('created_at', [$from, $to])
+            ->groupBy('year')
+            // ->orderBy('year', 'asc')
+            ->get();
+        // dd($subtotal);
+        return response()->JSON(compact('subtotal'));
     }
 }

@@ -13,6 +13,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../router */ "./resources/js/router/index.js");
 /* harmony import */ var vm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vm */ "./node_modules/vm-browserify/index.js");
 /* harmony import */ var vm__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vm__WEBPACK_IMPORTED_MODULE_2__);
+var _methods;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -128,10 +132,10 @@ __webpack_require__.r(__webpack_exports__);
       sugarLevel: null,
       addOns: [],
       cupType: null,
-      cupEvent: '',
-      sugarEvent: '',
-      cupTypeEvent: '',
-      addOnsEvent: '',
+      cupEvent: "",
+      sugarEvent: "",
+      cupTypeEvent: "",
+      addOnsEvent: "",
       addOnsAmount: 0,
       subTotal: 0,
       total: null,
@@ -150,7 +154,7 @@ __webpack_require__.r(__webpack_exports__);
       errorMessage1: null,
       errorMessage2: null,
       errorMessage3: null,
-      customerType: localStorage.getItem('customerType')
+      customerType: localStorage.getItem("customerType")
     };
   },
   mounted: function mounted() {
@@ -161,27 +165,27 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getCupTypeName: function getCupTypeName(item) {
-      var value = '';
+      var value = "";
 
-      if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
-        value = item.cupTypeName + ' (+' + item.inputCupOnlinePrice + ')';
+      if (this.customerType === "foodpanda" || this.customerType === "grab") {
+        value = item.cupTypeName + " (+" + item.inputCupOnlinePrice + ")";
       } else {
         if (item.cupTypePrice === 0) {
           value = item.cupTypeName;
         } else {
-          value = item.cupTypeName + ' (+' + item.cupTypePrice + ')';
+          value = item.cupTypeName + " (+" + item.cupTypePrice + ")";
         }
       }
 
       return value;
     },
     getAddOnsName: function getAddOnsName(item) {
-      var value = '';
+      var value = "";
 
-      if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
-        value = item.addons_name + ' (+' + item.onlineAddOnsPrice + ')';
+      if (this.customerType === "foodpanda" || this.customerType === "grab") {
+        value = item.addons_name + " (+" + item.onlineAddOnsPrice + ")";
       } else {
-        value = item.addons_name + ' (+' + item.addons_price + ')';
+        value = item.addons_name + " (+" + item.addons_price + ")";
       }
 
       return value;
@@ -210,7 +214,7 @@ __webpack_require__.r(__webpack_exports__);
     getProduct: function getProduct() {
       var _this4 = this;
 
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOneProduct', {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveOneProduct", {
         id: this.itemId
       }).then(function (response) {
         _this4.itemSelected = response.data.product[0].productName;
@@ -226,31 +230,31 @@ __webpack_require__.r(__webpack_exports__);
       var a = 0;
 
       if (this.cupEvent !== event.target) {
-        event.target.classList.remove('normalColor');
-        event.target.classList.add('color');
+        event.target.classList.remove("normalColor");
+        event.target.classList.add("color");
         this.cupSize = params;
 
-        if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
-          if (params === 'highDose') {
+        if (this.customerType === "foodpanda" || this.customerType === "grab") {
+          if (params === "highDose") {
             this.total = this.onlinehighPrice;
-          } else if (params === 'overDose') {
+          } else if (params === "overDose") {
             this.total = this.onlineoverPrice;
-          } else if (params === 'lowDose') {
+          } else if (params === "lowDose") {
             this.total = this.onlinelowPrice;
           }
         } else {
-          if (params === 'highDose') {
+          if (params === "highDose") {
             this.total = this.highPrice;
-          } else if (params === 'overDose') {
+          } else if (params === "overDose") {
             this.total = this.overPrice;
-          } else if (params === 'lowDose') {
+          } else if (params === "lowDose") {
             this.total = this.lowPrice;
           }
         }
 
-        if (this.cupEvent !== '') {
-          this.cupEvent.classList.add('normalColor');
-          this.cupEvent.classList.remove('color');
+        if (this.cupEvent !== "") {
+          this.cupEvent.classList.add("normalColor");
+          this.cupEvent.classList.remove("color");
         }
       }
 
@@ -258,108 +262,286 @@ __webpack_require__.r(__webpack_exports__);
     },
     getSugarLevel: function getSugarLevel(params, event) {
       if (this.sugarEvent !== event.target) {
-        event.target.classList.remove('normalColor');
-        event.target.classList.add('color');
+        event.target.classList.remove("normalColor");
+        event.target.classList.add("color");
         this.sugarLevel = params;
 
-        if (this.sugarEvent !== '') {
-          this.sugarEvent.classList.add('normalColor');
-          this.sugarEvent.classList.remove('color');
+        if (this.sugarEvent !== "") {
+          this.sugarEvent.classList.add("normalColor");
+          this.sugarEvent.classList.remove("color");
         }
       }
 
       this.sugarEvent = event.target;
     },
-    getCupType: function getCupType(params, event) {
-      if (this.cupTypeEvent !== event.target) {
-        event.target.classList.remove('normalColor');
-        event.target.classList.add('color');
-        this.cupType = params.cupTypeName;
-
-        if (this.cupTypeEvent !== '') {
-          this.cupTypeEvent.classList.add('normalColor');
-          this.cupTypeEvent.classList.remove('color');
-        }
+    methods: (_methods = {
+      getCupTypeName: function getCupTypeName(item) {
+        var value = '';
 
         if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
-          this.cupPrice = params.inputCupOnlinePrice;
+          value = item.cupTypeName + ' (+' + item.inputCupOnlinePrice + ')';
         } else {
-          this.cupPrice = params.cupTypePrice;
+          if (item.cupTypePrice === 0) {
+            value = item.cupTypeName;
+          } else {
+            value = item.cupTypeName + ' (+' + item.cupTypePrice + ')';
+          }
+        }
+
+        return value;
+      },
+      getAddOnsName: function getAddOnsName(item) {
+        var value = '';
+
+        if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
+          value = item.addons_name + ' (+' + item.onlineAddOnsPrice + ')';
+        } else {
+          value = item.addons_name + ' (+' + item.addons_price + ')';
+        }
+
+        return value;
+      },
+      retrieveProducts: function retrieveProducts() {
+        var _this5 = this;
+
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllProduct").then(function (response) {
+          _this5.productData = response.data.product;
+        });
+      },
+      retrieveAddOns: function retrieveAddOns() {
+        var _this6 = this;
+
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrievingAddOns").then(function (response) {
+          _this6.addOnsData = response.data.addons;
+        });
+      },
+      retrieveCupType: function retrieveCupType() {
+        var _this7 = this;
+
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupType").then(function (response) {
+          _this7.cupData = response.data.cupType;
+        });
+      },
+      getProduct: function getProduct() {
+        var _this8 = this;
+
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOneProduct', {
+          id: this.itemId
+        }).then(function (response) {
+          _this8.itemSelected = response.data.product[0].productName;
+          _this8.lowPrice = response.data.product[0].lowPrice;
+          _this8.highPrice = response.data.product[0].highPrice;
+          _this8.overPrice = response.data.product[0].overPrice;
+          _this8.onlinelowPrice = response.data.product[0].onlinelowPrice;
+          _this8.onlinehighPrice = response.data.product[0].onlinehighPrice;
+          _this8.onlineoverPrice = response.data.product[0].onlineoverPrice;
+        });
+      },
+      getCupSize: function getCupSize(params, event) {
+        var a = 0;
+
+        if (this.cupEvent !== event.target) {
+          event.target.classList.remove('normalColor');
+          event.target.classList.add('color');
+          this.cupSize = params;
+
+          if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
+            if (params === 'highDose') {
+              this.total = this.onlinehighPrice;
+            } else if (params === 'overDose') {
+              this.total = this.onlineoverPrice;
+            } else if (params === 'lowDose') {
+              this.total = this.onlinelowPrice;
+            }
+          } else {
+            if (params === 'highDose') {
+              this.total = this.highPrice;
+            } else if (params === 'overDose') {
+              this.total = this.overPrice;
+            } else if (params === 'lowDose') {
+              this.total = this.lowPrice;
+            }
+          }
+
+          if (this.cupEvent !== '') {
+            this.cupEvent.classList.add('normalColor');
+            this.cupEvent.classList.remove('color');
+          }
+        }
+
+        this.cupEvent = event.target;
+      },
+      getSugarLevel: function getSugarLevel(params, event) {
+        if (this.sugarEvent !== event.target) {
+          event.target.classList.remove('normalColor');
+          event.target.classList.add('color');
+          this.sugarLevel = params;
+
+          if (this.sugarEvent !== '') {
+            this.sugarEvent.classList.add('normalColor');
+            this.sugarEvent.classList.remove('color');
+          }
+        }
+
+        this.sugarEvent = event.target;
+      },
+      getCupType: function getCupType(params, event) {
+        if (this.cupTypeEvent !== event.target) {
+          event.target.classList.remove('normalColor');
+          event.target.classList.add('color');
+          this.cupType = params.cupTypeName;
+
+          if (this.cupTypeEvent !== '') {
+            this.cupTypeEvent.classList.add('normalColor');
+            this.cupTypeEvent.classList.remove('color');
+          }
+
+          if (this.customerType === 'foodpanda' || this.customerType === 'grab') {
+            this.cupPrice = params.inputCupOnlinePrice;
+          } else {
+            this.cupPrice = params.cupTypePrice;
+          }
+
+          console.log(this.cupPrice);
+        }
+
+        this.cupTypeEvent = event.target;
+      },
+      addAddOns: function addAddOns(params, event) {
+        var _this9 = this;
+
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveOneAddOn", {
+          id: params.id
+        }).then(function (response) {
+          if (_this9.customerType === 'foodpanda' || _this9.customerType === 'grab') {
+            _this9.addOnsPrice = response.data.addons.onlineAddOnsPrice;
+          } else {
+            _this9.addOnsPrice = response.data.addons.addons_price;
+          }
+
+          if (_this9.addOns.includes(params.addons_name)) {
+            event.target.classList.remove('color');
+
+            _this9.addOns.splice(_this9.addOns.indexOf(params.addons_name), 1);
+
+            _this9.addOnsAmount -= _this9.addOnsPrice;
+          } else {
+            event.target.classList.add('color');
+
+            _this9.addOns.push(params.addons_name);
+
+            _this9.addOnsAmount += _this9.addOnsPrice;
+          }
+
+          console.log(_this9.addOnsPrice);
+        });
+      },
+      addToCart: function addToCart() {
+        console.log('add');
+
+        if (this.quantity <= 0) {
+          this.errorMessage3 = 'quantity must be greater than 0!';
+        }
+
+        if (this.cupSize === null) {
+          this.errorMessage = 'cup size is required!';
+        }
+
+        if (this.sugarLevel === null) {
+          this.errorMessage2 = 'sugar level is required!';
+        }
+
+        if (this.cupType === null) {
+          this.errorMessage1 = 'cup type is required!';
+        }
+
+        if (this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null) {
+          console.log('sulod');
+          var parameter = {
+            customerId: localStorage.getItem('customerId'),
+            cashierId: localStorage.getItem('cashierId'),
+            productId: this.itemId,
+            quantity: this.quantity,
+            size: this.cupSize,
+            sugarLevel: this.sugarLevel,
+            choosenPrice: this.total,
+            cupType: this.cupType,
+            status: 'pending',
+            addOns: this.addOns,
+            subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
+          };
+          this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
+            _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + localStorage.getItem('customerType'))["catch"](function () {});
+          });
         }
 
         console.log(this.cupPrice);
+        this.cupTypeEvent = event.target;
       }
-
-      this.cupTypeEvent = event.target;
-    },
-    addAddOns: function addAddOns(params, event) {
-      var _this5 = this;
+    }, _defineProperty(_methods, "addAddOns", function addAddOns(params, event) {
+      var _this10 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveOneAddOn", {
         id: params.id
       }).then(function (response) {
-        if (_this5.customerType === 'foodpanda' || _this5.customerType === 'grab') {
-          _this5.addOnsPrice = response.data.addons.onlineAddOnsPrice;
+        if (_this10.customerType === "foodpanda" || _this10.customerType === "grab") {
+          _this10.addOnsPrice = response.data.addons.onlineAddOnsPrice;
         } else {
-          _this5.addOnsPrice = response.data.addons.addons_price;
+          _this10.addOnsPrice = response.data.addons.addons_price;
         }
 
-        if (_this5.addOns.includes(params.addons_name)) {
-          event.target.classList.remove('color');
+        if (_this10.addOns.includes(params.addons_name)) {
+          event.target.classList.remove("color");
 
-          _this5.addOns.splice(_this5.addOns.indexOf(params.addons_name), 1);
+          _this10.addOns.splice(_this10.addOns.indexOf(params.addons_name), 1);
 
-          _this5.addOnsAmount -= _this5.addOnsPrice;
+          _this10.addOnsAmount -= _this10.addOnsPrice;
         } else {
-          event.target.classList.add('color');
+          event.target.classList.add("color");
 
-          _this5.addOns.push(params.addons_name);
+          _this10.addOns.push(params.addons_name);
 
-          _this5.addOnsAmount += _this5.addOnsPrice;
+          _this10.addOnsAmount += _this10.addOnsPrice;
         }
 
-        console.log(_this5.addOnsPrice);
+        console.log(_this10.addOnsPrice);
       });
-    },
-    addToCart: function addToCart() {
-      console.log('add');
-
+    }), _defineProperty(_methods, "addToCart", function addToCart() {
       if (this.quantity <= 0) {
-        this.errorMessage3 = 'quantity must be greater than 0!';
+        this.errorMessage3 = "quantity must be greater than 0!";
       }
 
       if (this.cupSize === null) {
-        this.errorMessage = 'cup size is required!';
+        this.errorMessage = "cup size is required!";
       }
 
       if (this.sugarLevel === null) {
-        this.errorMessage2 = 'sugar level is required!';
+        this.errorMessage2 = "sugar level is required!";
       }
 
       if (this.cupType === null) {
-        this.errorMessage1 = 'cup type is required!';
+        this.errorMessage1 = "cup type is required!";
       }
 
       if (this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null) {
-        console.log('sulod');
         var parameter = {
-          customerId: localStorage.getItem('customerId'),
-          cashierId: localStorage.getItem('cashierId'),
+          customerId: localStorage.getItem("customerId"),
+          cashierId: localStorage.getItem("cashierId"),
           productId: this.itemId,
           quantity: this.quantity,
           size: this.cupSize,
           sugarLevel: this.sugarLevel,
           choosenPrice: this.total,
           cupType: this.cupType,
-          status: 'pending',
+          status: "pending",
           addOns: this.addOns,
           subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
         };
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
-          _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + localStorage.getItem('customerType'))["catch"](function () {});
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addOrder", parameter).then(function (response) {
+          _router__WEBPACK_IMPORTED_MODULE_1__["default"].push("/productCategory/" + localStorage.getItem("customerType"))["catch"](function () {});
         });
       }
-    }
+    }), _methods)
   }
 });
 
@@ -377,7 +559,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.errorColor[data-v-766d0737]{\r\n    color: red;\n}\n.addCart[data-v-766d0737]{\r\n    /* margin-top: 20% !important; */\r\n    width: 300px !important;\r\n    height: 45px !important;\r\n    /* margin-top: -150px !important; */\r\n    background-color: #11c408 !important;\n}\n.quantity[data-v-766d0737]{\r\n    margin-top: 9%;\r\n    margin-bottom: 5%;\n}\n.form-control[data-v-766d0737]{\r\n    text-align: center;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\n}\n[data-v-766d0737]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.cupType[data-v-766d0737]{\r\n    margin-top: 25%;\n}\n.row[data-v-766d0737]{\r\n    width: 90%;\r\n    /* height: 650px; */\r\n    overflow-y: scroll;\r\n    margin-top: 3%;\r\n    /* background-color: white; */\n}\n.btn[data-v-766d0737]{\r\n    margin-top: 5%;\r\n    width: 35px;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\r\n    background-color: #E65100;\n}\n.sudlanan[data-v-766d0737]{\r\n    background-color: white;\r\n    height: 92.8vh;\r\n    color:white;\r\n    font-family: Roboto Slab;\n}\n.color[data-v-766d0737]{\r\n    background: #89AFE8;\n}\n.normalColor[data-v-766d0737]{\r\n    background: #edf0ee;\n}\r\n", ""]);
+exports.push([module.i, "\n.errorColor[data-v-766d0737] {\r\n  color: red;\n}\n.addCart[data-v-766d0737]{\r\n    /* margin-top: 20% !important; */\r\n    width: 300px !important;\r\n    height: 45px !important;\r\n    /* margin-top: -150px !important; */\r\n    background-color: #11c408 !important;\n}\n.quantity[data-v-766d0737] {\r\n  margin-top: 9%;\r\n  margin-bottom: 5%;\n}\n.form-control[data-v-766d0737] {\r\n  text-align: center;\r\n  width: 90%;\r\n  font-weight: bold;\r\n  font-size: 20px;\n}\n[data-v-766d0737]::-webkit-scrollbar {\r\n  width: 1px;\n}\n.cupType[data-v-766d0737] {\r\n  margin-top: 25%;\n}\n.row[data-v-766d0737]{\r\n    width: 90%;\r\n    /* height: 650px; */\r\n    overflow-y: scroll;\r\n    margin-top: 3%;\r\n    /* background-color: white; */\n}\n.btn[data-v-766d0737]{\r\n    margin-top: 5%;\r\n    width: 35px;\r\n    width: 90%;\r\n    font-weight: bold;\r\n    font-size: 20px;\r\n    background-color: #E65100;\n}\n.sudlanan[data-v-766d0737]{\r\n    background-color: white;\r\n    height: 92.8vh;\r\n    color:white;\r\n    font-family: Roboto Slab;\n}\n.color[data-v-766d0737] {\r\n  background: #89afe8;\n}\n.normalColor[data-v-766d0737] {\r\n  background: #edf0ee;\n}\r\n", ""]);
 
 // exports
 

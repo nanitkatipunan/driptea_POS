@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\AddOns;
+use App\Models\StoreOrder;
+use Illuminate\Support\Facades\DB;
 use App\Events\pusherEvent;
 
 use Illuminate\Http\Request;
@@ -75,5 +78,14 @@ class OrderController extends Controller
         $order = Order::with('orderProduct')->find($request->id)->get();
         $addOns = AddOns::where('orderId', $request->id)->get(['addOns']);
         return response()->json(compact('order', 'addOns'));
+    }
+
+    public function retrieveTopProducts(Request $request){
+        $prods = DB::table('orders')->leftJoin('products', 'orders.productId', '=', 'products.id')
+            ->select(DB::raw('products.image as img'),DB::raw('SUM(orders.quantity) as quan'),DB::raw('products.productName as pName'))
+            ->groupBy('img','pName')
+            ->orderBy('quan', 'desc')
+            ->get();
+        return response()->JSON(compact('prods'));
     }
 }
