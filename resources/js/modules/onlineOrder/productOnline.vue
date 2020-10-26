@@ -44,7 +44,6 @@
                 </center>   
             </div>
         </center>
-        
     </div>
 </template>
 <style scoped>

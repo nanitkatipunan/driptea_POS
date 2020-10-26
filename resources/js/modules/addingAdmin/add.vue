@@ -2,7 +2,11 @@
     <div class=" container div">
         <div>
             <center><br>
-                <h1 >Add Products, Categories and Add-ons</h1><br>
+                <h1 v-if="prod">Adding Products</h1>
+                <h1 v-if="cat">Adding Categories</h1>
+                <h1 v-if="ons">Adding Add-ons</h1>
+                <h1 v-if="cup">Adding Cup Type</h1>
+                <h1 v-if="size">Adding Cup Quantity</h1><br>
                 <button v-if="ons" type="button" class="btn btn-primary btnModal overline" @click="showAddOns">+ Add ons</button>
                 <button v-if="prod" type="button" class="btn btn-primary btnModal overline" @click="showProduct">+ Product</button>
                 <button v-if="cat" type="button" class="btn btn-primary btnModal overline" @click="showCategory">+ Categories</button>
@@ -689,8 +693,8 @@ export default {
         // this.retrieveAddOns();
         this.$refs.on.click()
         this.$refs.pro.click()
-        this.$refs.cate.click()
         this.$refs.size.click()
+        this.$refs.cate.click()
 
         this.retrieveProducts()
         this.retrieveCategories()
