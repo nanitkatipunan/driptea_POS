@@ -269,36 +269,22 @@ __webpack_require__.r(__webpack_exports__);
     salesChart: vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a,
     Datepicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  computed: {
-    dateRangeText: function dateRangeText() {
-      return this.dates.join(" ~ ");
-    }
-  },
+  computed: {},
   mounted: function mounted() {
     var date = new Date();
     var month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1);
     this.thedate = date.getFullYear() + "-" + month;
-    this.MonthLabel = this.mnths[month - 1];
-    console.log("--------> " + month);
+    this.MonthLabel = this.mnths[month - 1]; // console.log("--------> " + month);
+
     this.getTop3();
     this.yrvalue = new Date().getFullYear();
     this.getYears();
     this.getDate();
     this.xvalues();
-    this.getDailySummary(); // this.categories = [];
-
-    this.yearlyCal();
+    this.getDailySummary();
   },
   created: function created() {},
   methods: {
-    yearlyCal: function yearlyCal() {// let currentDate = new Date();
-      // this.YY = new Date();
-      // document.getElementById("datepicker").datepicker({
-      //   format: "yyyy",
-      //   viewMode: "years",
-      //   minViewMode: "years"
-      // });
-    },
     getDailySummary: function getDailySummary() {
       var _this = this;
 
@@ -731,6 +717,8 @@ __webpack_require__.r(__webpack_exports__);
         year: null
       };
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "getTopProd", params).then(function (response) {
+        console.log(response);
+
         for (var i = 0; i < 3; i++) {
           _this7.topProdArr.push({
             img: response.data.prods[i].img,

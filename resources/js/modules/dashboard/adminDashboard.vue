@@ -266,9 +266,6 @@ export default {
     Datepicker
   },
   computed: {
-    dateRangeText() {
-      return this.dates.join(" ~ ");
-    }
   },
   mounted() {
     let date = new Date();
@@ -278,27 +275,18 @@ export default {
         : "0" + (date.getMonth() + 1);
     this.thedate = date.getFullYear() + "-" + month;
     this.MonthLabel = this.mnths[month - 1];
-    console.log("--------> " + month);
+    // console.log("--------> " + month);
     this.getTop3();
     this.yrvalue = new Date().getFullYear();
     this.getYears();
     this.getDate();
     this.xvalues();
     this.getDailySummary();
-    // this.categories = [];
-    this.yearlyCal();
   },
-  created() {},
+  created() {
+    
+  },
   methods: {
-    yearlyCal() {
-      // let currentDate = new Date();
-      // this.YY = new Date();
-      // document.getElementById("datepicker").datepicker({
-      //   format: "yyyy",
-      //   viewMode: "years",
-      //   minViewMode: "years"
-      // });
-    },
     getDailySummary() {
       this.points = [];
       let params = {
@@ -703,6 +691,7 @@ export default {
         year: null
       };
       Axios.post(AUTH.url + "getTopProd", params).then(response => {
+      console.log(response)
         for (var i = 0; i < 3; i++) {
           this.topProdArr.push({
             img: response.data.prods[i].img,
