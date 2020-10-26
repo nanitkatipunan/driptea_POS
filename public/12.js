@@ -860,7 +860,7 @@ __webpack_require__.r(__webpack_exports__);
         formData.append('onlinelowPrice', this.onlinelowPrice);
         formData.append('onlinehighPrice', this.onlinehighPrice);
         formData.append('onlineoverPrice', this.onlineoverPrice);
-        axios.post('/formSubmit', formData, config).then(function (response) {
+        this.$axios.post('/formSubmit', formData, config).then(function (response) {
           currentObj.success = response.data.success;
           currentObj.retrieveCategories();
           currentObj.retrieveProducts();
@@ -912,7 +912,7 @@ __webpack_require__.r(__webpack_exports__);
         formData.append('onlinelowPrice', this.onlinelowPrice);
         formData.append('onlinehighPrice', this.onlinehighPrice);
         formData.append('onlineoverPrice', this.onlineoverPrice);
-        axios.post('/updateProduct', formData, config).then(function (response) {
+        this.$axios.post('/updateProduct', formData, config).then(function (response) {
           currentObj.success = response.data.success;
           currentObj.retrieveCategories();
           currentObj.retrieveProducts();
@@ -962,7 +962,7 @@ __webpack_require__.r(__webpack_exports__);
         var formData = new FormData();
         formData.append('image', this.image);
         formData.append('productCategory', this.productType);
-        axios.post('/addCategory', formData, config).then(function (response) {
+        this.$axios.post('/addCategory', formData, config).then(function (response) {
           currentObj.success = response.data.success;
           currentObj.retrieveCategories();
           currentObj.retrieveProducts();
@@ -2636,7 +2636,11 @@ var render = function() {
                     _c(
                       "form",
                       {
-                        attrs: { enctype: "multipart/form-data", action: "" },
+                        attrs: {
+                          enctype: "multipart/form-data",
+                          action: "",
+                          method: "POST"
+                        },
                         on: { submit: _vm.formSubmitProduct }
                       },
                       [
@@ -3274,7 +3278,11 @@ var render = function() {
                     _c(
                       "form",
                       {
-                        attrs: { enctype: "multipart/form-data", action: "" },
+                        attrs: {
+                          enctype: "multipart/form-data",
+                          action: "",
+                          method: "POST"
+                        },
                         on: { submit: _vm.formSubmit }
                       },
                       [
