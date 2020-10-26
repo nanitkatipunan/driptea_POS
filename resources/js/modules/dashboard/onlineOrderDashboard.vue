@@ -130,16 +130,6 @@
                                                     <input type="checkbox" :id="item.addons_name" :value="item.addons_name" v-model="addOns" @click="addTotalPrice(item, $event)">
                                                     <label :for="item.addons_name">{{item.addons_name}} (+ ₱{{item.onlineAddOnsPrice}})</label><br>
                                                 </div>
-                                                <!-- <input type="checkbox" id="coffeeJelly" value="coffeeJelly" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="coffeeJelly">Coffee Jelly</label><br>
-                                                <input type="checkbox" id="oreo" value="oreo" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="oreo">Crushed Oreo</label><br>
-                                                <input type="checkbox" id="tapioca" value="tapioca" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="tapioca">Tapioca</label><br>
-                                                <input type="checkbox" id="pudding" value="pudding" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="pudding">Pudding</label><br>
-                                                <input type="checkbox" id="nataJelly" value="nataJelly" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="nataJelly">Nata Jelly</label><br> -->
                                             </div>
                                         </div>
                                     </form>
