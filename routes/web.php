@@ -59,6 +59,13 @@ Route::post('addCheckout','App\Http\Controllers\StoreCheckoutsController@addChec
 Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveCheckouts');
 Route::post('retrieveAllCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveAllCheckouts');
 
+Route::post('getDailySales','App\Http\Controllers\StoreCheckoutsController@retrieveDailySales');
+Route::post('getmonthlySales','App\Http\Controllers\StoreCheckoutsController@retrieveMonthlySales');
+Route::post('getQuarterlySales','App\Http\Controllers\StoreCheckoutsController@retrieveQuarterSales');
+Route::post('getSemi-AnnualSales','App\Http\Controllers\StoreCheckoutsController@retrieveSemiSales');
+Route::post('getAnnualSales','App\Http\Controllers\StoreCheckoutsController@retrieveAnnualSales');
+Route::post('getyears','App\Http\Controllers\StoreCheckoutsController@retrieveYears');
+Route::post('getTopProd','App\Http\Controllers\OrderController@retrieveTopProducts');
 Route::post('addIncomingCups','App\Http\Controllers\QuantityCupsController@addIncomingCups');
 Route::post('updateRemainingCups','App\Http\Controllers\QuantityCupsController@updateRemainingCups');
 Route::post('retrieveCupSize','App\Http\Controllers\QuantityCupsController@retrieveCupSize');

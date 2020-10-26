@@ -49,6 +49,14 @@ export default {
             }
         },
         {
+            path: '/adminDashboard',
+            name: 'adminDashboard',
+            component: resolve => require(['@/js/modules/dashboard/adminDashboard'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
             path: '/chosenCategory/:itemChosen',
             name: 'chosenCategory',
             component: resolve => require(['@/js/modules/products/chosenCategory'], resolve),
@@ -76,14 +84,6 @@ export default {
             path: '/addProductCategoryAddOns',
             name: 'addProductCategoryAddOns',
             component: resolve => require(['@/js/modules/addingAdmin/add'], resolve),
-            meta: {
-                tokenRequired: true
-            }
-        },
-        {
-            path: '/adminDashboard',
-            name: 'adminDashboard',
-            component: resolve => require(['@/js/modules/dashboard/adminDashboard'], resolve),
             meta: {
                 tokenRequired: true
             }
