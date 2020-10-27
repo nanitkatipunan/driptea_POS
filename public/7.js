@@ -289,7 +289,11 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text", id: "userName" },
+                attrs: {
+                  type: "text",
+                  id: "userName",
+                  placeholder: "email/username"
+                },
                 domProps: { value: _vm.userName },
                 on: {
                   keyup: function($event) {
@@ -327,7 +331,11 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "password", id: "password" },
+                attrs: {
+                  type: "password",
+                  id: "password",
+                  placeholder: "password"
+                },
                 domProps: { value: _vm.password },
                 on: {
                   keyup: function($event) {

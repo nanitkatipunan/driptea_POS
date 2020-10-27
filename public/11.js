@@ -10,6 +10,8 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/auth */ "./resources/js/services/auth/index.js");
+/* harmony import */ var vue_json_to_csv__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-json-to-csv */ "./node_modules/vue-json-to-csv/dist/vue-json-to-csv.js");
+/* harmony import */ var vue_json_to_csv__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_json_to_csv__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -88,31 +90,252 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      dataInDB: []
+      dataInDB: [],
+      search: null,
+      cupName: null,
+      headersForCup: [// {text: "Date" ,value:"created_at"},
+        // {text: "Incoming Cups Low Dose (LD)" ,value:"incomingLowDose"},
+        // {text: "Incoming Cups High Dose (HD)" ,value:"incomingHighDose"},
+        // {text: "Incoming Cups Over Dose (OD)" ,value:"incomingOverDose"},
+        // {text: "Total" ,value:"totalIncoming"},
+        // {text: "Onrack Cups Low Dose (LD)" ,value:"onRockLowDose"},
+        // {text: "Onrack Cups High Dose (HD)" ,value:"onRockHighDose"},
+        // {text: "Onrack Cups Over Dose (OD)" ,value:"onRockOverDose"},
+        // {text: "Total" ,value:"totalOnRack"},
+        // {text: "Used Cups Low Dose (LD)" ,value:"usedCupsLowDose"},
+        // {text: "Used Cups High Dose (HD)" ,value:"usedCupsHighDose"},
+        // {text: "Used Cups Over Dose (OD)" ,value:"usedCupsOverDose"},
+        // {text: "Total" ,value:"totalUsed"},
+        // {text: "Remaining Cups Low Dose (LD)" ,value:"remainingLowDose"},
+        // {text: "Remaining Cups High Dose (HD)" ,value:"remainingHighDose"},
+        // {text: "Remaining Cups Over Dose (OD)" ,value:"remainingOverDose"},
+        // {text: "Total" ,value:"totalRemaining"},
+      ]
     };
   },
+  components: {
+    VueJsonToCsv: vue_json_to_csv__WEBPACK_IMPORTED_MODULE_1___default.a
+  },
   mounted: function mounted() {
-    this.retrieveAllCups();
+    this.tableForUpcomingCups();
   },
   methods: {
-    retrieveAllCups: function retrieveAllCups() {
+    //  retrieveAllCups(){
+    //       this.$axios.post(AUTH.url + "retrieveCupForInventory").then(response => {
+    //             this.dataInDB = response.data.quantityCupsInDB
+    //             // response.data.retrieveups.forEach(element=>{
+    //             //     if(this.dataInDB.onRockLowDose == ''){
+    //             //         this.dataInDB.push(response.data.onRockLowDose = 0)
+    //             //     }else if(this.dataInDB.onRackHighDose == ''){
+    //             //         this.dataInDB.push(response.data.onRockHighDose = 0)
+    //             //     }
+    //             //     else if(this.dataInDB.onRackOverDose == ''){
+    //             //         this.dataInDB.push(response.data.onRockOverDose = 0)
+    //             //     }
+    //             // })
+    //         });
+    //     },
+    tableForUpcomingCups: function tableForUpcomingCups() {
       var _this = this;
 
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupToDisplay").then(function (response) {
-        _this.dataInDB = response.data.quantityCupsInDB; // response.data.retrieveups.forEach(element=>{
-        //     if(this.dataInDB.onRockLowDose == ''){
-        //         this.dataInDB.push(response.data.onRockLowDose = 0)
-        //     }else if(this.dataInDB.onRackHighDose == ''){
-        //         this.dataInDB.push(response.data.onRockHighDose = 0)
-        //     }
-        //     else if(this.dataInDB.onRackOverDose == ''){
-        //         this.dataInDB.push(response.data.onRockOverDose = 0)
-        //     }
-        // })
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupForInventory").then(function (response) {
+        _this.dataInDB = response.data.quantityCupsInDB;
+        _this.headersForCup = [{
+          text: "Date",
+          value: "created_at"
+        }, {
+          text: "Low Dose (LD)",
+          value: "incomingLowDose"
+        }, {
+          text: "High Dose (HD)",
+          value: "incomingHighDose"
+        }, {
+          text: "Over Dose (OD)",
+          value: "incomingOverDose"
+        }, {
+          text: "Total",
+          value: "totalIncoming"
+        }];
+        _this.cupName = "Upcoming Cups";
+      });
+    },
+    tableForCupsOnrack: function tableForCupsOnrack() {
+      var _this2 = this;
+
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupForInventory").then(function (response) {
+        _this2.dataInDB = response.data.quantityCupsInDB;
+        _this2.headersForCup = [{
+          text: "Date",
+          value: "created_at"
+        }, {
+          text: "Low Dose (LD)",
+          value: "onRockLowDose"
+        }, {
+          text: "High Dose (HD)",
+          value: "onRockHighDose"
+        }, {
+          text: "Over Dose (OD)",
+          value: "onRockOverDose"
+        }, {
+          text: "Total",
+          value: "totalOnRack"
+        }];
+        _this2.cupName = "Cups Onrack";
+      });
+    },
+    tableForUsedCups: function tableForUsedCups() {
+      var _this3 = this;
+
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupForInventory").then(function (response) {
+        _this3.dataInDB = response.data.quantityCupsInDB;
+        _this3.headersForCup = [{
+          text: "Date",
+          value: "created_at"
+        }, {
+          text: "Low Dose (LD)",
+          value: "usedCupsLowDose"
+        }, {
+          text: "High Dose (HD)",
+          value: "usedCupsHighDose"
+        }, {
+          text: "Over Dose (OD)",
+          value: "usedCupsOverDose"
+        }, {
+          text: "Total",
+          value: "totalUsed"
+        }];
+        _this3.cupName = "Used Cups";
+      });
+    },
+    tableForRemainingCups: function tableForRemainingCups() {
+      var _this4 = this;
+
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupForInventory").then(function (response) {
+        _this4.dataInDB = response.data.quantityCupsInDB;
+        _this4.headersForCup = [{
+          text: "Date",
+          value: "created_at"
+        }, {
+          text: "Low Dose (LD)",
+          value: "remainingLowDose"
+        }, {
+          text: "High Dose (HD)",
+          value: "remainingHighDose"
+        }, {
+          text: "Remaining Cups Over Dose (OD)",
+          value: "remainingOverDose"
+        }, {
+          text: "Total",
+          value: "totalRemaining"
+        }];
+        _this4.cupName = "Remaining Cups";
       });
     }
   }
@@ -184,178 +407,137 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("v-simple-table", {
-    staticClass: "table table-bordered hover responsive",
-    scopedSlots: _vm._u([
-      {
-        key: "top",
-        fn: function() {
-          return [
-            _c(
-              "v-toolbar",
-              { attrs: { flat: "", color: "white" } },
-              [_c("v-toolbar-title", [_vm._v("Cups Inventory")])],
-              1
-            )
-          ]
-        },
-        proxy: true
-      },
-      {
-        key: "default",
-        fn: function() {
-          return [
-            _c("thead", [
-              _c("tr", [
+  return _c(
+    "div",
+    [
+      _c("v-toolbar", {
+        attrs: { flat: "" },
+        scopedSlots: _vm._u([
+          {
+            key: "extension",
+            fn: function() {
+              return [
                 _c(
-                  "th",
-                  { staticClass: "text-center", attrs: { colspan: "2" } },
-                  [_vm._v("\n          Date\n        ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "th",
-                  { staticClass: "text-center", attrs: { colspan: "4" } },
-                  [_vm._v("\n          Incoming Cups\n        ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "th",
-                  { staticClass: "text-center", attrs: { colspan: "4" } },
-                  [_vm._v("\n          Cups Onrack\n        ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "th",
-                  { staticClass: "text-center", attrs: { colspan: "4" } },
-                  [_vm._v("\n          Used Cups\n        ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "th",
-                  { staticClass: "text-center", attrs: { colspan: "4" } },
-                  [_vm._v("\n          Remaining Cups\n        ")]
+                  "v-tabs",
+                  {
+                    attrs: {
+                      dark: "",
+                      "background-color": "#ff5b04",
+                      "fixed-tabs": ""
+                    }
+                  },
+                  [
+                    _c("v-tabs-slider"),
+                    _vm._v(" "),
+                    _c("v-tab", { on: { click: _vm.tableForUpcomingCups } }, [
+                      _vm._v("Incoming Cups")
+                    ]),
+                    _vm._v(" "),
+                    _c("v-tab", { on: { click: _vm.tableForCupsOnrack } }, [
+                      _vm._v("Cups Onrack")
+                    ]),
+                    _vm._v(" "),
+                    _c("v-tab", { on: { click: _vm.tableForUsedCups } }, [
+                      _vm._v("Used Cups")
+                    ]),
+                    _vm._v(" "),
+                    _c("v-tab", { on: { click: _vm.tableForRemainingCups } }, [
+                      _vm._v("Remaining Cups")
+                    ])
+                  ],
+                  1
                 )
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { attrs: { colspan: "2" } }, [_vm._v("Date")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Low Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("High Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Over Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Total Cups")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Low Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("High Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Over Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Total Cups")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Low Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("High Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Over Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Total Cups")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Low Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("High Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Over Dose")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Total Cups")])
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.dataInDB, function(item) {
-                return _c("tr", { key: item }, [
-                  _c("td", { attrs: { colspan: "2" } }, [
-                    _vm._v(_vm._s(item.created_at))
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.incomingLowDose))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.incomingHighDose))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.incomingOverDose))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      _vm._s(
-                        item.incomingLowDose +
-                          item.incomingHighDose +
-                          item.incomingOverDose
-                      )
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.onRockLowDose))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.onRockHighDose))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.onRockOverDose))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      _vm._s(
-                        item.onRockLowDose +
-                          item.onRockHighDose +
-                          item.onRockOverDose
-                      ) + " "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.usedCupsLowDose))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.usedCupsHighDose))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.usedCupsOverDose))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      _vm._s(
-                        item.usedCupsLowDose +
-                          item.usedCupsHighDose +
-                          item.usedCupsOverDose
-                      )
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.remainingLowDose))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.remainingHighDose))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(item.remainingOverDose))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      _vm._s(
-                        item.remainingLowDose +
-                          item.remainingHighDose +
-                          item.remainingOverDose
-                      )
-                    )
-                  ])
-                ])
-              }),
-              0
-            )
-          ]
+              ]
+            },
+            proxy: true
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c("v-data-table", {
+        staticClass: "elevation-3",
+        attrs: {
+          headers: _vm.headersForCup,
+          items: _vm.dataInDB,
+          search: _vm.search,
+          "items-per-page": 5
         },
-        proxy: true
-      }
-    ])
-  })
+        scopedSlots: _vm._u([
+          {
+            key: "top",
+            fn: function() {
+              return [
+                _c(
+                  "v-toolbar",
+                  {
+                    staticClass: "mb-2",
+                    attrs: { color: "#ff5b04", dark: "", flat: "" }
+                  },
+                  [
+                    _c(
+                      "v-toolbar-title",
+                      { staticClass: "col pa-3 py-4 white--text" },
+                      [_vm._v(_vm._s(_vm.cupName))]
+                    ),
+                    _vm._v("      \n          "),
+                    _c("v-text-field", {
+                      staticClass: "mt-7",
+                      attrs: {
+                        clearable: "",
+                        flat: "",
+                        "solo-inverted": "",
+                        "prepend-inner-icon": "mdi-magnify",
+                        label: "Search"
+                      },
+                      model: {
+                        value: _vm.search,
+                        callback: function($$v) {
+                          _vm.search = $$v
+                        },
+                        expression: "search"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("v-divider", {
+                      staticClass: "mx-4",
+                      attrs: { vertical: "" }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "VueJsonToCsv",
+                      {
+                        attrs: {
+                          "json-data": _vm.dataInDB,
+                          "csv-title": "myCups"
+                        }
+                      },
+                      [
+                        _c(
+                          "v-btn",
+                          { staticClass: "mr-6", attrs: { color: "success" } },
+                          [
+                            _vm._v("\n                            Export "),
+                            _c("i", {
+                              staticClass: "mdi mdi-export-variant",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

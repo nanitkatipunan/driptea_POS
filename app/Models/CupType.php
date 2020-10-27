@@ -12,6 +12,6 @@ class CupType extends Model
     use SoftDeletes;
     protected $table = 'cup_type';
     protected $fillable = [
-        'cupTypeName', 'cupTypePrice', 'cupQuantity', 'status'
+        'cupTypeName', 'cupTypePrice', 'inputCupOnlinePrice', 'status'
     ];
 }

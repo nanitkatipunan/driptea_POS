@@ -25,6 +25,14 @@ export default {
             }
         },
         {
+            path: '/register',
+            name: 'register',
+            component: resolve => require(['@/js/basic/registerUser'], resolve),
+            meta: {
+                tokenRequired: false
+            }
+        },
+        {
             path: '/order/product/:item',
             name: 'order',
             component: resolve => require(['@/js/modules/order/order'], resolve),
@@ -49,9 +57,17 @@ export default {
             }
         },
         {
-            path: '/productOnline/:itemChosen',
+            path: '/productOnline',
             name: 'productOnline',
             component: resolve => require(['@/js/modules/onlineOrder/productOnline'], resolve),
+            meta: {
+                tokenRequired: false
+            }
+        },
+        {
+            path: '/customerCart',
+            name: 'customerCart',
+            component: resolve => require(['@/js/modules/onlineOrder/cart'], resolve),
             meta: {
                 tokenRequired: true
             }

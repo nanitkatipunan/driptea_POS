@@ -4,10 +4,14 @@ import Vue from 'vue'
 import App from '@/js/App.vue'
 import Router from './router'
 import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'jquery/src/jquery.js'
+import 'bootstrap/dist/js/bootstrap.min.js'
 import axios from 'axios'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
+import 'vue-json-csv'
 
 Vue.use(Vuetify)
 Vue.prototype.$axios = axios
@@ -21,5 +25,8 @@ const app = new Vue({
     router: Router,
     render: h => h(App)
 });
+
+ 
+Vue.component('downloadCsv')
 
 export default app;
