@@ -12,30 +12,32 @@
             fade-img-on-scroll
             scroll-target="#scrolling-techniques-3"
             >
-            <!-- <template v-slot:img="{ props }">
+            <template v-slot:img="{ props }">
                 <v-img
                 v-bind="props"
                 gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
                 ></v-img>
-            </template> -->
+            </template>
 
-            <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon>
+            <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
-            <v-toolbar-title>Title</v-toolbar-title> -->
+            <v-toolbar-title>Title</v-toolbar-title>
 
             <v-spacer></v-spacer>
 
-            <!-- <v-btn icon>
+            <v-btn icon style="margin-right: 2%;">
                 <v-icon>mdi-magnify</v-icon>
-            </v-btn> -->
+            </v-btn>
 
-            <!-- <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-            </v-btn> -->
+            <v-btn icon @click="direct()" style="margin-right: 2%;">
+                <v-icon>mdi-cart</v-icon>
+                <span style="margin-left: -3%;">Cart</span>
+                <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
+            </v-btn>
 
-            <!-- <v-btn icon>
+            <v-btn icon style="margin-right: 3%;">
                 <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn> -->
+            </v-btn>
 
             <template v-slot:extension>
                 <v-tabs align-with-title>
@@ -50,6 +52,7 @@
             max-height="900"
             >
             <v-container style="margin-top: 200px;">
+                <!-- <button class="btn btn-primary" @click="direct()">Cart {{count}}</button> -->
                 <div :id="item.productCategory" class="categoryStorage" v-for="(item, index) in data" :key="index">
                     <!-- <img class="imgItem" :src="item.image" @click="redirect(item.productCategory)"> -->
                     <h3>{{item.productCategory}}</h3>
@@ -127,16 +130,6 @@
                                                     <input type="checkbox" :id="item.addons_name" :value="item.addons_name" v-model="addOns" @click="addTotalPrice(item, $event)">
                                                     <label :for="item.addons_name">{{item.addons_name}} (+ ₱{{item.onlineAddOnsPrice}})</label><br>
                                                 </div>
-                                                <!-- <input type="checkbox" id="coffeeJelly" value="coffeeJelly" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="coffeeJelly">Coffee Jelly</label><br>
-                                                <input type="checkbox" id="oreo" value="oreo" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="oreo">Crushed Oreo</label><br>
-                                                <input type="checkbox" id="tapioca" value="tapioca" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="tapioca">Tapioca</label><br>
-                                                <input type="checkbox" id="pudding" value="pudding" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="pudding">Pudding</label><br>
-                                                <input type="checkbox" id="nataJelly" value="nataJelly" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="nataJelly">Nata Jelly</label><br> -->
                                             </div>
                                         </div>
                                     </form>
@@ -211,10 +204,11 @@
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import $ from 'jquery'
-// import image from '../../../assets/home.jpeg'
+import config from '../../config.js'
 export default {
     data(){
         return{
+            config: config,
             data: null,
             productData: null,
             image: null,
@@ -236,16 +230,32 @@ export default {
             totalAddOns: 0,
             totalPrice: 0,
             cupTypePrice: 0,
-            priceShown: 0
+            priceShown: 0,
+            count: 0
         }
     },
     mounted(){
+        this.count = 0
         this.retrieveCategory()
         this.retrieveProduct()
         this.retrieveAddOns()
         this.retrieveCupType()
+        let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
+            cluster: this.config.PUSHER_APP_CLUSTER,
+            encrypted: true
+        });
+
+          //Subscribe to the channel we specified in our Adonis Application
+        let channel = pusher.subscribe('driptea-channel')
+
+        channel.bind('driptea-data', (data) => {
+            this.count++
+        })
     },
     methods: {
+        direct(){
+            ROUTER.push('/customerCart')
+        },
         getSizePrice(){
             if(this.size === 'highDose'){
                 this.total = this.highprice
@@ -313,22 +323,30 @@ export default {
                 this.errorMessage1 = 'cup type is required!'
             }
             if(this.quantity > 0 && this.size !== null && this.sugarLevel !== null && this.cupType !== null){
-                let parameter = {
-                    customerId: localStorage.getItem('customerId'),
-                    productId: this.itemId,
-                    quantity: this.quantity,
-                    size: this.size,
-                    sugarLevel: this.sugarLevel,
-                    choosenPrice: this.total,
-                    cupType: this.cupType,
-                    status: 'incart',
-                    addOns: this.addOns,
-                    subTotal: this.priceShown
-                }
-                console.log(parameter)
-                this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
-                    console.log(response.data.order)
-                    $('#viewDetails').modal('hide')
+                let param = {
+                    customerType: "onlineOrder",
+                    customerName: localStorage.getItem('fullName'),
+                    customerAddress: localStorage.getItem('address'),
+                    customerContactNumber: localStorage.getItem('contactNumber'),
+                };
+                this.$axios.post(AUTH.url + "addCustomer", param).then(res => {
+                    localStorage.setItem('customerOnlineId', res.data.customerDetails.id)
+                    let parameter = {
+                        customerId: res.data.customerDetails.id,
+                        onlineId: localStorage.getItem('customerId'),
+                        productId: this.itemId,
+                        quantity: this.quantity,
+                        size: this.size,
+                        sugarLevel: this.sugarLevel,
+                        choosenPrice: this.total,
+                        cupType: this.cupType,
+                        status: 'incart',
+                        addOns: this.addOns,
+                        subTotal: this.priceShown
+                    }
+                    this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
+                        $('#viewDetails').modal('hide')
+                    })
                 })
             }
         },

@@ -29,11 +29,14 @@
         "json-schema": "^0.2.5",
         "moment": "^2.29.1",
         "popper.js": "^1.16.1",
+        "pusher-js": "^7.0.0",
+        "sweetalert": "^2.1.2",
         "vue": "^2.6.12",
         "vue-apexcharts": "^1.6.0",
         "vue-json-csv": "^1.2.11",
         "vue-json-to-csv": "^1.1.8",
         "vue-router": "^3.4.3",
+        "vuejs-datepicker": "^1.6.2",
         "vuetify": "^2.3.14"
     }
 }

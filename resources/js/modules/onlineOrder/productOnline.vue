@@ -1,3 +1,4 @@
+<<<<<<< HEAD
     <template>
         <div>
             <table class="table">
@@ -20,6 +21,56 @@
 
 
 
+=======
+<template>
+    <div class="sudlanan">
+        <center>
+            <div v-if="data !== null" class="row">
+                <div>
+                    <h1>Mao ni</h1>
+                    <div class="my-custom-scrollbar">
+                        <table class="table table-bordered table-striped categoryTable" id="myTable">
+                            <thead class="thead-light">
+                                <tr class="header">
+                                    <th scope="col">#</th>
+                                    <th scope="col">lowDose</th>
+                                    <th scope="col">highDose</th>
+                                    <th scope="col">overDose</th>
+                                    <th scope="col">total</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template>
+                                    <tr v-for="(item, index) in finalData" :key="index">
+                                        <td scope="row">Customer {{index+1}}</td>
+                                        <td>{{getLowDose(item)}}</td>
+                                        <td>{{getHighDose(item)}}</td>
+                                        <td>{{getOverDose(item)}}</td>
+                                        <td style="font-weight: bold">{{getTotal(item)}}</td>
+                                        <td>
+                                            <div style="text-align: left">
+                                                <button class="btn btn-primary" @click="showData()">Sample</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div v-else class="secRow">
+                <center>
+                    <img class="noImage" src="@/assets/data.png">
+                    <h2>No Product Yet</h2>
+                    <button class="btn btn-primary">Sample</button>
+                </center>   
+            </div>
+        </center>
+    </div>
+</template>
+>>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
 <style scoped>
 /* width */
 ::-webkit-scrollbar {

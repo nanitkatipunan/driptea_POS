@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\AddOns;
+use App\Models\StoreOrder;
+use Illuminate\Support\Facades\DB;
+use App\Events\pusherEvent;
 
 use Illuminate\Http\Request;
 
@@ -14,7 +18,7 @@ class OrderController extends Controller
         $dataAddOns = $data['addOns'];
         $order = new Order();
         $order->customerId = $request['customerId'];
-        // $order->cashierId = $request['cashierId'];
+        $order->onlineId = $request['onlineId'];
         $order->productId = $request['productId'];
         $order->quantity = $request['quantity'];
         $order->size = $request['size'];
@@ -25,6 +29,7 @@ class OrderController extends Controller
         $order->status = $request['status'];
         $order->save();
         $this->addAddOns($dataAddOns, $order->id);
+        event(new pusherEvent($order));
         return response()->json(compact('order'));
     }
 
@@ -44,12 +49,17 @@ class OrderController extends Controller
     }
 
     public function retrieveOrder(Request $request){
-        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pending')->where('deleted_at', null)->get();
+        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pending')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        return response()->json(compact('order'));
+    }
+
+    public function retrieveOnlineOrder(Request $request){
+        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get();
         return response()->json(compact('order'));
     }
 
     public function retrieveCustomerOrder(Request $request){
-        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'incart')->where('deleted_at', null)->get();
+        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
         return response()->json(compact('order'));
     }
 
@@ -60,6 +70,7 @@ class OrderController extends Controller
             $ord->status = $request['status'];
             $ord->save();
         }
+        event(new pusherEvent($request['status']));
         return response()->json(['success' => 'successfully updated!']);
     }
 
@@ -67,5 +78,14 @@ class OrderController extends Controller
         $order = Order::with('orderProduct')->find($request->id)->get();
         $addOns = AddOns::where('orderId', $request->id)->get(['addOns']);
         return response()->json(compact('order', 'addOns'));
+    }
+
+    public function retrieveTopProducts(Request $request){
+        $prods = DB::table('orders')->leftJoin('products', 'orders.productId', '=', 'products.id')
+            ->select(DB::raw('products.image as img'),DB::raw('SUM(orders.quantity) as quan'),DB::raw('products.productName as pName'))
+            ->groupBy('img','pName')
+            ->orderBy('quan', 'desc')
+            ->get();
+        return response()->JSON(compact('prods'));
     }
 }
