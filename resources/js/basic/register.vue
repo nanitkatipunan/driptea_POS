@@ -8,9 +8,30 @@
             <div class="containerWidth">
                 <i><span v-if="errorMessage7 !== null" class="text-danger text-center">{{errorMessage7}}</span></i>
                 <form>
-                    <div class="form-group">
+                    <i><span v-if="errorMessage8 !== null" class="text-danger text-center">{{errorMessage8}}</span></i>
+                     <v-row>
+                         <v-text-field  label="Account Type" outlined  v-model="userType" v-on:keyup="validate('userType')" type="text"  id="userType" required></v-text-field>
+                     </v-row>
+                    <i><span v-if="errorMessage !== null" class="text-danger text-center">{{errorMessage}}</span></i>
+                    <i><span v-if="errorMessage2 !== null" class="text-danger text-center">{{errorMessage2}}</span></i>
+                    <i><span v-if="errorMessage3 !== null" class="text-danger text-center">{{errorMessage3}}</span></i>
+                     <v-row>
+                         <v-text-field  label="Username" outlined  v-model="userName" v-on:keyup="validate('userName')" type="text"  id="userName" required></v-text-field>
+                     </v-row>
+                      <span v-if="successMessage !== null" class="text-success text-center">{{successMessage}}</span>
+                        <i><span v-if="errorMessage4 !== null" class="text-danger text-center">{{errorMessage4}}</span></i>
+                        <i><span v-if="errorMessage5 !== null" class="text-danger text-center">{{errorMessage5}}</span></i>
+                      <v-row>
+                         <v-text-field  label="Password" outlined  v-model="password" v-on:keyup="validate('password')" type="password"  id="password" required></v-text-field>
+                     </v-row>
+                      <i><span v-if="errorMessage6 !== null" class="text-danger text-center">{{errorMessage6}}</span></i>
+                      <v-row>
+                         <v-text-field  label="Confirm Password" outlined  v-model="confirmPass" v-on:keyup="validate('confirmPass')" type="password"  id="confirmPassword" required></v-text-field>
+                     </v-row>
+                      <v-btn type="submit" class="btn btnRegister" @click="register">Register</v-btn>
+                    <!-- <div class="form-group">
                         <label for="userType">Account Type:</label><br>
-                        <i><span v-if="errorMessage8 !== null" class="text-danger text-center">{{errorMessage8}}</span></i>
+                        
                         <input v-model="userType" v-on:keyup="validate('userType')" type="text" class="form-control" id="userType">
                     </div>
                     <div class="form-group">
@@ -32,7 +53,7 @@
                         <i><span v-if="errorMessage6 !== null" class="text-danger text-center">{{errorMessage6}}</span></i>
                         <input v-model="confirmPass" v-on:keyup="validate('confirmPass')" type="password" class="form-control" id="confirmPassword">
                     </div>
-                    <button type="submit" class="btn btnRegister" @click="register">Register</button>
+                    <v-btn type="submit" class="btn btnRegister" @click="register">Register</button> -->
                 </form>
             </div>
         </center>

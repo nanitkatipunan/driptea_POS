@@ -52,7 +52,7 @@ class ProductController extends Controller
         $product->productCategory = $data['productCategory'];
         $product->description = $data['description'];
         $product->productName = $data['productName'];
-        $product->status = $data['productName'];
+        $product->status = $data['status d'];
         $product->image = $data['image'];
         $product->save();
         return response()->json(compact('product'));

@@ -15,7 +15,7 @@ export default {
     methods:{
         retrieve(){
              this.$axios.post(AUTH.url + "retrieveSales").then(response => {
-                 
+                    
              });
 
         }

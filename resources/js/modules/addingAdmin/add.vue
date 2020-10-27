@@ -801,7 +801,7 @@ export default {
         this.cupSizeData = response.data.quantityCupsInDB;
             
         response.data.quantityCupsInDB.forEach(element => {
-            console.log(date);
+            
           
         });
 
@@ -887,120 +887,92 @@ export default {
       this.priceEvent = event.target;
     },
     onImgChange(e) {
-      this.img = e.target.files[0];
-      this.imgURL = URL.createObjectURL(e.target.files[0]);
+        this.img = e.target.files[0]
+        this.imgURL = URL.createObjectURL(e.target.files[0])
     },
     formSubmitProduct(e) {
-      if (
-        this.img !== null &&
-        this.prodType !== null &&
-        this.productName !== null &&
-        this.description !== null &&
-        this.lowPrice !== null &&
-        this.highPrice !== null &&
-        this.overPrice !== null &&
-        this.onlinelowPrice !== null &&
-        (this.onlinehighPrice !== null) & (this.onlineoverPrice !== null)
-      ) {
-        e.preventDefault();
-        let currentObj = this;
-
-        const config = {
-          headers: { "content-type": "multipart/form-data" }
-        };
-
-        let formData = new FormData();
-        formData.append("image", this.img);
-        formData.append("productCategory", this.prodType);
-        formData.append("productName", this.productName);
-        formData.append("description", this.description);
-        formData.append("status", "Available");
-        formData.append("lowPrice", this.lowPrice);
-        formData.append("highPrice", this.highPrice);
-        formData.append("overPrice", this.overPrice);
-        formData.append("onlinelowPrice", this.onlinelowPrice);
-        formData.append("onlinehighPrice", this.onlinehighPrice);
-        formData.append("onlineoverPrice", this.onlineoverPrice);
-        axios
-          .post("/formSubmit", formData, config)
-          .then(function(response) {
-            currentObj.success = response.data.success;
-            console.log("sud sa product");
-            currentObj.retrieveCategories();
-            currentObj.retrieveProducts();
-            currentObj.hide();
-          })
-          .catch(function(error) {
-            currentObj.output = error;
-          });
-      } else {
-        this.errorMessage = "All fields are required!";
-      }
+      if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null){
+                e.preventDefault();
+                let currentObj = this;
+                const config = {
+                    headers: { 'content-type': 'multipart/form-data' }
+                }
+                let formData = new FormData();
+                formData.append('image', this.img)
+                formData.append('productCategory', this.prodType)
+                formData.append('productName', this.productName)
+                formData.append('description', this.description)
+                formData.append('status', 'Available')
+                formData.append('lowPrice', this.lowPrice)
+                formData.append('highPrice', this.highPrice)
+                formData.append('overPrice', this.overPrice)
+                formData.append('onlinelowPrice', this.onlinelowPrice)
+                formData.append('onlinehighPrice', this.onlinehighPrice)
+                formData.append('onlineoverPrice', this.onlineoverPrice)
+                this.$axios.post('/formSubmit', formData, config).then(function (response) {
+                    currentObj.success = response.data.success
+                    currentObj.retrieveCategories()
+                    currentObj.retrieveProducts()
+                    currentObj.hide()
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
+            }else{
+                this.errorMessage = 'All fields are required!'
+            }
     },
     editProduct(item) {
-      this.dialogForProduct = true;
-      this.productName = item.productName;
-      this.description = item.description;
-      this.prodType = item.productCategory;
-      this.img = item.image;
-      this.lowPrice = item.lowPrice;
-      this.highPrice = item.highPrice;
-      this.overPrice = item.overPrice;
-      this.onlinelowPrice = item.onlinelowPrice;
-      this.onlinehighPrice = item.onlinehighPrice;
-      this.onlineoverPrice = item.onlineoverPrice;
-      this.imgURL = item.image;
-      this.productAdd = false;
-      this.productEdit = true;
-      this.status = item.status;
-      this.prodId = item.id;
+        this.dialogForProduct = true;
+        this.productName = item.productName
+        this.description = item.description
+        this.prodType = item.productCategory
+        this.img = item.image
+        this.lowPrice = item.lowPrice
+        this.highPrice = item.highPrice
+        this.overPrice = item.overPrice
+        this.onlinelowPrice = item.onlinelowPrice
+        this.onlinehighPrice = item.onlinehighPrice
+        this.onlineoverPrice = item.onlineoverPrice
+        this.imgURL = item.image
+        this.productAdd = false
+        this.productEdit = true
+        this.status = item.status
+        this.prodId = item.id
     },
     updateProduct(e) {
-      if (
-        this.img !== null &&
-        this.prodType !== null &&
-        this.description !== null &&
-        this.productName !== null &&
-        this.lowPrice !== null &&
-        this.highPrice !== null &&
-        this.overPrice !== null &&
-        this.onlinelowPrice !== null &&
-        (this.onlinehighPrice !== null) & (this.onlineoverPrice !== null)
-      ) {
-        e.preventDefault();
-        let currentObj = this;
-
-        const config = {
-          headers: { "content-type": "multipart/form-data" }
-        };
-        let formData = new FormData();
-        formData.append("id", this.prodId);
-        formData.append("image", this.img);
-        formData.append("status", this.status);
-        formData.append("productCategory", this.prodType);
-        formData.append("productName", this.productName);
-        formData.append("description", this.description);
-        formData.append("lowPrice", this.lowPrice);
-        formData.append("highPrice", this.highPrice);
-        formData.append("overPrice", this.overPrice);
-        formData.append("onlinelowPrice", this.onlinelowPrice);
-        formData.append("onlinehighPrice", this.onlinehighPrice);
-        formData.append("onlineoverPrice", this.onlineoverPrice);
-        axios
-          .post("/updateProduct", formData, config)
-          .then(function(response) {
-            currentObj.success = response.data.success;
-            currentObj.retrieveCategories();
-            currentObj.retrieveProducts();
-            currentObj.hide();
-            this.dialogForProduct = false;
-          })
-          .catch(function(error) {
-            currentObj.output = error;
-          });
-      } else {
-        this.errorMessage = "All fields are required!";
-      }
+      if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null){
+                e.preventDefault();
+                let currentObj = this;
+                const config = {
+                    headers: { 'content-type': 'multipart/form-data' }
+                }
+                let formData = new FormData();
+                formData.append('id', this.prodId)
+                formData.append('image', this.img)
+                formData.append('status', this.status)
+                formData.append('productCategory', this.prodType)
+                formData.append('productName', this.productName)
+                formData.append('description', this.description)
+                formData.append('lowPrice', this.lowPrice)
+                formData.append('highPrice', this.highPrice)
+                formData.append('overPrice', this.overPrice)
+                formData.append('onlinelowPrice', this.onlinelowPrice)
+                formData.append('onlinehighPrice', this.onlinehighPrice)
+                formData.append('onlineoverPrice', this.onlineoverPrice)
+                this.$axios.post('/updateProduct', formData, config)
+                .then(function (response) {
+                    currentObj.success = response.data.success
+                    currentObj.retrieveCategories()
+                    currentObj.retrieveProducts()
+                    currentObj.hide()
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
+            }else{
+                this.errorMessage = 'All fields are required!'
+            }
     },
     productStatusUpdate(id) {
       let param = {
@@ -1016,7 +988,7 @@ export default {
     productStatusAvailable(id) {
       let param = {
         id: id,
-        status: "Availabwele"
+        status: "Available"
       };
       this.$axios
         .post(AUTH.url + "updateStatusProduct", param)
@@ -1171,6 +1143,7 @@ export default {
       this.onlinehighPrice = null;
       this.onlineoverPrice = null;
       this.imgURL = null;
+      this.img = null;
     },
     showCategory() {
       this.dialogForCategory = true;

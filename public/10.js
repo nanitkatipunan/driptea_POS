@@ -858,9 +858,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupSize").then(function (response) {
         _this4.cupSizeData = response.data.quantityCupsInDB;
-        response.data.quantityCupsInDB.forEach(function (element) {
-          console.log(date);
-        });
+        response.data.quantityCupsInDB.forEach(function (element) {});
         var totalCup = response.data.quantityCupsInDB.incomingOverDose;
         console.log(totalCup);
       });
@@ -957,29 +955,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.imgURL = URL.createObjectURL(e.target.files[0]);
     },
     formSubmitProduct: function formSubmitProduct(e) {
-      if (this.img !== null && this.prodType !== null && this.productName !== null && this.description !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null) {
+      if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null) {
         e.preventDefault();
         var currentObj = this;
         var config = {
           headers: {
-            "content-type": "multipart/form-data"
+            'content-type': 'multipart/form-data'
           }
         };
         var formData = new FormData();
-        formData.append("image", this.img);
-        formData.append("productCategory", this.prodType);
-        formData.append("productName", this.productName);
-        formData.append("description", this.description);
-        formData.append("status", "Available");
-        formData.append("lowPrice", this.lowPrice);
-        formData.append("highPrice", this.highPrice);
-        formData.append("overPrice", this.overPrice);
-        formData.append("onlinelowPrice", this.onlinelowPrice);
-        formData.append("onlinehighPrice", this.onlinehighPrice);
-        formData.append("onlineoverPrice", this.onlineoverPrice);
-        axios.post("/formSubmit", formData, config).then(function (response) {
+        formData.append('image', this.img);
+        formData.append('productCategory', this.prodType);
+        formData.append('productName', this.productName);
+        formData.append('description', this.description);
+        formData.append('status', 'Available');
+        formData.append('lowPrice', this.lowPrice);
+        formData.append('highPrice', this.highPrice);
+        formData.append('overPrice', this.overPrice);
+        formData.append('onlinelowPrice', this.onlinelowPrice);
+        formData.append('onlinehighPrice', this.onlinehighPrice);
+        formData.append('onlineoverPrice', this.onlineoverPrice);
+        this.$axios.post('/formSubmit', formData, config).then(function (response) {
           currentObj.success = response.data.success;
-          console.log("sud sa product");
           currentObj.retrieveCategories();
           currentObj.retrieveProducts();
           currentObj.hide();
@@ -987,7 +984,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           currentObj.output = error;
         });
       } else {
-        this.errorMessage = "All fields are required!";
+        this.errorMessage = 'All fields are required!';
       }
     },
     editProduct: function editProduct(item) {
@@ -1009,38 +1006,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.prodId = item.id;
     },
     updateProduct: function updateProduct(e) {
-      if (this.img !== null && this.prodType !== null && this.description !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null) {
+      if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null) {
         e.preventDefault();
         var currentObj = this;
         var config = {
           headers: {
-            "content-type": "multipart/form-data"
+            'content-type': 'multipart/form-data'
           }
         };
         var formData = new FormData();
-        formData.append("id", this.prodId);
-        formData.append("image", this.img);
-        formData.append("status", this.status);
-        formData.append("productCategory", this.prodType);
-        formData.append("productName", this.productName);
-        formData.append("description", this.description);
-        formData.append("lowPrice", this.lowPrice);
-        formData.append("highPrice", this.highPrice);
-        formData.append("overPrice", this.overPrice);
-        formData.append("onlinelowPrice", this.onlinelowPrice);
-        formData.append("onlinehighPrice", this.onlinehighPrice);
-        formData.append("onlineoverPrice", this.onlineoverPrice);
-        axios.post("/updateProduct", formData, config).then(function (response) {
+        formData.append('id', this.prodId);
+        formData.append('image', this.img);
+        formData.append('status', this.status);
+        formData.append('productCategory', this.prodType);
+        formData.append('productName', this.productName);
+        formData.append('description', this.description);
+        formData.append('lowPrice', this.lowPrice);
+        formData.append('highPrice', this.highPrice);
+        formData.append('overPrice', this.overPrice);
+        formData.append('onlinelowPrice', this.onlinelowPrice);
+        formData.append('onlinehighPrice', this.onlinehighPrice);
+        formData.append('onlineoverPrice', this.onlineoverPrice);
+        this.$axios.post('/updateProduct', formData, config).then(function (response) {
           currentObj.success = response.data.success;
           currentObj.retrieveCategories();
           currentObj.retrieveProducts();
           currentObj.hide();
-          this.dialogForProduct = false;
         })["catch"](function (error) {
           currentObj.output = error;
         });
       } else {
-        this.errorMessage = "All fields are required!";
+        this.errorMessage = 'All fields are required!';
       }
     },
     productStatusUpdate: function productStatusUpdate(id) {
@@ -1059,7 +1055,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var param = {
         id: id,
-        status: "Availabwele"
+        status: "Available"
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param).then(function (response) {
         _this9.retrieveProducts();
@@ -1230,6 +1226,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.onlinehighPrice = null;
       this.onlineoverPrice = null;
       this.imgURL = null;
+      this.img = null;
     },
     showCategory: function showCategory() {
       this.dialogForCategory = true;

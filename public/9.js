@@ -124,15 +124,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -313,7 +304,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "span[data-v-5b3af0cd] {\n  font-size: 12px;\n}\nhr[data-v-5b3af0cd] {\n  border: 1px solid #17D817;\n}\n.termsCondition[data-v-5b3af0cd] {\n  margin-top: 6%;\n  font-size: 15px;\n  text-align: center;\n}\n.form-control[data-v-5b3af0cd] {\n  border: 1px solid #17D817;\n  border-radius: 5px;\n}\n.bRegister[data-v-5b3af0cd] {\n  color: #0A8C0F;\n  cursor: pointer;\n}\np[data-v-5b3af0cd] {\n  font-size: 20px;\n}\n.btnRegister[data-v-5b3af0cd] {\n  margin-top: 2%;\n  margin-bottom: 2%;\n  background-color: #17D817;\n  font-weight: bold;\n  width: 100%;\n}\n@media screen and (max-width: 600px) {\n.containerWidth[data-v-5b3af0cd] {\n    text-align: left;\n    width: 100%;\n}\n.form-group[data-v-5b3af0cd] {\n    width: 100%;\n}\n.containerWidth[data-v-2badb436][data-v-5b3af0cd] {\n    text-align: left;\n    width: 75%;\n}\n}\n@media screen and (max-width: 900px) {\n.containerWidth[data-v-5b3af0cd] {\n    text-align: left;\n    width: 100%;\n}\n.form-group[data-v-5b3af0cd] {\n    width: 100%;\n}\n.containerWidth[data-v-2badb436][data-v-5b3af0cd] {\n    text-align: left;\n    width: 50%;\n}\n}\n.containerWidth[data-v-5b3af0cd] {\n  text-align: left;\n  width: 30%;\n}", ""]);
+exports.push([module.i, "span[data-v-5b3af0cd] {\n  font-size: 12px;\n}\nhr[data-v-5b3af0cd] {\n  border: 1px solid #17D817;\n}\n.termsCondition[data-v-5b3af0cd] {\n  margin-top: 6%;\n  font-size: 15px;\n  text-align: center;\n}\n.form-control[data-v-5b3af0cd] {\n  border: 1px solid #17D817;\n  border-radius: 5px;\n}\n.bRegister[data-v-5b3af0cd] {\n  color: #0A8C0F;\n  cursor: pointer;\n}\np[data-v-5b3af0cd] {\n  font-size: 20px;\n}\n.btnRegister[data-v-5b3af0cd] {\n  margin-top: 2%;\n  margin-bottom: 2%;\n  background-color: #17D817;\n  font-weight: bold;\n  width: 100%;\n}\n@media screen and (max-width: 600px) {\n.containerWidth[data-v-5b3af0cd] {\n    text-align: left;\n    width: 100%;\n}\n.form-group[data-v-5b3af0cd] {\n    width: 100%;\n}\n.containerWidth[data-v-2badb436][data-v-5b3af0cd] {\n    text-align: left;\n    width: 75%;\n}\n}\n@media screen and (max-width: 900px) {\n.containerWidth[data-v-5b3af0cd] {\n    text-align: left;\n    width: 100%;\n}\n.form-group[data-v-5b3af0cd] {\n    width: 100%;\n}\n.containerWidth[data-v-2badb436][data-v-5b3af0cd] {\n    text-align: left;\n    width: 50%;\n}\n}\n.containerWidth[data-v-5b3af0cd] {\n  text-align: left;\n  width: 50%;\n}", ""]);
 
 // exports
 
@@ -398,347 +389,336 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("center", [
-        _c("div", { staticClass: "containerWidth" }, [
-          _c("i", [
-            _vm.errorMessage7 !== null
-              ? _c("span", { staticClass: "text-danger text-center" }, [
-                  _vm._v(_vm._s(_vm.errorMessage7))
-                ])
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("form", [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "fullname" } }, [
-                _vm._v("Fullname:")
-              ]),
-              _c("br"),
-              _vm._v(" "),
-              _c("i", [
-                _vm.errorMessage !== null
-                  ? _c("span", { staticClass: "text-danger text-center" }, [
-                      _vm._v(_vm._s(_vm.errorMessage))
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("i", [
-                _vm.errorMessage2 !== null
-                  ? _c("span", { staticClass: "text-danger text-center" }, [
-                      _vm._v(_vm._s(_vm.errorMessage2))
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.fullname,
-                    expression: "fullname"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", id: "fullname" },
-                domProps: { value: _vm.fullname },
-                on: {
-                  keyup: function($event) {
-                    return _vm.validate("fullname")
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.fullname = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "address" } }, [_vm._v("Address:")]),
-              _c("br"),
-              _vm._v(" "),
-              _c("i", [
-                _vm.errorMessage10 !== null
-                  ? _c("span", { staticClass: "text-danger text-center" }, [
-                      _vm._v(_vm._s(_vm.errorMessage10))
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.address,
-                    expression: "address"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", id: "address" },
-                domProps: { value: _vm.address },
-                on: {
-                  keyup: function($event) {
-                    return _vm.validate("address")
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.address = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "contactNum" } }, [
-                _vm._v("Contact #:")
-              ]),
-              _c("br"),
-              _vm._v(" "),
-              _c("i", [
-                _vm.errorMessage8 !== null
-                  ? _c("span", { staticClass: "text-danger text-center" }, [
-                      _vm._v(_vm._s(_vm.errorMessage8))
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("i", [
-                _vm.errorMessage9 !== null
-                  ? _c("span", { staticClass: "text-danger text-center" }, [
-                      _vm._v(_vm._s(_vm.errorMessage9))
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.contactNum,
-                    expression: "contactNum"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", id: "contactNum" },
-                domProps: { value: _vm.contactNum },
-                on: {
-                  keyup: function($event) {
-                    return _vm.validate("contactNum")
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.contactNum = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "email" } }, [_vm._v("Email:")]),
-              _c("br"),
-              _vm._v(" "),
-              _c("i", [
-                _vm.errorMessage3 !== null
-                  ? _c("span", { staticClass: "text-danger text-center" }, [
-                      _vm._v(_vm._s(_vm.errorMessage3))
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.email,
-                    expression: "email"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "email", id: "email" },
-                domProps: { value: _vm.email },
-                on: {
-                  keyup: function($event) {
-                    return _vm.validate("email")
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.email = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "password" } }, [
-                _vm._v("Password:")
-              ]),
-              _c("br"),
-              _vm._v(" "),
-              _vm.successMessage !== null
-                ? _c("span", { staticClass: "text-success text-center" }, [
-                    _vm._v(_vm._s(_vm.successMessage))
+        _c(
+          "div",
+          { staticClass: "containerWidth" },
+          [
+            _c("i", [
+              _vm.errorMessage7 !== null
+                ? _c("span", { staticClass: "text-danger text-center" }, [
+                    _vm._v(_vm._s(_vm.errorMessage7))
                   ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("i", [
-                _vm.errorMessage4 !== null
-                  ? _c("span", { staticClass: "text-danger text-center" }, [
-                      _vm._v(_vm._s(_vm.errorMessage4))
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("i", [
-                _vm.errorMessage5 !== null
-                  ? _c("span", { staticClass: "text-danger text-center" }, [
-                      _vm._v(_vm._s(_vm.errorMessage5))
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.password,
-                    expression: "password"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "password", id: "password" },
-                domProps: { value: _vm.password },
-                on: {
-                  keyup: function($event) {
-                    return _vm.validate("password")
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.password = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "confirmPassword" } }, [
-                _vm._v("Confirm password:")
-              ]),
-              _c("br"),
-              _vm._v(" "),
-              _c("i", [
-                _vm.errorMessage6 !== null
-                  ? _c("span", { staticClass: "text-danger text-center" }, [
-                      _vm._v(_vm._s(_vm.errorMessage6))
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.confirmPass,
-                    expression: "confirmPass"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "password", id: "confirmPassword" },
-                domProps: { value: _vm.confirmPass },
-                on: {
-                  keyup: function($event) {
-                    return _vm.validate("confirmPass")
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.confirmPass = $event.target.value
-                  }
-                }
-              })
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c(
-              "button",
-              {
-                staticClass: "btn btnRegister",
-                attrs: { type: "submit" },
-                on: { click: _vm.register }
-              },
-              [_vm._v("Register")]
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            [
-              _c("label", { staticClass: "termsCondition" }, [
-                _vm._v("By signing up, you agree to our "),
+              "v-form",
+              [
+                _c("i", [
+                  _vm.errorMessage !== null
+                    ? _c("span", { staticClass: "text-danger text-center" }, [
+                        _vm._v(_vm._s(_vm.errorMessage))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("i", [
+                  _vm.errorMessage2 !== null
+                    ? _c("span", { staticClass: "text-danger text-center" }, [
+                        _vm._v(_vm._s(_vm.errorMessage2))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
                 _c(
-                  "b",
-                  {
-                    staticClass: "bRegister",
-                    on: {
-                      click: function($event) {
-                        return _vm.redirect("/")
+                  "v-row",
+                  [
+                    _c("v-text-field", {
+                      attrs: {
+                        label: "Fullname",
+                        outlined: "",
+                        type: "text",
+                        id: "fullname",
+                        required: ""
+                      },
+                      on: {
+                        keyup: function($event) {
+                          return _vm.validate("fullname")
+                        }
+                      },
+                      model: {
+                        value: _vm.fullname,
+                        callback: function($$v) {
+                          _vm.fullname = $$v
+                        },
+                        expression: "fullname"
                       }
-                    }
-                  },
-                  [_vm._v("Terms")]
+                    })
+                  ],
+                  1
                 ),
-                _vm._v(" and "),
+                _vm._v(" "),
+                _c("i", [
+                  _vm.errorMessage10 !== null
+                    ? _c("span", { staticClass: "text-danger text-center" }, [
+                        _vm._v(_vm._s(_vm.errorMessage10))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
                 _c(
-                  "b",
-                  {
-                    staticClass: "bRegister",
-                    on: {
-                      click: function($event) {
-                        return _vm.redirect("/")
+                  "v-row",
+                  [
+                    _c("v-text-field", {
+                      attrs: {
+                        label: "Address",
+                        outlined: "",
+                        type: "text",
+                        id: "address",
+                        required: ""
+                      },
+                      on: {
+                        keyup: function($event) {
+                          return _vm.validate("address")
+                        }
+                      },
+                      model: {
+                        value: _vm.address,
+                        callback: function($$v) {
+                          _vm.address = $$v
+                        },
+                        expression: "address"
                       }
-                    }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("i", [
+                  _vm.errorMessage !== null
+                    ? _c("span", { staticClass: "text-danger text-center" }, [
+                        _vm._v(_vm._s(_vm.errorMessage8))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("i", [
+                  _vm.errorMessage2 !== null
+                    ? _c("span", { staticClass: "text-danger text-center" }, [
+                        _vm._v(_vm._s(_vm.errorMessage9))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "v-row",
+                  [
+                    _c("v-text-field", {
+                      attrs: {
+                        label: "Contact Number",
+                        outlined: "",
+                        type: "number",
+                        id: "contactNum",
+                        required: ""
+                      },
+                      on: {
+                        keyup: function($event) {
+                          return _vm.validate("contactNum")
+                        }
+                      },
+                      model: {
+                        value: _vm.contactNum,
+                        callback: function($$v) {
+                          _vm.contactNum = $$v
+                        },
+                        expression: "contactNum"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("i", [
+                  _vm.errorMessage3 !== null
+                    ? _c("span", { staticClass: "text-danger text-center" }, [
+                        _vm._v(_vm._s(_vm.errorMessage3))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "v-row",
+                  [
+                    _c("v-text-field", {
+                      attrs: {
+                        label: "email",
+                        outlined: "",
+                        type: "email",
+                        id: "email",
+                        required: ""
+                      },
+                      on: {
+                        keyup: function($event) {
+                          return _vm.validate("email")
+                        }
+                      },
+                      model: {
+                        value: _vm.email,
+                        callback: function($$v) {
+                          _vm.email = $$v
+                        },
+                        expression: "email"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm.successMessage !== null
+                  ? _c("span", { staticClass: "text-success text-center" }, [
+                      _vm._v(_vm._s(_vm.successMessage))
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("i", [
+                  _vm.errorMessage4 !== null
+                    ? _c("span", { staticClass: "text-danger text-center" }, [
+                        _vm._v(_vm._s(_vm.errorMessage4))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("i", [
+                  _vm.errorMessage5 !== null
+                    ? _c("span", { staticClass: "text-danger text-center" }, [
+                        _vm._v(_vm._s(_vm.errorMessage5))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "v-row",
+                  [
+                    _c("v-text-field", {
+                      attrs: {
+                        label: "Password",
+                        outlined: "",
+                        type: "password",
+                        id: "password",
+                        required: ""
+                      },
+                      on: {
+                        keyup: function($event) {
+                          return _vm.validate("password")
+                        }
+                      },
+                      model: {
+                        value: _vm.password,
+                        callback: function($$v) {
+                          _vm.password = $$v
+                        },
+                        expression: "password"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("i", [
+                  _vm.errorMessage6 !== null
+                    ? _c("span", { staticClass: "text-danger text-center" }, [
+                        _vm._v(_vm._s(_vm.errorMessage6))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "v-row",
+                  [
+                    _c("v-text-field", {
+                      attrs: {
+                        label: "Confirm Password",
+                        outlined: "",
+                        type: "password",
+                        id: "confirmPassword",
+                        required: ""
+                      },
+                      on: {
+                        keyup: function($event) {
+                          return _vm.validate("confirmPass")
+                        }
+                      },
+                      model: {
+                        value: _vm.confirmPass,
+                        callback: function($$v) {
+                          _vm.confirmPass = $$v
+                        },
+                        expression: "confirmPass"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-btn",
+                  {
+                    staticClass: "btn btnRegister",
+                    attrs: { type: "submit" },
+                    on: { click: _vm.register }
                   },
-                  [_vm._v("Conditions")]
+                  [_vm._v("Register")]
                 )
-              ]),
-              _c("hr"),
-              _vm._v(" "),
-              _c("center", [
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              [
                 _c("label", { staticClass: "termsCondition" }, [
-                  _vm._v("Already have an account? "),
+                  _vm._v("By signing up, you agree to our "),
                   _c(
                     "b",
                     {
                       staticClass: "bRegister",
                       on: {
                         click: function($event) {
-                          return _vm.redirect("/login")
+                          return _vm.redirect("/")
                         }
                       }
                     },
-                    [_vm._v("Login")]
+                    [_vm._v("Terms")]
+                  ),
+                  _vm._v(" and "),
+                  _c(
+                    "b",
+                    {
+                      staticClass: "bRegister",
+                      on: {
+                        click: function($event) {
+                          return _vm.redirect("/")
+                        }
+                      }
+                    },
+                    [_vm._v("Conditions")]
                   )
+                ]),
+                _c("hr"),
+                _vm._v(" "),
+                _c("center", [
+                  _c("label", { staticClass: "termsCondition" }, [
+                    _vm._v("Already have an account? "),
+                    _c(
+                      "b",
+                      {
+                        staticClass: "bRegister",
+                        on: {
+                          click: function($event) {
+                            return _vm.redirect("/login")
+                          }
+                        }
+                      },
+                      [_vm._v("Login")]
+                    )
+                  ])
                 ])
-              ])
-            ],
-            1
-          )
-        ])
+              ],
+              1
+            )
+          ],
+          1
+        )
       ])
     ],
     1

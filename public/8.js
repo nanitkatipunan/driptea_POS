@@ -153,6 +153,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -375,13 +396,9 @@ var render = function() {
               : _vm._e()
           ]),
           _vm._v(" "),
-          _c("form", [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "userType" } }, [
-                _vm._v("Account Type:")
-              ]),
-              _c("br"),
-              _vm._v(" "),
+          _c(
+            "form",
+            [
               _c("i", [
                 _vm.errorMessage8 !== null
                   ? _c("span", { staticClass: "text-danger text-center" }, [
@@ -390,37 +407,33 @@ var render = function() {
                   : _vm._e()
               ]),
               _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.userType,
-                    expression: "userType"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", id: "userType" },
-                domProps: { value: _vm.userType },
-                on: {
-                  keyup: function($event) {
-                    return _vm.validate("userType")
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+              _c(
+                "v-row",
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Account Type",
+                      outlined: "",
+                      type: "text",
+                      id: "userType",
+                      required: ""
+                    },
+                    on: {
+                      keyup: function($event) {
+                        return _vm.validate("userType")
+                      }
+                    },
+                    model: {
+                      value: _vm.userType,
+                      callback: function($$v) {
+                        _vm.userType = $$v
+                      },
+                      expression: "userType"
                     }
-                    _vm.userType = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "userName" } }, [
-                _vm._v("Username:")
-              ]),
-              _c("br"),
+                  })
+                ],
+                1
+              ),
               _vm._v(" "),
               _c("i", [
                 _vm.errorMessage !== null
@@ -446,37 +459,33 @@ var render = function() {
                   : _vm._e()
               ]),
               _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.userName,
-                    expression: "userName"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", id: "userName" },
-                domProps: { value: _vm.userName },
-                on: {
-                  keyup: function($event) {
-                    return _vm.validate("userName")
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+              _c(
+                "v-row",
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Username",
+                      outlined: "",
+                      type: "text",
+                      id: "userName",
+                      required: ""
+                    },
+                    on: {
+                      keyup: function($event) {
+                        return _vm.validate("userName")
+                      }
+                    },
+                    model: {
+                      value: _vm.userName,
+                      callback: function($$v) {
+                        _vm.userName = $$v
+                      },
+                      expression: "userName"
                     }
-                    _vm.userName = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "password" } }, [
-                _vm._v("Password:")
-              ]),
-              _c("br"),
+                  })
+                ],
+                1
+              ),
               _vm._v(" "),
               _vm.successMessage !== null
                 ? _c("span", { staticClass: "text-success text-center" }, [
@@ -500,37 +509,33 @@ var render = function() {
                   : _vm._e()
               ]),
               _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.password,
-                    expression: "password"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "password", id: "password" },
-                domProps: { value: _vm.password },
-                on: {
-                  keyup: function($event) {
-                    return _vm.validate("password")
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+              _c(
+                "v-row",
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Password",
+                      outlined: "",
+                      type: "password",
+                      id: "password",
+                      required: ""
+                    },
+                    on: {
+                      keyup: function($event) {
+                        return _vm.validate("password")
+                      }
+                    },
+                    model: {
+                      value: _vm.password,
+                      callback: function($$v) {
+                        _vm.password = $$v
+                      },
+                      expression: "password"
                     }
-                    _vm.password = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "confirmPassword" } }, [
-                _vm._v("Confirm password:")
-              ]),
-              _c("br"),
+                  })
+                ],
+                1
+              ),
               _vm._v(" "),
               _c("i", [
                 _vm.errorMessage6 !== null
@@ -540,42 +545,46 @@ var render = function() {
                   : _vm._e()
               ]),
               _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.confirmPass,
-                    expression: "confirmPass"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "password", id: "confirmPassword" },
-                domProps: { value: _vm.confirmPass },
-                on: {
-                  keyup: function($event) {
-                    return _vm.validate("confirmPass")
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+              _c(
+                "v-row",
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Confirm Password",
+                      outlined: "",
+                      type: "password",
+                      id: "confirmPassword",
+                      required: ""
+                    },
+                    on: {
+                      keyup: function($event) {
+                        return _vm.validate("confirmPass")
+                      }
+                    },
+                    model: {
+                      value: _vm.confirmPass,
+                      callback: function($$v) {
+                        _vm.confirmPass = $$v
+                      },
+                      expression: "confirmPass"
                     }
-                    _vm.confirmPass = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btnRegister",
-                attrs: { type: "submit" },
-                on: { click: _vm.register }
-              },
-              [_vm._v("Register")]
-            )
-          ])
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "btn btnRegister",
+                  attrs: { type: "submit" },
+                  on: { click: _vm.register }
+                },
+                [_vm._v("Register")]
+              )
+            ],
+            1
+          )
         ])
       ]),
       _vm._v(" "),
