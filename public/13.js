@@ -202,6 +202,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -744,7 +747,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.welcome {\r\n  font-size: 35px;\r\n  margin-bottom: 10px;\r\n  margin-left: 1%;\n}\n.forannualInput {\r\n  width: 30%;\n}\n.GraphLabel {\r\n  margin-left: 45%;\n}\n.annualDateCal1,\r\n.annualDateCal2,\r\n.yearMenu {\r\n  color: black;\r\n\r\n  /* background-color: rgb(202, 25, 25); */\n}\n.YRcal {\r\n  color: black;\n}\n.Cname,\r\n.GraphLabel {\r\n  color: #ff5b04;\n}\n.text1 {\r\n  margin: 20%;\r\n  text-align: center;\r\n  color: #ff5b04;\n}\n.firstOpt,\r\n.secondOpt {\r\n  float: left;\r\n  align-self: center;\r\n  width: 30%;\n}\n.firstOpt {\r\n  margin-left: 30%;\n}\n.TB3 {\r\n  margin-bottom: 20px;\r\n  justify-content: center;\r\n  border-radius: 1%;\n}\n.filter {\r\n  width: 25%;\n}\n.prods {\r\n  border: 1px solid #999999;\r\n  border-radius: 1%;\r\n  /* margin-top: 20px; */\n}\n.subhead {\r\n  margin-bottom: 20px;\n}\n.chart {\r\n  width: 100%;\n}\n.body {\r\n  margin: 5%;\r\n  height: 100%;\n}\n.top3 {\r\n  width: 20%;\r\n  height: 50%;\r\n  border: 1px solid #999999;\r\n  border-radius: 1%;\n}\n.thetop3 {\r\n  margin: 2%;\r\n  height: 200px;\r\n  width: auto;\n}\n.Prod_name {\r\n  color: black;\n}\r\n", ""]);
+exports.push([module.i, "\n.welcome {\r\n  font-size: 35px;\r\n  margin-bottom: 10px;\r\n  margin-left: 1%;\n}\n.forannualInput {\r\n  width: 30%;\n}\n.form-control{\r\n  float: right!important;\n}\n.GraphLabel {\r\n  margin-left: 45%;\n}\n.annualDateCal1,\r\n.annualDateCal2,\r\n.yearMenu {\r\n  color: black;\r\n\r\n  /* background-color: rgb(202, 25, 25); */\n}\n.YRcal {\r\n  color: black;\n}\n.Cname,\r\n.GraphLabel {\r\n  color: #ff5b04;\n}\n.text1 {\r\n  margin: 20%;\r\n  text-align: center;\r\n  color: #ff5b04;\n}\n.firstOpt,\r\n.secondOpt {\r\n  float: left;\r\n  align-self: center;\r\n  width: 30%;\n}\n.firstOpt {\r\n  margin-left: 30%;\n}\n.TB3 {\r\n  margin-bottom: 20px;\r\n  justify-content: center;\r\n  border-radius: 1%;\n}\n.filter {\r\n  width: 25%;\n}\n.prods {\r\n  border: 1px solid #999999;\r\n  border-radius: 1%;\r\n  /* margin-top: 20px; */\n}\n.subhead {\r\n  margin-bottom: 20px;\n}\n.chart {\r\n  width: 100%;\n}\n.body {\r\n  margin: 5%;\r\n  height: 100%;\n}\n.top3 {\r\n  width: 20%;\r\n  height: 50%;\r\n  border: 1px solid #999999;\r\n  border-radius: 1%;\n}\n.thetop3 {\r\n  margin: 2%;\r\n  height: 200px;\r\n  width: auto;\n}\n.Prod_name {\r\n  color: black;\n}\r\n", ""]);
 
 // exports
 

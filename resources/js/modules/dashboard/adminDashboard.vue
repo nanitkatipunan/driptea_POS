@@ -111,6 +111,9 @@
 .forannualInput {
   width: 30%;
 }
+.form-control{
+  float: right!important;
+}
 .GraphLabel {
   margin-left: 45%;
 }

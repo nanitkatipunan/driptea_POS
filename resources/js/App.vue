@@ -31,14 +31,14 @@
     <v-app-bar color="orange darken-1" v-if="admin !== null" app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-img max-height="64" max-width="42" :src="image"></v-img>
-      <v-app-bar-title>DRIPTEA</v-app-bar-title>
+      <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-items class="hidden-sm-and-down">
+      <v-app-bar-items class="hidden-sm-and-down" app name="theitem">
         <div>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon x-large color="black" right>mdi-bell-ring</v-icon>
+                <v-icon medium color="black" right>mdi-bell-ring</v-icon>
               </v-btn>
             </template>
             <v-list style="max-height: 200px" class="overflow-y-auto notifDropdown">
@@ -53,14 +53,14 @@
     </v-app-bar>
     <v-app-bar class="cashierNav" color="orange darken-1" v-if="cashier !== null">
       <a href="#"><v-img max-height="64" max-width="42" :src="image"></v-img></a>
-      <v-app-bar-title>DRIPTEA</v-app-bar-title>
+      <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-items class="hidden-sm-and-down">
+      <v-app-bar-items class="hidden-sm-and-down" app name="theitem">
         <div>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon x-large color="black" right>mdi-bell-ring</v-icon>
+                <v-icon medium color="black" right>mdi-bell-ring</v-icon>
               </v-btn>
             </template>
             <v-list style="max-height: 200px" class="overflow-y-auto notifDropdown">
@@ -96,6 +96,8 @@ import image from "../assets/logo.png";
 import AUTH from "./services/auth";
 import ROUTER from "./router";
 import { mdiAccount } from "@mdi/js";
+import { App } from '@/js/App.vue'
+
 export default {
   data: () => ({
     admin: localStorage.getItem("adminId"),
@@ -153,6 +155,8 @@ export default {
       { title: "Click Me 2...................." }
     ]
   }),
+  components: {
+  },
   mounted() {
     this.admin = localStorage.getItem("adminId");
   },
