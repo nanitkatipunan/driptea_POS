@@ -1,3 +1,27 @@
+<<<<<<< HEAD
+    <template>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr >
+                        <th v-for="(item, index) in productData" :key="index" >{{item.productCategory}}</th>
+                    </tr>
+                    
+                        
+                   
+                </thead>
+           </table>
+        </div>
+    </template>
+    
+                  
+
+
+
+
+
+
+=======
 <template>
     <div class="sudlanan">
         <center>
@@ -46,6 +70,7 @@
         </center>
     </div>
 </template>
+>>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
 <style scoped>
 /* width */
 ::-webkit-scrollbar {
@@ -93,11 +118,16 @@ export default {
             sugarLevel: null,
             addOns: null,
             quantity: null,
-            finalData: []
+            finalData: [],
+            productData:null,
+            categoryData:null,
         }
     },
     mounted(){
         this.retrieveProduct()
+        this.getAllProducts()
+        this.getAllCategory()
+
     },
     methods: {
         getTotal(item){
@@ -139,9 +169,7 @@ export default {
         },
         dataMethod(item){
             Object.keys(item).forEach(element => {
-                // item[element].forEach(el => {
-                //     this.finalData.push({'size': el.size, 'quantity': el.quantity})
-                // })
+               
                 this.finalData.push(item[element])
             })
         },
@@ -150,7 +178,25 @@ export default {
                 this.data = res.data.storeOrder
                 this.dataMethod(res.data.storeOrder)
             })
-        }
+        },
+        getAllProducts(){
+             this.$axios.post(AUTH.url + 'retrieveAllProduct').then(res => {
+                console.log(res.data.product)
+                this.productData = res.data.product
+                
+            })
+
+        },
+        getAllCategory(){
+            this.$axios.post(AUTH.url + 'retrieveCategory').then(res => {
+                console.log(res.data.addCategory)
+                this.categoryData = res.data.addCategory
+
+            })
+
+        },
+
+
     }
 }
 </script>

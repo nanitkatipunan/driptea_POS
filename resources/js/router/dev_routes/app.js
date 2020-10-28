@@ -91,7 +91,7 @@ export default {
         {
             path: '/salesInventory',
             name: 'salesInventory',
-            component: resolve => require(['@/js/modules/inventory/cupsInventory'], resolve),
+            component: resolve => require(['@/js/modules/inventory/salesInventory'], resolve),
             meta: {
                 tokenRequired: true
             }
