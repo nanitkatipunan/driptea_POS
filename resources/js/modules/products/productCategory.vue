@@ -52,7 +52,6 @@
                             </div>
                         </div>
                     </v-card>
-                   
                 </center>
             </div>
             <div class="col-md-6">

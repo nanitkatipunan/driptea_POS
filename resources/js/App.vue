@@ -154,6 +154,7 @@ export default {
     count: 0
   }),
   mounted() {
+    this.retrive()
     this.admin = localStorage.getItem("adminId");
     this.cashier = localStorage.getItem("cashierId");
     let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
@@ -162,12 +163,16 @@ export default {
     });
 
     let channel = pusher.subscribe('driptea-channel')
+    let obj = this
     channel.bind('driptea-data', (data) => {
-        if(data.order === 'pendingCustomer'){
-            this.count++
-            // this.retrieveProduct()
-        }
-        console.log(this.count)
+      if(data.order === 'pendingCustomer'){
+          this.count++
+          this.$axios.post(AUTH.url + 'retrieveOnlineOrder').then(res => {
+            console.log(res.data.order)
+            // this.tableData = res.data.order
+          })
+      }
+      console.log(this.count, data)
     })
   },
   methods: {
@@ -179,6 +184,12 @@ export default {
     },
     ShowModal() {
 
+    },
+    retrive(){
+      this.$axios.post(AUTH.url + 'retrieveOnlineOrder').then(res => {
+        console.log(res.data.order)
+        // this.tableData = res.data.order
+      })
     }
   }
 };

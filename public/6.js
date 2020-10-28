@@ -363,32 +363,51 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.quantity > 0 && this.size !== null && this.sugarLevel !== null && this.cupType !== null) {
-        var param = {
-          customerType: "onlineOrder",
-          customerName: localStorage.getItem('fullName'),
-          customerAddress: localStorage.getItem('address'),
-          customerContactNumber: localStorage.getItem('contactNumber')
-        };
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addCustomer", param).then(function (res) {
-          localStorage.setItem('customerOnlineId', res.data.customerDetails.id);
-          var parameter = {
-            customerId: res.data.customerDetails.id,
-            onlineId: localStorage.getItem('customerId'),
-            productId: _this8.itemId,
-            quantity: _this8.quantity,
-            size: _this8.size,
-            sugarLevel: _this8.sugarLevel,
-            choosenPrice: _this8.total,
-            cupType: _this8.cupType,
-            status: 'incart',
-            addOns: _this8.addOns,
-            subTotal: _this8.priceShown
+        if (localStorage.getItem('customerOnlineId') === null) {
+          var param = {
+            customerType: "onlineOrder",
+            customerName: localStorage.getItem('fullName'),
+            customerAddress: localStorage.getItem('address'),
+            customerContactNumber: localStorage.getItem('contactNumber')
           };
+          this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addCustomer", param).then(function (res) {
+            localStorage.setItem('customerOnlineId', res.data.customerDetails.id);
+            var parameter = {
+              customerId: res.data.customerDetails.id,
+              onlineId: localStorage.getItem('customerId'),
+              productId: _this8.itemId,
+              quantity: _this8.quantity,
+              size: _this8.size,
+              sugarLevel: _this8.sugarLevel,
+              choosenPrice: _this8.total,
+              cupType: _this8.cupType,
+              status: 'incart',
+              addOns: _this8.addOns,
+              subTotal: _this8.priceShown
+            };
 
-          _this8.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
+            _this8.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
+              jquery__WEBPACK_IMPORTED_MODULE_2___default()('#viewDetails').modal('hide');
+            });
+          });
+        } else {
+          var parameter = {
+            customerId: localStorage.getItem('customerOnlineId'),
+            onlineId: localStorage.getItem('customerId'),
+            productId: this.itemId,
+            quantity: this.quantity,
+            size: this.size,
+            sugarLevel: this.sugarLevel,
+            choosenPrice: this.total,
+            cupType: this.cupType,
+            status: 'incart',
+            addOns: this.addOns,
+            subTotal: this.priceShown
+          };
+          this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
             jquery__WEBPACK_IMPORTED_MODULE_2___default()('#viewDetails').modal('hide');
           });
-        });
+        }
       }
     },
     cancel: function cancel() {

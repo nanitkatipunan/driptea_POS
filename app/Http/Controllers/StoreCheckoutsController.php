@@ -29,6 +29,7 @@ class StoreCheckoutsController extends Controller
             $storeOrder->customerId = $value['customerId'];
             $storeOrder->cashierId = $data['cashierId'];
             $storeOrder->productId = $value['productId'];
+            $storeOrder->onlineId = $value['onlineId'];
             $storeOrder->quantity = $value['quantity'];
             $storeOrder->size = $value['size'];
             $storeOrder->sugarLevel = $value['sugarLevel'];
@@ -59,7 +60,6 @@ class StoreCheckoutsController extends Controller
                     ->get();
 
         return response()->JSON(compact('years'));
-
     }
     public function retrieveAllCheckouts(Request $request){
         $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('deleted_at', null)->get()->groupBy('storeCheckoutsId');

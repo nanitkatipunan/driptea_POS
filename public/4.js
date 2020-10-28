@@ -188,6 +188,8 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'updateStatus', params).then(function (res) {
         _this4.retrieveProduct();
+
+        localStorage.removeItem('customerOnlineId');
       });
     },
     getSubTotal: function getSubTotal() {

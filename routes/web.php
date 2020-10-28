@@ -35,6 +35,7 @@ Route::post('addCustomer','App\Http\Controllers\CustomerDetailsController@insert
 
 Route::post('addOrder','App\Http\Controllers\OrderController@addOrder');
 Route::post('updateStatus','App\Http\Controllers\OrderController@updateStatus');
+Route::post('updateOnlineStatus','App\Http\Controllers\OrderController@updateOnlineStatus');
 Route::post('deleteOrder','App\Http\Controllers\OrderController@deleteOrder');
 Route::post('retrieveOrder','App\Http\Controllers\OrderController@retrieveOrder');
 Route::post('retrieveCustomerOrder','App\Http\Controllers\OrderController@retrieveCustomerOrder');
