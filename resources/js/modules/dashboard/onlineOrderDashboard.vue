@@ -1,6 +1,5 @@
 <template>
     <div>
-            <!-- <img class="dripteaImage" :src="image" > -->
         <v-card class="overflow-hidden">
             <v-app-bar
             absolute
@@ -249,7 +248,9 @@ export default {
         let channel = pusher.subscribe('driptea-channel')
 
         channel.bind('driptea-data', (data) => {
-            this.count++
+            if(data.order.status){
+                this.count++
+            }
         })
     },
     methods: {
@@ -323,16 +324,35 @@ export default {
                 this.errorMessage1 = 'cup type is required!'
             }
             if(this.quantity > 0 && this.size !== null && this.sugarLevel !== null && this.cupType !== null){
-                let param = {
-                    customerType: "onlineOrder",
-                    customerName: localStorage.getItem('fullName'),
-                    customerAddress: localStorage.getItem('address'),
-                    customerContactNumber: localStorage.getItem('contactNumber'),
-                };
-                this.$axios.post(AUTH.url + "addCustomer", param).then(res => {
-                    localStorage.setItem('customerOnlineId', res.data.customerDetails.id)
+                if(localStorage.getItem('customerOnlineId') === null){
+                    let param = {
+                        customerType: "onlineOrder",
+                        customerName: localStorage.getItem('fullName'),
+                        customerAddress: localStorage.getItem('address'),
+                        customerContactNumber: localStorage.getItem('contactNumber'),
+                    };
+                    this.$axios.post(AUTH.url + "addCustomer", param).then(res => {
+                        localStorage.setItem('customerOnlineId', res.data.customerDetails.id)
+                        let parameter = {
+                            customerId: res.data.customerDetails.id,
+                            onlineId: localStorage.getItem('customerId'),
+                            productId: this.itemId,
+                            quantity: this.quantity,
+                            size: this.size,
+                            sugarLevel: this.sugarLevel,
+                            choosenPrice: this.total,
+                            cupType: this.cupType,
+                            status: 'incart',
+                            addOns: this.addOns,
+                            subTotal: this.priceShown
+                        }
+                        this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
+                            $('#viewDetails').modal('hide')
+                        })
+                    })
+                }else{
                     let parameter = {
-                        customerId: res.data.customerDetails.id,
+                        customerId: localStorage.getItem('customerOnlineId'),
                         onlineId: localStorage.getItem('customerId'),
                         productId: this.itemId,
                         quantity: this.quantity,
@@ -347,7 +367,7 @@ export default {
                     this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
                         $('#viewDetails').modal('hide')
                     })
-                })
+                }
             }
         },
         cancel(){

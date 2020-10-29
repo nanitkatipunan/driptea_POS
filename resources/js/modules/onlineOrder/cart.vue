@@ -116,6 +116,7 @@ export default {
             }
             this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
                 this.retrieveProduct()
+                localStorage.removeItem('customerOnlineId')
             })
         },
         getSubTotal(){

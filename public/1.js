@@ -621,50 +621,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/assets/fb1.png":
-/*!**********************************!*\
-  !*** ./resources/assets/fb1.png ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/fb1.png?ffcb5b5d03e7882102366b4575c806bd";
-
-/***/ }),
-
-/***/ "./resources/assets/foodpanda1.png":
-/*!*****************************************!*\
-  !*** ./resources/assets/foodpanda1.png ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/foodpanda1.png?e1e21d0133255c394f0b0ca4478eacb9";
-
-/***/ }),
-
-/***/ "./resources/assets/grab2.png":
-/*!************************************!*\
-  !*** ./resources/assets/grab2.png ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/grab2.png?d1e18818f91ee4817d8719b3b72b33de";
-
-/***/ }),
-
-/***/ "./resources/assets/walkin.jpg":
-/*!*************************************!*\
-  !*** ./resources/assets/walkin.jpg ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/walkin.jpg?e225ba36f9a7baac8aac3abe6dac6ddd";
-
-/***/ }),
-
 /***/ "./resources/js/modules/dashboard/casherDashboard.vue":
 /*!************************************************************!*\
   !*** ./resources/js/modules/dashboard/casherDashboard.vue ***!
