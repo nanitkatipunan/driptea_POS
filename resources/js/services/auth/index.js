@@ -25,11 +25,14 @@ export default {
             }).then(res => {
                 if(res.data.user.account_type.toUpperCase() === 'ADMIN'){
                     this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
-                    ROUTER.push('/addProductCategoryAddOns')
+                    ROUTER.push('/adminDashboard')
                 }else if(res.data.user.account_type.toUpperCase() === 'CASHIER'){
                     this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
                     ROUTER.push('/casherDashboard')
                 }else{
+                    localStorage.setItem('fullName', res.data.user.fullname)
+                    localStorage.setItem('address', res.data.user.address)
+                    localStorage.setItem('contactNumber', res.data.user.contactNumber)
                     this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
                     ROUTER.push('/onlineDashboard')
                 }

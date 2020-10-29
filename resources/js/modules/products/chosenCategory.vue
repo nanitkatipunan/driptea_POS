@@ -12,10 +12,7 @@
         </v-row>
 
         <div v-else class="secRow">
-            <center>
-                <img class="noImage" src="@/assets/data.png">
-                <h2>No Product Yet</h2>
-            </center>
+            <empty :title="'No Product Yet!'"></empty>
         </div>
     </center>
 </div>
@@ -67,6 +64,7 @@
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
+import empty from '../../basic/empty.vue'
 export default {
     data() {
         return {
@@ -76,6 +74,9 @@ export default {
     },
     mounted() {
         this.retrieveProduct()
+    },
+    components: {
+        empty
     },
     methods: {
         retrieveProduct() {

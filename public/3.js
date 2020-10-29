@@ -310,30 +310,15 @@ __webpack_require__.r(__webpack_exports__);
       fee: 0,
       error: false,
       receiptShow: false,
-      receiptData: null,
-      count: 0
+      receiptData: null
     };
   },
   components: {
     receipt: _order_receipt_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   mounted: function mounted() {
-    var _this = this;
-
     this.retrieveCategory();
     this.retrieveProduct();
-    var pusher = new Pusher(this.config.PUSHER_APP_KEY, {
-      cluster: this.config.PUSHER_APP_CLUSTER,
-      encrypted: true
-    });
-    var channel = pusher.subscribe('driptea-channel');
-    channel.bind('driptea-data', function (data) {
-      if (data.order === 'pendingCustomer') {
-        _this.count++;
-
-        _this.retrieveProduct();
-      }
-    });
   },
   methods: {
     hideReceipt: function hideReceipt() {
@@ -369,10 +354,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     retrieveCategory: function retrieveCategory() {
-      var _this2 = this;
+      var _this = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCategory').then(function (res) {
-        _this2.data = res.data.addCategory;
+        _this.data = res.data.addCategory;
       });
     },
     getSubTotal: function getSubTotal() {
@@ -389,13 +374,13 @@ __webpack_require__.r(__webpack_exports__);
       _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/chosenCategory/' + param)["catch"](function () {});
     },
     retrieveProduct: function retrieveProduct() {
-      var _this3 = this;
+      var _this2 = this;
 
       var params = {
         id: localStorage.getItem('customerId')
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOrder', params).then(function (res) {
-        _this3.tableData = res.data.order;
+        _this2.tableData = res.data.order;
       });
     },
     getAddOns: function getAddOns(item) {
@@ -411,16 +396,16 @@ __webpack_require__.r(__webpack_exports__);
       return storeAddOns;
     },
     deleteOrder: function deleteOrder(prodId) {
-      var _this4 = this;
+      var _this3 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'deleteOrder', {
         id: prodId
       }).then(function (res) {
-        _this4.retrieveProduct();
+        _this3.retrieveProduct();
       });
     },
     checkoutMethod: function checkoutMethod() {
-      var _this5 = this;
+      var _this4 = this;
 
       var params = {
         id: localStorage.getItem('customerId'),
@@ -430,21 +415,21 @@ __webpack_require__.r(__webpack_exports__);
         var params = {
           customerId: localStorage.getItem('customerId'),
           cashierId: localStorage.getItem('cashierId'),
-          subTotal: parseInt(_this5.getSubTotal()),
-          deliveryFee: _this5.fee,
-          total: parseInt(_this5.convertTotalPrice()),
-          incash: _this5.cash,
-          change: parseInt(_this5.convertChange()),
-          order: _this5.tableData
+          subTotal: parseInt(_this4.getSubTotal()),
+          deliveryFee: _this4.fee,
+          total: parseInt(_this4.convertTotalPrice()),
+          incash: _this4.cash,
+          change: parseInt(_this4.convertChange()),
+          order: _this4.tableData
         };
-        console.log(_this5.tableData);
+        console.log(_this4.tableData);
 
-        _this5.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addCheckout', params).then(function (res) {
+        _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addCheckout', params).then(function (res) {
           var low = 0;
           var high = 0;
           var over = 0;
 
-          _this5.tableData.forEach(function (el) {
+          _this4.tableData.forEach(function (el) {
             if (el.size === 'lowDose') {
               low += el.quantity;
             } else if (el.size === 'highDose') {
@@ -460,14 +445,14 @@ __webpack_require__.r(__webpack_exports__);
             usedCupsOverDose: over
           };
 
-          _this5.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'updateRemainingCups', param).then(function (response) {
+          _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'updateRemainingCups', param).then(function (response) {
             var parameter = {
               id: res.data.storeCheckouts.id
             };
 
-            _this5.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCheckouts', parameter).then(function (response) {
-              _this5.receiptData = response.data.storeOrder;
-              _this5.receiptShow = true;
+            _this4.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCheckouts', parameter).then(function (response) {
+              _this4.receiptData = response.data.storeOrder;
+              _this4.receiptShow = true;
             });
           });
         });
@@ -1470,24 +1455,6 @@ module.exports = "/images/grab2.png?d1e18818f91ee4817d8719b3b72b33de";
 /***/ (function(module, exports) {
 
 module.exports = "/images/walkin.jpg?e225ba36f9a7baac8aac3abe6dac6ddd";
-
-/***/ }),
-
-/***/ "./resources/js/config.js":
-/*!********************************!*\
-  !*** ./resources/js/config.js ***!
-  \********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  PUSHER_APP_ID: '1095899',
-  PUSHER_APP_KEY: '426e9e5cd2a694fa7c40',
-  PUSHER_APP_SECRET: '4f62e10c794a3d0f2161',
-  PUSHER_APP_CLUSTER: 'ap1'
-});
 
 /***/ }),
 

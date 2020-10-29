@@ -345,103 +345,103 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form @submit="formSubmitProduct" enctype="multipart/form-data" action>
-                    <div class="row">
-                        <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                        <div class="col-md-6">
+                        <form @submit="formSubmitProduct" enctype="multipart/form-data" action  method="POST">
+                            <div class="row">
+                                <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="pCat">Product Category:</label>
+                                        <br>
+                                        <select class="form-control" v-model="prodType">
+                                            <option v-for="(item, index) in categoryData" :key="index" :value="item.productCategory">{{item.productCategory}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Product Description:</label>
+                                        <br>
+                                        <input type="text" class="form-control" v-model="description" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="pname">Product name:</label>
+                                        <br>
+                                        <input type="text" class="form-control" v-model="productName" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" ref="norm" v-if="priceEvent === ''" class="btn borderStyle1" style="margin-left: 1%; background-color: #ffffff; cursor: pointer" @click="normalPrice($event)">Normal Price</button>
+                            <button type="button" ref="norm" v-else class="btn" style="margin-left: 1%; background-color: #ffffff; cursor: pointer" @click="normalPrice($event)">Normal Price</button>
+                            <button type="button" ref="online" class="btn btnBorderStyle" style="display: inline-block; background-color: #ffffff; cursor: pointer" @click="onlinePrice($event)">Online Price</button>
+                            <div v-if="!online" style="border: 1px solid #d8dce3; margin-top: -0.5%;"> 
+                                <div class="row" style="margin-top: 5%;">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-left: 3%;">
+                                            <label for="lowPrice">Low Dose Price:</label>
+                                            <br>
+                                            <input type="number" min="0" class="form-control" v-model="lowPrice" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-right: 3%;">
+                                            <label for="highPrice">High Dose Price:</label>
+                                            <br>
+                                            <input type="number" min="0" class="form-control" v-model="highPrice" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-left: 3%;">
+                                            <label for="overPrice">Over Dose Price:</label>
+                                            <br>
+                                            <input type="number" min="0" class="form-control" v-model="overPrice" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="online" style="border: 1px solid #d8dce3; margin-top: -0.5%;"> 
+                                <div class="row" style="margin-top: 5%;">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-left: 3%;">
+                                            <label for="onlinelowPrice">Online Low Dose Price:</label>
+                                            <br>
+                                            <input type="number" min="0" class="form-control" v-model="onlinelowPrice" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-right: 3%;">
+                                            <label for="onlinehighPrice">Online High Dose Price:</label>
+                                            <br>
+                                            <input type="number" min="0" class="form-control" v-model="onlinehighPrice" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-left: 3%;">
+                                            <label for="onlineoverPrice">Online Over Dose Price:</label>
+                                            <br>
+                                            <input type="number" min="0" class="form-control" v-model="onlineoverPrice" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
-                                <label for="pCat">Product Category:</label>
-                                <br>
-                                <select class="form-control" v-model="prodType">
-                                    <option v-for="(item, index) in categoryData" :key="index" :value="item.productCategory">{{item.productCategory}}</option>
-                                </select>
+                                <center>
+                                    <img class="addOnsImage" :src="imgURL"><br>
+                                    <input type="file" class="fileStyle" v-on:change="onImgChange" required><br>
+                                </center>
                             </div>
-                            <div class="form-group">
-                                <label for="description">Product Description:</label>
-                                <br>
-                                <input type="text" class="form-control" v-model="description" required>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
+                                <button v-if="productAdd" type="submit" class="btn btn-primary">Add Product</button>
+                                <button v-if="productEdit" type="button" class="btn btn-primary" @click="updateProduct($event)">Edit Product</button>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="pname">Product name:</label>
-                                <br>
-                                <input type="text" class="form-control" v-model="productName" required>
-                            </div>
-                        </div>
+                        </form>
                     </div>
-                    <button type="button" ref="norm" v-if="priceEvent === ''" class="btn borderStyle1" style="margin-left: 1%; background-color: #ffffff; cursor: pointer" @click="normalPrice($event)">Normal Price</button>
-                    <button type="button" ref="norm" v-else class="btn" style="margin-left: 1%; background-color: #ffffff; cursor: pointer" @click="normalPrice($event)">Normal Price</button>
-                    <button type="button" ref="online" class="btn btnBorderStyle" style="display: inline-block; background-color: #ffffff; cursor: pointer" @click="onlinePrice($event)">Online Price</button>
-                    <div v-if="!online" style="border: 1px solid #d8dce3; margin-top: -0.5%;"> 
-                        <div class="row" style="margin-top: 5%;">
-                            <div class="col-md-6">
-                                <div class="form-group" style="margin-left: 3%;">
-                                    <label for="lowPrice">Low Dose Price:</label>
-                                    <br>
-                                    <input type="number" min="0" class="form-control" v-model="lowPrice" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group" style="margin-right: 3%;">
-                                    <label for="highPrice">High Dose Price:</label>
-                                    <br>
-                                    <input type="number" min="0" class="form-control" v-model="highPrice" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group" style="margin-left: 3%;">
-                                    <label for="overPrice">Over Dose Price:</label>
-                                    <br>
-                                    <input type="number" min="0" class="form-control" v-model="overPrice" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-if="online" style="border: 1px solid #d8dce3; margin-top: -0.5%;"> 
-                        <div class="row" style="margin-top: 5%;">
-                            <div class="col-md-6">
-                                <div class="form-group" style="margin-left: 3%;">
-                                    <label for="onlinelowPrice">Online Low Dose Price:</label>
-                                    <br>
-                                    <input type="number" min="0" class="form-control" v-model="onlinelowPrice" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group" style="margin-right: 3%;">
-                                    <label for="onlinehighPrice">Online High Dose Price:</label>
-                                    <br>
-                                    <input type="number" min="0" class="form-control" v-model="onlinehighPrice" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group" style="margin-left: 3%;">
-                                    <label for="onlineoverPrice">Online Over Dose Price:</label>
-                                    <br>
-                                    <input type="number" min="0" class="form-control" v-model="onlineoverPrice" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <center>
-                            <img class="addOnsImage" :src="imgURL"><br>
-                            <input type="file" class="fileStyle" v-on:change="onImgChange" required><br>
-                        </center>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                        <button v-if="productAdd" type="submit" class="btn btn-primary">Add Product</button>
-                        <button v-if="productEdit" type="button" class="btn btn-primary" @click="updateProduct($event)">Edit Product</button>
-                 </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
         </div>
         <div v-if="showCategoryModal" id="modal" class="blurred-background">
             <div class="modal-dialog" role="document">
@@ -453,7 +453,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                         <form @submit="formSubmit" enctype="multipart/form-data" action>
+                         <form @submit="formSubmit" enctype="multipart/form-data" action method="POST">
                             <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
                             <div class="form-group">
                                 <label for="addOns">Product Category:</label>
@@ -829,7 +829,7 @@ export default {
                 formData.append('onlinelowPrice', this.onlinelowPrice)
                 formData.append('onlinehighPrice', this.onlinehighPrice)
                 formData.append('onlineoverPrice', this.onlineoverPrice)
-                axios.post('/formSubmit', formData, config).then(function (response) {
+                this.$axios.post('/formSubmit', formData, config).then(function (response) {
                     currentObj.success = response.data.success
                     currentObj.retrieveCategories()
                     currentObj.retrieveProducts()
@@ -881,7 +881,7 @@ export default {
                 formData.append('onlinelowPrice', this.onlinelowPrice)
                 formData.append('onlinehighPrice', this.onlinehighPrice)
                 formData.append('onlineoverPrice', this.onlineoverPrice)
-                axios.post('/updateProduct', formData, config)
+                this.$axios.post('/updateProduct', formData, config)
                 .then(function (response) {
                     currentObj.success = response.data.success
                     currentObj.retrieveCategories()
@@ -929,7 +929,7 @@ export default {
                 let formData = new FormData();
                 formData.append('image', this.image)
                 formData.append('productCategory', this.productType)
-                axios.post('/addCategory', formData, config).then(function (response) {
+                this.$axios.post('/addCategory', formData, config).then(function (response) {
                     currentObj.success = response.data.success
                     currentObj.retrieveCategories()
                     currentObj.retrieveProducts()

@@ -33,7 +33,7 @@
       <v-img max-height="64" max-width="42" :src="image"></v-img>
       <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-items class="hidden-sm-and-down" app name="theitem">
+      <v-app-bar-items name="theitem" class="hidden-sm-and-down" app >
         <div>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
@@ -55,7 +55,7 @@
       <a href="#"><v-img max-height="64" max-width="42" :src="image"></v-img></a>
       <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-items class="hidden-sm-and-down" app name="theitem">
+      <v-app-bar-items name="theitem" class="hidden-sm-and-down" app >
         <div>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
@@ -63,10 +63,11 @@
                 <v-icon medium color="black" right>mdi-bell-ring</v-icon>
               </v-btn>
             </template>
-            <v-list style="max-height: 200px" class="overflow-y-auto notifDropdown">
+            <v-list style="max-height: 300px; max-width: 300px" class="overflow-y-auto notifDropdown">
               <!-- ang Click kay wala pay nay method -->
               <v-list-item v-for="(item, index) in items" :key="index" @click="ShowModal">
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title>{{ item.title }} has order</v-list-item-title>
+
               </v-list-item>
             </v-list>
           </v-menu>
@@ -89,25 +90,24 @@
     max-height: 65px;
 }
 </style>
-
-
 <script>
 import image from "../assets/logo.png";
 import AUTH from "./services/auth";
 import ROUTER from "./router";
 import { mdiAccount } from "@mdi/js";
 import { App } from '@/js/App.vue'
+import config from './config.js'
 
 export default {
   data: () => ({
     admin: localStorage.getItem("adminId"),
     cashier: localStorage.getItem("cashierId"),
-    svgPath: mdiAccount,
     drawer: null,
     image: image,
     auth: AUTH,
     token: null,
     dialog: false,
+    config: config,
     nav: [
       {
         icon: "home",
@@ -153,12 +153,27 @@ export default {
       { title: "Click Me" },
       { title: "Click Me" },
       { title: "Click Me 2...................." }
-    ]
+    ],
+    count: 0
   }),
   components: {
   },
   mounted() {
     this.admin = localStorage.getItem("adminId");
+    this.cashier = localStorage.getItem("cashierId");
+    let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
+        cluster: this.config.PUSHER_APP_CLUSTER,
+        encrypted: true
+    });
+
+    let channel = pusher.subscribe('driptea-channel')
+    channel.bind('driptea-data', (data) => {
+        if(data.order === 'pendingCustomer'){
+            this.count++
+            // this.retrieveProduct()
+        }
+        console.log(this.count)
+    })
   },
   methods: {
     menuItems() {
@@ -167,7 +182,9 @@ export default {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
-    ShowModal() {}
+    ShowModal() {
+
+    }
   }
 };
 </script>

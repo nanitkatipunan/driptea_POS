@@ -35,15 +35,10 @@
                         <h5>Total: ₱{{getTotal()}}</h5>
                     </div>
                 </div>
-                <button type="button" class="btn btn-success" @click="orderNow()">Order Now {{count}}</button>
+                <button type="button" class="btn btn-success" @click="orderNow()">Order Now</button>
             </div>
             <div v-else>
-                <div class="empty">
-                    <i class="fas fa-hourglass-start text-danger"></i>
-                    <v-icon color="red darken-2">mdi-database</v-icon>
-                    <span class="description text-danger"><b>No Data in you Cart</b></span>
-                    <!-- <span style="font-size: 15px;">{{action}}</span> -->
-                </div>
+                <empty :title="'No Data in you Cart'"></empty>
             </div>
         </center>
     </div>
@@ -52,32 +47,12 @@
 .table {
     width: 70%;
 }
-.empty{
-    width: 100%;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    float: left;
-    min-height: 450px;
-    overflow-y: hidden;
-    text-align: center;
-    border: solid 1px #ddd;
-}
-.empty i{
-    font-size: 100px;
-    padding-top: 150px;
-}
-.empty span{
-    width: 100%;
-    float: left;
-}
-.empty .description{
-    font-size: 24px;
-}
 </style>
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import config from '../../config.js'
+import empty from '../../basic/empty.vue'
 export default {
     data(){
         return{
@@ -88,6 +63,9 @@ export default {
             total: 0,
             deliveryFee: 0
         }
+    },
+    components: {
+        empty
     },
     mounted(){
         this.count = 0
@@ -108,7 +86,7 @@ export default {
     methods: {
         retrieveProduct(){
             let params = {
-                id: localStorage.getItem('customerId')
+                id: localStorage.getItem('customerOnlineId')
             }
             this.$axios.post(AUTH.url + 'retrieveCustomerOrder', params).then(res => {
                 this.tableData = res.data.order
@@ -133,7 +111,7 @@ export default {
         },
         orderNow(){
             let params = {
-                id: localStorage.getItem('customerId'),
+                id: localStorage.getItem('customerOnlineId'),
                 status: 'pendingCustomer'
             }
             this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {

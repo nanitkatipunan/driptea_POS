@@ -130,16 +130,6 @@
                                                     <input type="checkbox" :id="item.addons_name" :value="item.addons_name" v-model="addOns" @click="addTotalPrice(item, $event)">
                                                     <label :for="item.addons_name">{{item.addons_name}} (+ ₱{{item.onlineAddOnsPrice}})</label><br>
                                                 </div>
-                                                <!-- <input type="checkbox" id="coffeeJelly" value="coffeeJelly" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="coffeeJelly">Coffee Jelly</label><br>
-                                                <input type="checkbox" id="oreo" value="oreo" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="oreo">Crushed Oreo</label><br>
-                                                <input type="checkbox" id="tapioca" value="tapioca" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="tapioca">Tapioca</label><br>
-                                                <input type="checkbox" id="pudding" value="pudding" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="pudding">Pudding</label><br>
-                                                <input type="checkbox" id="nataJelly" value="nataJelly" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="nataJelly">Nata Jelly</label><br> -->
                                             </div>
                                         </div>
                                     </form>
@@ -333,20 +323,30 @@ export default {
                 this.errorMessage1 = 'cup type is required!'
             }
             if(this.quantity > 0 && this.size !== null && this.sugarLevel !== null && this.cupType !== null){
-                let parameter = {
-                    customerId: localStorage.getItem('customerId'),
-                    productId: this.itemId,
-                    quantity: this.quantity,
-                    size: this.size,
-                    sugarLevel: this.sugarLevel,
-                    choosenPrice: this.total,
-                    cupType: this.cupType,
-                    status: 'incart',
-                    addOns: this.addOns,
-                    subTotal: this.priceShown
-                }
-                this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
-                    $('#viewDetails').modal('hide')
+                let param = {
+                    customerType: "onlineOrder",
+                    customerName: localStorage.getItem('fullName'),
+                    customerAddress: localStorage.getItem('address'),
+                    customerContactNumber: localStorage.getItem('contactNumber'),
+                };
+                this.$axios.post(AUTH.url + "addCustomer", param).then(res => {
+                    localStorage.setItem('customerOnlineId', res.data.customerDetails.id)
+                    let parameter = {
+                        customerId: res.data.customerDetails.id,
+                        onlineId: localStorage.getItem('customerId'),
+                        productId: this.itemId,
+                        quantity: this.quantity,
+                        size: this.size,
+                        sugarLevel: this.sugarLevel,
+                        choosenPrice: this.total,
+                        cupType: this.cupType,
+                        status: 'incart',
+                        addOns: this.addOns,
+                        subTotal: this.priceShown
+                    }
+                    this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
+                        $('#viewDetails').modal('hide')
+                    })
                 })
             }
         },

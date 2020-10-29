@@ -158,8 +158,7 @@ export default {
             fee: 0,
             error: false,
             receiptShow: false,
-            receiptData: null,
-            count: 0
+            receiptData: null
         }
     },
     components: {
@@ -168,18 +167,6 @@ export default {
     mounted(){
         this.retrieveCategory()
         this.retrieveProduct()
-        let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
-            cluster: this.config.PUSHER_APP_CLUSTER,
-            encrypted: true
-        });
-
-        let channel = pusher.subscribe('driptea-channel')
-        channel.bind('driptea-data', (data) => {
-            if(data.order === 'pendingCustomer'){
-                this.count++
-                this.retrieveProduct()
-            }
-        })
     },
     methods: {
         hideReceipt(){
