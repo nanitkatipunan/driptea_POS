@@ -177,7 +177,6 @@ export default {
     let obj = this
     channel.bind('driptea-data', (data) => {
       this.retrieve()
-      console.log(this.count, data)
     })
   },
   components: {
@@ -202,7 +201,6 @@ export default {
         Object.keys(this.tableData).forEach(element => {
           this.storeOrder.push(this.tableData[element])
         });
-        console.log(this.storeOrder)
       })
     }
   }

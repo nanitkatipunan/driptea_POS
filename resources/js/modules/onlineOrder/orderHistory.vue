@@ -1,28 +1,24 @@
 <template>
     <div class="container">
         <center>
-            <h1>Your Cart</h1>
+            <h1>Order History</h1>
             <div v-if="tableData !== null && tableData.length > 0">
                 <table class="table table-responsive" id="myTable">
                     <tr>
                         <th style="width: 30%;">Date</th>
-                        <th>Add&nbsp;ons</th>
-                        <th>Cup Type</th>
-                        <th>Unit Price</th>
-                        <th>Quantity</th>
+                        <th>Order #</th>
+                        <th>Product&nbsp;Ordered</th>
                         <th>Total</th>
-                        <th style="width: 15px;">❌</th>
+                        <th style="width: 15px;">Action</th>
                     </tr>
                     <tbody>
                         <tr v-for="(item, index) in tableData" :key="index">
-                            <td>{{item[0].order_product ? item[0].order_product[0].productName : ''}}</td>
-                            <td>{{item[0].same_order ? getAddOns(item[0].same_order) : ''}}</td>
-                            <td>{{item[0].cupType ? item[0].cupType : ''}}</td>
-                            <td>{{item[0].choosenPrice}}</td>
-                            <td>{{item[0].quantity}}</td>
-                            <td>{{item[0].subTotal}}</td>
+                            <td>{{getDate(item[0])}}</td>
+                            <td>{{item[0].get_checkouts ? item[0].get_checkouts[0].customerId : ''}}</td>
+                            <td>{{getProduct(item)}}</td>
+                            <td>{{item[0].get_checkouts[0].total}}</td>
                             <td>
-                                <button style="font-size: 10px" type="button" aria-expanded="false" @click="deleteOrder(item.id)">❌</button>
+                                <button class="btn btn-primary">View</button>
                             </td>
                         </tr>
                     </tbody>
@@ -44,6 +40,7 @@ import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import config from '../../config.js'
 import empty from '../../basic/empty.vue'
+import moment from 'moment'
 export default {
     data(){
         return{
@@ -58,6 +55,21 @@ export default {
         empty
     },
     methods: {
+        getDate(item){
+            return moment(item.updated_at).format('MM/DD/YYYY')
+        },
+        getProduct(item){
+            let product = ""
+            let index = item.length
+            item.forEach(el => {
+                if(item.indexOf(el) >= (index - 1)){
+                    product += el.order_product[0].productName
+                }else{
+                    product += el.order_product[0].productName + ", "
+                }
+            })
+            return product
+        },
         retrieve(){
             let parameter = {
                 id: localStorage.getItem('customerId'),
@@ -67,11 +79,6 @@ export default {
                     this.tableData.push(response.data.storeOrder[element])
                 });
                 console.log(this.tableData)
-                // this.tableData.forEach(el => {
-                //     console.log(el)
-                // })
-                // this.receiptData = response.data.storeOrder
-                // this.receiptShow = true
             })
         },
         getAddOns(item){

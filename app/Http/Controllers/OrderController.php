@@ -18,7 +18,7 @@ class OrderController extends Controller
         $dataAddOns = $data['addOns'];
         $order = new Order();
         $order->customerId = $request['customerId'];
-        // $order->onlineId = $request['onlineId'];
+        $order->onlineId = $request['onlineId'];
         $order->productId = $request['productId'];
         $order->quantity = $request['quantity'];
         $order->size = $request['size'];
