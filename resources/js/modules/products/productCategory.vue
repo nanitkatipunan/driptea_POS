@@ -9,6 +9,7 @@
                             <img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda1.png">
                             <img v-if="customerType === 'grab'" style="width: 70px; height: 50px;" src="@/assets/grab2.png">
                             <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb1.png"><br>
+                            <img v-if="customerType === 'online'" style="width: 70px; height: 50px;" src="@/assets/logo.png"><br>
                             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
                             <table class="table table-responsive table-bordered overline" id="myTable">
                                 <tr>
@@ -132,9 +133,6 @@ th {
         overflow-y: scroll;
     }
 }
-
-
-
 </style>
 <script>
 import AUTH from '../../services/auth'
@@ -168,6 +166,11 @@ export default {
         this.retrieveProduct()
     },
     methods: {
+        putData(item){
+            console.log('gawas na', item)
+            // this.tableData = item
+            this.retrieveProduct()
+        },
         hideReceipt(){
             this.receiptShow = false
         },
@@ -218,12 +221,23 @@ export default {
             ROUTER.push('/chosenCategory/'+param).catch(()=>{})
         },
         retrieveProduct(){
-            let params = {
-                id: localStorage.getItem('customerId')
+            if(this.customerType === 'online'){
+                let params = {
+                    id: localStorage.getItem('customerId')
+                }
+                console.log('retrive', params)
+                this.$axios.post(AUTH.url + 'getOrder', params).then(res => {
+                    this.tableData = res.data.order
+                })
+            }else{
+                let params = {
+                    id: localStorage.getItem('customerId')
+                }
+                console.log('retrive', params)
+                this.$axios.post(AUTH.url + 'retrieveOrder', params).then(res => {
+                    this.tableData = res.data.order
+                })
             }
-            this.$axios.post(AUTH.url + 'retrieveOrder', params).then(res => {
-                this.tableData = res.data.order
-            })
         },
         getAddOns(item){
             let storeAddOns = ""

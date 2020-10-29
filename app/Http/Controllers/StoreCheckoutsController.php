@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\StoreOrder;
 use App\Models\StoreAddOn;
 use App\Models\StoreCheckouts;
+use App\Events\pusherEvent;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -45,11 +46,17 @@ class StoreCheckoutsController extends Controller
                 $storeAddOns->save();
             }
         }
+        event(new pusherEvent($storeCheckouts));
         return response()->json(compact('storeCheckouts'));
     }
     
     public function retrieveCheckouts(Request $request){
         $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('storeCheckoutsId', $request->id)->where('deleted_at', null)->get();
+        return response()->json(compact('storeOrder'));
+    }
+
+    public function retrieveOnlineCheckouts(Request $request){
+        $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('onlineId', $request->id)->where('deleted_at', null)->get()->groupBy('storeCheckoutsId');
         return response()->json(compact('storeOrder'));
     }
     

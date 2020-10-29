@@ -25,4 +25,8 @@ class Order extends Model
     public function getCashier(){
         return $this->hasMany('App\Models\User','id','cashierId');
     }
+
+    public function getCustomer(){
+        return $this->hasMany('App\Models\CustomerDetails','id','customerId');
+    }
 }

@@ -65,9 +65,9 @@
             </template>
             <v-list style="max-height: 300px; max-width: 300px" class="overflow-y-auto notifDropdown">
               <!-- ang Click kay wala pay nay method -->
-              <v-list-item v-for="(item, index) in items" :key="index" @click="ShowModal">
-                <v-list-item-title>{{ item.title }} has order</v-list-item-title>
-
+              <!-- <product ref="product"></product> -->
+              <v-list-item v-for="(item, index) in storeOrder" :key="index" @click="getOrder(item, $event)">
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -89,22 +89,29 @@
 .cashierNav {
     max-height: 65px;
 }
+.color {
+  background: #89afe8;
+}
 </style>
 <script>
 import image from "../assets/logo.png";
 import AUTH from "./services/auth";
 import ROUTER from "./router";
 import config from './config.js'
+import product from './modules/products/productCategory.vue'
 export default {
   data: () => ({
     admin: localStorage.getItem("adminId"),
     cashier: localStorage.getItem("cashierId"),
     drawer: null,
+    show: false,
     image: image,
     auth: AUTH,
     token: null,
     dialog: false,
     config: config,
+    tableData: [],
+    storeOrder: [],
     nav: [
       {
         icon: "home",
@@ -154,7 +161,7 @@ export default {
     count: 0
   }),
   mounted() {
-    this.retrive()
+    this.retrieve()
     this.admin = localStorage.getItem("adminId");
     this.cashier = localStorage.getItem("cashierId");
     let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
@@ -165,15 +172,12 @@ export default {
     let channel = pusher.subscribe('driptea-channel')
     let obj = this
     channel.bind('driptea-data', (data) => {
-      if(data.order === 'pendingCustomer'){
-          this.count++
-          this.$axios.post(AUTH.url + 'retrieveOnlineOrder').then(res => {
-            console.log(res.data.order)
-            // this.tableData = res.data.order
-          })
-      }
+      this.retrieve()
       console.log(this.count, data)
     })
+  },
+  components: {
+    product
   },
   methods: {
     menuItems() {
@@ -182,13 +186,19 @@ export default {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
-    ShowModal() {
-
+    getOrder(item, event) {
+      event.target.classList.add('color')
+      localStorage.setItem("customerId", item[0].customerId);
+      localStorage.setItem("customerType", 'online');
+      ROUTER.push("/productCategory/online").catch(() => {});
     },
-    retrive(){
+    retrieve(){
       this.$axios.post(AUTH.url + 'retrieveOnlineOrder').then(res => {
-        console.log(res.data.order)
-        // this.tableData = res.data.order
+        this.tableData = res.data.order
+        Object.keys(this.tableData).forEach(element => {
+          this.storeOrder.push(this.tableData[element])
+        });
+        console.log(this.storeOrder)
       })
     }
   }

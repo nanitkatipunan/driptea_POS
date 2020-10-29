@@ -53,13 +53,13 @@ class OrderController extends Controller
         return response()->json(compact('order'));
     }
 
-    public function retrieveOnlineOrder(Request $request){
-        $order = Order::with('orderProduct')->with('sameOrder')->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get();
+    public function getOrder(Request $request){
+        $order = Order::with('getCustomer')->with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get();
         return response()->json(compact('order'));
     }
 
-    public function historyOrder(Request $request){
-        $order = Order::with('orderProduct')->with('sameOrder')->where('onlineId', $request->id)->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get();
+    public function retrieveOnlineOrder(Request $request){
+        $order = Order::with('getCustomer')->with('orderProduct')->with('sameOrder')->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get()->groupBy('customerId');
         return response()->json(compact('order'));
     }
 
@@ -67,17 +67,6 @@ class OrderController extends Controller
         $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
         return response()->json(compact('order'));
     }
-
-    // public function updateOnlineStatus(Request $request){
-    //     $order = Order::where('customerId', $request->id)->where('deleted_at', null)->get();
-    //     foreach ($order as $value) {
-    //         $ord = Order::firstOrCreate(['id' => $value->id]);
-    //         $ord->status = $request['status'];
-    //         $ord->save();
-    //     }
-    //     event(new pusherEvent($request['status']));
-    //     return response()->json(['success' => 'successfully updated!']);
-    // }
 
     public function updateStatus(Request $request){
         $order = Order::where('customerId', $request->id)->where('deleted_at', null)->get();

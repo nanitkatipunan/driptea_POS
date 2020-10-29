@@ -1,6 +1,5 @@
 <template>
     <div>
-            <!-- <img class="dripteaImage" :src="image" > -->
         <v-card class="overflow-hidden">
             <v-app-bar
             absolute
@@ -249,7 +248,9 @@ export default {
         let channel = pusher.subscribe('driptea-channel')
 
         channel.bind('driptea-data', (data) => {
-            this.count++
+            if(data.order.status){
+                this.count++
+            }
         })
     },
     methods: {

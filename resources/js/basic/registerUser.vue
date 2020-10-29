@@ -3,50 +3,41 @@
         <center>
             <img style="height: 150px; margin-top: 1%;" :src="image" v-on:click="redirect('/')">
             <p>Register to <b class="bRegister" @click="redirect('/')">Driptea</b></p>
-        </center>
+        </center>   
         <center>
             <div class="containerWidth">
                 <i><span v-if="errorMessage7 !== null" class="text-danger text-center">{{errorMessage7}}</span></i>
-                <form>
-                    <div class="form-group">
-                        <label for="fullname">Fullname:</label><br>
-                        <i><span v-if="errorMessage !== null" class="text-danger text-center">{{errorMessage}}</span></i>
+                 <v-form>
+                     <i><span v-if="errorMessage !== null" class="text-danger text-center">{{errorMessage}}</span></i>
                         <i><span v-if="errorMessage2 !== null" class="text-danger text-center">{{errorMessage2}}</span></i>
-                        <!-- <i style="background-color: #DEDEDE; padding: 3%;" class="fas fa-user"></i> -->
-                        <input v-model="fullname" v-on:keyup="validate('fullname')" type="text" class="form-control" id="fullname">
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Address:</label><br>
-                        <i><span v-if="errorMessage10 !== null" class="text-danger text-center">{{errorMessage10}}</span></i>
-                        <!-- <i style="background-color: #DEDEDE; padding: 3%;" class="fas fa-user"></i> -->
-                        <input v-model="address" v-on:keyup="validate('address')" type="text" class="form-control" id="address">
-                    </div>
-                    <div class="form-group">
-                        <label for="contactNum">Contact #:</label><br>
-                        <i><span v-if="errorMessage8 !== null" class="text-danger text-center">{{errorMessage8}}</span></i>
-                        <i><span v-if="errorMessage9 !== null" class="text-danger text-center">{{errorMessage9}}</span></i>
-                        <!-- <i style="background-color: #DEDEDE; padding: 3%;" class="fas fa-user"></i> -->
-                        <input v-model="contactNum" v-on:keyup="validate('contactNum')" type="text" class="form-control" id="contactNum">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label><br>
-                        <i><span v-if="errorMessage3 !== null" class="text-danger text-center">{{errorMessage3}}</span></i>
-                        <input v-model="email" v-on:keyup="validate('email')" type="email" class="form-control" id="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password:</label><br>
-                        <span v-if="successMessage !== null" class="text-success text-center">{{successMessage}}</span>
+                     <v-row>
+                         <v-text-field  label="Fullname" outlined  v-model="fullname" v-on:keyup="validate('fullname')" type="text"  id="fullname" required></v-text-field>
+                     </v-row>
+                     <i><span v-if="errorMessage10 !== null" class="text-danger text-center">{{errorMessage10}}</span></i>
+                     <v-row>
+                         <v-text-field  label="Address" outlined  v-model="address" v-on:keyup="validate('address')" type="text"  id="address" required></v-text-field>
+                     </v-row>
+                       <i><span v-if="errorMessage !== null" class="text-danger text-center">{{errorMessage8}}</span></i>
+                        <i><span v-if="errorMessage2 !== null" class="text-danger text-center">{{errorMessage9}}</span></i>
+                      <v-row>
+                         <v-text-field  label="Contact Number" outlined  v-model="contactNum" v-on:keyup="validate('contactNum')" type="number"  id="contactNum" required></v-text-field>
+                     </v-row>
+                     <i><span v-if="errorMessage3 !== null" class="text-danger text-center">{{errorMessage3}}</span></i>
+                     <v-row>
+                         <v-text-field  label="email" outlined  v-model="email" v-on:keyup="validate('email')" type="email"  id="email" required></v-text-field>
+                     </v-row>
+                      <span v-if="successMessage !== null" class="text-success text-center">{{successMessage}}</span>
                         <i><span v-if="errorMessage4 !== null" class="text-danger text-center">{{errorMessage4}}</span></i>
                         <i><span v-if="errorMessage5 !== null" class="text-danger text-center">{{errorMessage5}}</span></i>
-                        <input v-model="password" v-on:keyup="validate('password')" type="password" class="form-control" id="password">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm password:</label><br>
-                        <i><span v-if="errorMessage6 !== null" class="text-danger text-center">{{errorMessage6}}</span></i>
-                        <input v-model="confirmPass" v-on:keyup="validate('confirmPass')" type="password" class="form-control" id="confirmPassword">
-                    </div>
-                    <button type="submit" class="btn btnRegister" @click="register">Register</button>
-                </form>
+                     <v-row>
+                         <v-text-field  label="Password" outlined   v-model="password" v-on:keyup="validate('password')" type="password"  id="password" required></v-text-field>
+                     </v-row>
+                      <i><span v-if="errorMessage6 !== null" class="text-danger text-center">{{errorMessage6}}</span></i>
+                     <v-row>
+                         <v-text-field  label="Confirm Password" outlined  v-model="confirmPass" v-on:keyup="validate('confirmPass')" type="password"  id="confirmPassword" required></v-text-field>
+                     </v-row>
+                     <v-btn type="submit" class="btn btnRegister" @click="register">Register</v-btn>
+                </v-form>
                 <div>
                     <label class="termsCondition">By signing up, you agree to our <b class="bRegister" @click="redirect('/')">Terms</b> and <b class="bRegister" @click="redirect('/')">Conditions</b></label><hr>
                     <center>
@@ -115,7 +106,7 @@ p{
 }
 .containerWidth{
     text-align: left;
-    width: 30%;
+    width: 50%;
 }
 </style>
 <script>

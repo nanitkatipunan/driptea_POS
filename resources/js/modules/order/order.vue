@@ -97,7 +97,7 @@
   background: #89afe8;
 }
 .normalColor {
-  background: #edf0ee;
+  background: #E65100;
 }
 </style>
 <script>
@@ -251,7 +251,6 @@ export default {
                 }else{
                     this.cupPrice = params.cupTypePrice
                 }
-                console.log(this.cupPrice)
             }
             this.cupTypeEvent = event.target
         },
@@ -271,11 +270,9 @@ export default {
                     this.addOns.push(params.addons_name)
                     this.addOnsAmount += this.addOnsPrice
                 }
-                console.log(this.addOnsPrice)
             });
         },
         addToCart(){
-            console.log('add')
             if(this.quantity <= 0){
                 this.errorMessage3 = 'quantity must be greater than 0!'
             }
@@ -289,7 +286,6 @@ export default {
                 this.errorMessage1 = 'cup type is required!'
             }
             if(this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null){
-                console.log('sulod')
                 let parameter = {
                     customerId: localStorage.getItem('customerId'),
                     cashierId: localStorage.getItem('cashierId'),
@@ -307,75 +303,11 @@ export default {
                     ROUTER.push('/productCategory/'+localStorage.getItem('customerType')).catch(()=>{})
                 })
             
-        }
-        console.log(this.cupPrice);
-      
-      this.cupTypeEvent = event.target;
-    },
-    addAddOns(params, event) {
-      this.$axios
-        .post(AUTH.url + "retrieveOneAddOn", { id: params.id })
-        .then(response => {
-          if (
-            this.customerType === "foodpanda" ||
-            this.customerType === "grab"
-          ) {
-            this.addOnsPrice = response.data.addons.onlineAddOnsPrice;
-          } else {
-            this.addOnsPrice = response.data.addons.addons_price;
-          }
-          if (this.addOns.includes(params.addons_name)) {
-            event.target.classList.remove("color");
-            this.addOns.splice(this.addOns.indexOf(params.addons_name), 1);
-            this.addOnsAmount -= this.addOnsPrice;
-          } else {
-            event.target.classList.add("color");
-            this.addOns.push(params.addons_name);
-            this.addOnsAmount += this.addOnsPrice;
-          }
-          console.log(this.addOnsPrice);
-        });
-    },
-    addToCart() {
-      if (this.quantity <= 0) {
-        this.errorMessage3 = "quantity must be greater than 0!";
-      }
-      if (this.cupSize === null) {
-        this.errorMessage = "cup size is required!";
-      }
-      if (this.sugarLevel === null) {
-        this.errorMessage2 = "sugar level is required!";
-      }
-      if (this.cupType === null) {
-        this.errorMessage1 = "cup type is required!";
-      }
-      if (
-        this.quantity > 0 &&
-        this.cupSize !== null &&
-        this.sugarLevel !== null &&
-        this.cupType !== null
-      ) {
-        let parameter = {
-          customerId: localStorage.getItem("customerId"),
-          cashierId: localStorage.getItem("cashierId"),
-          productId: this.itemId,
-          quantity: this.quantity,
-          size: this.cupSize,
-          sugarLevel: this.sugarLevel,
-          choosenPrice: this.total,
-          cupType: this.cupType,
-          status: "pending",
-          addOns: this.addOns,
-          subTotal:
-            this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
-        };
-        this.$axios.post(AUTH.url + "addOrder", parameter).then(response => {
-          ROUTER.push(
-            "/productCategory/" + localStorage.getItem("customerType")
-          ).catch(() => {});
-        });
-      }
+            }
+            console.log(this.cupPrice);
+        
+        this.cupTypeEvent = event.target;
+        },
     }
-  }
 }
 </script>
