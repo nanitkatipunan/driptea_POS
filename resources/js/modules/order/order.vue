@@ -146,7 +146,100 @@ export default {
     this.retrieveAddOns();
     this.retrieveCupType();
   },
-    methods: {
+  methods: {
+    // getCupTypeName(item) {
+    //   let value = "";
+    //   if (this.customerType === "foodpanda" || this.customerType === "grab") {
+    //     value = item.cupTypeName + " (+" + item.inputCupOnlinePrice + ")";
+    //   } else {
+    //     if (item.cupTypePrice === 0) {
+    //       value = item.cupTypeName;
+    //     } else {
+    //       value = item.cupTypeName + " (+" + item.cupTypePrice + ")";
+    //     }
+    //   }
+    //   return value;
+    // },
+    getAddOnsName(item) {
+      let value = "";
+      if (this.customerType === "foodpanda" || this.customerType === "grab") {
+        value = item.addons_name + " (+" + item.onlineAddOnsPrice + ")";
+      } else {
+        value = item.addons_name + " (+" + item.addons_price + ")";
+      }
+      return value;
+    },
+    // retrieveProducts() {
+    //   this.$axios.post(AUTH.url + "retrieveAllProduct").then(response => {
+    //     this.productData = response.data.product;
+    //   });
+    // },
+    // retrieveAddOns() {
+    //   this.$axios.post(AUTH.url + "retrievingAddOns").then(response => {
+    //     this.addOnsData = response.data.addons;
+    //   });
+    // },
+    retrieveCupType() {
+      this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
+        this.cupData = response.data.cupType;
+      });
+    },
+    // getProduct() {
+    //   this.$axios
+    //     .post(AUTH.url + "retrieveOneProduct", { id: this.itemId })
+    //     .then(response => {
+    //       this.itemSelected = response.data.product[0].productName;
+    //       this.lowPrice = response.data.product[0].lowPrice;
+    //       this.highPrice = response.data.product[0].highPrice;
+    //       this.overPrice = response.data.product[0].overPrice;
+    //       this.onlinelowPrice = response.data.product[0].onlinelowPrice;
+    //       this.onlinehighPrice = response.data.product[0].onlinehighPrice;
+    //       this.onlineoverPrice = response.data.product[0].onlineoverPrice;
+    //     });
+    // },
+    getCupSize(params, event) {
+      let a = 0;
+      if (this.cupEvent !== event.target) {
+        event.target.classList.remove("normalColor");
+        event.target.classList.add("color");
+        this.cupSize = params;
+        if (this.customerType === "foodpanda" || this.customerType === "grab") {
+          if (params === "highDose") {
+            this.total = this.onlinehighPrice;
+          } else if (params === "overDose") {
+            this.total = this.onlineoverPrice;
+          } else if (params === "lowDose") {
+            this.total = this.onlinelowPrice;
+          }
+        } else {
+          if (params === "highDose") {
+            this.total = this.highPrice;
+          } else if (params === "overDose") {
+            this.total = this.overPrice;
+          } else if (params === "lowDose") {
+            this.total = this.lowPrice;
+          }
+        }
+        if (this.cupEvent !== "") {
+          this.cupEvent.classList.add("normalColor");
+          this.cupEvent.classList.remove("color");
+        }
+      }
+      this.cupEvent = event.target;
+    },
+    // getSugarLevel(params, event) {
+    //   if (this.sugarEvent !== event.target) {
+    //     event.target.classList.remove("normalColor");
+    //     event.target.classList.add("color");
+    //     this.sugarLevel = params;
+    //     if (this.sugarEvent !== "") {
+    //       this.sugarEvent.classList.add("normalColor");
+    //       this.sugarEvent.classList.remove("color");
+    //     }
+    //   }
+    //   this.sugarEvent = event.target;
+    // },
+    
         getCupTypeName(item){
             let value = ''
             if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
@@ -160,15 +253,15 @@ export default {
             }
             return value
         },
-        getAddOnsName(item){
-            let value = ''
-            if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
-                value = (item.addons_name + ' (+' + item.onlineAddOnsPrice + ')')
-            }else{
-                value = (item.addons_name + ' (+' + item.addons_price + ')')
-            }
-            return value
-        },
+        // getAddOnsName(item){
+        //     let value = ''
+        //     if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+        //         value = (item.addons_name + ' (+' + item.onlineAddOnsPrice + ')')
+        //     }else{
+        //         value = (item.addons_name + ' (+' + item.addons_price + ')')
+        //     }
+        //     return value
+        // },
         retrieveProducts() {
             this.$axios.post(AUTH.url + "retrieveAllProduct").then(response => {
                 this.productData = response.data.product;
@@ -179,11 +272,11 @@ export default {
                 this.addOnsData = response.data.addons;
             });
         },
-        retrieveCupType(){
-            this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
-                this.cupData = response.data.cupType
-            });
-        },
+        // retrieveCupType(){
+        //     this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
+        //         this.cupData = response.data.cupType
+        //     });
+        // },
         getProduct(){
             this.$axios.post(AUTH.url + 'retrieveOneProduct', {id: this.itemId}).then(response => {
                 this.itemSelected = response.data.product[0].productName
@@ -195,36 +288,36 @@ export default {
                 this.onlineoverPrice = response.data.product[0].onlineoverPrice
             })
         },
-        getCupSize(params, event){
-            let a = 0
-            if(this.cupEvent !== event.target){
-                event.target.classList.remove('normalColor')
-                event.target.classList.add('color')
-                this.cupSize = params
-                if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
-                    if(params === 'highDose'){
-                        this.total = this.onlinehighPrice
-                    }else if(params === 'overDose'){
-                        this.total = this.onlineoverPrice
-                    }else if(params === 'lowDose'){
-                        this.total = this.onlinelowPrice
-                    }
-                }else{
-                    if(params === 'highDose'){
-                        this.total = this.highPrice
-                    }else if(params === 'overDose'){
-                        this.total = this.overPrice
-                    }else if(params === 'lowDose'){
-                        this.total = this.lowPrice
-                    }
-                }
-                if(this.cupEvent !== ''){
-                    this.cupEvent.classList.add('normalColor')
-                    this.cupEvent.classList.remove('color')
-                }
-            }
-            this.cupEvent = event.target
-        },
+        // getCupSize(params, event){
+        //     let a = 0
+        //     if(this.cupEvent !== event.target){
+        //         event.target.classList.remove('normalColor')
+        //         event.target.classList.add('color')
+        //         this.cupSize = params
+        //         if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
+        //             if(params === 'highDose'){
+        //                 this.total = this.onlinehighPrice
+        //             }else if(params === 'overDose'){
+        //                 this.total = this.onlineoverPrice
+        //             }else if(params === 'lowDose'){
+        //                 this.total = this.onlinelowPrice
+        //             }
+        //         }else{
+        //             if(params === 'highDose'){
+        //                 this.total = this.highPrice
+        //             }else if(params === 'overDose'){
+        //                 this.total = this.overPrice
+        //             }else if(params === 'lowDose'){
+        //                 this.total = this.lowPrice
+        //             }
+        //         }
+        //         if(this.cupEvent !== ''){
+        //             this.cupEvent.classList.add('normalColor')
+        //             this.cupEvent.classList.remove('color')
+        //         }
+        //     }
+        //     this.cupEvent = event.target
+        // },
         getSugarLevel(params, event){
             if(this.sugarEvent !== event.target){
                 event.target.classList.remove('normalColor')

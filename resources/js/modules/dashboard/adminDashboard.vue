@@ -3,59 +3,70 @@
     <div class="row body">
       <div class="welcome">
         <b>
-          WELCOME,
-          <span class="Cname">DRIPTEA ADMIN</span>
+          <i>
+            WELCOME,
+            <span class="Cname">DRIPTEA ADMIN</span>
+          </i>
         </b>
       </div>
       <div class="col-sm-8">
         <v-card class="subhead">
           <v-toolbar color="#f2f2f2" dark>
-            <div class="form-group filter">
-              <select
-                class="form-control"
-                v-model="thefilter"
-                name="filter"
-                id="filters"
-                v-on:change="onFilter"
-              >
-                <option value="Daily">Daily</option>
-                <option value="Monthly">Monthly</option>
-                <option value="Quarterly">Quarterly</option>
-                <option value="Semi-Annual">Semi-Annual</option>
-                <option value="Annual">Annual</option>
-              </select>
-            </div>
-            <div class="form-group firstOpt" v-show="ok">
-              <input
-                class="form-control"
-                type="month"
-                v-model="thedate"
-                id="calendar"
-                v-on:change="onChangeDate"
-              >
-            </div>
-            <div class="form-group secondOpt" v-show="ok2">
-              <select class="form-control" v-on:change="onChangeYear" v-model="yrvalue">
-                <option
-                  v-for="year in years"
-                  v-bind:value="year.value"
-                  v-bind:key="year.value"
-                >{{ year.text }}</option>
-              </select>
-            </div>
-            <div v-show="ok3" class="forannualInput">
-              <select
-                class="form-control"
-                v-on:click.ctrl.exact="onChanging"
-                v-model="Multiyrvalue"
-                multiple
-              >
-                <option
-                  v-for="year in years"
-                  v-bind:value="year.value"
-                  v-bind:key="year.value"
-                >{{ year.text }}</option>
-              </select>
+            <div class="row insideToolbar">
+              <div class="col-sm-4">
+                <v-toolbar-title class="graphTitle">Summary of Sales</v-toolbar-title>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group filter">
+                  <select
+                    class="form-control"
+                    v-model="thefilter"
+                    name="filter"
+                    id="filters"
+                    v-on:change="onFilter"
+                  >
+                    <option value="Daily">Daily</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Quarterly">Quarterly</option>
+                    <option value="Semi-Annual">Semi-Annual</option>
+                    <option value="Annual">Annual</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group firstOpt" v-show="ok">
+                  <input
+                    class="form-control"
+                    type="month"
+                    v-model="thedate"
+                    id="calendar"
+                    v-on:change="onChangeDate"
+                  >
+                </div>
+                <div class="form-group secondOpt" v-show="ok2">
+                  <select class="form-control" v-on:change="onChangeYear" v-model="yrvalue">
+                    <option
+                      v-for="year in years"
+                      v-bind:value="year.value"
+                      v-bind:key="year.value"
+                    >{{ year.text }}</option>
+                  </select>
+                </div>
+                <div v-show="ok3" class="forannualInput">
+                  <select
+                    class="form-control"
+                    v-on:click.ctrl.exact="onChanging"
+                    v-model="Multiyrvalue"
+                    multiple
+                  >
+                    <option
+                      v-for="year in years"
+                      v-bind:value="year.value"
+                      v-bind:key="year.value"
+                    >{{ year.text }}</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </v-toolbar>
         </v-card>
@@ -69,30 +80,36 @@
           ></salesChart>
           <div class="title">
             <v-toolbar color="#f2f2f2">
-              <h name="theTitle" class="GraphLabel">{{MonthLabel}}</h>
+              <v-toolbar-title name="theTitle" class="GraphLabel">{{MonthLabel}}</v-toolbar-title>
             </v-toolbar>
           </div>
         </div>
       </div>
       <div class="col-sm-4 top3">
         <v-toolbar color="#f2f2f2" dark class="TB3">
-          <span class="text1">TOP 3 SALABLE PRODUCTS</span>
+          <v-toolbar-title class="text1">TOP 3 SALABLE PRODUCTS</v-toolbar-title>
         </v-toolbar>
         <div class="prods">
           <v-card>
             <div>
               <v-img class="white--text align-end thetop3" :src="topProdArr[0].img">
-                <v-card-title class="Prod_name">{{topProdArr[0].name}}</v-card-title>
+                <v-card-title class="Prod_name">
+                  <i>{{topProdArr[0].name}}</i>
+                </v-card-title>
               </v-img>
             </div>
             <div>
               <v-img class="white--text align-end thetop3" :src="topProdArr[1].img">
-                <v-card-title class="Prod_name">{{topProdArr[1].name}}</v-card-title>
+                <v-card-title class="Prod_name">
+                  <i>{{topProdArr[1].name}}</i>
+                </v-card-title>
               </v-img>
             </div>
             <div>
               <v-img class="white--text align-end thetop3" :src="topProdArr[2].img">
-                <v-card-title class="Prod_name">{{topProdArr[2].name}}</v-card-title>
+                <v-card-title class="Prod_name">
+                  <i>{{topProdArr[2].name}}</i>
+                </v-card-title>
               </v-img>
             </div>
           </v-card>
@@ -104,22 +121,32 @@
 
 <style>
 .welcome {
-  font-size: 35px;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, sans-serif;
+  font-size: 25px;
   margin-bottom: 10px;
   margin-left: 1%;
+  font-weight: bold;
 }
-.forannualInput {
-  width: 30%;
+.insideToolbar {
+  margin-top: 25px;
 }
 .GraphLabel {
   margin-left: 45%;
+  font-weight: bold;
 }
 .annualDateCal1,
 .annualDateCal2,
-.yearMenu {
+.yearMenu,
+.graphTitle {
   color: black;
-
-  /* background-color: rgb(202, 25, 25); */
+}
+.graphTitle,
+.text1 {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
 }
 .YRcal {
   color: black;
@@ -129,31 +156,18 @@
   color: #ff5b04;
 }
 .text1 {
-  margin: 20%;
+  margin-left: 10%;
   text-align: center;
   color: #ff5b04;
-}
-.firstOpt,
-.secondOpt {
-  float: left;
-  align-self: center;
-  width: 30%;
-}
-.firstOpt {
-  margin-left: 30%;
 }
 .TB3 {
   margin-bottom: 20px;
   justify-content: center;
   border-radius: 1%;
 }
-.filter {
-  width: 25%;
-}
 .prods {
   border: 1px solid #999999;
   border-radius: 1%;
-  /* margin-top: 20px; */
 }
 .subhead {
   margin-bottom: 20px;
@@ -188,10 +202,12 @@ import AUTH from "../../services/auth";
 import Datepicker from "vuejs-datepicker";
 import { arch } from "os";
 import swal from "sweetalert";
+import nodataImg from "../../../assets/noDatatoShow.png";
 
 export default {
   data() {
     return {
+      tempIMG: nodataImg,
       Multiyrvalue: [],
       date: ["2019-09-10", "2019-09-20"],
       menu: false,
@@ -265,8 +281,7 @@ export default {
     salesChart,
     Datepicker
   },
-  computed: {
-  },
+  computed: {},
   mounted() {
     let date = new Date();
     let month =
@@ -275,7 +290,6 @@ export default {
         : "0" + (date.getMonth() + 1);
     this.thedate = date.getFullYear() + "-" + month;
     this.MonthLabel = this.mnths[month - 1];
-    // console.log("--------> " + month);
     this.getTop3();
     this.yrvalue = new Date().getFullYear();
     this.getYears();
@@ -283,9 +297,7 @@ export default {
     this.xvalues();
     this.getDailySummary();
   },
-  created() {
-    
-  },
+  created() {},
   methods: {
     getDailySummary() {
       this.points = [];
@@ -691,12 +703,21 @@ export default {
         year: null
       };
       Axios.post(AUTH.url + "getTopProd", params).then(response => {
-      console.log(response)
+        console.log("dfghjkl", response);
         for (var i = 0; i < 3; i++) {
-          this.topProdArr.push({
-            img: response.data.prods[i].img,
-            name: response.data.prods[i].pName
-          });
+          if (response.data.length > 1) {
+            this.topProdArr.push({
+              img: response.data.prods[i].img,
+              name: response.data.prods[i].pName
+            });
+          }else{
+            this.topProdArr.push({
+              img: this.tempIMG,
+              name: " "
+            });
+          }
+
+          console.log("kasjkasjfk ", this.topProdArr)
         }
       });
     }
