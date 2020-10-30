@@ -11,6 +11,7 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/auth */ "./resources/js/services/auth/index.js");
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../router */ "./resources/js/router/index.js");
+/* harmony import */ var _basic_loading_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../basic/loading.vue */ "./resources/js/basic/loading.vue");
 //
 //
 //
@@ -145,6 +146,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -152,12 +155,19 @@ __webpack_require__.r(__webpack_exports__);
     return {
       fullName: null,
       address: null,
-      contactNumber: null
+      contactNumber: null,
+      loadingShow: false
     };
+  },
+  components: {
+    loading: _basic_loading_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   methods: {
     redirect: function redirect(type) {
+      var _this = this;
+
       if (type !== "fb") {
+        this.loadingShow = true;
         var parameter = {
           customerType: type
         };
@@ -165,11 +175,15 @@ __webpack_require__.r(__webpack_exports__);
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addCustomer", parameter).then(function (res) {
           localStorage.setItem("customerId", res.data.customerDetails.id);
           localStorage.setItem("customerType", res.data.customerDetails.customerType);
+          _this.loadingShow = false;
           _router__WEBPACK_IMPORTED_MODULE_1__["default"].push("/productCategory/" + res.data.customerDetails.customerType)["catch"](function () {});
         });
       }
     },
     continueFb: function continueFb() {
+      var _this2 = this;
+
+      this.loadingShow = true;
       var param = {
         customerType: "fb",
         customerName: this.fullName,
@@ -179,6 +193,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addCustomer", param).then(function (response) {
         localStorage.setItem("customerId", response.data.customerDetails.id);
         localStorage.setItem("customerType", response.data.customerDetails.customerType);
+        _this2.loadingShow = false;
         _router__WEBPACK_IMPORTED_MODULE_1__["default"].push("/productCategory/fb")["catch"](function () {});
       });
     }
@@ -609,7 +624,9 @@ var render = function() {
             ])
           ])
         ]
-      )
+      ),
+      _vm._v(" "),
+      _vm.loadingShow ? _c("loading") : _vm._e()
     ],
     1
   )

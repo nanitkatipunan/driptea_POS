@@ -43,7 +43,7 @@
             </template>
             <v-list style="max-height: 200px" class="overflow-y-auto notifDropdown">
               <!-- ang Click kay wala pay nay method -->
-              <v-list-item v-for="(item, index) in items" :key="index" @click="ShowModal">
+              <v-list-item v-for="(item, index) in items" :key="index">
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
@@ -72,6 +72,9 @@
             </v-list>
           </v-menu>
         </div>
+      </v-app-bar-items>
+      <v-app-bar-items>
+        <button class="btn" @click="logout()">Logout</button>
       </v-app-bar-items>
     </v-app-bar>
 
@@ -152,7 +155,17 @@ export default {
         icon: "mdi-calendar-account",
         text: "Adding",
         route: "/addProductCategoryAddOns"
-      }
+      },
+      {
+        icon: "mdi-calendar-account",
+        text: "POS",
+        route: "/cashierDashboard"
+      },
+      {
+        icon: "mdi-calendar-account",
+        text: "Register Account",
+        route: "/registerAccount"
+      },
     ],
     items: [
       { title: "Click Me" },
@@ -197,11 +210,16 @@ export default {
     },
     retrieve(){
       this.$axios.post(AUTH.url + 'retrieveOnlineOrder').then(res => {
+        let storage = []
         this.tableData = res.data.order
         Object.keys(this.tableData).forEach(element => {
-          this.storeOrder.push(this.tableData[element])
+          storage.push(this.tableData[element])
         });
+        this.storeOrder = storage
       })
+    },
+    logout(){
+      AUTH.deaunthenticate()
     }
   }
 };

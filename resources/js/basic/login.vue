@@ -39,6 +39,7 @@
           </v-form>
         </div>
       </center>
+      <loading v-if="loadingShow"></loading>
     </template>
   </div>
 </template>
@@ -112,7 +113,7 @@ p {
 import ROUTER from "../router";
 import AUTH from "../services/auth";
 import image from "../../assets/logo.png";
-// import { validate } from 'json-schema';
+import loading from './loading.vue';
 export default {
   name: "app",
   data() {
@@ -122,15 +123,20 @@ export default {
       password: "",
       errorMessage: null,
       errorMessage2: null,
-      errorMessage3: null
+      errorMessage3: null,
+      loadingShow: false
     };
   },
   mounted() {},
+  components: {
+    loading
+  },
   methods: {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
     login() {
+      this.loadingShow = true
       this.validate("userName");
       this.validate("password");
       let parameter = {
@@ -139,11 +145,13 @@ export default {
       };
       if (this.userName === "" && this.password === "") {
         this.errorMessage = "Please fill in all required fields";
+        this.loadingShow = true
       } else {
         this.authenticate(this.userName, this.password);
       }
     },
     authenticate(name, password) {
+      this.loadingShow = true
       let credentials = {
         name: name,
         password: password
@@ -153,11 +161,13 @@ export default {
         .then(response => {
           AUTH.setToken(response.data.token);
           AUTH.authenticateForAll();
+          this.loadingShow = false
         })
         .catch(err => {
           if (err.response.status === 400) {
             this.errorMessage = "Invalid credentials!";
           }
+          this.loadingShow = false
         });
     },
     validate(input) {

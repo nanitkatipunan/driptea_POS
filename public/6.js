@@ -259,18 +259,17 @@ __webpack_require__.r(__webpack_exports__);
     var pusher = new Pusher(this.config.PUSHER_APP_KEY, {
       cluster: this.config.PUSHER_APP_CLUSTER,
       encrypted: true
-    }); //Subscribe to the channel we specified in our Adonis Application
-
+    });
     var channel = pusher.subscribe('driptea-channel');
     channel.bind('driptea-data', function (data) {
-      if (data.order.status) {
+      if (data.order.status === 'incart') {
         _this.count++;
       }
     });
   },
   methods: {
     direct: function direct() {
-      _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/customerCart');
+      _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/customerCart')["catch"](function () {});
     },
     getSizePrice: function getSizePrice() {
       if (this.size === 'highDose') {

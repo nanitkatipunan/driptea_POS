@@ -44,6 +44,7 @@
                         <label class="termsCondition">Already have an account? <b class="bRegister" v-on:click="redirect('/login')">Login</b></label>
                     </center>
                 </div>
+                <loading v-if="loadingShow"></loading>
             </div>
         </center>
     </div>
@@ -113,6 +114,7 @@ p{
 import ROUTER from '../router'
 import AUTH from '../services/auth'
 import image from '../../assets/logo.png'
+import loading from './loading.vue';
 export default {
     name: "app",
     data(){
@@ -136,15 +138,19 @@ export default {
             errorMessage8: null,
             errorMessage9: null,
             errorMessage10: null,
+            loadingShow: false
         }
     },
-    mounted(){
+    mounted(){},
+    components: {
+        loading
     },
     methods: {
         redirect(route){
             ROUTER.push(route).catch(()=>{})
         },
         register(){
+            this.loadingShow = true
             this.validate('fullname')
             this.validate('address')
             this.validate('contactNum')
@@ -163,6 +169,7 @@ export default {
             if(this.errorMessage === null && this.errorMessage2 === null && this.errorMessage3 === null && this.errorMessage4 === null && this.errorMessage5 === null && this.errorMessage6 === null && this.errorMessage7 === null){
                 this.$axios.post(AUTH.url+'register', parameter).then(response => {
                     this.authenticate(this.email, this.password)
+                    this.loadingShow = false
                 }).catch(error => {
                     if(error.response.status === 300){
                         this.errorMessage3 = 'Username already exist'
@@ -173,6 +180,7 @@ export default {
             }
         },
         authenticate(name, password) {
+            this.loadingShow = true
             let credentials = {
                 name: name,
                 password: password
@@ -180,10 +188,12 @@ export default {
             this.$axios.post(AUTH.url + 'login', credentials).then(response => {
                 AUTH.setToken(response.data.token)
                 AUTH.authenticateForAll()
+                this.loadingShow = false
             }).catch(err => {
                 if(err.response.status === 400){
                     this.errorMessage = 'Invalid credentials!'
                 }
+                this.loadingShow = false
             })
         },
         validate(input){

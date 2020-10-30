@@ -13,6 +13,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/auth */ "./resources/js/services/auth/index.js");
 /* harmony import */ var _assets_logo_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/logo.png */ "./resources/assets/logo.png");
 /* harmony import */ var _assets_logo_png__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_assets_logo_png__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _loading_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./loading.vue */ "./resources/js/basic/loading.vue");
+//
 //
 //
 //
@@ -125,7 +127,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 
- // import { validate } from 'json-schema';
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "app",
@@ -136,15 +138,20 @@ __webpack_require__.r(__webpack_exports__);
       password: "",
       errorMessage: null,
       errorMessage2: null,
-      errorMessage3: null
+      errorMessage3: null,
+      loadingShow: false
     };
   },
   mounted: function mounted() {},
+  components: {
+    loading: _loading_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
   methods: {
     redirect: function redirect(route) {
       _router__WEBPACK_IMPORTED_MODULE_0__["default"].push(route)["catch"](function () {});
     },
     login: function login() {
+      this.loadingShow = true;
       this.validate("userName");
       this.validate("password");
       var parameter = {
@@ -154,6 +161,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.userName === "" && this.password === "") {
         this.errorMessage = "Please fill in all required fields";
+        this.loadingShow = true;
       } else {
         this.authenticate(this.userName, this.password);
       }
@@ -161,6 +169,7 @@ __webpack_require__.r(__webpack_exports__);
     authenticate: function authenticate(name, password) {
       var _this = this;
 
+      this.loadingShow = true;
       var credentials = {
         name: name,
         password: password
@@ -168,10 +177,13 @@ __webpack_require__.r(__webpack_exports__);
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + "login", credentials).then(function (response) {
         _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].setToken(response.data.token);
         _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].authenticateForAll();
+        _this.loadingShow = false;
       })["catch"](function (err) {
         if (err.response.status === 400) {
           _this.errorMessage = "Invalid credentials!";
         }
+
+        _this.loadingShow = false;
       });
     },
     validate: function validate(input) {
@@ -375,7 +387,9 @@ var render = function() {
             ],
             1
           )
-        ])
+        ]),
+        _vm._v(" "),
+        _vm.loadingShow ? _c("loading") : _vm._e()
       ]
     ],
     2

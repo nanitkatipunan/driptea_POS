@@ -65,6 +65,7 @@
                 <button class="btn btn-primary btnModal" @click="hide">OK</button>
             </div>
         </div>
+        <loading v-if="loadingShow"></loading>
     </div>
 </template>
 <style scoped>
@@ -163,6 +164,7 @@ p{
 import ROUTER from '../router'
 import AUTH from '../services/auth'
 import image from '../../assets/logo.png'
+import loading from './loading.vue';
 export default {
     name: "app",
     data(){
@@ -183,8 +185,12 @@ export default {
             errorMessage8: null,
             showSuccess: false,
             newPass: null,
-            newName: null
+            newName: null,
+            loadingShow: false
         }
+    },
+    components: {
+        loading
     },
     methods: {
         hide(){
@@ -194,6 +200,7 @@ export default {
             ROUTER.push(route).catch(()=>{})
         },
         register(){
+            this.loadingShow = true
             this.validate('userType')
             this.validate('userName')
             this.validate('password')
@@ -207,14 +214,16 @@ export default {
             if(this.errorMessage === null && this.errorMessage2 === null && this.errorMessage3 === null && this.errorMessage4 === null && this.errorMessage5 === null && this.errorMessage6 === null && this.errorMessage7 === null){
                 this.$axios.post(AUTH.url+'register', parameter).then(response => {
                     this.showSuccess = true
-                    console.log(response.data)
+                    this.loadingShow = false
                 }).catch(error => {
                     if(error.response.status === 300){
                         this.errorMessage3 = 'Username already exist'
                     }
+                    this.loadingShow = false
                 })
             }else{
                 this.errorMessage = 'Please fill up all fields'
+                this.loadingShow = false
             }
         },
         validate(input){

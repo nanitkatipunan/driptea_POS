@@ -40,6 +40,7 @@
             <center>
                 <button class="btn addCart overline" @click="addToCart()">Add to Cart</button>
             </center>
+            <loading v-if="loadingShow"></loading>
         </center>
     </div>
 </template>
@@ -104,7 +105,7 @@
 import AUTH from "../../services/auth";
 import ROUTER from "../../router";
 import { compileFunction } from "vm";
-
+import loading from '../../basic/loading.vue';
 export default {
     data() {
         return {
@@ -137,8 +138,12 @@ export default {
             errorMessage1: null,
             errorMessage2: null,
             errorMessage3: null,
-            customerType: localStorage.getItem("customerType")
+            customerType: localStorage.getItem("customerType"),
+            loadingShow: false
         };
+    },
+    components: {
+        loading
     },
     mounted() {
         this.getProduct();
@@ -157,8 +162,10 @@ export default {
             return value;
         },
         retrieveCupType() {
+            this.loadingShow = true
             this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
                 this.cupData = response.data.cupType;
+                this.loadingShow = false
             });
         },
         getCupSize(params, event) {
@@ -205,16 +212,21 @@ export default {
             return value
         },
         retrieveProducts() {
+            this.loadingShow = true
             this.$axios.post(AUTH.url + "retrieveAllProduct").then(response => {
                 this.productData = response.data.product;
+                this.loadingShow = false
             });
         },
         retrieveAddOns() {
+            this.loadingShow = true
             this.$axios.post(AUTH.url + "retrievingAddOns").then(response => {
                 this.addOnsData = response.data.addons;
+                this.loadingShow = false
             });
         },
         getProduct(){
+            this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveOneProduct', {id: this.itemId}).then(response => {
                 this.itemSelected = response.data.product[0].productName
                 this.lowPrice = response.data.product[0].lowPrice
@@ -223,6 +235,7 @@ export default {
                 this.onlinelowPrice = response.data.product[0].onlinelowPrice
                 this.onlinehighPrice = response.data.product[0].onlinehighPrice
                 this.onlineoverPrice = response.data.product[0].onlineoverPrice
+                this.loadingShow = false
             })
         },
         getSugarLevel(params, event){
@@ -286,9 +299,10 @@ export default {
                 this.errorMessage1 = 'cup type is required!'
             }
             if(this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null){
+                this.loadingShow = true
                 let parameter = {
                     customerId: localStorage.getItem('customerId'),
-                    cashierId: localStorage.getItem('cashierId'),
+                    cashierId: localStorage.getItem('cashierId') ? localStorage.getItem('cashierId') : localStorage.getItem('adminId'),
                     productId: this.itemId,
                     quantity: this.quantity,
                     size: this.cupSize,
@@ -300,6 +314,7 @@ export default {
                     subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
                 }
                 this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
+                    this.loadingShow = false
                     ROUTER.push('/productCategory/'+localStorage.getItem('customerType')).catch(()=>{})
                 })
             

@@ -37,16 +37,16 @@
                         <div class="row">
                             <div class="col-md-6"></div>
                             <div class="col-md-6 overline" style="text-align:left;">
-                                <p v-if="customerType === 'fb'" style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
-                                <p v-if="customerType === 'fb'" style="display: inline;">₱ {{getSubTotal()}}</p><br>
-                                <p v-if="customerType === 'fb'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
-                                <input v-if="customerType === 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="fee">
+                                <p v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
+                                <p v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;">₱ {{getSubTotal()}}</p><br>
+                                <p v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
+                                <input v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="fee">
                                 <p style="display: inline;" class="pStyle">Total:&emsp;&emsp;&emsp;&emsp;</p>
                                 <p style="display: inline;" class="pStyle">₱ {{convertTotalPrice()}}</p><br>
-                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Amount:&emsp;&emsp;&nbsp;&nbsp;&nbsp;</p>
-                                <input v-if="customerType !== 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
-                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
-                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
+                                <p v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" class="pStyle">Amount:&emsp;&emsp;&nbsp;&nbsp;&nbsp;</p>
+                                <input v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
+                                <p v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
+                                <p v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
                                 <div >
                                  <button class="btn btn-primary checkout overline" @click="checkoutOrder">Checkout</button>
                                 </div>
@@ -68,6 +68,7 @@
                 </div>
             </div>
             <receipt v-if="receiptShow" :showData="receiptData"></receipt>
+            <loading v-if="loadingShow"></loading>
        </div>
     </div>
 </template>
@@ -139,6 +140,7 @@ import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import receipt from '../order/receipt.vue'
 import config from '../../config.js'
+import loading from '../../basic/loading.vue';
 export default {
     data(){
         return{
@@ -155,22 +157,19 @@ export default {
             fee: 0,
             error: false,
             receiptShow: false,
-            receiptData: null
+            receiptData: null,
+            loadingShow: false
         }
     },
     components: {
-        receipt
+        receipt,
+        loading
     },
     mounted(){
         this.retrieveCategory()
         this.retrieveProduct()
     },
     methods: {
-        putData(item){
-            console.log('gawas na', item)
-            // this.tableData = item
-            this.retrieveProduct()
-        },
         hideReceipt(){
             this.receiptShow = false
         },
@@ -203,8 +202,10 @@ export default {
             }
         },
         retrieveCategory(){
+            this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveCategory').then(res => {
                 this.data = res.data.addCategory
+                this.loadingShow = false
             })
         },
         getSubTotal(){
@@ -221,21 +222,22 @@ export default {
             ROUTER.push('/chosenCategory/'+param).catch(()=>{})
         },
         retrieveProduct(){
+            this.loadingShow = true
             if(this.customerType === 'online'){
                 let params = {
                     id: localStorage.getItem('customerId')
                 }
-                console.log('retrive', params)
                 this.$axios.post(AUTH.url + 'getOrder', params).then(res => {
                     this.tableData = res.data.order
+                    this.loadingShow = false
                 })
             }else{
                 let params = {
                     id: localStorage.getItem('customerId')
                 }
-                console.log('retrive', params)
                 this.$axios.post(AUTH.url + 'retrieveOrder', params).then(res => {
                     this.tableData = res.data.order
+                    this.loadingShow = false
                 })
             }
         },
@@ -252,11 +254,14 @@ export default {
             return storeAddOns
         },
         deleteOrder(prodId){
+            this.loadingShow = true
             this.$axios.post(AUTH.url + 'deleteOrder', {id: prodId}).then(res => {
                 this.retrieveProduct()
+                this.loadingShow = false
             })
         },
         checkoutMethod(){
+            this.loadingShow = true
             let params = {
                 id: localStorage.getItem('customerId'),
                 status: 'complete'
@@ -264,7 +269,7 @@ export default {
             this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
                 let params = {
                     customerId: localStorage.getItem('customerId'),
-                    cashierId: localStorage.getItem('cashierId'),
+                    cashierId: localStorage.getItem('cashierId') ? localStorage.getItem('cashierId') : localStorage.getItem('adminId'),
                     subTotal: parseInt(this.getSubTotal()),
                     deliveryFee: this.fee,
                     total: parseInt(this.convertTotalPrice()),
@@ -296,6 +301,7 @@ export default {
                             id: res.data.storeCheckouts.id,
                         }
                         this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
+                            this.loadingShow = false
                             this.receiptData = response.data.storeOrder
                             this.receiptShow = true
                         })

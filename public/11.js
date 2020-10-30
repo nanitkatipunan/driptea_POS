@@ -13,6 +13,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/auth */ "./resources/js/services/auth/index.js");
 /* harmony import */ var _assets_logo_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/logo.png */ "./resources/assets/logo.png");
 /* harmony import */ var _assets_logo_png__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_assets_logo_png__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _loading_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./loading.vue */ "./resources/js/basic/loading.vue");
 //
 //
 //
@@ -124,6 +125,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 
@@ -149,10 +152,14 @@ __webpack_require__.r(__webpack_exports__);
       errorMessage7: null,
       errorMessage8: null,
       errorMessage9: null,
-      errorMessage10: null
+      errorMessage10: null,
+      loadingShow: false
     };
   },
   mounted: function mounted() {},
+  components: {
+    loading: _loading_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
   methods: {
     redirect: function redirect(route) {
       _router__WEBPACK_IMPORTED_MODULE_0__["default"].push(route)["catch"](function () {});
@@ -160,6 +167,7 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
+      this.loadingShow = true;
       this.validate('fullname');
       this.validate('address');
       this.validate('contactNum');
@@ -179,6 +187,8 @@ __webpack_require__.r(__webpack_exports__);
       if (this.errorMessage === null && this.errorMessage2 === null && this.errorMessage3 === null && this.errorMessage4 === null && this.errorMessage5 === null && this.errorMessage6 === null && this.errorMessage7 === null) {
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + 'register', parameter).then(function (response) {
           _this.authenticate(_this.email, _this.password);
+
+          _this.loadingShow = false;
         })["catch"](function (error) {
           if (error.response.status === 300) {
             _this.errorMessage3 = 'Username already exist';
@@ -191,6 +201,7 @@ __webpack_require__.r(__webpack_exports__);
     authenticate: function authenticate(name, password) {
       var _this2 = this;
 
+      this.loadingShow = true;
       var credentials = {
         name: name,
         password: password
@@ -198,10 +209,13 @@ __webpack_require__.r(__webpack_exports__);
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + 'login', credentials).then(function (response) {
         _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].setToken(response.data.token);
         _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].authenticateForAll();
+        _this2.loadingShow = false;
       })["catch"](function (err) {
         if (err.response.status === 400) {
           _this2.errorMessage = 'Invalid credentials!';
         }
+
+        _this2.loadingShow = false;
       });
     },
     validate: function validate(input) {
@@ -715,7 +729,9 @@ var render = function() {
                 ])
               ],
               1
-            )
+            ),
+            _vm._v(" "),
+            _vm.loadingShow ? _c("loading") : _vm._e()
           ],
           1
         )

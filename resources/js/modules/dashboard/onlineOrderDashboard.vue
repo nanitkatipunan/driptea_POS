@@ -243,19 +243,17 @@ export default {
             cluster: this.config.PUSHER_APP_CLUSTER,
             encrypted: true
         });
-
-          //Subscribe to the channel we specified in our Adonis Application
         let channel = pusher.subscribe('driptea-channel')
 
         channel.bind('driptea-data', (data) => {
-            if(data.order.status){
+            if(data.order.status === 'incart'){
                 this.count++
             }
         })
     },
     methods: {
         direct(){
-            ROUTER.push('/customerCart')
+            ROUTER.push('/customerCart').catch(()=>{})
         },
         getSizePrice(){
             if(this.size === 'highDose'){

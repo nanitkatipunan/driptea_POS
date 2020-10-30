@@ -13,6 +13,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../router */ "./resources/js/router/index.js");
 /* harmony import */ var vm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vm */ "./node_modules/vm-browserify/index.js");
 /* harmony import */ var vm__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vm__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _basic_loading_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../basic/loading.vue */ "./resources/js/basic/loading.vue");
 //
 //
 //
@@ -115,6 +116,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 
@@ -150,8 +153,12 @@ __webpack_require__.r(__webpack_exports__);
       errorMessage1: null,
       errorMessage2: null,
       errorMessage3: null,
-      customerType: localStorage.getItem("customerType")
+      customerType: localStorage.getItem("customerType"),
+      loadingShow: false
     };
+  },
+  components: {
+    loading: _basic_loading_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   mounted: function mounted() {
     this.getProduct();
@@ -174,8 +181,10 @@ __webpack_require__.r(__webpack_exports__);
     retrieveCupType: function retrieveCupType() {
       var _this = this;
 
+      this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupType").then(function (response) {
         _this.cupData = response.data.cupType;
+        _this.loadingShow = false;
       });
     },
     getCupSize: function getCupSize(params, event) {
@@ -230,20 +239,25 @@ __webpack_require__.r(__webpack_exports__);
     retrieveProducts: function retrieveProducts() {
       var _this2 = this;
 
+      this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllProduct").then(function (response) {
         _this2.productData = response.data.product;
+        _this2.loadingShow = false;
       });
     },
     retrieveAddOns: function retrieveAddOns() {
       var _this3 = this;
 
+      this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrievingAddOns").then(function (response) {
         _this3.addOnsData = response.data.addons;
+        _this3.loadingShow = false;
       });
     },
     getProduct: function getProduct() {
       var _this4 = this;
 
+      this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOneProduct', {
         id: this.itemId
       }).then(function (response) {
@@ -254,6 +268,7 @@ __webpack_require__.r(__webpack_exports__);
         _this4.onlinelowPrice = response.data.product[0].onlinelowPrice;
         _this4.onlinehighPrice = response.data.product[0].onlinehighPrice;
         _this4.onlineoverPrice = response.data.product[0].onlineoverPrice;
+        _this4.loadingShow = false;
       });
     },
     getSugarLevel: function getSugarLevel(params, event) {
@@ -318,6 +333,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addToCart: function addToCart() {
+      var _this6 = this;
+
       if (this.quantity <= 0) {
         this.errorMessage3 = 'quantity must be greater than 0!';
       }
@@ -335,9 +352,10 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.quantity > 0 && this.cupSize !== null && this.sugarLevel !== null && this.cupType !== null) {
+        this.loadingShow = true;
         var parameter = {
           customerId: localStorage.getItem('customerId'),
-          cashierId: localStorage.getItem('cashierId'),
+          cashierId: localStorage.getItem('cashierId') ? localStorage.getItem('cashierId') : localStorage.getItem('adminId'),
           productId: this.itemId,
           quantity: this.quantity,
           size: this.cupSize,
@@ -349,6 +367,7 @@ __webpack_require__.r(__webpack_exports__);
           subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
+          _this6.loadingShow = false;
           _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + localStorage.getItem('customerType'))["catch"](function () {});
         });
       }
@@ -854,7 +873,9 @@ var render = function() {
               },
               [_vm._v("Add to Cart")]
             )
-          ])
+          ]),
+          _vm._v(" "),
+          _vm.loadingShow ? _c("loading") : _vm._e()
         ],
         1
       )
