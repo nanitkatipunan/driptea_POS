@@ -61,7 +61,7 @@
                         <div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
                           <v-card class="elevation-5" max-width="250" height="250">
                             <v-img  max-width="250" height="250" :src="item.image" @click="redirect(item.productCategory)"></v-img>
-                             </v-card>
+                          </v-card>
 
                         </div>
                     </div>
