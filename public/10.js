@@ -174,6 +174,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -181,11 +225,13 @@ __webpack_require__.r(__webpack_exports__);
   name: "app",
   data: function data() {
     return {
+      show3: false,
+      show4: false,
       userType: null,
       image: _assets_logo_png__WEBPACK_IMPORTED_MODULE_2___default.a,
-      userName: '',
-      password: '',
-      confirmPass: '',
+      userName: "",
+      password: "",
+      confirmPass: "",
       successMessage: null,
       errorMessage: null,
       errorMessage2: null,
@@ -210,10 +256,10 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
-      this.validate('userType');
-      this.validate('userName');
-      this.validate('password');
-      this.validate('confirmPass');
+      this.validate("userType");
+      this.validate("userName");
+      this.validate("password");
+      this.validate("confirmPass");
       var parameter = {
         account_type: this.userType.toUpperCase(),
         name: this.userName,
@@ -222,71 +268,71 @@ __webpack_require__.r(__webpack_exports__);
       };
 
       if (this.errorMessage === null && this.errorMessage2 === null && this.errorMessage3 === null && this.errorMessage4 === null && this.errorMessage5 === null && this.errorMessage6 === null && this.errorMessage7 === null) {
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + 'register', parameter).then(function (response) {
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + "register", parameter).then(function (response) {
           _this.showSuccess = true;
           console.log(response.data);
         })["catch"](function (error) {
           if (error.response.status === 300) {
-            _this.errorMessage3 = 'Username already exist';
+            _this.errorMessage3 = "Username already exist";
           }
         });
       } else {
-        this.errorMessage = 'Please fill up all fields';
+        this.errorMessage = "Please fill up all fields";
       }
     },
     validate: function validate(input) {
       this.successMessage = null;
       var reqWhiteSpace = /\s/;
 
-      if (input === 'userName') {
+      if (input === "userName") {
         this.errorMessage = null;
 
         if (reqWhiteSpace.test(this.userName)) {
-          this.errorMessage = 'Username should not contain a space.';
-        } else if (this.userName === '') {
-          this.errorMessage2 = 'Username is required.';
+          this.errorMessage = "Username should not contain a space.";
+        } else if (this.userName === "") {
+          this.errorMessage2 = "Username is required.";
         } else if (this.userName.length < 6) {
-          this.errorMessage3 = 'Username must be atleast 6 characters';
+          this.errorMessage3 = "Username must be atleast 6 characters";
         } else {
           this.errorMessage = null;
           this.errorMessage2 = null;
           this.errorMessage3 = null;
         }
-      } else if (input === 'userType') {
+      } else if (input === "userType") {
         this.errorMessage8 = null;
 
-        if (this.userType === '') {
-          this.errorMessage8 = 'Usertype is required.';
-        } else if (this.userType.toLowerCase() !== 'admin' && this.userType.toLowerCase() !== 'cashier') {
-          this.errorMessage8 = 'Usertype should only be Admin or Cashier.';
+        if (this.userType === "") {
+          this.errorMessage8 = "Usertype is required.";
+        } else if (this.userType.toLowerCase() !== "admin" && this.userType.toLowerCase() !== "cashier") {
+          this.errorMessage8 = "Usertype should only be Admin or Cashier.";
         } else {
           this.errorMessage8 = null;
         }
-      } else if (input === 'password') {
+      } else if (input === "password") {
         this.errorMessage4 = null;
 
         if (this.password.length < 8) {
-          this.errorMessage4 = 'Password must be atleast 8 characters.';
+          this.errorMessage4 = "Password must be atleast 8 characters.";
         } else if (/^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/.test(this.password)) {
-          this.successMessage = 'Strong password.';
+          this.successMessage = "Strong password.";
           this.errorMessage4 = null;
           this.errorMessage5 = null;
         } else {
-          this.errorMessage5 = 'Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter.';
+          this.errorMessage5 = "Password must be alphanumeric characters. It should contain 1 number, 1 special character and 1 capital letter.";
         }
-      } else if (input === 'confirmPass') {
+      } else if (input === "confirmPass") {
         this.errorMessage6 = null;
         this.successMessage = null;
 
         if (this.password.localeCompare(this.confirmPass) !== 0) {
-          this.errorMessage6 = 'Password did not match.';
+          this.errorMessage6 = "Password did not match.";
         } else {
           this.errorMessage6 = null;
         }
       } else if (this.userType !== null && this.userName.length >= 6 && this.email !== null && this.password !== null && this.password.length >= 6 && this.password.localeCompare(this.confirmPass) === 0 && this.type !== null) {
         this.errorMessage = null;
       } else {
-        this.errorMessage7 = 'Please fill in all required fields.';
+        this.errorMessage7 = "Please fill in all required fields.";
         this.errorMessage7 = null;
       }
     }
@@ -307,7 +353,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.btnModal[data-v-48ebf362]{\r\n    width: 100px;\n}\n.modalFont[data-v-48ebf362]{\r\n    font-size: 15px;\n}\n.alert-box[data-v-48ebf362] {\r\n    background: white;\r\n    display: inline-block;\r\n    margin-top: 20%;\r\n    font-weight: lighter;\r\n    border-radius: 3px;\r\n    font-size: 30px;\r\n    padding-left: 50px;\r\n    padding-right: 50px;\r\n    padding-top: 30px;\r\n    padding-bottom: 10px;\r\n    transition: .2s;\n}\n.blurred-background[data-v-48ebf362] {\r\n    position: fixed;\r\n    box-sizing: border-box;\r\n    width: 100%;\r\n    height: 100%;\r\n    z-index: 1;\r\n    top: 0;\r\n    left: 0;\r\n    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\r\n    text-align: center;\r\n    background: rgba(54, 54, 54, .7);\n}\nimg[data-v-48ebf362]{\r\n    cursor: default;\n}\nspan[data-v-48ebf362]{\r\n    font-size: 12px;\n}\nhr[data-v-48ebf362]{\r\n    border: 1px solid #17D817;\n}\n.termsCondition[data-v-48ebf362]{\r\n    margin-top: 6%;\r\n    font-size: 15px;\r\n    text-align: center;\n}\n.form-control[data-v-48ebf362]{\r\n    border: 1px solid #17D817;\r\n    border-radius: 5px;\r\n    width: 100%;\n}\n.bRegister[data-v-48ebf362]{\r\n    color: #0A8C0F;\r\n    cursor: pointer;\n}\np[data-v-48ebf362]{\r\n    font-size: 20px;\n}\n.btnRegister[data-v-48ebf362]{\r\n    margin-top: 2%;\r\n    margin-bottom: 2%;\r\n    background-color: #17D817;\r\n    font-weight: bold;\r\n    width: 100%;\n}\n.containerWidth[data-v-48ebf362]{\r\n    width: 30%;\r\n    text-align: left;\r\n    margin-left: 0px !important;\r\n    margin-right: 0px !important;\n}\n@media screen and (max-width: 600px) {\n.containerWidth[data-v-48ebf362]{\r\n        text-align: left;\r\n        width: 100%;\r\n        margin-left: 0px !important;\r\n        margin-right: 0px !important;\n}\n}\n@media screen and (max-width: 900px) {\n.containerWidth[data-v-48ebf362]{\r\n        text-align: left;\r\n        width: 70%;\n}\n}\n@media screen and (max-width: 1000px) {\n.containerWidth[data-v-48ebf362]{\r\n        text-align: left;\r\n        width: 60%;\n}\n}\r\n", ""]);
+exports.push([module.i, "\n.register[data-v-48ebf362] {\r\n  width: 100%;\n}\n.container[data-v-48ebf362] {\r\n  margin-top: 2%;\r\n  margin-bottom: 2%;\r\n  width: 50%;\r\n  border: orange solid 1px;\n}\n.btnModal[data-v-48ebf362] {\r\n  width: 100px;\n}\n.modalFont[data-v-48ebf362] {\r\n  font-size: 15px;\n}\n.alert-box[data-v-48ebf362] {\r\n  background: white;\r\n  display: inline-block;\r\n  margin-top: 20%;\r\n  font-weight: lighter;\r\n  border-radius: 3px;\r\n  font-size: 30px;\r\n  padding-left: 50px;\r\n  padding-right: 50px;\r\n  padding-top: 30px;\r\n  padding-bottom: 10px;\r\n  transition: 0.2s;\n}\n.blurred-background[data-v-48ebf362] {\r\n  position: fixed;\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  height: 100%;\r\n  z-index: 1;\r\n  top: 0;\r\n  left: 0;\r\n  font-family: \"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif;\r\n  text-align: center;\r\n  background: rgba(54, 54, 54, 0.7);\n}\nimg[data-v-48ebf362] {\r\n  cursor: default;\n}\nspan[data-v-48ebf362] {\r\n  font-size: 12px;\n}\nhr[data-v-48ebf362] {\r\n  border: 1px solid #17d817;\n}\n.termsCondition[data-v-48ebf362] {\r\n  margin-top: 6%;\r\n  font-size: 15px;\r\n  text-align: center;\n}\n.form-control[data-v-48ebf362] {\r\n  border: 1px solid #17d817;\r\n  border-radius: 5px;\r\n  width: 50%;\n}\n.bRegister[data-v-48ebf362] {\r\n  color: orange;\r\n  cursor: pointer;\n}\np[data-v-48ebf362] {\r\n  font-size: 20px;\n}\n.btnRegister[data-v-48ebf362] {\r\n  margin-top: 2%;\r\n  margin-bottom: 2%;\r\n  background-color: #17d817;\r\n  font-weight: bold;\r\n  width: 100%;\n}\n.containerWidth[data-v-48ebf362] {\r\n  width: 40%;\r\n  text-align: left;\r\n  margin-left: 0px !important;\r\n  margin-right: 0px !important;\n}\n@media screen and (max-width: 600px) {\n.containerWidth[data-v-48ebf362] {\r\n    text-align: left;\r\n    width: 100%;\r\n    margin-left: 0px !important;\r\n    margin-right: 0px !important;\n}\n}\n@media screen and (max-width: 900px) {\n.containerWidth[data-v-48ebf362] {\r\n    text-align: left;\r\n    width: 70%;\n}\n}\n@media screen and (max-width: 1000px) {\n.containerWidth[data-v-48ebf362] {\r\n    text-align: left;\r\n    width: 60%;\n}\n}\r\n", ""]);
 
 // exports
 
@@ -370,7 +416,7 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("p", [
-          _vm._v("Register to "),
+          _vm._v("\n      Register to\n      "),
           _c(
             "b",
             {
@@ -398,6 +444,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "form",
+            { staticClass: "theForm" },
             [
               _c("i", [
                 _vm.errorMessage8 !== null
@@ -412,6 +459,7 @@ var render = function() {
                 [
                   _c("v-text-field", {
                     attrs: {
+                      color: "orange",
                       label: "Account Type",
                       outlined: "",
                       type: "text",
@@ -464,6 +512,7 @@ var render = function() {
                 [
                   _c("v-text-field", {
                     attrs: {
+                      color: "orange",
                       label: "Username",
                       outlined: "",
                       type: "text",
@@ -514,15 +563,22 @@ var render = function() {
                 [
                   _c("v-text-field", {
                     attrs: {
+                      color: "orange",
                       label: "Password",
                       outlined: "",
-                      type: "password",
+                      "append-icon": _vm.show3
+                        ? "visibility"
+                        : "visibility_off",
+                      type: _vm.show3 ? "text" : "password",
                       id: "password",
                       required: ""
                     },
                     on: {
                       keyup: function($event) {
                         return _vm.validate("password")
+                      },
+                      "click:append": function($event) {
+                        _vm.show3 = !_vm.show3
                       }
                     },
                     model: {
@@ -550,15 +606,22 @@ var render = function() {
                 [
                   _c("v-text-field", {
                     attrs: {
+                      color: "orange",
                       label: "Confirm Password",
                       outlined: "",
-                      type: "password",
+                      "append-icon": _vm.show4
+                        ? "visibility"
+                        : "visibility_off",
+                      type: _vm.show4 ? "text" : "password",
                       id: "confirmPassword",
                       required: ""
                     },
                     on: {
                       keyup: function($event) {
                         return _vm.validate("confirmPass")
+                      },
+                      "click:append": function($event) {
+                        _vm.show4 = !_vm.show4
                       }
                     },
                     model: {
@@ -576,8 +639,8 @@ var render = function() {
               _c(
                 "v-btn",
                 {
-                  staticClass: "btn btnRegister",
-                  attrs: { type: "submit" },
+                  staticClass: "btn register",
+                  attrs: { type: "submit", color: "orange" },
                   on: { click: _vm.register }
                 },
                 [_vm._v("Register")]
@@ -597,6 +660,7 @@ var render = function() {
                 _c("h5", { staticClass: "text-success" }, [
                   _vm._v("Registered Successfully")
                 ]),
+                _vm._v(" "),
                 _c("hr"),
                 _vm._v(" "),
                 _c("p", { staticClass: "modalFont" }, [
