@@ -218,6 +218,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
 
 
 
@@ -262,6 +266,8 @@ __webpack_require__.r(__webpack_exports__);
         name: "Sales",
         data: []
       }],
+      options0: {},
+      series0: [],
       points: [],
       thedate: null,
       years: [],
@@ -289,11 +295,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {},
   mounted: function mounted() {
+    this.getTop3();
+    console.log("ang top3 ", this.topProdArr);
     var date = new Date();
     var month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1);
     this.thedate = date.getFullYear() + "-" + month;
     this.MonthLabel = this.mnths[month - 1];
-    this.getTop3();
     this.yrvalue = new Date().getFullYear();
     this.getYears();
     this.getDate();
@@ -335,9 +342,13 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
 
-        _this.series = [{
-          data: _this.points
-        }];
+        if (response.data.total.length > 0) {
+          _this.series = [{
+            data: _this.points
+          }];
+        } else {
+          _this.series = [];
+        }
       });
       this.points = [];
     },
@@ -733,11 +744,17 @@ __webpack_require__.r(__webpack_exports__);
       var params = {
         year: null
       };
+      var indexes = [];
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "getTopProd", params).then(function (response) {
-        console.log("dfghjkl", response);
+        console.log("asfdsdg ", response.data.prods.length);
+        var resLen = response.data.prods.length;
+        response.data.prods.forEach(function (element) {
+          indexes.push(response.data.prods.indexOf(element));
+        });
+        console.log(",,,,,, ", indexes);
 
         for (var i = 0; i < 3; i++) {
-          if (response.data.length > 1) {
+          if (indexes.includes(i)) {
             _this7.topProdArr.push({
               img: response.data.prods[i].img,
               name: response.data.prods[i].pName
@@ -748,8 +765,6 @@ __webpack_require__.r(__webpack_exports__);
               name: " "
             });
           }
-
-          console.log("kasjkasjfk ", _this7.topProdArr);
         }
       });
     }
@@ -770,7 +785,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.welcome {\r\n  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,\r\n    Helvetica Neue, Arial, sans-serif;\r\n  font-size: 25px;\r\n  margin-bottom: 10px;\r\n  margin-left: 1%;\r\n  font-weight: bold;\n}\n.insideToolbar {\r\n  margin-top: 25px;\n}\n.GraphLabel {\r\n  margin-left: 45%;\r\n  font-weight: bold;\n}\n.annualDateCal1,\r\n.annualDateCal2,\r\n.yearMenu,\r\n.graphTitle {\r\n  color: black;\n}\n.graphTitle,\r\n.text1 {\r\n  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,\r\n    Helvetica Neue, Arial, sans-serif;\r\n  font-size: 1rem;\r\n  font-weight: bold;\n}\n.YRcal {\r\n  color: black;\n}\n.Cname,\r\n.GraphLabel {\r\n  color: #ff5b04;\n}\n.text1 {\r\n  margin-left: 10%;\r\n  text-align: center;\r\n  color: #ff5b04;\n}\n.TB3 {\r\n  margin-bottom: 20px;\r\n  justify-content: center;\r\n  border-radius: 1%;\n}\n.prods {\r\n  border: 1px solid #999999;\r\n  border-radius: 1%;\n}\n.subhead {\r\n  margin-bottom: 20px;\n}\n.chart {\r\n  width: 100%;\n}\n.body {\r\n  margin: 5%;\r\n  height: 100%;\n}\n.top3 {\r\n  width: 20%;\r\n  height: 50%;\r\n  border: 1px solid #999999;\r\n  border-radius: 1%;\n}\n.thetop3 {\r\n  margin: 2%;\r\n  height: 200px;\r\n  width: auto;\n}\n.Prod_name {\r\n  color: black;\n}\r\n", ""]);
+exports.push([module.i, "\n.welcome {\r\n  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,\r\n    Helvetica Neue, Arial, sans-serif;\r\n  font-size: 25px;\r\n  margin-bottom: 10px;\r\n  margin-left: 4%;\r\n  font-weight: bold;\r\n  margin-top: 5%;\n}\n.insideToolbar {\r\n  margin-top: 25px;\n}\n.GraphLabel {\r\n  margin-left: 45%;\r\n  font-weight: bold;\n}\n.annualDateCal1,\r\n.annualDateCal2,\r\n.yearMenu,\r\n.graphTitle {\r\n  color: black;\n}\n.graphTitle,\r\n.text1 {\r\n  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,\r\n    Helvetica Neue, Arial, sans-serif;\r\n  font-size: 1rem;\r\n  font-weight: bold;\n}\n.YRcal {\r\n  color: black;\n}\n.Cname,\r\n.GraphLabel {\r\n  color: #ff5b04;\n}\n.text1 {\r\n  margin-left: 10%;\r\n  text-align: center;\r\n  color: #ff5b04;\n}\n.TB3 {\r\n  margin-bottom: 20px;\r\n  justify-content: center;\r\n  border-radius: 1%;\n}\n.prods {\r\n  border: 1px solid #999999;\r\n  border-radius: 1%;\n}\n.subhead {\r\n  margin-bottom: 20px;\n}\n.chart {\r\n  width: 100%;\n}\n.body {\r\n  margin-left: 3%;\r\n  margin-right: 3%;\r\n  height: 100%;\r\n  margin-bottom: 5%;\n}\n.top3 {\r\n  width: 20%;\r\n  height: 50%;\r\n  border: 1px solid #999999;\r\n  border-radius: 1%;\n}\n.thetop3 {\r\n  margin: 2%;\r\n  height: 200px;\r\n  width: auto;\n}\n.Prod_name {\r\n  color: black;\n}\r\n", ""]);
 
 // exports
 
@@ -823,9 +838,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
     _c("div", { staticClass: "row body" }, [
-      _vm._m(0),
-      _vm._v(" "),
       _c(
         "div",
         { staticClass: "col-sm-8" },
@@ -1157,7 +1172,7 @@ var render = function() {
                       },
                       [
                         _c("v-card-title", { staticClass: "Prod_name" }, [
-                          _c("i", [_vm._v(_vm._s(_vm.topProdArr[0].name))])
+                          _c("i")
                         ])
                       ],
                       1
@@ -1177,7 +1192,7 @@ var render = function() {
                       },
                       [
                         _c("v-card-title", { staticClass: "Prod_name" }, [
-                          _c("i", [_vm._v(_vm._s(_vm.topProdArr[1].name))])
+                          _c("i")
                         ])
                       ],
                       1
@@ -1197,7 +1212,7 @@ var render = function() {
                       },
                       [
                         _c("v-card-title", { staticClass: "Prod_name" }, [
-                          _c("i", [_vm._v(_vm._s(_vm.topProdArr[2].name))])
+                          _c("i")
                         ])
                       ],
                       1
@@ -1223,7 +1238,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "welcome" }, [
       _c("b", [
         _c("i", [
-          _vm._v("\n          WELCOME,\n          "),
+          _vm._v("\n        WELCOME,\n        "),
           _c("span", { staticClass: "Cname" }, [_vm._v("DRIPTEA ADMIN")])
         ])
       ])
