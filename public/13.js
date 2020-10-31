@@ -11,6 +11,7 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/auth */ "./resources/js/services/auth/index.js");
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../router */ "./resources/js/router/index.js");
+/* harmony import */ var _basic_loading_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../basic/loading.vue */ "./resources/js/basic/loading.vue");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -654,6 +655,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     var _ref;
@@ -812,19 +814,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, {
       text: "Total IncomingCup",
       value: "incomingOverDose" + ""
-    }]), _ref;
+    }]), _defineProperty(_ref, "loadingShow", false), _ref;
   },
   mounted: function mounted() {
-    // this.retrieveAddOns();
-    // this.$refs.on.click()
-    // this.$refs.pro.click()
-    // this.$refs.cate.click()
-    // this.$refs.size.click()
     this.retrieveProducts();
     this.retrieveCategories();
     this.retrieveAddOns();
     this.retrieveCupType();
     this.retrieveCupSize();
+  },
+  components: {
+    loading: _basic_loading_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   methods: {
     changeName: function changeName(param) {
@@ -863,44 +863,55 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     NACupUpdate: function NACupUpdate(id) {
       var _this = this;
 
+      this.loadingShow = true;
       var param = {
         id: id,
         status: "Not Available"
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAvailableCupType", param).then(function (response) {
         _this.retrieveCupType();
+
+        _this.loadingShow = false;
       });
     },
     availableCupUpdate: function availableCupUpdate(id) {
       var _this2 = this;
 
+      this.loadingShow = true;
       var param = {
         id: id,
         status: "Available"
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAvailableCupType", param).then(function (response) {
         _this2.retrieveCupType();
+
+        _this2.loadingShow = false;
       });
     },
     retrieveCupType: function retrieveCupType() {
       var _this3 = this;
 
+      this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllCupType").then(function (response) {
         _this3.cupData = response.data.cupType;
+        _this3.loadingShow = false;
       });
     },
     retrieveCupSize: function retrieveCupSize() {
       var _this4 = this;
 
+      this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupSize").then(function (response) {
+        _this4.loadingShow = false;
         _this4.cupSizeData = response.data.quantityCupsInDB;
         response.data.quantityCupsInDB.forEach(function (element) {});
         var totalCup = response.data.quantityCupsInDB.incomingOverDose;
-        console.log(totalCup);
       });
     },
     addingCupType: function addingCupType() {
       var _this5 = this;
+
+      this.loadingShow = true;
 
       if (this.inputCupPrice !== null && this.inputCup !== null) {
         var param = {
@@ -910,16 +921,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           status: "Available"
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingCupType", param).then(function (response) {
+          _this5.loadingShow = false;
+
           _this5.retrieveCupType();
 
           _this5.dialogForCupType = false;
         });
       } else {
         this.errorMessage = "All fields are required!";
+        this.loadingShow = false;
       }
     },
     addingCupSize: function addingCupSize() {
       var _this6 = this;
+
+      this.loadingShow = true;
 
       if (this.lowDoseCup !== null && this.highDoseCup !== null && this.overDoseCup !== null) {
         var param = {
@@ -928,18 +944,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           incomingOverDose: this.overDoseCup
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addIncomingCups", param).then(function (response) {
+          _this6.loadingShow = false;
+
           _this6.retrieveCupSize();
 
           _this6.hide();
         });
       } else {
+        this.loadingShow = false;
         this.errorMessage = "All fields are required!";
       }
     },
     editingCupType: function editingCupType() {
       var _this7 = this;
 
-      console.log('asdlkfjlskajf');
+      this.loadingShow = true;
 
       if (this.inputCupPrice !== null && this.inputCup !== null) {
         var param = {
@@ -950,12 +969,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           status: this.cupStatus
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "editingCupType", param).then(function (response) {
+          _this7.loadingShow = false;
+
           _this7.retrieveCupType();
 
           _this7.hide();
         });
       } else {
         this.errorMessage = "All fields are required!";
+        this.loadingShow = false;
       }
     },
     normalPrice: function normalPrice(event) {
@@ -991,6 +1013,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.imgURL = URL.createObjectURL(e.target.files[0]);
     },
     formSubmitProduct: function formSubmitProduct(e) {
+      this.loadingShow = true;
+
       if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null) {
         e.preventDefault();
         var currentObj = this;
@@ -1012,15 +1036,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         formData.append('onlinehighPrice', this.onlinehighPrice);
         formData.append('onlineoverPrice', this.onlineoverPrice);
         this.$axios.post('/formSubmit', formData, config).then(function (response) {
+          currentObj.loadingShow = false;
           currentObj.success = response.data.success;
           currentObj.retrieveCategories();
           currentObj.retrieveProducts();
           currentObj.hide();
         })["catch"](function (error) {
           currentObj.output = error;
+          currentObj.loadingShow = false;
         });
       } else {
         this.errorMessage = 'All fields are required!';
+        this.loadingShow = false;
       }
     },
     editProduct: function editProduct(item) {
@@ -1042,6 +1069,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.prodId = item.id;
     },
     updateProduct: function updateProduct(e) {
+      this.loadingShow = true;
+
       if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null) {
         e.preventDefault();
         var currentObj = this;
@@ -1064,37 +1093,46 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         formData.append('onlinehighPrice', this.onlinehighPrice);
         formData.append('onlineoverPrice', this.onlineoverPrice);
         this.$axios.post('/updateProduct', formData, config).then(function (response) {
+          currentObj.loadingShow = false;
           currentObj.success = response.data.success;
           currentObj.retrieveCategories();
           currentObj.retrieveProducts();
           currentObj.hide();
         })["catch"](function (error) {
           currentObj.output = error;
+          currentObj.loadingShow = false;
         });
       } else {
         this.errorMessage = 'All fields are required!';
+        this.loadingShow = false;
       }
     },
     productStatusUpdate: function productStatusUpdate(id) {
       var _this8 = this;
 
+      this.loadingShow = true;
       var param = {
         id: id,
         status: "Not Available"
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param).then(function (response) {
         _this8.retrieveProducts();
+
+        _this8.loadingShow = false;
       });
     },
     productStatusAvailable: function productStatusAvailable(id) {
       var _this9 = this;
 
+      this.loadingShow = true;
       var param = {
         id: id,
         status: "Available"
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param).then(function (response) {
         _this9.retrieveProducts();
+
+        _this9.loadingShow = false;
       });
     },
     onImageChange: function onImageChange(e) {
@@ -1102,6 +1140,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.imageURL = URL.createObjectURL(e.target.files[0]);
     },
     formSubmit: function formSubmit(e) {
+      this.loadingShow = true;
+
       if (this.image !== null && this.productType !== null) {
         e.preventDefault();
         var currentObj = this;
@@ -1114,15 +1154,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         formData.append("image", this.image);
         formData.append("productCategory", this.productType);
         axios.post("/addCategory", formData, config).then(function (response) {
+          currentObj.loadingShow = false;
           currentObj.success = response.data.success;
           currentObj.retrieveCategories();
           currentObj.retrieveProducts();
           currentObj.hide();
         })["catch"](function (error) {
+          currentObj.loadingShow = false;
           currentObj.output = error;
         });
       } else {
         this.errorMessage = "All fields are required!";
+        this.loadingShow = false;
       }
     },
     product: function product(event) {
@@ -1309,6 +1352,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     addAddOns: function addAddOns() {
       var _this10 = this;
 
+      this.loadingShow = true;
+
       if (this.addOnsPrice !== null && this.inputAddOns !== null && this.onlineAddOnsPrice !== null) {
         var param = {
           addOns: this.inputAddOns,
@@ -1317,19 +1362,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           status: "Available"
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingAddOns", param).then(function (response) {
+          _this10.loadingShow = false;
+
           _this10.retrieveAddOns();
 
           _this10.dialogForAddOns = false;
         });
       } else {
         this.errorMessage = "All fields are required!";
+        this.loadingShow = false;
       }
     },
     retrieveAddOns: function retrieveAddOns() {
       var _this11 = this;
 
+      this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllAddOns").then(function (response) {
         _this11.datas = response.data.addons;
+        _this11.loadingShow = false;
       });
     },
     editAddOns: function editAddOns(item) {
@@ -1345,6 +1395,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     editAddOnsData: function editAddOnsData() {
       var _this12 = this;
 
+      this.loadingShow = true;
+
       if (this.addOnsPrice !== null && this.inputAddOns !== null) {
         var param = {
           id: this.idAddOns,
@@ -1354,49 +1406,61 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           status: this.addOnsStat
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAddOns", param).then(function (response) {
+          _this12.loadingShow = false;
+
           _this12.retrieveAddOns();
 
           _this12.hide();
         });
       } else {
         this.errorMessage = "All fields are required!";
+        this.loadingShow = false;
       }
     },
     NAStatusUpdate: function NAStatusUpdate(id) {
       var _this13 = this;
 
+      this.loadingShow = true;
       var param = {
         id: id,
         status: "Not Available"
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusAddOns", param).then(function (response) {
+        _this13.loadingShow = false;
+
         _this13.retrieveAddOns();
       });
     },
     availableStatusUpdate: function availableStatusUpdate(id) {
       var _this14 = this;
 
+      this.loadingShow = true;
       var param = {
         id: id,
         status: "Available"
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusAddOns", param).then(function (response) {
+        _this14.loadingShow = false;
+
         _this14.retrieveAddOns();
       });
     },
     retrieveProducts: function retrieveProducts() {
       var _this15 = this;
 
+      this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllProduct").then(function (response) {
+        _this15.loadingShow = false;
         _this15.productData = response.data.product;
       });
     },
     retrieveCategories: function retrieveCategories() {
       var _this16 = this;
 
+      this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCategory").then(function (response) {
+        _this16.loadingShow = false;
         _this16.categoryData = response.data.addCategory;
-        console.log(_this16.categoryData);
         response.data.addCategory.forEach(function (element) {
           _this16.categoryName.push(element.productCategory);
         });
@@ -3349,7 +3413,9 @@ var render = function() {
           ],
           1
         )
-      ]
+      ],
+      _vm._v(" "),
+      _vm.loadingShow ? _c("loading") : _vm._e()
     ],
     2
   )

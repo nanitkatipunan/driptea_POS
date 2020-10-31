@@ -20,8 +20,8 @@ __webpack_require__.r(__webpack_exports__);
     this.retrieve();
   },
   methods: {
-    retrieve: function retrieve() {
-      this.$axios.post(AUTH.url + "retrieveSales").then(function (response) {});
+    retrieve: function retrieve() {// this.$axios.post(AUTH.url + "retrieveSales").then(response => {
+      // });
     }
   }
 });

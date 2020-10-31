@@ -208,9 +208,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.userName === "" && this.password === "") {
         this.errorMessage = "Please fill in all required fields";
-        this.loadingShow = true;
+        this.loadingShow = false;
       } else {
         this.authenticate(this.userName, this.password);
+        this.loadingShow = false;
       }
     },
     authenticate: function authenticate(name, password) {
@@ -330,10 +331,11 @@ var render = function() {
     "v-card",
     { attrs: { color: "grey lighten-4", flat: "", height: "100%" } },
     [
-      _c(
-        "center",
-        [
-          _c("div", { staticClass: "row body" }, [
+      _c("center", [
+        _c(
+          "div",
+          { staticClass: "row body" },
+          [
             _c(
               "div",
               { staticClass: "col-sm-6" },
@@ -349,188 +351,196 @@ var render = function() {
                 ])
               ],
               1
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-sm-6" },
-            [
-              _c(
-                "v-card",
-                {
-                  staticClass: "mx-auto",
-                  attrs: { "max-width": "400", height: "450" }
-                },
-                [
-                  _c(
-                    "div",
-                    { staticClass: "formGrp" },
-                    [
-                      _c("center", [
-                        _c(
-                          "div",
-                          { staticClass: "containerWidth" },
-                          [
-                            _c(
-                              "v-form",
-                              { ref: "form", attrs: { "lazy-validation": "" } },
-                              [
-                                _c("br"),
-                                _vm._v(" "),
-                                _c("br"),
-                                _vm._v(" "),
-                                _c("br"),
-                                _vm._v(" "),
-                                _c("i", [
-                                  _vm.errorMessage2 !== null
-                                    ? _c(
-                                        "span",
-                                        {
-                                          staticClass: "text-danger text-center"
-                                        },
-                                        [_vm._v(_vm._s(_vm.errorMessage2))]
-                                      )
-                                    : _vm._e()
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "v-row",
-                                  [
-                                    _c("v-text-field", {
-                                      attrs: {
-                                        color: "orange",
-                                        label: "Username*",
-                                        outlined: "",
-                                        type: "text",
-                                        id: "userName",
-                                        required: ""
-                                      },
-                                      on: {
-                                        keyup: function($event) {
-                                          return _vm.validate("userName")
-                                        }
-                                      },
-                                      model: {
-                                        value: _vm.userName,
-                                        callback: function($$v) {
-                                          _vm.userName = $$v
-                                        },
-                                        expression: "userName"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c("i", [
-                                  _vm.errorMessage3 !== null
-                                    ? _c(
-                                        "span",
-                                        {
-                                          staticClass: "text-danger text-center"
-                                        },
-                                        [_vm._v(_vm._s(_vm.errorMessage3))]
-                                      )
-                                    : _vm._e()
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "v-row",
-                                  [
-                                    _c("v-text-field", {
-                                      attrs: {
-                                        color: "orange",
-                                        label: "Password*",
-                                        outlined: "",
-                                        "append-icon": _vm.show3
-                                          ? "visibility"
-                                          : "visibility_off",
-                                        type: _vm.show3 ? "text" : "password",
-                                        id: "password",
-                                        required: ""
-                                      },
-                                      on: {
-                                        keyup: function($event) {
-                                          return _vm.validate("password")
-                                        },
-                                        "click:append": function($event) {
-                                          _vm.show3 = !_vm.show3
-                                        }
-                                      },
-                                      model: {
-                                        value: _vm.password,
-                                        callback: function($$v) {
-                                          _vm.password = $$v
-                                        },
-                                        expression: "password"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "v-btn",
-                                  {
-                                    staticClass: "btn btnRegister",
-                                    attrs: { type: "submit", color: "orange" },
-                                    on: { click: _vm.login }
-                                  },
-                                  [_vm._v("Login")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "a",
-                                  { staticClass: "FP", attrs: { href: "" } },
-                                  [_vm._v("Forgot Password")]
-                                ),
-                                _vm._v(" "),
-                                _c("hr"),
-                                _vm._v(" "),
-                                _c(
-                                  "center",
-                                  [
-                                    _c(
-                                      "v-btn",
-                                      {
-                                        staticClass: "ma-2",
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-sm-6" },
+              [
+                _c(
+                  "v-card",
+                  {
+                    staticClass: "mx-auto",
+                    attrs: { "max-width": "400", height: "450" }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "formGrp" },
+                      [
+                        _c("center", [
+                          _c(
+                            "div",
+                            { staticClass: "containerWidth" },
+                            [
+                              _c(
+                                "v-form",
+                                {
+                                  ref: "form",
+                                  attrs: { "lazy-validation": "" }
+                                },
+                                [
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("i", [
+                                    _vm.errorMessage2 !== null
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "text-danger text-center"
+                                          },
+                                          [_vm._v(_vm._s(_vm.errorMessage2))]
+                                        )
+                                      : _vm._e()
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c("v-text-field", {
                                         attrs: {
-                                          type: "submit",
+                                          color: "orange",
+                                          label: "Username*",
                                           outlined: "",
-                                          color: "orange"
+                                          type: "text",
+                                          id: "userName",
+                                          required: ""
                                         },
                                         on: {
-                                          click: function($event) {
-                                            return _vm.redirect("/register")
+                                          keyup: function($event) {
+                                            return _vm.validate("userName")
                                           }
+                                        },
+                                        model: {
+                                          value: _vm.userName,
+                                          callback: function($$v) {
+                                            _vm.userName = $$v
+                                          },
+                                          expression: "userName"
                                         }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c("i", [
+                                    _vm.errorMessage3 !== null
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "text-danger text-center"
+                                          },
+                                          [_vm._v(_vm._s(_vm.errorMessage3))]
+                                        )
+                                      : _vm._e()
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-row",
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          color: "orange",
+                                          label: "Password*",
+                                          outlined: "",
+                                          "append-icon": _vm.show3
+                                            ? "visibility"
+                                            : "visibility_off",
+                                          type: _vm.show3 ? "text" : "password",
+                                          id: "password",
+                                          required: ""
+                                        },
+                                        on: {
+                                          keyup: function($event) {
+                                            return _vm.validate("password")
+                                          },
+                                          "click:append": function($event) {
+                                            _vm.show3 = !_vm.show3
+                                          }
+                                        },
+                                        model: {
+                                          value: _vm.password,
+                                          callback: function($$v) {
+                                            _vm.password = $$v
+                                          },
+                                          expression: "password"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      staticClass: "btn btnRegister",
+                                      attrs: {
+                                        type: "submit",
+                                        color: "orange"
                                       },
-                                      [_vm._v("Create New Account")]
-                                    )
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ])
-                    ],
-                    1
-                  )
-                ]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _vm.loadingShow ? _c("loading") : _vm._e()
-        ],
-        1
-      )
+                                      on: { click: _vm.login }
+                                    },
+                                    [_vm._v("Login")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "a",
+                                    { staticClass: "FP", attrs: { href: "" } },
+                                    [_vm._v("Forgot Password")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("hr"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "center",
+                                    [
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          staticClass: "ma-2",
+                                          attrs: {
+                                            type: "submit",
+                                            outlined: "",
+                                            color: "orange"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.redirect("/register")
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("Create New Account")]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ])
+                      ],
+                      1
+                    )
+                  ]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm.loadingShow ? _c("loading") : _vm._e()
+          ],
+          1
+        )
+      ])
     ],
     1
   )

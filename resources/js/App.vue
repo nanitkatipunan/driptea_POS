@@ -50,6 +50,9 @@
           </v-menu>
         </div>
       </v-app-bar-items>
+      <v-app-bar-items>
+        <button class="btn" @click="logout()">Logout</button>
+      </v-app-bar-items>
     </v-app-bar>
     <v-app-bar class="cashierNav" color="orange darken-1" v-if="cashier !== null">
       <a href="#"><v-img max-height="64" max-width="42" :src="image"></v-img></a>
@@ -147,22 +150,32 @@ export default {
       { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
       { icon: "mdi-apps", text: "Dashboard", route: "/adminDashboard" },
       {
-        icon: "mdi-calendar-account",
+        icon: "mdi-poll",
         text: "Sales Inventory",
         route: "/salesInventory"
       },
       {
         icon: "mdi-calendar-account",
+        text: "Order Inventory",
+        route: "/orderInventory"
+      },
+      {
+        icon: "mdi-cup",
+        text: "Cups Inventory",
+        route: "/cupsInventory"
+      },
+      {
+        icon: "mdi-plus-box",
         text: "Adding",
         route: "/addProductCategoryAddOns"
       },
       {
-        icon: "mdi-calendar-account",
+        icon: "mdi-point-of-sale",
         text: "POS",
         route: "/cashierDashboard"
       },
       {
-        icon: "mdi-calendar-account",
+        icon: "mdi-account-multiple-plus",
         text: "Register Account",
         route: "/registerAccount"
       },

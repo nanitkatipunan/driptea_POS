@@ -9,7 +9,6 @@
             <span class="quote">A better tea to share with everybody.</span>
           </center>
         </div>
-      </div>
         <div class="col-sm-6">
           <v-card class="mx-auto" max-width="400" height="450">
             <div class="formGrp">
@@ -76,6 +75,7 @@
           </v-card>
         </div>
         <loading v-if="loadingShow"></loading>
+      </div>
     </center>
   </v-card>
 </template>
@@ -192,9 +192,10 @@ export default {
       };
       if (this.userName === "" && this.password === "") {
         this.errorMessage = "Please fill in all required fields";
-        this.loadingShow = true
+        this.loadingShow = false
       } else {
         this.authenticate(this.userName, this.password);
+        this.loadingShow = false
       }
     },
     authenticate(name, password) {
