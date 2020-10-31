@@ -1,14 +1,14 @@
 <template>
   <div>
+    <div class="welcome">
+      <b>
+        <i>
+          WELCOME,
+          <span class="Cname">DRIPTEA ADMIN</span>
+        </i>
+      </b>
+    </div>
     <div class="row body">
-      <div class="welcome">
-        <b>
-          <i>
-            WELCOME,
-            <span class="Cname">DRIPTEA ADMIN</span>
-          </i>
-        </b>
-      </div>
       <div class="col-sm-8">
         <v-card class="subhead">
           <v-toolbar color="#f2f2f2" dark>
@@ -94,21 +94,21 @@
             <div>
               <v-img class="white--text align-end thetop3" :src="topProdArr[0].img">
                 <v-card-title class="Prod_name">
-                  <i>{{topProdArr[0].name}}</i>
+                  <i></i>
                 </v-card-title>
               </v-img>
             </div>
             <div>
               <v-img class="white--text align-end thetop3" :src="topProdArr[1].img">
                 <v-card-title class="Prod_name">
-                  <i>{{topProdArr[1].name}}</i>
+                  <i></i>
                 </v-card-title>
               </v-img>
             </div>
             <div>
               <v-img class="white--text align-end thetop3" :src="topProdArr[2].img">
                 <v-card-title class="Prod_name">
-                  <i>{{topProdArr[2].name}}</i>
+                  <i></i>
                 </v-card-title>
               </v-img>
             </div>
@@ -126,8 +126,9 @@
     Helvetica Neue, Arial, sans-serif;
   font-size: 25px;
   margin-bottom: 10px;
-  margin-left: 1%;
+  margin-left: 4%;
   font-weight: bold;
+  margin-top: 5%;
 }
 .insideToolbar {
   margin-top: 25px;
@@ -177,8 +178,10 @@
   width: 100%;
 }
 .body {
-  margin: 5%;
+  margin-left: 3%;
+  margin-right: 3%;
   height: 100%;
+  margin-bottom: 5%;
 }
 .top3 {
   width: 20%;
@@ -205,6 +208,8 @@ import { arch } from "os";
 import swal from "sweetalert";
 import nodataImg from "../../../assets/noDatatoShow.png";
 import loading from '../../basic/loading.vue';
+// import index from "../../services/auth";
+
 export default {
   data() {
     return {
@@ -244,6 +249,8 @@ export default {
           data: []
         }
       ],
+      options0: {},
+      series0: [],
       points: [],
       thedate: null,
       years: [],
@@ -286,6 +293,8 @@ export default {
   },
   computed: {},
   mounted() {
+    this.getTop3();
+    console.log("ang top3 ", this.topProdArr);
     let date = new Date();
     let month =
       date.getMonth() + 1 > 9
@@ -293,7 +302,6 @@ export default {
         : "0" + (date.getMonth() + 1);
     this.thedate = date.getFullYear() + "-" + month;
     this.MonthLabel = this.mnths[month - 1];
-    this.getTop3();
     this.yrvalue = new Date().getFullYear();
     this.getYears();
     this.getDate();
@@ -333,11 +341,16 @@ export default {
             this.points.push(0);
           }
         }
-        this.series = [
-          {
-            data: this.points
-          }
-        ];
+
+        if (response.data.total.length > 0) {
+          this.series = [
+            {
+              data: this.points
+            }
+          ];
+        } else {
+          this.series = [];
+        }
       });
       this.points = [];
     },
@@ -711,15 +724,20 @@ export default {
       let params = {
         year: null
       };
+      let indexes = [];
       Axios.post(AUTH.url + "getTopProd", params).then(response => {
         this.loadingShow = false
+        let resLen = response.data.prods.length;
+        response.data.prods.forEach(element => {
+          indexes.push(response.data.prods.indexOf(element));
+        });
         for (var i = 0; i < 3; i++) {
-          if (response.data.length > 1) {
+          if (indexes.includes(i)) {
             this.topProdArr.push({
               img: response.data.prods[i].img,
               name: response.data.prods[i].pName
             });
-          }else{
+          } else {
             this.topProdArr.push({
               img: this.tempIMG,
               name: " "
