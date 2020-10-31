@@ -1,5 +1,5 @@
 <template>
-  <v-card color="grey lighten-4" flat height="100%">
+  <v-card color="grey lighten-4" flat height="100%" max-width="100%">
     <center>
       <div class="row body">
         <div class="col-sm-6">
@@ -9,7 +9,6 @@
             <span class="quote">A better tea to share with everybody.</span>
           </center>
         </div>
-      </div>
         <div class="col-sm-6">
           <v-card class="mx-auto" max-width="400" height="450">
             <div class="formGrp">
@@ -19,6 +18,12 @@
                     <br>
                     <br>
                     <br>
+                    <i>
+                      <span
+                        v-if="errorMessage !== null"
+                        class="text-danger text-center"
+                      >{{errorMessage}}</span>
+                    </i>
                     <i>
                       <span
                         v-if="errorMessage2 !== null"
@@ -75,7 +80,8 @@
             </div>
           </v-card>
         </div>
-        <loading v-if="loadingShow"></loading>
+      </div>
+      <loading v-if="loadingShow"></loading>
     </center>
   </v-card>
 </template>
@@ -97,8 +103,8 @@
   background-color: gray;
 } */
 .logo {
-  height: 300px;
-  width: 300px;
+  height: 60%;
+  width: 60%;
   margin-top: 3%;
 }
 img {
@@ -107,20 +113,11 @@ img {
 span {
   font-size: 12px;
 }
-hr {
-  /* border: 1px solid #17d817; */
-}
 .termsCondition {
   margin-top: 6%;
   font-size: 15px;
   text-align: center;
 }
-.form-control {
-  /* border: 1px solid #17d817; */
-  border-radius: 5px;
-  width: 100%;
-}
-
 p {
   font-size: 20px;
 }
@@ -134,7 +131,7 @@ p {
   width: 80%;
   text-align: left;
 }
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
   .containerWidth {
     text-align: left;
     width: 100%;
@@ -153,13 +150,13 @@ p {
     text-align: left;
     width: 60%;
   }
-}
+} */
 </style>
 <script>
 import ROUTER from "../router";
 import AUTH from "../services/auth";
 import image from "../../assets/logo.png";
-import loading from './loading.vue';
+import loading from "./loading.vue";
 export default {
   name: "app",
   data() {
@@ -183,7 +180,7 @@ export default {
       ROUTER.push(route).catch(() => {});
     },
     login() {
-      this.loadingShow = true
+      this.loadingShow = true;
       this.validate("userName");
       this.validate("password");
       let parameter = {
@@ -192,13 +189,13 @@ export default {
       };
       if (this.userName === "" && this.password === "") {
         this.errorMessage = "Please fill in all required fields";
-        this.loadingShow = true
+        this.loadingShow = true;
       } else {
         this.authenticate(this.userName, this.password);
       }
     },
     authenticate(name, password) {
-      this.loadingShow = true
+      this.loadingShow = true;
       let credentials = {
         name: name,
         password: password
@@ -208,13 +205,13 @@ export default {
         .then(response => {
           AUTH.setToken(response.data.token);
           AUTH.authenticateForAll();
-          this.loadingShow = false
+          this.loadingShow = false;
         })
         .catch(err => {
           if (err.response.status === 400) {
             this.errorMessage = "Invalid credentials!";
           }
-          this.loadingShow = false
+          this.loadingShow = false;
         });
     },
     validate(input) {
