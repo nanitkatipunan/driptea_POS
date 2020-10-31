@@ -1,7 +1,15 @@
 <template>
-<<<<<<< HEAD
   <div>
+    <center>
+        <h1 class="font-weight-regular" v-if = "tableForCategory">Adding Category</h1>
+          <h1 class="font-weight-regular" v-if = "tableForProduct">Adding Product</h1>
+          <h1 class="font-weight-regular" v-if = "tableForAddOns">Adding Add Ons</h1>
+          <h1 class="font-weight-regular" v-if = "tableForCupType">Adding Cup Type</h1>
+          <h1 class="font-weight-regular" v-if = "tableForCupSize">Adding Cup Size</h1>
     <v-toolbar flat>
+       <v-toolbar-title >
+        
+       </v-toolbar-title>
       <template v-slot:extension>
         <v-tabs dark background-color="#ff5b04" fixed-tabs>
           <v-tabs-slider></v-tabs-slider>
@@ -23,6 +31,8 @@
         </v-tabs>
       </template>
     </v-toolbar>
+    </center>
+
 
     <!-- Table for Category -->
     <v-data-table
@@ -111,86 +121,6 @@
         >mdi-check</v-icon>
       </template>
     </v-data-table>
-=======
-    <div class=" container div">
-        <div>
-            <center><br>
-                <h1 v-if="prod">Adding Products</h1>
-                <h1 v-if="cat">Adding Categories</h1>
-                <h1 v-if="ons">Adding Add-ons</h1>
-                <h1 v-if="cup">Adding Cup Type</h1>
-                <h1 v-if="size">Adding Cup Quantity</h1><br>
-                <button v-if="ons" type="button" class="btn btn-primary btnModal overline" @click="showAddOns">+ Add ons</button>
-                <button v-if="prod" type="button" class="btn btn-primary btnModal overline" @click="showProduct">+ Product</button>
-                <button v-if="cat" type="button" class="btn btn-primary btnModal overline" @click="showCategory">+ Categories</button>
-                <button v-if="cup" type="button" class="btn btn-primary btnModal overline" @click="showCupType">+ Cup Type</button>
-                <button v-if="size" type="button" class="btn btn-primary btnModal overline" @click="showCupSize">+ Cup Size Quantity</button>
-
-            </center>
-        </div><br><br>
-        <div>
-            <button type="button" ref="cate" class="btn navButton borderStyle overline" @click="category($event)">Categories</button>
-            <button type="button" ref="pro" class="btn navButton btnBorderStyle1 overline" @click="product($event)">Product</button>
-            <button type="button" ref="on" class="btn navButton btnBorderStyle1 overline" @click="addOnsShow($event)">Add-ons</button>
-            <button type="button" ref="cup" class="btn navButton btnBorderStyle1 overline" @click="addCupType($event)">Cup Type</button>
-            <button type="button" ref="size" class="btn navButton btnBorderStyle1 overline" @click="cupSize($event)">Cup Size </button>
-
-        </div>
-        <div>
-            <center>
-                <div v-if="size" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped categoryTable" id="myTable">
-                         <thead class="thead-light">
-                            <tr class="header overline">
-                                <th colspan="2">Date</th>
-                                <th colspan="4">Incoming Cups</th>
-                                <th colspan="4">Cups Onrack</th>
-                                <th colspan="4">Used Cups</th>
-                                <th colspan="4">Remaining Cups</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           <tr>
-                               <td colspan="2">Date</td>
-                               <td>Low Dose (LD)</td>
-                               <td>High Dose (HD)</td>
-                               <td>Over Dose (OD)</td>
-                               <td>Total Cups</td>
-                               <td>Low Dose (LD)</td>
-                               <td>High Dose (HD)</td>
-                               <td>Over Dose (OD)</td>
-                               <td>Total Cups</td>
-                               <td>Low Dose (LD)</td>
-                               <td>High Dose (HD)</td>
-                               <td>Over Dose (OD)</td>
-                               <td>Total Cups</td>
-                               <td>Low Dose (LD)</td>
-                               <td>High Dose (HD)</td>
-                               <td>Over Dose (OD)</td>
-                               <td>Total Cups</td>
-                           </tr>
-                           <tr v-for="(item, index) in cupSizeData" :key="index">
-                               <td colspan="2">{{item.created_at}}</td>
-                               <td>{{item.incomingLowDose}}</td>
-                               <td>{{item.incomingHighDose}}</td>
-                               <td>{{item.incomingOverDose}}</td>
-                               <td></td>
-                               <td>{{item.onRockLowDose}}</td>
-                               <td>{{item.onRockHighDose}}</td>
-                               <td>{{item.onRockOverDose}}</td>
-                               <td></td>
-                               <td>{{item.usedLowDose}}</td>
-                               <td>{{item.usedHighDose}}</td>
-                               <td>{{item.usedOverDose}}</td>
-                               <td></td>
-                               <td>{{item.remainingLowDose}}</td>
-                               <td>{{item.remainingHighDose}}</td>
-                               <td>{{item.remainingOverDose}}</td>
-                               <td></td>
-                           </tr>
-                        </tbody>
-                        </table>
->>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
 
     <!-- Table for addons -->
     <v-data-table
@@ -238,7 +168,6 @@
       </template>
     </v-data-table>
 
-<<<<<<< HEAD
     <!-- Table for cupType -->
     <v-data-table
       v-if="tableForCupType"
@@ -279,142 +208,6 @@
         <v-icon v-else class="btn btn-warning" small @click="availableCupUpdate(item.id)">mdi-check</v-icon>
       </template>
     </v-data-table>
-=======
-                <div v-if="cat" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped categoryTable" id="myTable">
-                        <thead class="thead-light">
-                            <tr class="header  overline">
-                                <th scope="col">#</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template>
-                                <tr v-for="(item, index) in categoryData" :key="index">
-                                    <td scope="row">{{index+1}}</td>
-                                    <td><img :src="item.image"></td>
-                                    <td>{{item.productCategory}}</td>
-                                    <td>
-                                        <div style="text-align: left">
-                                            <button class="btn btn-success" @click="editCategories(item)">Edit</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
-                <div v-if="prod" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped productTable" id="myTable">
-                        <thead class="thead-light">
-                            <tr class="header overline">
-                                <th scope="col">#</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Low Dose Price</th>
-                                <th scope="col">High Dose Price</th>
-                                <th scope="col">Over Dose Price</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template>
-                                <tr v-for="(item, index) in productData" :key="index">
-                                    <td scope="row">{{index+1}}</td>
-                                    <td><img :src="item.image"></td>
-                                    <td>{{item.productCategory}}</td>
-                                    <td>{{item.productName}}</td>
-                                    <td>{{item.description}}</td>
-                                    <td>{{item.lowPrice}}</td>
-                                    <td>{{item.highPrice}}</td>
-                                    <td>{{item.overPrice}}</td>
-                                    <td>{{item.status}}</td>
-                                    <td>
-                                        <div style="text-align: left">
-                                            <button class="btn btn-success" @click="editProduct(item)">Edit</button>
-                                            <button v-if="item.status === 'Available'" class="btn btn-warning" style="color: red; display: inline-block;" @click="productStatusUpdate(item.id)">N/A</button>
-                                            <button v-else class="btn btn-warning" style="color: red; display: inline-block;" @click="productStatusAvailable(item.id)">Available</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
-                <div v-if="ons" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped addOnsTable" id="myTable">
-                        <thead class="thead-light">
-                            <tr class="header overline">
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Normal Price</th>
-                                <th scope="col">Online Price</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template>
-                                <tr v-for="(item, index) in datas" :key="index">
-                                    <td scope="row">{{index+1}}</td>
-                                    <td>{{item.addons_name}}</td>
-                                    <td>{{item.addons_price}}</td>
-                                    <td>{{item.onlineAddOnsPrice}}</td>
-                                    <td>{{item.status}}</td>
-                                    <td>
-                                        <div style="text-align: left">
-                                            <button class="btn btn-success" @click="editAddOns(item)">Edit</button>
-                                            <button v-if="item.status === 'Available'" class="btn btn-warning" style="color: red; display: inline-block;" @click="NAStatusUpdate(item.id)">N/A</button>
-                                            <button v-else class="btn btn-warning" style="color: red; display: inline-block;" @click="availableStatusUpdate(item.id)">Available</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
-                <div v-if="cup" class="my-custom-scrollbar">
-                    <table class="table table-bordered table-striped cupTable" id="myTable">
-                        <thead class="thead-light">
-                            <tr class="header overline">
-                                <th scope="col">#</th>
-                                <th scope="col">Cup Type</th>
-                                <th scope="col">Additional Price</th>
-                                <th scope="col">Additional Online Price</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template>
-                                <tr v-for="(item, index) in cupData" :key="index">
-                                    <td scope="row">{{index+1}}</td>
-                                    <td>{{item.cupTypeName}}</td>
-                                    <td>{{item.cupTypePrice}}</td>
-                                    <td>{{item.inputCupOnlinePrice}}</td>
-                                    <td>{{item.status}}</td>
-                                    <td>
-                                        <div style="text-align: left">
-                                            <button class="btn btn-success" @click="editCup(item)">Edit</button>
-                                            <button v-if="item.status === 'Available'" class="btn btn-warning" style="color: red; display: inline-block;" @click="NACupUpdate(item.id)">N/A</button>
-                                            <button v-else class="btn btn-warning" style="color: red; display: inline-block;" @click="availableCupUpdate(item.id)">Available</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
-            </center>
-        </div>
-        
-        <!-- Modal -->
->>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
 
     <!-- Table for cupSize -->
     <v-data-table
@@ -684,153 +477,8 @@
         </template>
 
 
-<<<<<<< HEAD
 
   </div>
-=======
-        <!-- Modal for adding Product -->
-        <div v-if="showProductModal" id="modal" class="blurred-background">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <!-- <h5 class="modal-title">Modal title</h5> -->
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hide()">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form @submit="formSubmitProduct" enctype="multipart/form-data" action  method="POST">
-                            <div class="row">
-                                <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="pCat">Product Category:</label>
-                                        <br>
-                                        <select class="form-control" v-model="prodType">
-                                            <option v-for="(item, index) in categoryData" :key="index" :value="item.productCategory">{{item.productCategory}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="description">Product Description:</label>
-                                        <br>
-                                        <input type="text" class="form-control" v-model="description" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="pname">Product name:</label>
-                                        <br>
-                                        <input type="text" class="form-control" v-model="productName" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" ref="norm" v-if="priceEvent === ''" class="btn borderStyle1" style="margin-left: 1%; background-color: #ffffff; cursor: pointer" @click="normalPrice($event)">Normal Price</button>
-                            <button type="button" ref="norm" v-else class="btn" style="margin-left: 1%; background-color: #ffffff; cursor: pointer" @click="normalPrice($event)">Normal Price</button>
-                            <button type="button" ref="online" class="btn btnBorderStyle" style="display: inline-block; background-color: #ffffff; cursor: pointer" @click="onlinePrice($event)">Online Price</button>
-                            <div v-if="!online" style="border: 1px solid #d8dce3; margin-top: -0.5%;"> 
-                                <div class="row" style="margin-top: 5%;">
-                                    <div class="col-md-6">
-                                        <div class="form-group" style="margin-left: 3%;">
-                                            <label for="lowPrice">Low Dose Price:</label>
-                                            <br>
-                                            <input type="number" min="0" class="form-control" v-model="lowPrice" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group" style="margin-right: 3%;">
-                                            <label for="highPrice">High Dose Price:</label>
-                                            <br>
-                                            <input type="number" min="0" class="form-control" v-model="highPrice" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group" style="margin-left: 3%;">
-                                            <label for="overPrice">Over Dose Price:</label>
-                                            <br>
-                                            <input type="number" min="0" class="form-control" v-model="overPrice" required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div v-if="online" style="border: 1px solid #d8dce3; margin-top: -0.5%;"> 
-                                <div class="row" style="margin-top: 5%;">
-                                    <div class="col-md-6">
-                                        <div class="form-group" style="margin-left: 3%;">
-                                            <label for="onlinelowPrice">Online Low Dose Price:</label>
-                                            <br>
-                                            <input type="number" min="0" class="form-control" v-model="onlinelowPrice" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group" style="margin-right: 3%;">
-                                            <label for="onlinehighPrice">Online High Dose Price:</label>
-                                            <br>
-                                            <input type="number" min="0" class="form-control" v-model="onlinehighPrice" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group" style="margin-left: 3%;">
-                                            <label for="onlineoverPrice">Online Over Dose Price:</label>
-                                            <br>
-                                            <input type="number" min="0" class="form-control" v-model="onlineoverPrice" required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <center>
-                                    <img class="addOnsImage" :src="imgURL"><br>
-                                    <input type="file" class="fileStyle" v-on:change="onImgChange" required><br>
-                                </center>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                                <button v-if="productAdd" type="submit" class="btn btn-primary">Add Product</button>
-                                <button v-if="productEdit" type="button" class="btn btn-primary" @click="updateProduct($event)">Edit Product</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div v-if="showCategoryModal" id="modal" class="blurred-background">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hide()">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                         <form @submit="formSubmit" enctype="multipart/form-data" action method="POST">
-                            <span class="errorColor" v-if="errorMessage !== null">{{errorMessage}}</span>
-                            <div class="form-group">
-                                <label for="addOns">Product Category:</label>
-                                <br>
-                                <input type="text" class="form-control" v-model="productType" required>
-                            </div>
-                            <div class="form-group">
-                                <center>
-                                    <img class="addOnsImage" :src="imageURL"><br>
-                                    <input type="file" class="fileStyle" v-on:change="onImageChange" required><br>
-                                </center>
-                            </div>
-                            <div style="text-align: right">
-                                <button type="button" class="btn btn-secondary" @click="hide()">Close</button>
-                                <button type="submit" class="btn btn-primary">Add Category</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
->>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
 </template>
 
 <style scoped>
@@ -890,6 +538,10 @@ img {
 }
 hr {
   border: 1px solid gray;
+}
+h1{
+  text-align: center;
+  margin-top: 3%;
 }
 th {
   text-align: center;
@@ -1034,10 +686,6 @@ export default {
       productData: [],
       categoryData: [],
       categoryName: [],
-      showProductModal: false,
-      showCategoryModal: false,
-      showCupTypeModal: false,
-      showCupSizeModal: false,
       btnCupType: false,
       btnEditCupType: false,
       inputCupPrice: null,
@@ -1066,6 +714,7 @@ export default {
       overDoseCup: null,
       cupSizeData: [],
       search: null,
+      title: null,
       dialogForCupType: false,
       dialogForProduct: false,
       dialogForCategory: false,
@@ -1154,7 +803,6 @@ export default {
           this.retrieveCupType();
         });
     },
-<<<<<<< HEAD
     retrieveCupType() {
       this.$axios.post(AUTH.url + "retrieveAllCupType").then(response => {
         this.cupData = response.data.cupType;
@@ -1168,14 +816,6 @@ export default {
             
           
         });
-=======
-    mounted() {
-        // this.retrieveAddOns();
-        this.$refs.on.click()
-        this.$refs.pro.click()
-        this.$refs.size.click()
-        this.$refs.cate.click()
->>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
 
         let totalCup = response.data.quantityCupsInDB.incomingOverDose;
         console.log(totalCup);
@@ -1211,7 +851,6 @@ export default {
         this.$axios.post(AUTH.url + "addIncomingCups", param).then(response => {
           this.retrieveCupSize();
           this.hide();
-          this.dialogForCupSize = false;
         });
       } else {
         this.errorMessage = "All fields are required!";
@@ -1345,7 +984,6 @@ export default {
             }else{
                 this.errorMessage = 'All fields are required!'
             }
-<<<<<<< HEAD
     },
     productStatusUpdate(id) {
       let param = {
@@ -1377,155 +1015,6 @@ export default {
       if (this.image !== null && this.productType !== null) {
         e.preventDefault();
         let currentObj = this;
-=======
-        },
-        productStatusUpdate(id){
-            let param = {
-                id: id,
-                status: 'Not Available'
-            }
-            this.$axios.post(AUTH.url + "updateStatusProduct", param).then(response => {
-                this.retrieveProducts()
-            });
-        },
-        productStatusAvailable(id){
-            let param = {
-                id: id,
-                status: 'Available'
-            }
-            this.$axios.post(AUTH.url + "updateStatusProduct", param).then(response => {
-                this.retrieveProducts()
-            });
-        },
-        onImageChange(e){
-            this.image = e.target.files[0]
-            this.imageURL = URL.createObjectURL(e.target.files[0])
-        },
-        formSubmit(e) {
-            if(this.image !== null && this.productType !== null){
-                e.preventDefault();
-                let currentObj = this;
-
-                const config = {
-                    headers: { 'content-type': 'multipart/form-data' }
-                }
-
-                let formData = new FormData();
-                formData.append('image', this.image)
-                formData.append('productCategory', this.productType)
-                this.$axios.post('/addCategory', formData, config).then(function (response) {
-                    currentObj.success = response.data.success
-                    currentObj.retrieveCategories()
-                    currentObj.retrieveProducts()
-                    currentObj.hide()
-                })
-                .catch(function (error) {
-                    currentObj.output = error;
-                });
-            }else{
-                this.errorMessage = 'All fields are required!'
-            }
-            
-        },
-        product(event){
-            if(this.secondEvent !== event.target){
-                event.target.classList.add('borderStyle')
-                event.target.classList.remove('btnBorderStyle1')
-                if(this.secondEvent !== ''){
-                    this.secondEvent.classList.add('btnBorderStyle1')
-                    this.secondEvent.classList.remove('borderStyle')
-                }
-            }
-            this.secondEvent = event.target
-            this.prod = true
-            this.cat = false
-            this.ons = false
-            this.cup = false
-            this.size = false
-
-        },
-         cupSize(event){
-            if(this.secondEvent !== event.target){
-                event.target.classList.add('borderStyle')
-                event.target.classList.remove('btnBorderStyle1')
-                if(this.secondEvent !== ''){
-                    this.secondEvent.classList.add('btnBorderStyle1')
-                    this.secondEvent.classList.remove('borderStyle')
-                }
-            }
-            this.secondEvent = event.target
-            this.size = true
-            this.prod = false
-            this.cat = false
-            this.ons = false
-            this.cup = false
-        },
-        category(event){
-            if(this.secondEvent !== event.target){
-                event.target.classList.add('borderStyle')
-                event.target.classList.remove('btnBorderStyle1')
-                if(this.secondEvent !== ''){
-                    this.secondEvent.classList.add('btnBorderStyle1')
-                    this.secondEvent.classList.remove('borderStyle')
-                }
-            }
-            this.secondEvent = event.target
-            this.prod = false
-            this.cat = true
-            this.ons = false
-            this.cup = false
-            this.size = false
-
-        },
-        addOnsShow(event){
-            if(this.secondEvent !== event.target){
-                event.target.classList.add('borderStyle')
-                event.target.classList.remove('btnBorderStyle1')
-                if(this.secondEvent !== ''){
-                    this.secondEvent.classList.add('btnBorderStyle1')
-                    this.secondEvent.classList.remove('borderStyle')
-                }
-            }
-            this.secondEvent = event.target
-            this.prod = false
-            this.cat = false
-            this.ons = true
-            this.cup = false
-            this.size = false
-
-        },
-        addCupType(event){
-            if(this.secondEvent !== event.target){
-                event.target.classList.add('borderStyle')
-                event.target.classList.remove('btnBorderStyle1')
-                if(this.secondEvent !== ''){
-                    this.secondEvent.classList.add('btnBorderStyle1')
-                    this.secondEvent.classList.remove('borderStyle')
-                }
-            }
-            this.secondEvent = event.target
-            this.prod = false
-            this.cat = false
-            this.ons = false
-            this.cup = true
-            this.size = false
-
-
-        },
-        showAddOns(){
-            this.showAddOnsModal = true
-            this.addonsShow = true
-            this.inputAddOns = null
-            this.onlineAddOnsPrice = null
-            this.addOnsPrice = null
-        },
-         showCupSize(){
-            this.showCupSizeModal = true
-            this.cupSizeShow = true
-            this.lowDoseCup = null
-            this.highDoseCup = null
-            this.overDoseCup = null
->>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
 
         const config = {
           headers: { "content-type": "multipart/form-data" }
@@ -1645,7 +1134,7 @@ export default {
       this.addOnsPrice = null;
     },
     showCupSize() {
-      this.showCupSizeModal = true;
+      this.dialogForCupSize = true;
       this.cupSizeShow = true;
       this.lowDoseCup = null;
       this.highDoseCup = null;

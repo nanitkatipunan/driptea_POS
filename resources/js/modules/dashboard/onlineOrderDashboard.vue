@@ -1,6 +1,5 @@
 <template>
     <div>
-            <!-- <img class="dripteaImage" :src="image" > -->
         <v-card class="overflow-hidden">
             <v-app-bar
             absolute
@@ -8,16 +7,15 @@
             dark
             shrink-on-scroll
             prominent
-            src="https://picsum.photos/1920/1080?random"
             fade-img-on-scroll
             scroll-target="#scrolling-techniques-3"
             >
-            <template v-slot:img="{ props }">
+            <!-- <template v-slot:img="{ props }">
                 <v-img
                 v-bind="props"
                 gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
                 ></v-img>
-            </template>
+            </template> -->
 
             <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
@@ -28,6 +26,7 @@
             <v-btn icon style="margin-right: 2%;">
                 <v-icon>mdi-magnify</v-icon>
             </v-btn>
+            
 
             <v-btn icon @click="direct()" style="margin-right: 2%;">
                 <v-icon>mdi-cart</v-icon>
@@ -41,7 +40,7 @@
 
             <template v-slot:extension>
                 <v-tabs align-with-title>
-                    <v-tab v-for="(item, index) in data" :key="index"><a :href="'#'+item.productCategory" style="color: white;">{{item.productCategory}}</a></v-tab>
+                    <v-tab v-for="(item, index) in productData" :key="index"><a :href="'#'+item.productCategory" style="color: white;">{{item.productCategory}}</a></v-tab>
                 </v-tabs>
             </template>
             </v-app-bar>
@@ -51,9 +50,9 @@
             height="100%"
             max-height="900"
             >
-            <v-container style="margin-top: 200px;">
+            <v-container style="margin-top: 300px;">
                 <!-- <button class="btn btn-primary" @click="direct()">Cart {{count}}</button> -->
-                <div :id="item.productCategory" class="categoryStorage" v-for="(item, index) in data" :key="index">
+                <div :id="item.productCategory" class="categoryStorage" v-for="(item, index) in productData" :key="index" >
                     <!-- <img class="imgItem" :src="item.image" @click="redirect(item.productCategory)"> -->
                     <h3>{{item.productCategory}}</h3>
                     <div v-if="productData !== null && data.length > 0" class="row">
@@ -244,17 +243,16 @@ export default {
             cluster: this.config.PUSHER_APP_CLUSTER,
             encrypted: true
         });
-
-          //Subscribe to the channel we specified in our Adonis Application
         let channel = pusher.subscribe('driptea-channel')
-
         channel.bind('driptea-data', (data) => {
-            this.count++
+            if(data.order.status === 'incart'){
+                this.count++
+            }
         })
     },
     methods: {
         direct(){
-            ROUTER.push('/customerCart')
+            ROUTER.push('/customerCart').catch(()=>{})
         },
         getSizePrice(){
             if(this.size === 'highDose'){
@@ -323,16 +321,35 @@ export default {
                 this.errorMessage1 = 'cup type is required!'
             }
             if(this.quantity > 0 && this.size !== null && this.sugarLevel !== null && this.cupType !== null){
-                let param = {
-                    customerType: "onlineOrder",
-                    customerName: localStorage.getItem('fullName'),
-                    customerAddress: localStorage.getItem('address'),
-                    customerContactNumber: localStorage.getItem('contactNumber'),
-                };
-                this.$axios.post(AUTH.url + "addCustomer", param).then(res => {
-                    localStorage.setItem('customerOnlineId', res.data.customerDetails.id)
+                if(localStorage.getItem('customerOnlineId') === null){
+                    let param = {
+                        customerType: "onlineOrder",
+                        customerName: localStorage.getItem('fullName'),
+                        customerAddress: localStorage.getItem('address'),
+                        customerContactNumber: localStorage.getItem('contactNumber'),
+                    };
+                    this.$axios.post(AUTH.url + "addCustomer", param).then(res => {
+                        localStorage.setItem('customerOnlineId', res.data.customerDetails.id)
+                        let parameter = {
+                            customerId: res.data.customerDetails.id,
+                            onlineId: localStorage.getItem('customerId'),
+                            productId: this.itemId,
+                            quantity: this.quantity,
+                            size: this.size,
+                            sugarLevel: this.sugarLevel,
+                            choosenPrice: this.total,
+                            cupType: this.cupType,
+                            status: 'incart',
+                            addOns: this.addOns,
+                            subTotal: this.priceShown
+                        }
+                        this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
+                            $('#viewDetails').modal('hide')
+                        })
+                    })
+                }else{
                     let parameter = {
-                        customerId: res.data.customerDetails.id,
+                        customerId: localStorage.getItem('customerOnlineId'),
                         onlineId: localStorage.getItem('customerId'),
                         productId: this.itemId,
                         quantity: this.quantity,
@@ -347,7 +364,7 @@ export default {
                     this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
                         $('#viewDetails').modal('hide')
                     })
-                })
+                }
             }
         },
         cancel(){
@@ -370,9 +387,7 @@ export default {
             this.description = item.description
             this.itemId = item.id
             this.getSizePrice()
-
         }
     }
 }
 </script>
-

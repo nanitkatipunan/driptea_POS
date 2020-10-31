@@ -1,47 +1,91 @@
 <template>
     <div class="container">
-        <center>
-            <h1>Your Cart</h1>
-            <div v-if="tableData !== null && tableData.length > 0">
-                <table class="table table-responsive" id="myTable">
-                    <tr>
-                        <th style="width: 30%;">Product Name</th>
-                        <th>Add&nbsp;ons</th>
-                        <th>Cup Type</th>
-                        <th>Unit Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th style="width: 15px;">❌</th>
-                    </tr>
-                    <tbody>
-                        <tr v-for="(item, index) in tableData" :key="index">
-                            <td>{{item.order_product ? item.order_product[0].productName : ''}}</td>
-                            <td>{{item.same_order ? getAddOns(item.same_order) : ''}}</td>
-                            <td>{{item.cupType ? item.cupType : ''}}</td>
-                            <td>{{item.choosenPrice}}</td>
-                            <td>{{item.quantity}}</td>
-                            <td>{{item.subTotal}}</td>
-                            <td>
-                                <button style="font-size: 10px" type="button" aria-expanded="false" @click="deleteOrder(item.id)">❌</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="row">
-                    <div class="col-md-8"></div>
-                    <div class="col-md-4" style="text-align: left">
-                        <p>Subtotal: ₱{{getSubTotal()}}</p>
-                        <p>Delivery Fee: ₱{{getDeliveryFee()}}</p>
-                        <h5>Total: ₱{{getTotal()}}</h5>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-success" @click="orderNow()">Order Now</button>
-            </div>
-            <div v-else>
-                <empty :title="'No Data in you Cart'"></empty>
-            </div>
-        </center>
-    </div>
+         <v-app-bar
+            absolute
+            color="orange"
+            dark
+            shrink-on-scroll
+            prominent
+            scroll-target="#scrolling-techniques-3"
+            >
+            <!-- <template v-slot:img="{ props }">
+                <v-img
+                v-bind="props"
+                gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
+                ></v-img>
+            </template> -->
+
+            <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+
+            <v-spacer></v-spacer>
+
+            <v-btn icon style="margin-right: 2%;">
+                <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+
+            <!-- <v-btn icon @click="direct()" style="margin-right: 2%;">
+                <v-icon>mdi-cart</v-icon>
+                <span style="margin-left: -3%;">Cart</span>
+                <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
+            </v-btn> -->
+             <v-btn icon style="margin-right: 1%;"  @click="home()">
+                <v-icon >mdi-home</v-icon>
+            </v-btn>
+            
+
+
+            <v-btn icon style="margin-right: 3%;">
+                <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+            </v-app-bar>
+
+                <v-card mb="20px">
+                    <v-container style="margin-top:10%">
+                         <center>
+                            <h1>Your Cart</h1>
+                            <div v-if="tableData !== null && tableData.length > 0">
+                                <table class="table table-responsive" id="myTable">
+                                    <tr>
+                                        <th style="width: 30%;">Product Name</th>
+                                        <th>Add&nbsp;ons</th>
+                                        <th>Cup Type</th>
+                                        <th>Unit Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                        <th style="width: 15px;">❌</th>
+                                    </tr>
+                                    <tbody>
+                                        <tr v-for="(item, index) in tableData" :key="index">
+                                            <td>{{item.order_product ? item.order_product[0].productName : ''}}</td>
+                                            <td>{{item.same_order ? getAddOns(item.same_order) : ''}}</td>
+                                            <td>{{item.cupType ? item.cupType : ''}}</td>
+                                            <td>{{item.choosenPrice}}</td>
+                                            <td>{{item.quantity}}</td>
+                                            <td>{{item.subTotal}}</td>
+                                            <td>
+                                                <button style="font-size: 10px" type="button" aria-expanded="false" @click="deleteOrder(item.id)">❌</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-4" style="text-align: left">
+                                        <p>Subtotal: ₱{{getSubTotal()}}</p>
+                                        <p>Delivery Fee: ₱{{getDeliveryFee()}}</p>
+                                        <h5>Total: ₱{{getTotal()}}</h5>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-success" @click="orderNow()">Order Now</button>
+                            </div>
+                            <div v-else>
+                                <empty :title="'No Data in you Cart'"></empty>
+                            </div>
+                        </center>
+
+                    </v-container>
+                </v-card>
+           </div>
 </template>
 <style scoped>
 .table {
@@ -84,6 +128,9 @@ export default {
         })
     },
     methods: {
+        home(){
+            ROUTER.push('/onlineDashboard').catch(()=>{})
+        },
         retrieveProduct(){
             let params = {
                 id: localStorage.getItem('customerOnlineId')

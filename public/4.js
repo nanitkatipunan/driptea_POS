@@ -9,141 +9,6 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-<<<<<<< HEAD
-/* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/auth */ "./resources/js/services/auth/index.js");
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../router */ "./resources/js/router/index.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_2__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-=======
->>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
 //
 //
 //
@@ -247,6 +112,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -283,6 +192,9 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    home: function home() {
+      _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/onlineDashboard')["catch"](function () {});
+    },
     retrieveProduct: function retrieveProduct() {
       var _this2 = this;
 
@@ -506,138 +418,209 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
-      _c("center", [
-        _c("h1", [_vm._v("Your Cart")]),
-        _vm._v(" "),
-        _vm.tableData !== null && _vm.tableData.length > 0
-          ? _c("div", [
-              _c(
-                "table",
-                {
-                  staticClass: "table table-responsive",
-                  attrs: { id: "myTable" }
-                },
-                [
-                  _c("tr", [
-                    _c("th", { staticStyle: { width: "30%" } }, [
-                      _vm._v("Product Name")
-                    ]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Add ons")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Cup Type")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Unit Price")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Quantity")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Total")]),
-                    _vm._v(" "),
-                    _c("th", { staticStyle: { width: "15px" } }, [_vm._v("❌")])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.tableData, function(item, index) {
-                      return _c("tr", { key: index }, [
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(
-                              item.order_product
-                                ? item.order_product[0].productName
-                                : ""
-                            )
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(
-                              item.same_order
-                                ? _vm.getAddOns(item.same_order)
-                                : ""
-                            )
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(item.cupType ? item.cupType : ""))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(item.choosenPrice))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(item.quantity))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(item.subTotal))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "button",
-                            {
-                              staticStyle: { "font-size": "10px" },
-                              attrs: {
-                                type: "button",
-                                "aria-expanded": "false"
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.deleteOrder(item.id)
-                                }
-                              }
-                            },
-                            [_vm._v("❌")]
-                          )
-                        ])
-                      ])
-                    }),
-                    0
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-8" }),
+      _c(
+        "v-app-bar",
+        {
+          attrs: {
+            absolute: "",
+            color: "orange",
+            dark: "",
+            "shrink-on-scroll": "",
+            prominent: "",
+            "scroll-target": "#scrolling-techniques-3"
+          }
+        },
+        [
+          _c("v-spacer"),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            { staticStyle: { "margin-right": "2%" }, attrs: { icon: "" } },
+            [_c("v-icon", [_vm._v("mdi-magnify")])],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            {
+              staticStyle: { "margin-right": "1%" },
+              attrs: { icon: "" },
+              on: {
+                click: function($event) {
+                  return _vm.home()
+                }
+              }
+            },
+            [_c("v-icon", [_vm._v("mdi-home")])],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            { staticStyle: { "margin-right": "3%" }, attrs: { icon: "" } },
+            [_c("v-icon", [_vm._v("mdi-dots-vertical")])],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        { attrs: { mb: "20px" } },
+        [
+          _c(
+            "v-container",
+            { staticStyle: { "margin-top": "10%" } },
+            [
+              _c("center", [
+                _c("h1", [_vm._v("Your Cart")]),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-4",
-                    staticStyle: { "text-align": "left" }
-                  },
-                  [
-                    _c("p", [
-                      _vm._v("Subtotal: ₱" + _vm._s(_vm.getSubTotal()))
-                    ]),
-                    _vm._v(" "),
-                    _c("p", [
-                      _vm._v("Delivery Fee: ₱" + _vm._s(_vm.getDeliveryFee()))
-                    ]),
-                    _vm._v(" "),
-                    _c("h5", [_vm._v("Total: ₱" + _vm._s(_vm.getTotal()))])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-success",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      return _vm.orderNow()
-                    }
-                  }
-                },
-                [_vm._v("Order Now")]
-              )
-            ])
-          : _c(
-              "div",
-              [_c("empty", { attrs: { title: "No Data in you Cart" } })],
-              1
-            )
-      ])
+                _vm.tableData !== null && _vm.tableData.length > 0
+                  ? _c("div", [
+                      _c(
+                        "table",
+                        {
+                          staticClass: "table table-responsive",
+                          attrs: { id: "myTable" }
+                        },
+                        [
+                          _c("tr", [
+                            _c("th", { staticStyle: { width: "30%" } }, [
+                              _vm._v("Product Name")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Add ons")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Cup Type")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Unit Price")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Quantity")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Total")]),
+                            _vm._v(" "),
+                            _c("th", { staticStyle: { width: "15px" } }, [
+                              _vm._v("❌")
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.tableData, function(item, index) {
+                              return _c("tr", { key: index }, [
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      item.order_product
+                                        ? item.order_product[0].productName
+                                        : ""
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      item.same_order
+                                        ? _vm.getAddOns(item.same_order)
+                                        : ""
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(item.cupType ? item.cupType : "")
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.choosenPrice))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.quantity))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.subTotal))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticStyle: { "font-size": "10px" },
+                                      attrs: {
+                                        type: "button",
+                                        "aria-expanded": "false"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.deleteOrder(item.id)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("❌")]
+                                  )
+                                ])
+                              ])
+                            }),
+                            0
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-8" }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "col-md-4",
+                            staticStyle: { "text-align": "left" }
+                          },
+                          [
+                            _c("p", [
+                              _vm._v("Subtotal: ₱" + _vm._s(_vm.getSubTotal()))
+                            ]),
+                            _vm._v(" "),
+                            _c("p", [
+                              _vm._v(
+                                "Delivery Fee: ₱" + _vm._s(_vm.getDeliveryFee())
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("h5", [
+                              _vm._v("Total: ₱" + _vm._s(_vm.getTotal()))
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.orderNow()
+                            }
+                          }
+                        },
+                        [_vm._v("Order Now")]
+                      )
+                    ])
+                  : _c(
+                      "div",
+                      [
+                        _c("empty", { attrs: { title: "No Data in you Cart" } })
+                      ],
+                      1
+                    )
+              ])
+            ],
+            1
+          )
+        ],
+        1
+      )
     ],
     1
   )

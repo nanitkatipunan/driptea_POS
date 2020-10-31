@@ -38,11 +38,7 @@
                 </div>
             </div>
             <center>
-<<<<<<< HEAD
-                <button type= "button" class="btn addCart" @click="addToCart">Add to Cart</button>
-=======
                 <button class="btn addCart overline" @click="addToCart()">Add to Cart</button>
->>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
             </center>
         </center>
     </div>
@@ -372,11 +368,7 @@ export default {
             });
         },
         addToCart(){
-<<<<<<< HEAD
-            console.log('wala')
-=======
             console.log('add')
->>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
             if(this.quantity <= 0){
                 this.errorMessage3 = 'quantity must be greater than 0!'
             }

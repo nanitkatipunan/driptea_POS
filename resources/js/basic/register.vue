@@ -1,34 +1,46 @@
 <template>
     <div class="container">
-        <center>
-            <img style="height: 150px; margin-top: 5%;" :src="image">
-            <p>Register to <b class="bRegister" @click="redirect('/')">Driptea</b></p>
-        </center>
-        <center>
-            <div class="containerWidth">
-                <i><span v-if="errorMessage7 !== null" class="text-danger text-center">{{errorMessage7}}</span></i>
-                <form>
-                    <i><span v-if="errorMessage8 !== null" class="text-danger text-center">{{errorMessage8}}</span></i>
-                     <v-row>
-                         <v-text-field  label="Account Type" outlined  v-model="userType" v-on:keyup="validate('userType')" type="text"  id="userType" required></v-text-field>
-                     </v-row>
-                    <i><span v-if="errorMessage !== null" class="text-danger text-center">{{errorMessage}}</span></i>
-                    <i><span v-if="errorMessage2 !== null" class="text-danger text-center">{{errorMessage2}}</span></i>
-                    <i><span v-if="errorMessage3 !== null" class="text-danger text-center">{{errorMessage3}}</span></i>
-                     <v-row>
-                         <v-text-field  label="Username" outlined  v-model="userName" v-on:keyup="validate('userName')" type="text"  id="userName" required></v-text-field>
-                     </v-row>
-                      <span v-if="successMessage !== null" class="text-success text-center">{{successMessage}}</span>
-                        <i><span v-if="errorMessage4 !== null" class="text-danger text-center">{{errorMessage4}}</span></i>
-                        <i><span v-if="errorMessage5 !== null" class="text-danger text-center">{{errorMessage5}}</span></i>
-                      <v-row>
-                         <v-text-field  label="Password" outlined  v-model="password" v-on:keyup="validate('password')" type="password"  id="password" required></v-text-field>
-                     </v-row>
-                      <i><span v-if="errorMessage6 !== null" class="text-danger text-center">{{errorMessage6}}</span></i>
-                      <v-row>
-                         <v-text-field  label="Confirm Password" outlined  v-model="confirmPass" v-on:keyup="validate('confirmPass')" type="password"  id="confirmPassword" required></v-text-field>
-                     </v-row>
-                      <v-btn type="submit" class="btn btnRegister" @click="register">Register</v-btn>
+          <v-dialog v-model="dialogForLogin" persistent max-width="600px" min-width="360px">
+            <div>
+                <v-card class="px-4">
+                     <v-card-text>
+                    <center>
+                    <img style="height: 100px; margin-top: 1%;" :src="image">
+                    <p>Register to <b class="bRegister" @click="redirect('/')">Driptea</b></p>
+                    </center>
+                                <v-form lazy-validation>
+                                            <span v-if="successMessage !== null" class="text-success text-center">{{successMessage}}</span>
+
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <i><span v-if="errorMessage8 !== null" class="text-danger text-center">{{errorMessage8}}</span></i>
+                                            <v-text-field  label="Account Type" outlined  v-model="userType" v-on:keyup="validate('userType')" type="text"  id="userType" required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <i><span v-if="errorMessage !== null" class="text-danger text-center">{{errorMessage}}</span></i>
+                                            <i><span v-if="errorMessage2 !== null" class="text-danger text-center">{{errorMessage2}}</span></i>
+                                            <i><span v-if="errorMessage3 !== null" class="text-danger text-center">{{errorMessage3}}</span></i>
+                                             <v-text-field  label="Username" outlined  v-model="userName" v-on:keyup="validate('userName')" type="text"  id="userName" required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <i><span v-if="errorMessage4 !== null" class="text-danger text-center">{{errorMessage4}}</span></i>
+                                            <i><span v-if="errorMessage5 !== null" class="text-danger text-center">{{errorMessage5}}</span></i>
+                                            <v-text-field  label="Password" outlined  v-model="password" v-on:keyup="validate('password')" type="password"  id="password" required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <i><span v-if="errorMessage6 !== null" class="text-danger text-center">{{errorMessage6}}</span></i>
+                                            <v-text-field  label="Confirm Password" outlined  v-model="confirmPass" v-on:keyup="validate('confirmPass')" type="password"  id="confirmPassword" required></v-text-field>
+                                        </v-col>
+                                        
+                                            <v-btn x-large  color="success" @click="register"  type="submit" class="btn btnRegister">Register</v-btn>
+                                       
+                                    </v-row>
+                                </v-form>
+                            </v-card-text>
+                    </v-card>
+            </div>
+        </v-dialog>
+       
                     <!-- <div class="form-group">
                         <label for="userType">Account Type:</label><br>
                         
@@ -54,9 +66,7 @@
                         <input v-model="confirmPass" v-on:keyup="validate('confirmPass')" type="password" class="form-control" id="confirmPassword">
                     </div>
                     <v-btn type="submit" class="btn btnRegister" @click="register">Register</button> -->
-                </form>
-            </div>
-        </center>
+           
         <div v-if="showSuccess" id="modal" class="blurred-background">
             <div class="alert-box">
                 <h5 class="text-success">Registered Successfully</h5><hr>
@@ -167,6 +177,7 @@ export default {
     name: "app",
     data(){
         return {
+            dialogForLogin:true,
             userType: null,
             image: image,
             userName: '',
@@ -207,6 +218,7 @@ export default {
             if(this.errorMessage === null && this.errorMessage2 === null && this.errorMessage3 === null && this.errorMessage4 === null && this.errorMessage5 === null && this.errorMessage6 === null && this.errorMessage7 === null){
                 this.$axios.post(AUTH.url+'register', parameter).then(response => {
                     this.showSuccess = true
+                    this.dialogForLogin = false
                     console.log(response.data)
                 }).catch(error => {
                     if(error.response.status === 300){
