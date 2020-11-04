@@ -55,7 +55,7 @@
       </v-app-bar-items>
     </v-app-bar>
     <v-app-bar class="cashierNav" color="orange darken-1" v-if="cashier !== null">
-      <a href="#"><v-img max-height="64" max-width="42" :src="image"></v-img></a>
+      <a><v-img max-height="64" max-width="42" :src="image" @click="redirect('/casherDashboard')"></v-img></a>
       <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
       <v-app-bar-items name="theitem" class="hidden-sm-and-down" app >
@@ -172,7 +172,7 @@ export default {
       {
         icon: "mdi-point-of-sale",
         text: "POS",
-        route: "/cashierDashboard"
+        route: "/casherDashboard"
       },
       {
         icon: "mdi-account-multiple-plus",
@@ -186,7 +186,7 @@ export default {
       { title: "Click Me" },
       { title: "Click Me 2...................." }
     ],
-    count: 0
+    count: 0,
   }),
   components: {
   },
@@ -194,11 +194,11 @@ export default {
     this.retrieve()
     this.admin = localStorage.getItem("adminId");
     this.cashier = localStorage.getItem("cashierId");
+  
     let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
         cluster: this.config.PUSHER_APP_CLUSTER,
         encrypted: true
     });
-
     let channel = pusher.subscribe('driptea-channel')
     let obj = this
     channel.bind('driptea-data', (data) => {

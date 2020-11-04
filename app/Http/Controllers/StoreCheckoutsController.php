@@ -31,6 +31,7 @@ class StoreCheckoutsController extends Controller
             $storeOrder->cashierId = $data['cashierId'];
             $storeOrder->productId = $value['productId'];
             $storeOrder->onlineId = $value['onlineId'];
+            $storeOrder->customerType = $value['customerType'];
             $storeOrder->quantity = $value['quantity'];
             $storeOrder->size = $value['size'];
             $storeOrder->sugarLevel = $value['sugarLevel'];
@@ -69,9 +70,18 @@ class StoreCheckoutsController extends Controller
         return response()->JSON(compact('years'));
     }
     public function retrieveAllCheckouts(Request $request){
-        $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('deleted_at', null)->get()->groupBy('storeCheckoutsId');
+        $storeOrder = StoreOrder::with('getCustomer')->with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('deleted_at', null)->get()->groupBy('storeCheckoutsId');
         return response()->json(compact('storeOrder'));
     }
+
+    public function retrieveAllSales(Request $request){
+        $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCheckouts')->where('deleted_at', null)->get()->groupBy(function($item)
+        {
+          return $item->created_at->format('d-M-y');
+        });
+        return response()->json(compact('storeOrder'));
+    }
+
     public function retrieveDailySales(Request $request)
     {
         $total = StoreCheckouts::select(DB::raw('SUM(subTotal) as sub'),DB::raw('DAY(created_at) as `date`'),DB::raw('YEAR(created_at) as `year`'))
@@ -81,6 +91,7 @@ class StoreCheckoutsController extends Controller
                  ->get();
         return response()->JSON(compact('total'));
     }
+    
     public function retrieveMonthlySales(Request $request)
     {
         $subtotal = StoreCheckouts::select(array(DB::raw('SUM(subTotal) as sub'),DB::raw('MONTH(created_at) as month')))

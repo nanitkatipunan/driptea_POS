@@ -316,6 +316,7 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
+      e.preventDefault();
       this.loadingShow = true;
       this.validate("fullname");
       this.validate("address");
@@ -935,7 +936,7 @@ var render = function() {
                   "v-btn",
                   {
                     staticClass: "btn register",
-                    attrs: { type: "submit", outlined: "", color: "orange" },
+                    attrs: { type: "button", outlined: "", color: "orange" },
                     on: { click: _vm.register }
                   },
                   [_vm._v("Register")]

@@ -12,7 +12,33 @@ export default {
         fullname: null,
         userType: null
     },
-    authenticateForAll(routes = null) {
+    config: {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('userToken')
+        }
+    },
+    authenticateRequests() {
+        let token = localStorage.getItem('userToken')
+        if (token) {
+            let toReturn = false
+            this.setToken(token)
+            axios({
+                method: 'post', //you can set what request you want to be
+                url: this.url + 'user',
+                headers: {
+                  Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
+                toReturn = true
+            }).catch(err => {
+                toReturn = false
+            })
+            return toReturn
+        } else {
+            return false
+        }
+    },
+    authenticateForAll() {
         let token = localStorage.getItem('userToken')
         if (token) {
             this.setToken(token)
@@ -62,12 +88,19 @@ export default {
             axios.post(this.url+'tokenRefresh', ).then(response => {
               this.setToken(response['token'])
             }).catch(err => {
-                this.deaunthenticate()
+                this.deauthenticate()
             })
           }, 1000 * 60 * 60) // 50min
         }
-      },
-    deaunthenticate(){
+    },
+    refreshToken(){
+        axios.post(this.url+'tokenRefresh', ).then(response => {
+            this.setToken(response['token'])
+        }).catch(err => {
+            this.deauthenticate()
+        })
+    },
+    deauthenticate(){
         localStorage.removeItem('userToken')
         localStorage.removeItem('adminId')
         localStorage.removeItem('cashierId')

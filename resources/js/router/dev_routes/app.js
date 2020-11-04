@@ -136,21 +136,21 @@ export default {
                 tokenRequired: true
             }
         },
-        {
-            path: '/:any',
-            name: 'any',
-            component: resolve => require(['@/js/basic/landing'], resolve),
-            meta: {
-                tokenRequired: false
-            }
-        },
-        {
-            path: '/:any',
-            name: 'any',
-            component: resolve => require(['@/js/modules/dashboard/casherDashboard'], resolve),
-            meta: {
-                tokenRequired: true
-            }
-        },
+        // {
+        //     path: '/:any',
+        //     name: 'any',
+        //     component: resolve => require(['@/js/basic/landing'], resolve),
+        //     meta: {
+        //         tokenRequired: false
+        //     }
+        // },
+        // {
+        //     path: '/:any',
+        //     name: 'any',
+        //     component: resolve => require(['@/js/modules/dashboard/casherDashboard'], resolve),
+        //     meta: {
+        //         tokenRequired: true
+        //     }
+        // },
     ],
 }

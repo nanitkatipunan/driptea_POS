@@ -11,7 +11,7 @@ class StoreOrder extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'customerId', 'cashierId', 'storeCheckoutsId', 'productId', 'onlineId', 'quantity', 'size', 'cupType', 'sugarLevel', 'subTotal', 'choosenPrice', 'status'
+        'customerId', 'cashierId', 'storeCheckoutsId', 'customerType', 'productId', 'onlineId', 'quantity', 'size', 'cupType', 'sugarLevel', 'subTotal', 'choosenPrice', 'status'
     ];
 
     public function orderProduct(){
@@ -28,5 +28,9 @@ class StoreOrder extends Model
 
     public function getCheckouts(){
         return $this->hasMany('App\Models\StoreCheckouts','id','storeCheckoutsId');
+    }
+
+    public function getCustomer(){
+        return $this->hasMany('App\Models\CustomerDetails','id','customerId');
     }
 }

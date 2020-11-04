@@ -62,12 +62,12 @@
                         @click:append="show3 = !show3"
                       ></v-text-field>
                     </v-row>
-                    <v-btn type="submit" class="btn btnRegister" @click="login" color="orange">Login</v-btn>
+                    <v-btn type="button" class="btn btnRegister" @click="login" color="orange">Login</v-btn>
                     <a href class="FP">Forgot Password</a>
                     <hr>
                     <center>
                       <v-btn
-                        type="submit"
+                        type="button"
                         class="ma-2"
                         outlined
                         color="orange"
@@ -179,7 +179,8 @@ export default {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
-    login() {
+    login(e) {
+      e.preventDefault()
       this.loadingShow = true;
       this.validate("userName");
       this.validate("password");

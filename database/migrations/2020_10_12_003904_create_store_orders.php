@@ -20,6 +20,7 @@ class CreateStoreOrders extends Migration
             $table->bigInteger('storeCheckoutsId');
             $table->bigInteger('productId');
             $table->bigInteger('onlineId')->nullable();
+            $table->string('customerType');
             $table->integer('quantity');
             $table->string('size');
             $table->string('cupType');

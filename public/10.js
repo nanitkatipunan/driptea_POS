@@ -194,7 +194,8 @@ __webpack_require__.r(__webpack_exports__);
     redirect: function redirect(route) {
       _router__WEBPACK_IMPORTED_MODULE_0__["default"].push(route)["catch"](function () {});
     },
-    login: function login() {
+    login: function login(e) {
+      e.preventDefault();
       this.loadingShow = true;
       this.validate("userName");
       this.validate("password");
@@ -497,7 +498,7 @@ var render = function() {
                                     {
                                       staticClass: "btn btnRegister",
                                       attrs: {
-                                        type: "submit",
+                                        type: "button",
                                         color: "orange"
                                       },
                                       on: { click: _vm.login }
@@ -521,7 +522,7 @@ var render = function() {
                                         {
                                           staticClass: "ma-2",
                                           attrs: {
-                                            type: "submit",
+                                            type: "button",
                                             outlined: "",
                                             color: "orange"
                                           },
