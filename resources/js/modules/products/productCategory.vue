@@ -9,6 +9,7 @@
                             <img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda1.png">
                             <img v-if="customerType === 'grab'" style="width: 70px; height: 50px;" src="@/assets/grab2.png">
                             <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb1.png"><br>
+                            <img v-if="customerType === 'online'" style="width: 70px; height: 50px;" src="@/assets/logo.png"><br>
                             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
                             <table class="table table-responsive table-bordered overline" id="myTable">
                                 <tr>
@@ -36,23 +37,22 @@
                         <div class="row">
                             <div class="col-md-6"></div>
                             <div class="col-md-6 overline" style="text-align:left;">
-                                <p v-if="customerType === 'fb'" style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
-                                <p v-if="customerType === 'fb'" style="display: inline;">₱ {{getSubTotal()}}</p><br>
-                                <p v-if="customerType === 'fb'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
-                                <input v-if="customerType === 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="fee">
+                                <p v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
+                                <p v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;">₱ {{getSubTotal()}}</p><br>
+                                <p v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
+                                <input v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="fee">
                                 <p style="display: inline;" class="pStyle">Total:&emsp;&emsp;&emsp;&emsp;</p>
                                 <p style="display: inline;" class="pStyle">₱ {{convertTotalPrice()}}</p><br>
-                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Amount:&emsp;&emsp;&nbsp;&nbsp;&nbsp;</p>
-                                <input v-if="customerType !== 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
-                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
-                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
+                                <p v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" class="pStyle">Amount:&emsp;&emsp;&nbsp;&nbsp;&nbsp;</p>
+                                <input v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
+                                <p v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
+                                <p v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
                                 <div >
                                  <button class="btn btn-primary checkout overline" @click="checkoutOrder">Checkout</button>
                                 </div>
                             </div>
                         </div>
                     </v-card>
-                   
                 </center>
             </div>
             <div class="col-md-6">
@@ -61,13 +61,14 @@
                         <div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
                           <v-card class="elevation-5" max-width="250" height="250">
                             <v-img  max-width="250" height="250" :src="item.image" @click="redirect(item.productCategory)"></v-img>
-                             </v-card>
+                          </v-card>
 
                         </div>
                     </div>
                 </div>
             </div>
             <receipt v-if="receiptShow" :showData="receiptData"></receipt>
+            <loading v-if="loadingShow"></loading>
        </div>
     </div>
 </template>
@@ -133,15 +134,13 @@ th {
         overflow-y: scroll;
     }
 }
-
-
-
 </style>
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import receipt from '../order/receipt.vue'
 import config from '../../config.js'
+import loading from '../../basic/loading.vue';
 export default {
     data(){
         return{
@@ -158,11 +157,13 @@ export default {
             fee: 0,
             error: false,
             receiptShow: false,
-            receiptData: null
+            receiptData: null,
+            loadingShow: false
         }
     },
     components: {
-        receipt
+        receipt,
+        loading
     },
     mounted(){
         this.retrieveCategory()
@@ -201,8 +202,10 @@ export default {
             }
         },
         retrieveCategory(){
+            this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveCategory').then(res => {
                 this.data = res.data.addCategory
+                this.loadingShow = false
             })
         },
         getSubTotal(){
@@ -219,12 +222,24 @@ export default {
             ROUTER.push('/chosenCategory/'+param).catch(()=>{})
         },
         retrieveProduct(){
-            let params = {
-                id: localStorage.getItem('customerId')
+            this.loadingShow = true
+            if(this.customerType === 'online'){
+                let params = {
+                    id: localStorage.getItem('customerId')
+                }
+                this.$axios.post(AUTH.url + 'getOrder', params).then(res => {
+                    this.tableData = res.data.order
+                    this.loadingShow = false
+                })
+            }else{
+                let params = {
+                    id: localStorage.getItem('customerId')
+                }
+                this.$axios.post(AUTH.url + 'retrieveOrder', params).then(res => {
+                    this.tableData = res.data.order
+                    this.loadingShow = false
+                })
             }
-            this.$axios.post(AUTH.url + 'retrieveOrder', params).then(res => {
-                this.tableData = res.data.order
-            })
         },
         getAddOns(item){
             let storeAddOns = ""
@@ -239,11 +254,14 @@ export default {
             return storeAddOns
         },
         deleteOrder(prodId){
+            this.loadingShow = true
             this.$axios.post(AUTH.url + 'deleteOrder', {id: prodId}).then(res => {
                 this.retrieveProduct()
+                this.loadingShow = false
             })
         },
         checkoutMethod(){
+            this.loadingShow = true
             let params = {
                 id: localStorage.getItem('customerId'),
                 status: 'complete'
@@ -251,7 +269,7 @@ export default {
             this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
                 let params = {
                     customerId: localStorage.getItem('customerId'),
-                    cashierId: localStorage.getItem('cashierId'),
+                    cashierId: localStorage.getItem('cashierId') ? localStorage.getItem('cashierId') : localStorage.getItem('adminId'),
                     subTotal: parseInt(this.getSubTotal()),
                     deliveryFee: this.fee,
                     total: parseInt(this.convertTotalPrice()),
@@ -283,6 +301,7 @@ export default {
                             id: res.data.storeCheckouts.id,
                         }
                         this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
+                            this.loadingShow = false
                             this.receiptData = response.data.storeOrder
                             this.receiptShow = true
                         })

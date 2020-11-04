@@ -39,7 +39,7 @@ export default {
             })
             return true
         } else {
-            return false
+            return false    
         }
     },
     setUser(cashierId, fullname, userType) {
@@ -69,8 +69,14 @@ export default {
       },
     deaunthenticate(){
         localStorage.removeItem('userToken')
+        localStorage.removeItem('adminId')
         localStorage.removeItem('cashierId')
-        this.setUser(null)
+        localStorage.removeItem('customerId')
+        localStorage.removeItem('customerType')
+        localStorage.removeItem('fullName')
+        localStorage.removeItem('address')
+        localStorage.removeItem('contactNumber')
+        localStorage.removeItem('customerOnlineId')
         axios.post(this.url+'deaunthenticate')
         this.token = null
         ROUTER.go('/')

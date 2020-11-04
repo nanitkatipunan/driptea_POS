@@ -21,6 +21,7 @@ const app = new Vue({
         icons: {
             iconfont: 'mdi',
         },
+        components: { App },
     }),
     router: Router,
     render: h => h(App)

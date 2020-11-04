@@ -73,6 +73,14 @@ export default {
             }
         },
         {
+            path: '/orderHistory',
+            name: 'orderHistory',
+            component: resolve => require(['@/js/modules/onlineOrder/orderHistory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
             path: '/customerCart',
             name: 'customerCart',
             component: resolve => require(['@/js/modules/onlineOrder/cart'], resolve),
@@ -96,7 +104,22 @@ export default {
                 tokenRequired: true
             }
         },
-        
+        {
+            path: '/cupsInventory',
+            name: 'cupsInventory',
+            component: resolve => require(['@/js/modules/inventory/cupsInventory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/orderInventory',
+            name: 'orderInventory',
+            component: resolve => require(['@/js/modules/inventory/orderInventory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
         {
             path: '/onlineDashboard',
             name: 'onlineDashboard',
@@ -129,37 +152,5 @@ export default {
                 tokenRequired: true
             }
         },
-        // {
-        //     path: '/userDashboard',
-        //     name: 'userDashboard',
-        //     component: resolve => require(['@/assets/js/modules/dashboard/userDashboard'], resolve),
-        //     meta: {
-        //         tokenRequired: true
-        //     }
-        // },
-        // {
-        //     path: '/profile',
-        //     name: 'profile',
-        //     component: resolve => require(['@/assets/js/modules/profile/profile'], resolve),
-        //     meta: {
-        //         tokenRequired: true
-        //     }
-        // },
-        // {
-        //     path: '/cart',
-        //     name: 'cart',
-        //     component: resolve => require(['@/assets/js/modules/order/cart'], resolve),
-        //     meta: {
-        //         tokenRequired: true
-        //     }
-        // },
-        // {
-        //     path: '/order',
-        //     name: 'order',
-        //     component: resolve => require(['@/assets/js/modules/order/order'], resolve),
-        //     meta: {
-        //         tokenRequired: true
-        //     }
-        // },
     ],
 }

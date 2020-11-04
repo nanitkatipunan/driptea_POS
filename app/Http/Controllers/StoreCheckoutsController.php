@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\StoreOrder;
 use App\Models\StoreAddOn;
 use App\Models\StoreCheckouts;
+use App\Events\pusherEvent;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ class StoreCheckoutsController extends Controller
             $storeOrder->customerId = $value['customerId'];
             $storeOrder->cashierId = $data['cashierId'];
             $storeOrder->productId = $value['productId'];
+            $storeOrder->onlineId = $value['onlineId'];
             $storeOrder->quantity = $value['quantity'];
             $storeOrder->size = $value['size'];
             $storeOrder->sugarLevel = $value['sugarLevel'];
@@ -44,11 +46,17 @@ class StoreCheckoutsController extends Controller
                 $storeAddOns->save();
             }
         }
+        event(new pusherEvent($storeCheckouts));
         return response()->json(compact('storeCheckouts'));
     }
     
     public function retrieveCheckouts(Request $request){
         $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('storeCheckoutsId', $request->id)->where('deleted_at', null)->get();
+        return response()->json(compact('storeOrder'));
+    }
+
+    public function retrieveOnlineCheckouts(Request $request){
+        $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('onlineId', $request->id)->where('deleted_at', null)->get()->groupBy('storeCheckoutsId');
         return response()->json(compact('storeOrder'));
     }
     
@@ -59,7 +67,6 @@ class StoreCheckoutsController extends Controller
                     ->get();
 
         return response()->JSON(compact('years'));
-
     }
     public function retrieveAllCheckouts(Request $request){
         $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCashier')->with('getCheckouts')->where('deleted_at', null)->get()->groupBy('storeCheckoutsId');
@@ -67,11 +74,12 @@ class StoreCheckoutsController extends Controller
     }
     public function retrieveDailySales(Request $request)
     {
-        $total = StoreCheckouts::select(DB::raw('SUM(subTotal) as sub'),DB::raw('DAY(created_at) as `date`'),DB::raw('YEAR(created_at) as `year`'))
+        $total = StoreCheckouts::select(DB::raw('SUM(subTotal) as sub'),DB::raw('DAY(created_at) as `date`'),DB::raw('YEAR(created_at) as `year`'),DB::raw('MONTH(created_at) as `month`'))
                 ->whereMonth('created_at', '=', $request->month)
                 ->whereYear('created_at', '=', $request->year)
-                ->groupBy('created_at')
+                ->groupBy('year','month','date')
                  ->get();
+                //  dd($total);
         return response()->JSON(compact('total'));
     }
     public function retrieveMonthlySales(Request $request)

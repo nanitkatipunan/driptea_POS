@@ -53,8 +53,13 @@ class OrderController extends Controller
         return response()->json(compact('order'));
     }
 
+    public function getOrder(Request $request){
+        $order = Order::with('getCustomer')->with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        return response()->json(compact('order'));
+    }
+
     public function retrieveOnlineOrder(Request $request){
-        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        $order = Order::with('getCustomer')->with('orderProduct')->with('sameOrder')->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get()->groupBy('customerId');
         return response()->json(compact('order'));
     }
 

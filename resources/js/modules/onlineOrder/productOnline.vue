@@ -1,27 +1,3 @@
-<<<<<<< HEAD
-    <template>
-        <div>
-            <table class="table">
-                <thead>
-                    <tr >
-                        <th v-for="(item, index) in productData" :key="index" >{{item.productCategory}}</th>
-                    </tr>
-                    
-                        
-                   
-                </thead>
-           </table>
-        </div>
-    </template>
-    
-                  
-
-
-
-
-
-
-=======
 <template>
     <div class="sudlanan">
         <center>
@@ -70,7 +46,6 @@
         </center>
     </div>
 </template>
->>>>>>> a67a95277d882611e747ef0cfdaed0f98ee60005
 <style scoped>
 /* width */
 ::-webkit-scrollbar {
@@ -169,7 +144,6 @@ export default {
         },
         dataMethod(item){
             Object.keys(item).forEach(element => {
-               
                 this.finalData.push(item[element])
             })
         },

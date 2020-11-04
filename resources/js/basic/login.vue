@@ -1,70 +1,122 @@
 <template>
-  <div class="container">
-    <template>
-      <center>
-        <img style="height: 150px; margin-top: 8%;" :src="image">
-      </center>
-      <center>
-        <div class="containerWidth">
-          <v-form ref="form"  lazy-validation>
-            <i>
-              <span v-if="errorMessage2 !== null" class="text-danger text-center">{{errorMessage2}}</span>
-            </i>
-            <v-row>
-              <v-text-field
-                label="Username"
-                outlined
-                v-model="userName"
-                v-on:keyup="validate('userName')"
-                type="text"
-                id="userName"
-                placeholder="email/username"
-                required
-              ></v-text-field>
-            </v-row>
-            <span v-if="errorMessage3 !== null" class="text-danger text-center">{{errorMessage3}}</span>
-            <v-row>
-              <v-text-field
-                label="Password"
-                outlined
-                v-model="password"
-                v-on:keyup="validate('password')"
-                type="password"
-                id="password"
-                placeholder="password"
-                required
-              ></v-text-field>
-            </v-row>
-            <v-btn  type="submit" class="btn btnRegister" @click="login">Login</v-btn>
-          </v-form>
+  <v-card color="grey lighten-4" flat height="100%" max-width="100%">
+    <center>
+      <div class="row body">
+        <div class="col-sm-6">
+          <center>
+            <img class="logo" :src="image">
+            <br>
+            <span class="quote">A better tea to share with everybody.</span>
+          </center>
         </div>
-      </center>
-    </template>
-  </div>
+        <div class="col-sm-6">
+          <v-card class="mx-auto" max-width="400" height="450">
+            <div class="formGrp">
+              <center>
+                <div class="containerWidth">
+                  <v-form ref="form" lazy-validation>
+                    <br>
+                    <br>
+                    <br>
+                    <i>
+                      <span
+                        v-if="errorMessage !== null"
+                        class="text-danger text-center"
+                      >{{errorMessage}}</span>
+                    </i>
+                    <i>
+                      <span
+                        v-if="errorMessage2 !== null"
+                        class="text-danger text-center"
+                      >{{errorMessage2}}</span>
+                    </i>
+                    <v-row>
+                      <v-text-field
+                        color="orange"
+                        label="Username*"
+                        outlined
+                        v-model="userName"
+                        v-on:keyup="validate('userName')"
+                        type="text"
+                        id="userName"
+                        required
+                      ></v-text-field>
+                    </v-row>
+                    <i>
+                      <span
+                        v-if="errorMessage3 !== null"
+                        class="text-danger text-center"
+                      >{{errorMessage3}}</span>
+                    </i>
+                    <v-row>
+                      <v-text-field
+                        color="orange"
+                        label="Password*"
+                        outlined
+                        v-model="password"
+                        v-on:keyup="validate('password')"
+                        :append-icon="show3 ? 'visibility' : 'visibility_off'"
+                        :type="show3 ? 'text' : 'password'"
+                        id="password"
+                        required
+                        @click:append="show3 = !show3"
+                      ></v-text-field>
+                    </v-row>
+                    <v-btn type="submit" class="btn btnRegister" @click="login" color="orange">Login</v-btn>
+                    <a href class="FP">Forgot Password</a>
+                    <hr>
+                    <center>
+                      <v-btn
+                        type="submit"
+                        class="ma-2"
+                        outlined
+                        color="orange"
+                        @click="redirect('/register')"
+                      >Create New Account</v-btn>
+                    </center>
+                  </v-form>
+                </div>
+              </center>
+            </div>
+          </v-card>
+        </div>
+      </div>
+      <loading v-if="loadingShow"></loading>
+    </center>
+  </v-card>
 </template>
 <style scoped>
+.body {
+  width: 80%;
+}
+.col-sm-6 {
+  margin-top: 7%;
+}
+.quote {
+  font-size: 25px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+.FP {
+  font-size: 13px;
+}
+/* .whole {
+  background-color: gray;
+} */
+.logo {
+  height: 60%;
+  width: 60%;
+  margin-top: 3%;
+}
 img {
   cursor: default;
 }
 span {
   font-size: 12px;
 }
-hr {
-  border: 1px solid #17d817;
-}
 .termsCondition {
   margin-top: 6%;
   font-size: 15px;
   text-align: center;
-}
-.form-control {
-  border: 1px solid #17d817;
-  border-radius: 5px;
-  width: 100%;
-}
-.bRegister {
-  color: #0a8c0f;
-  cursor: pointer;
 }
 p {
   font-size: 20px;
@@ -72,17 +124,14 @@ p {
 .btnRegister {
   margin-top: 2%;
   margin-bottom: 2%;
-  background-color: #17d817;
   font-weight: bold;
   width: 100%;
 }
 .containerWidth {
-  width: 60%;
+  width: 80%;
   text-align: left;
-  margin-left: 0px !important;
-  margin-right: 0px !important;
 }
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
   .containerWidth {
     text-align: left;
     width: 100%;
@@ -101,36 +150,37 @@ p {
     text-align: left;
     width: 60%;
   }
-}
-.container {
-  width: 30%;
-  margin-top: 10% ;
-  border: 4px solid black;
-}
+} */
 </style>
 <script>
 import ROUTER from "../router";
 import AUTH from "../services/auth";
 import image from "../../assets/logo.png";
-// import { validate } from 'json-schema';
+import loading from "./loading.vue";
 export default {
   name: "app",
   data() {
     return {
+      show3: false,
       image: image,
       userName: "",
       password: "",
       errorMessage: null,
       errorMessage2: null,
-      errorMessage3: null
+      errorMessage3: null,
+      loadingShow: false
     };
   },
   mounted() {},
+  components: {
+    loading
+  },
   methods: {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
     login() {
+      this.loadingShow = true;
       this.validate("userName");
       this.validate("password");
       let parameter = {
@@ -139,11 +189,14 @@ export default {
       };
       if (this.userName === "" && this.password === "") {
         this.errorMessage = "Please fill in all required fields";
+        this.loadingShow = false
       } else {
         this.authenticate(this.userName, this.password);
+        this.loadingShow = false
       }
     },
     authenticate(name, password) {
+      this.loadingShow = true;
       let credentials = {
         name: name,
         password: password
@@ -153,11 +206,13 @@ export default {
         .then(response => {
           AUTH.setToken(response.data.token);
           AUTH.authenticateForAll();
+          this.loadingShow = false;
         })
         .catch(err => {
           if (err.response.status === 400) {
             this.errorMessage = "Invalid credentials!";
           }
+          this.loadingShow = false;
         });
     },
     validate(input) {

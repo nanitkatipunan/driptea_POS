@@ -14,19 +14,19 @@
         <v-tabs dark background-color="#ff5b04" fixed-tabs>
           <v-tabs-slider></v-tabs-slider>
           <v-tab
-            @click="tableForAddOns = false, tableForCupSize = false, tableForProduct = false, tableForCategory = true, tableForCupType = false"
+            @click="changeName('category'), tableForAddOns = false, tableForCupSize = false, tableForProduct = false, tableForCategory = true, tableForCupType = false"
           >Category</v-tab>
           <v-tab
-            @click="tableForAddOns = false, tableForCupSize = false, tableForProduct = true, tableForCategory = false, tableForCupType = false"
+            @click="changeName('product'), tableForAddOns = false, tableForCupSize = false, tableForProduct = true, tableForCategory = false, tableForCupType = false"
           >Product</v-tab>
           <v-tab
-            @click="tableForAddOns = true, tableForCupSize = false, tableForProduct = false, tableForCategory = false, tableForCupType = false"
+            @click="changeName('addOns'), tableForAddOns = true, tableForCupSize = false, tableForProduct = false, tableForCategory = false, tableForCupType = false"
           >Add Ons</v-tab>
           <v-tab
-            @click="tableForAddOns = false, tableForCupSize = false, tableForProduct = false, tableForCategory = false, tableForCupType = true"
+            @click="changeName('cupType'), tableForAddOns = false, tableForCupSize = false, tableForProduct = false, tableForCategory = false, tableForCupType = true"
           >Cup Type</v-tab>
           <v-tab
-            @click="tableForAddOns = false, tableForCupSize = true, tableForProduct = false, tableForCategory = false, tableForCupType = false"
+            @click="changeName('cupSize'), tableForAddOns = false, tableForCupSize = true, tableForProduct = false, tableForCategory = false, tableForCupType = false"
           >Cup Size</v-tab>
         </v-tabs>
       </template>
@@ -277,7 +277,6 @@
                 </v-dialog>
             </v-row>
         </template>
-    
 
         <!-- Dialog for Product -->
          <template>
@@ -296,11 +295,10 @@
                                            
                                             <v-select
                                             :items="categoryName"
-                                            label="Outlined style"
+                                            label="Product Category"
                                             dense
                                             outlined
                                             v-model="prodType"
-                                            
                                             ></v-select>
                                         </v-col>
                                         <v-col cols="12" sm="6"> 
@@ -391,7 +389,7 @@
                                     <v-text-field label="Addons Price" outlined dense v-model="addOnsPrice" type="number"></v-text-field>
                                 </v-row>  
                                 <v-row>    
-                                    <v-text-field label="Addons Price" outlined dense v-model="onlineAddOnsPrice" type="number"></v-text-field>
+                                    <v-text-field label="Online Addons Price" outlined dense v-model="onlineAddOnsPrice" type="number"></v-text-field>
                                 </v-row>  
                             </v-container>
                         </v-form>
@@ -652,6 +650,7 @@ label {
 <script>
 import AUTH from "../../services/auth";
 import ROUTER from "../../router";
+import loading from '../../basic/loading.vue';
 export default {
   data() {
     return {
@@ -720,11 +719,9 @@ export default {
       dialogForCategory: false,
       dialogForAddOns: false,
       dialogForCupSize: false,
-
       dataHeader: null,
-
       headersForAddOns: [
-        { text: "Id", value: "id" },
+        { text: "#", value: "id" },
         { text: "Add Ons Name", value: "addons_name" },
         { text: "Add Ons Price", value: "addons_price" },
         { text: "Online Add Ons Price", value: "onlineAddOnsPrice" },
@@ -764,24 +761,56 @@ export default {
         { text: "High Dose Cup", value: "incomingHighDose" },
         { text: "Over Dose Cup", value: "incomingOverDose" },
         { text: "Total IncomingCup", value: "incomingOverDose" + "" }
-      ]
+      ],
+      loadingShow: false
     };
   },
   mounted() {
-    // this.retrieveAddOns();
-    // this.$refs.on.click()
-    // this.$refs.pro.click()
-    // this.$refs.cate.click()
-    // this.$refs.size.click()
-
     this.retrieveProducts();
     this.retrieveCategories();
     this.retrieveAddOns();
     this.retrieveCupType();
     this.retrieveCupSize();
   },
+  components: {
+    loading
+  },
   methods: {
+    changeName(param){
+      if(param === 'category'){
+        this.cat = true
+        this.prod = false
+        this.size = false
+        this.ons = false
+        this.cup = false
+      }else if(param === 'product'){
+        this.cat = false
+        this.prod = true
+        this.size = false
+        this.ons = false
+        this.cup = false
+      }else if(param === 'cupSize'){
+        this.cat = false
+        this.prod = false
+        this.size = true
+        this.ons = false
+        this.cup = false
+      }else if(param === 'cupType'){
+        this.cat = false
+        this.prod = false
+        this.size = false
+        this.ons = false
+        this.cup = true
+      }else if(param === 'addOns'){
+        this.cat = false
+        this.prod = false
+        this.size = false
+        this.ons = true
+        this.cup = false
+      }
+    },
     NACupUpdate(id) {
+      this.loadingShow = true
       let param = {
         id: id,
         status: "Not Available"
@@ -790,9 +819,11 @@ export default {
         .post(AUTH.url + "updateAvailableCupType", param)
         .then(response => {
           this.retrieveCupType();
+          this.loadingShow = false
         });
     },
     availableCupUpdate(id) {
+      this.loadingShow = true
       let param = {
         id: id,
         status: "Available"
@@ -801,15 +832,20 @@ export default {
         .post(AUTH.url + "updateAvailableCupType", param)
         .then(response => {
           this.retrieveCupType();
+          this.loadingShow = false
         });
     },
     retrieveCupType() {
+      this.loadingShow = true
       this.$axios.post(AUTH.url + "retrieveAllCupType").then(response => {
         this.cupData = response.data.cupType;
+        this.loadingShow = false
       });
     },
     retrieveCupSize() {
+      this.loadingShow = true
       this.$axios.post(AUTH.url + "retrieveCupSize").then(response => {
+        this.loadingShow = false
         this.cupSizeData = response.data.quantityCupsInDB;
             
         response.data.quantityCupsInDB.forEach(element => {
@@ -818,10 +854,10 @@ export default {
         });
 
         let totalCup = response.data.quantityCupsInDB.incomingOverDose;
-        console.log(totalCup);
       });
     },
     addingCupType() {
+      this.loadingShow = true
       if (this.inputCupPrice !== null && this.inputCup !== null) {
         let param = {
           cupType: this.inputCup,
@@ -830,14 +866,17 @@ export default {
           status: "Available"
         };
         this.$axios.post(AUTH.url + "addingCupType", param).then(response => {
+          this.loadingShow = false
           this.retrieveCupType();
           this.dialogForCupType = false;
         });
       } else {
         this.errorMessage = "All fields are required!";
+        this.loadingShow = false
       }
     },
     addingCupSize() {
+      this.loadingShow = true
       if (
         this.lowDoseCup !== null &&
         this.highDoseCup !== null &&
@@ -849,14 +888,17 @@ export default {
           incomingOverDose: this.overDoseCup
         };
         this.$axios.post(AUTH.url + "addIncomingCups", param).then(response => {
+          this.loadingShow = false
           this.retrieveCupSize();
           this.hide();
         });
       } else {
+        this.loadingShow = false
         this.errorMessage = "All fields are required!";
       }
     },
     editingCupType() {
+      this.loadingShow = true
       if (this.inputCupPrice !== null && this.inputCup !== null) {
         let param = {
           id: this.idCup,
@@ -866,11 +908,13 @@ export default {
           status: this.cupStatus
         };
         this.$axios.post(AUTH.url + "editingCupType", param).then(response => {
+          this.loadingShow = false
           this.retrieveCupType();
-          this.dialogForCupSize = false;
+          this.hide()
         });
       } else {
         this.errorMessage = "All fields are required!";
+        this.loadingShow = false
       }
     },
     normalPrice(event) {
@@ -902,36 +946,40 @@ export default {
         this.imgURL = URL.createObjectURL(e.target.files[0])
     },
     formSubmitProduct(e) {
+      this.loadingShow = true
       if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null){
-                e.preventDefault();
-                let currentObj = this;
-                const config = {
-                    headers: { 'content-type': 'multipart/form-data' }
-                }
-                let formData = new FormData();
-                formData.append('image', this.img)
-                formData.append('productCategory', this.prodType)
-                formData.append('productName', this.productName)
-                formData.append('description', this.description)
-                formData.append('status', 'Available')
-                formData.append('lowPrice', this.lowPrice)
-                formData.append('highPrice', this.highPrice)
-                formData.append('overPrice', this.overPrice)
-                formData.append('onlinelowPrice', this.onlinelowPrice)
-                formData.append('onlinehighPrice', this.onlinehighPrice)
-                formData.append('onlineoverPrice', this.onlineoverPrice)
-                this.$axios.post('/formSubmit', formData, config).then(function (response) {
-                    currentObj.success = response.data.success
-                    currentObj.retrieveCategories()
-                    currentObj.retrieveProducts()
-                    currentObj.hide()
-                })
-                .catch(function (error) {
-                    currentObj.output = error;
-                });
-            }else{
-                this.errorMessage = 'All fields are required!'
-            }
+          e.preventDefault();
+          let currentObj = this;
+          const config = {
+              headers: { 'content-type': 'multipart/form-data' }
+          }
+          let formData = new FormData();
+          formData.append('image', this.img)
+          formData.append('productCategory', this.prodType)
+          formData.append('productName', this.productName)
+          formData.append('description', this.description)
+          formData.append('status', 'Available')
+          formData.append('lowPrice', this.lowPrice)
+          formData.append('highPrice', this.highPrice)
+          formData.append('overPrice', this.overPrice)
+          formData.append('onlinelowPrice', this.onlinelowPrice)
+          formData.append('onlinehighPrice', this.onlinehighPrice)
+          formData.append('onlineoverPrice', this.onlineoverPrice)
+          this.$axios.post('/formSubmit', formData, config).then(function (response) {
+            currentObj.loadingShow = false
+            currentObj.success = response.data.success
+            currentObj.retrieveCategories()
+            currentObj.retrieveProducts()
+            currentObj.hide()
+          })
+          .catch(function (error) {
+            currentObj.output = error;
+            currentObj.loadingShow = false
+          });
+      }else{
+          this.errorMessage = 'All fields are required!'
+          this.loadingShow = false
+      }
     },
     editProduct(item) {
         this.dialogForProduct = true;
@@ -952,40 +1000,45 @@ export default {
         this.prodId = item.id
     },
     updateProduct(e) {
+      this.loadingShow = true
       if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null){
-                e.preventDefault();
-                let currentObj = this;
-                const config = {
-                    headers: { 'content-type': 'multipart/form-data' }
-                }
-                let formData = new FormData();
-                formData.append('id', this.prodId)
-                formData.append('image', this.img)
-                formData.append('status', this.status)
-                formData.append('productCategory', this.prodType)
-                formData.append('productName', this.productName)
-                formData.append('description', this.description)
-                formData.append('lowPrice', this.lowPrice)
-                formData.append('highPrice', this.highPrice)
-                formData.append('overPrice', this.overPrice)
-                formData.append('onlinelowPrice', this.onlinelowPrice)
-                formData.append('onlinehighPrice', this.onlinehighPrice)
-                formData.append('onlineoverPrice', this.onlineoverPrice)
-                this.$axios.post('/updateProduct', formData, config)
-                .then(function (response) {
-                    currentObj.success = response.data.success
-                    currentObj.retrieveCategories()
-                    currentObj.retrieveProducts()
-                    currentObj.hide()
-                })
-                .catch(function (error) {
-                    currentObj.output = error;
-                });
-            }else{
-                this.errorMessage = 'All fields are required!'
-            }
+          e.preventDefault();
+          let currentObj = this;
+          const config = {
+              headers: { 'content-type': 'multipart/form-data' }
+          }
+          let formData = new FormData();
+          formData.append('id', this.prodId)
+          formData.append('image', this.img)
+          formData.append('status', this.status)
+          formData.append('productCategory', this.prodType)
+          formData.append('productName', this.productName)
+          formData.append('description', this.description)
+          formData.append('lowPrice', this.lowPrice)
+          formData.append('highPrice', this.highPrice)
+          formData.append('overPrice', this.overPrice)
+          formData.append('onlinelowPrice', this.onlinelowPrice)
+          formData.append('onlinehighPrice', this.onlinehighPrice)
+          formData.append('onlineoverPrice', this.onlineoverPrice)
+          this.$axios.post('/updateProduct', formData, config)
+          .then(function (response) {
+              currentObj.loadingShow = false
+              currentObj.success = response.data.success
+              currentObj.retrieveCategories()
+              currentObj.retrieveProducts()
+              currentObj.hide()
+          })
+          .catch(function (error) {
+              currentObj.output = error;
+              currentObj.loadingShow = false
+          });
+      }else{
+          this.errorMessage = 'All fields are required!'
+          this.loadingShow = false
+      }
     },
     productStatusUpdate(id) {
+      this.loadingShow = true
       let param = {
         id: id,
         status: "Not Available"
@@ -994,9 +1047,11 @@ export default {
         .post(AUTH.url + "updateStatusProduct", param)
         .then(response => {
           this.retrieveProducts();
+          this.loadingShow = false
         });
     },
     productStatusAvailable(id) {
+      this.loadingShow = true
       let param = {
         id: id,
         status: "Available"
@@ -1005,6 +1060,7 @@ export default {
         .post(AUTH.url + "updateStatusProduct", param)
         .then(response => {
           this.retrieveProducts();
+          this.loadingShow = false
         });
     },
     onImageChange(e) {
@@ -1012,6 +1068,7 @@ export default {
       this.imageURL = URL.createObjectURL(e.target.files[0]);
     },
     formSubmit(e) {
+      this.loadingShow = true
       if (this.image !== null && this.productType !== null) {
         e.preventDefault();
         let currentObj = this;
@@ -1026,16 +1083,19 @@ export default {
         axios
           .post("/addCategory", formData, config)
           .then(function(response) {
+            currentObj.loadingShow = false
             currentObj.success = response.data.success;
             currentObj.retrieveCategories();
             currentObj.retrieveProducts();
             currentObj.hide();
           })
           .catch(function(error) {
+            currentObj.loadingShow = false
             currentObj.output = error;
           });
       } else {
         this.errorMessage = "All fields are required!";
+        this.loadingShow = false
       }
     },
     product(event) {
@@ -1186,9 +1246,7 @@ export default {
       this.dialogForAddOns = false;
       this.dialogForCupType = false;
       this.dialogForCupSize = false;
-
       this.showProductModal = false;
-      
       this.showCategoryModal = false;
       this.editAddOnsShow = false;
       this.addonsShow = false;
@@ -1201,6 +1259,7 @@ export default {
       ROUTER.push(route).catch(() => {});
     },
     addAddOns() {
+      this.loadingShow = true
       if (
         this.addOnsPrice !== null &&
         this.inputAddOns !== null &&
@@ -1213,16 +1272,20 @@ export default {
           status: "Available"
         };
         this.$axios.post(AUTH.url + "addingAddOns", param).then(response => {
+          this.loadingShow = false
           this.retrieveAddOns();
           this.dialogForAddOns = false;
         });
       } else {
         this.errorMessage = "All fields are required!";
+        this.loadingShow = false
       }
     },
     retrieveAddOns() {
+      this.loadingShow = true
       this.$axios.post(AUTH.url + "retrieveAllAddOns").then(response => {
-        this.datas = response.data.addons;
+        this.datas = response.data.addons
+        this.loadingShow = false
       });
     },
     editAddOns(item) {
@@ -1236,6 +1299,7 @@ export default {
       this.idAddOns = item.id;
     },
     editAddOnsData() {
+      this.loadingShow = true
       if (this.addOnsPrice !== null && this.inputAddOns !== null) {
         let param = {
           id: this.idAddOns,
@@ -1245,14 +1309,17 @@ export default {
           status: this.addOnsStat
         };
         this.$axios.post(AUTH.url + "updateAddOns", param).then(response => {
+          this.loadingShow = false
           this.retrieveAddOns();
           this.hide();
         });
       } else {
         this.errorMessage = "All fields are required!";
+        this.loadingShow = false
       }
     },
     NAStatusUpdate(id) {
+      this.loadingShow = true
       let param = {
         id: id,
         status: "Not Available"
@@ -1260,10 +1327,12 @@ export default {
       this.$axios
         .post(AUTH.url + "updateStatusAddOns", param)
         .then(response => {
+          this.loadingShow = false
           this.retrieveAddOns();
         });
     },
     availableStatusUpdate(id) {
+      this.loadingShow = true
       let param = {
         id: id,
         status: "Available"
@@ -1271,18 +1340,22 @@ export default {
       this.$axios
         .post(AUTH.url + "updateStatusAddOns", param)
         .then(response => {
+          this.loadingShow = false
           this.retrieveAddOns();
         });
     },
     retrieveProducts() {
+      this.loadingShow = true
       this.$axios.post(AUTH.url + "retrieveAllProduct").then(response => {
+        this.loadingShow = false
         this.productData = response.data.product;
       });
     },
     retrieveCategories() {
+      this.loadingShow = true
       this.$axios.post(AUTH.url + "retrieveCategory").then(response => {
+        this.loadingShow = false
         this.categoryData = response.data.addCategory;
-        console.log(this.categoryData);
         response.data.addCategory.forEach(element => {
           this.categoryName.push(element.productCategory);
         });

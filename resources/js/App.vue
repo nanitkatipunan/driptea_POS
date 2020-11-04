@@ -31,47 +31,53 @@
     <v-app-bar color="orange darken-1" v-if="admin !== null" app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-img max-height="64" max-width="42" :src="image"></v-img>
-      <v-app-bar-title>DRIPTEA</v-app-bar-title>
+      <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-items class="hidden-sm-and-down">
+      <v-app-bar-items name="theitem" class="hidden-sm-and-down" app >
         <div>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon x-large color="black" right>mdi-bell-ring</v-icon>
+                <v-icon medium color="black" right>mdi-bell-ring</v-icon>
               </v-btn>
             </template>
             <v-list style="max-height: 200px" class="overflow-y-auto notifDropdown">
               <!-- ang Click kay wala pay nay method -->
-              <v-list-item v-for="(item, index) in items" :key="index" @click="ShowModal">
+              <v-list-item v-for="(item, index) in items" :key="index">
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
         </div>
       </v-app-bar-items>
+      <v-app-bar-items>
+        <button class="btn" @click="logout()">Logout</button>
+      </v-app-bar-items>
     </v-app-bar>
     <v-app-bar class="cashierNav" color="orange darken-1" v-if="cashier !== null">
       <a href="#"><v-img max-height="64" max-width="42" :src="image"></v-img></a>
-      <v-app-bar-title>DRIPTEA</v-app-bar-title>
+      <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-items class="hidden-sm-and-down">
+      <v-app-bar-items name="theitem" class="hidden-sm-and-down" app >
         <div>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon large color="black" right>mdi-bell-ring</v-icon>
+                <v-icon medium color="black" right>mdi-bell-ring</v-icon>
               </v-btn>
             </template>
             <v-list style="max-height: 300px; max-width: 300px" class="overflow-y-auto notifDropdown">
               <!-- ang Click kay wala pay nay method -->
-              <v-list-item v-for="(item, index) in items" :key="index" @click="ShowModal">
-                <v-list-item-title>{{ item.title }} has order</v-list-item-title>
-
+              <!-- <product ref="product"></product> -->
+              <v-list-item v-for="(item, index) in storeOrder" :key="index" @click="getOrder(item, $event)">
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
         </div>
+      </v-app-bar-items>
+      <v-app-bar-items>
+        <button class="btn" @click="logout()">Logout</button>
       </v-app-bar-items>
     </v-app-bar>
 
@@ -89,22 +95,31 @@
 .cashierNav {
     max-height: 65px;
 }
+.color {
+  background: #89afe8;
+}
 </style>
 <script>
 import image from "../assets/logo.png";
 import AUTH from "./services/auth";
 import ROUTER from "./router";
+import { mdiAccount } from "@mdi/js";
+import { App } from '@/js/App.vue'
 import config from './config.js'
+import product from './modules/products/productCategory.vue'
 export default {
   data: () => ({
     admin: localStorage.getItem("adminId"),
     cashier: localStorage.getItem("cashierId"),
     drawer: null,
+    show: false,
     image: image,
     auth: AUTH,
     token: null,
     dialog: false,
     config: config,
+    tableData: [],
+    storeOrder: [],
     nav: [
       {
         icon: "home",
@@ -135,15 +150,35 @@ export default {
       { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
       { icon: "mdi-apps", text: "Dashboard", route: "/adminDashboard" },
       {
-        icon: "mdi-calendar-account",
+        icon: "mdi-poll",
         text: "Sales Inventory",
         route: "/salesInventory"
       },
       {
         icon: "mdi-calendar-account",
+        text: "Order Inventory",
+        route: "/orderInventory"
+      },
+      {
+        icon: "mdi-cup",
+        text: "Cups Inventory",
+        route: "/cupsInventory"
+      },
+      {
+        icon: "mdi-plus-box",
         text: "Adding",
         route: "/addProductCategoryAddOns"
-      }
+      },
+      {
+        icon: "mdi-point-of-sale",
+        text: "POS",
+        route: "/cashierDashboard"
+      },
+      {
+        icon: "mdi-account-multiple-plus",
+        text: "Register Account",
+        route: "/registerAccount"
+      },
     ],
     items: [
       { title: "Click Me" },
@@ -153,7 +188,10 @@ export default {
     ],
     count: 0
   }),
+  components: {
+  },
   mounted() {
+    this.retrieve()
     this.admin = localStorage.getItem("adminId");
     this.cashier = localStorage.getItem("cashierId");
     let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
@@ -162,13 +200,13 @@ export default {
     });
 
     let channel = pusher.subscribe('driptea-channel')
+    let obj = this
     channel.bind('driptea-data', (data) => {
-        if(data.order === 'pendingCustomer'){
-            this.count++
-            // this.retrieveProduct()
-        }
-        console.log(this.count)
+      this.retrieve()
     })
+  },
+  components: {
+    product
   },
   methods: {
     menuItems() {
@@ -177,8 +215,24 @@ export default {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
-    ShowModal() {
-
+    getOrder(item, event) {
+      event.target.classList.add('color')
+      localStorage.setItem("customerId", item[0].customerId);
+      localStorage.setItem("customerType", 'online');
+      ROUTER.push("/productCategory/online").catch(() => {});
+    },
+    retrieve(){
+      this.$axios.post(AUTH.url + 'retrieveOnlineOrder').then(res => {
+        let storage = []
+        this.tableData = res.data.order
+        Object.keys(this.tableData).forEach(element => {
+          storage.push(this.tableData[element])
+        });
+        this.storeOrder = storage
+      })
+    },
+    logout(){
+      AUTH.deaunthenticate()
     }
   }
 };

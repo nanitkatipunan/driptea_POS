@@ -14,6 +14,7 @@
         <div v-else class="secRow">
             <empty :title="'No Product Yet!'"></empty>
         </div>
+        <loading v-if="loadingShow"></loading>
     </center>
 </div>
 </template>
@@ -65,25 +66,30 @@
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import empty from '../../basic/empty.vue'
+import loading from '../../basic/loading.vue';
 export default {
     data() {
         return {
             chosenCat: this.$route.params.itemChosen,
-            data: null
+            data: null,
+            loadingShow: false
         }
     },
     mounted() {
         this.retrieveProduct()
     },
     components: {
-        empty
+        empty,
+        loading
     },
     methods: {
         retrieveProduct() {
+            this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveProduct', {
                 type: this.chosenCat
             }).then(res => {
                 this.data = res.data.product
+                this.loadingShow = false
             })
         },
         redirect(param) {
