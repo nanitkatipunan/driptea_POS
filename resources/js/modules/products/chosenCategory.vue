@@ -87,7 +87,7 @@ export default {
             this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveProduct', {
                 type: this.chosenCat
-            }).then(res => {
+            }, AUTH.config).then(res => {
                 this.data = res.data.product
                 this.loadingShow = false
             })

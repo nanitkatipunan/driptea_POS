@@ -182,7 +182,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupType").then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupType", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
         _this.cupData = response.data.cupType;
         _this.loadingShow = false;
       });
@@ -240,7 +240,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllProduct").then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllProduct", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
         _this2.productData = response.data.product;
         _this2.loadingShow = false;
       });
@@ -249,7 +249,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrievingAddOns").then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrievingAddOns", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
         _this3.addOnsData = response.data.addons;
         _this3.loadingShow = false;
       });
@@ -260,7 +260,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOneProduct', {
         id: this.itemId
-      }).then(function (response) {
+      }, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
         _this4.itemSelected = response.data.product[0].productName;
         _this4.lowPrice = response.data.product[0].lowPrice;
         _this4.highPrice = response.data.product[0].highPrice;
@@ -310,7 +310,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveOneAddOn", {
         id: params.id
-      }).then(function (response) {
+      }, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
         if (_this5.customerType === 'foodpanda' || _this5.customerType === 'grab') {
           _this5.addOnsPrice = response.data.addons.onlineAddOnsPrice;
         } else {
@@ -357,6 +357,7 @@ __webpack_require__.r(__webpack_exports__);
           customerId: localStorage.getItem('customerId'),
           cashierId: localStorage.getItem('cashierId') ? localStorage.getItem('cashierId') : localStorage.getItem('adminId'),
           productId: this.itemId,
+          customerType: this.customerType,
           quantity: this.quantity,
           size: this.cupSize,
           sugarLevel: this.sugarLevel,
@@ -366,7 +367,7 @@ __webpack_require__.r(__webpack_exports__);
           addOns: this.addOns,
           subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
         };
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter).then(function (response) {
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'addOrder', parameter, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
           _this6.loadingShow = false;
           _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + localStorage.getItem('customerType'))["catch"](function () {});
         });
@@ -842,14 +843,7 @@ var render = function() {
                             }
                           }
                         },
-                        [
-                          _vm._v(
-                            "(₱ " +
-                              _vm._s(item.addons_price) +
-                              ") " +
-                              _vm._s(item.addons_name)
-                          )
-                        ]
+                        [_vm._v(_vm._s(_vm.getAddOnsName(item)))]
                       )
                     })
                   ],

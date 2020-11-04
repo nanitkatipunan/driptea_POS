@@ -18,6 +18,7 @@ class CreateOrders extends Migration
             $table->bigInteger('customerId');
             $table->bigInteger('onlineId')->nullable();
             $table->bigInteger('productId');
+            $table->string('customerType');
             $table->integer('quantity');
             $table->string('size');
             $table->string('cupType');

@@ -172,7 +172,7 @@
             </div>
           </div>
           <v-btn
-            type="submit"
+            type="button"
             outlined
             color="orange"
             @click="register"
@@ -291,6 +291,7 @@ export default {
       ROUTER.push(route).catch(() => {});
     },
     register() {
+      e.preventDefault()
       this.loadingShow = true
       this.validate("fullname");
       this.validate("address");

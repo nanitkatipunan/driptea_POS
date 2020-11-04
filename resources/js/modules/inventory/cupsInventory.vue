@@ -76,7 +76,7 @@ export default {
   methods:{
     tableForUpcomingCups(){
       this.loadingShow = true
-        this.$axios.post(AUTH.url + "retrieveCupForInventory").then(response => {
+        this.$axios.post(AUTH.url + "retrieveCupForInventory", {}, AUTH.config).then(response => {
           this.dataInDB = response.data.quantityCupsInDB
           this.headersForCup = [
             {text: "Date" ,value:"created_at"},
@@ -92,7 +92,7 @@ export default {
     },
     tableForCupsOnrack(){
       this.loadingShow = true
-        this.$axios.post(AUTH.url + "retrieveCupForInventory").then(response => {
+        this.$axios.post(AUTH.url + "retrieveCupForInventory", {}, AUTH.config).then(response => {
           this.dataInDB = response.data.quantityCupsInDB
           this.headersForCup = [
             {text: "Date" ,value:"created_at"},
@@ -108,7 +108,7 @@ export default {
     },
     tableForUsedCups(){
       this.loadingShow = true
-      this.$axios.post(AUTH.url + "retrieveCupForInventory").then(response => {
+      this.$axios.post(AUTH.url + "retrieveCupForInventory", {}, AUTH.config).then(response => {
         this.dataInDB = response.data.quantityCupsInDB
         this.headersForCup = [
           {text: "Date" ,value:"created_at"},
@@ -120,11 +120,10 @@ export default {
         this.cupName = "Used Cups"
         this.loadingShow = false
       })
-
     },
     tableForRemainingCups(){
       this.loadingShow = true
-      this.$axios.post(AUTH.url + "retrieveCupForInventory").then(response => {
+      this.$axios.post(AUTH.url + "retrieveCupForInventory", {}, AUTH.config).then(response => {
         this.dataInDB = response.data.quantityCupsInDB
         this.headersForCup = [
           {text: "Date" ,value:"created_at"},
@@ -141,7 +140,7 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 .table{
   margin-left: 50px;
   margin-top: 50px;

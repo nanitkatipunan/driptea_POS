@@ -18,7 +18,7 @@ class CreateStoreCheckouts extends Migration
             $table->bigInteger('customerId');
             $table->double('subTotal')->nullable();
             $table->integer('deliveryFee')->nullable();
-            $table->string('total');
+            $table->double('total');
             $table->string('incash')->nullable();
             $table->string('change')->nullable();
             $table->timestamps();

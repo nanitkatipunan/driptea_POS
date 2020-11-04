@@ -33,7 +33,7 @@
                 <div class="col-md-4">
                     <center>
                         <h3 class="black--text">Add-ons</h3>
-                        <button class="btn overline" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">(₱ {{item.addons_price}}) {{item.addons_name}}</button>
+                        <button class="btn overline" v-for="(item, index) in addOnsData" :key="index" @click="addAddOns(item, $event)">{{getAddOnsName(item)}}</button>
                     </center>
                 </div>
             </div>
@@ -163,7 +163,7 @@ export default {
         },
         retrieveCupType() {
             this.loadingShow = true
-            this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
+            this.$axios.post(AUTH.url + "retrieveCupType", {}, AUTH.config).then(response => {
                 this.cupData = response.data.cupType;
                 this.loadingShow = false
             });
@@ -213,21 +213,21 @@ export default {
         },
         retrieveProducts() {
             this.loadingShow = true
-            this.$axios.post(AUTH.url + "retrieveAllProduct").then(response => {
+            this.$axios.post(AUTH.url + "retrieveAllProduct", {}, AUTH.config).then(response => {
                 this.productData = response.data.product;
                 this.loadingShow = false
             });
         },
         retrieveAddOns() {
             this.loadingShow = true
-            this.$axios.post(AUTH.url + "retrievingAddOns").then(response => {
+            this.$axios.post(AUTH.url + "retrievingAddOns", {}, AUTH.config).then(response => {
                 this.addOnsData = response.data.addons;
                 this.loadingShow = false
             });
         },
         getProduct(){
             this.loadingShow = true
-            this.$axios.post(AUTH.url + 'retrieveOneProduct', {id: this.itemId}).then(response => {
+            this.$axios.post(AUTH.url + 'retrieveOneProduct', {id: this.itemId}, AUTH.config).then(response => {
                 this.itemSelected = response.data.product[0].productName
                 this.lowPrice = response.data.product[0].lowPrice
                 this.highPrice = response.data.product[0].highPrice
@@ -268,7 +268,7 @@ export default {
             this.cupTypeEvent = event.target
         },
         addAddOns(params, event){
-            this.$axios.post(AUTH.url + "retrieveOneAddOn", {id: params.id}).then(response => {
+            this.$axios.post(AUTH.url + "retrieveOneAddOn", {id: params.id}, AUTH.config).then(response => {
                 if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
                     this.addOnsPrice = response.data.addons.onlineAddOnsPrice
                 }else{
@@ -304,6 +304,7 @@ export default {
                     customerId: localStorage.getItem('customerId'),
                     cashierId: localStorage.getItem('cashierId') ? localStorage.getItem('cashierId') : localStorage.getItem('adminId'),
                     productId: this.itemId,
+                    customerType: this.customerType,
                     quantity: this.quantity,
                     size: this.cupSize,
                     sugarLevel: this.sugarLevel,
@@ -313,7 +314,7 @@ export default {
                     addOns: this.addOns,
                     subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
                 }
-                this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
+                this.$axios.post(AUTH.url + 'addOrder', parameter, AUTH.config).then(response => {
                     this.loadingShow = false
                     ROUTER.push('/productCategory/'+localStorage.getItem('customerType')).catch(()=>{})
                 })

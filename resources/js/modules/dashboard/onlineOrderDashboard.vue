@@ -239,6 +239,7 @@ export default {
         this.retrieveProduct()
         this.retrieveAddOns()
         this.retrieveCupType()
+
         let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
             cluster: this.config.PUSHER_APP_CLUSTER,
             encrypted: true
@@ -335,6 +336,7 @@ export default {
                             onlineId: localStorage.getItem('customerId'),
                             productId: this.itemId,
                             quantity: this.quantity,
+                            customerType: 'online',
                             size: this.size,
                             sugarLevel: this.sugarLevel,
                             choosenPrice: this.total,
@@ -353,6 +355,7 @@ export default {
                         onlineId: localStorage.getItem('customerId'),
                         productId: this.itemId,
                         quantity: this.quantity,
+                        customerType: 'online',
                         size: this.size,
                         sugarLevel: this.sugarLevel,
                         choosenPrice: this.total,

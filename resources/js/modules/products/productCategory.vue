@@ -203,7 +203,7 @@ export default {
         },
         retrieveCategory(){
             this.loadingShow = true
-            this.$axios.post(AUTH.url + 'retrieveCategory').then(res => {
+            this.$axios.post(AUTH.url + 'retrieveCategory', {}, AUTH.config).then(res => {
                 this.data = res.data.addCategory
                 this.loadingShow = false
             })
@@ -227,7 +227,7 @@ export default {
                 let params = {
                     id: localStorage.getItem('customerId')
                 }
-                this.$axios.post(AUTH.url + 'getOrder', params).then(res => {
+                this.$axios.post(AUTH.url + 'getOrder', params, AUTH.config).then(res => {
                     this.tableData = res.data.order
                     this.loadingShow = false
                 })
@@ -235,7 +235,7 @@ export default {
                 let params = {
                     id: localStorage.getItem('customerId')
                 }
-                this.$axios.post(AUTH.url + 'retrieveOrder', params).then(res => {
+                this.$axios.post(AUTH.url + 'retrieveOrder', params, AUTH.config).then(res => {
                     this.tableData = res.data.order
                     this.loadingShow = false
                 })
@@ -255,7 +255,7 @@ export default {
         },
         deleteOrder(prodId){
             this.loadingShow = true
-            this.$axios.post(AUTH.url + 'deleteOrder', {id: prodId}).then(res => {
+            this.$axios.post(AUTH.url + 'deleteOrder', {id: prodId}, AUTH.config).then(res => {
                 this.retrieveProduct()
                 this.loadingShow = false
             })
@@ -266,7 +266,7 @@ export default {
                 id: localStorage.getItem('customerId'),
                 status: 'complete'
             }
-            this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
+            this.$axios.post(AUTH.url + 'updateStatus', params, AUTH.config).then(res => {
                 let params = {
                     customerId: localStorage.getItem('customerId'),
                     cashierId: localStorage.getItem('cashierId') ? localStorage.getItem('cashierId') : localStorage.getItem('adminId'),
@@ -278,7 +278,7 @@ export default {
                     order: this.tableData
                 }
                 console.log(this.tableData)
-                this.$axios.post(AUTH.url + 'addCheckout', params).then(res => {
+                this.$axios.post(AUTH.url + 'addCheckout', params, AUTH.config).then(res => {
                     let low = 0
                     let high = 0
                     let over = 0
@@ -296,11 +296,11 @@ export default {
                         usedCupsHighDose: high,
                         usedCupsOverDose: over
                     }
-                    this.$axios.post(AUTH.url + 'updateRemainingCups', param).then(response => {
+                    this.$axios.post(AUTH.url + 'updateRemainingCups', param, AUTH.config).then(response => {
                         let parameter = {
                             id: res.data.storeCheckouts.id,
                         }
-                        this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
+                        this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter, AUTH.config).then(response => {
                             this.loadingShow = false
                             this.receiptData = response.data.storeOrder
                             this.receiptShow = true
@@ -310,8 +310,7 @@ export default {
             })
         },
         checkoutOrder(){
-            if(this.customerType !== 'fb'){
-                console.log(this.convertTotalPrice(), this.cash, this.convertChange())
+            if(this.customerType !== 'fb' && this.customerType !== 'online'){
                 if(this.convertTotalPrice() !== null && this.cash !== null && this.convertChange() >= 0){
                     this.error = false
                     this.checkoutMethod()

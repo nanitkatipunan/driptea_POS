@@ -99,7 +99,7 @@
             type="button"
             class="btn btn-primary btnModal"
             dark
-            @click="showProduct"
+            @click="showProduct()"
           >+ PRODUCT</v-btn>
         </v-toolbar>
       </template>
@@ -352,7 +352,7 @@
                                     <div class="form-group">
                                         <center>
                                             <img class="addOnsImage" :src="imgURL"><br>
-                                            <input  type="file" class="fileStyle" v-on:change="onImgChange"  required><br>
+                                            <input type="file" class="fileStyle" v-on:change="onImgChange" required><br>
                                         </center>
                                     </div>
                                 
@@ -766,8 +766,8 @@ export default {
     };
   },
   mounted() {
-    this.retrieveProducts();
     this.retrieveCategories();
+    this.retrieveProducts();
     this.retrieveAddOns();
     this.retrieveCupType();
     this.retrieveCupSize();
@@ -816,10 +816,13 @@ export default {
         status: "Not Available"
       };
       this.$axios
-        .post(AUTH.url + "updateAvailableCupType", param)
+        .post(AUTH.url + "updateAvailableCupType", param, AUTH.config)
         .then(response => {
           this.retrieveCupType();
           this.loadingShow = false
+          if(response.data.status === 'Token is Expired'){
+            AUTH.deauthenticate()
+          }
         });
     },
     availableCupUpdate(id) {
@@ -829,22 +832,31 @@ export default {
         status: "Available"
       };
       this.$axios
-        .post(AUTH.url + "updateAvailableCupType", param)
+        .post(AUTH.url + "updateAvailableCupType", param, AUTH.config)
         .then(response => {
+          if(response.data.status){
+            AUTH.deauthenticate()
+          }
           this.retrieveCupType();
           this.loadingShow = false
         });
     },
     retrieveCupType() {
       this.loadingShow = true
-      this.$axios.post(AUTH.url + "retrieveAllCupType").then(response => {
+      this.$axios.post(AUTH.url + "retrieveAllCupType", {}, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.cupData = response.data.cupType;
         this.loadingShow = false
       });
     },
     retrieveCupSize() {
       this.loadingShow = true
-      this.$axios.post(AUTH.url + "retrieveCupSize").then(response => {
+      this.$axios.post(AUTH.url + "retrieveCupSize", {}, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         this.cupSizeData = response.data.quantityCupsInDB;
             
@@ -858,6 +870,11 @@ export default {
     },
     addingCupType() {
       this.loadingShow = true
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('userToken')
+        }
+      }
       if (this.inputCupPrice !== null && this.inputCup !== null) {
         let param = {
           cupType: this.inputCup,
@@ -865,7 +882,10 @@ export default {
           price: this.inputCupPrice,
           status: "Available"
         };
-        this.$axios.post(AUTH.url + "addingCupType", param).then(response => {
+        this.$axios.post(AUTH.url + "addingCupType", param, AUTH.config).then(response => {
+          if(response.data.status){
+            AUTH.deauthenticate()
+          }
           this.loadingShow = false
           this.retrieveCupType();
           this.dialogForCupType = false;
@@ -887,7 +907,10 @@ export default {
           incomingHighDose: this.highDoseCup,
           incomingOverDose: this.overDoseCup
         };
-        this.$axios.post(AUTH.url + "addIncomingCups", param).then(response => {
+        this.$axios.post(AUTH.url + "addIncomingCups", param, AUTH.config).then(response => {
+          if(response.data.status){
+            AUTH.deauthenticate()
+          }
           this.loadingShow = false
           this.retrieveCupSize();
           this.hide();
@@ -907,7 +930,10 @@ export default {
           price: this.inputCupPrice,
           status: this.cupStatus
         };
-        this.$axios.post(AUTH.url + "editingCupType", param).then(response => {
+        this.$axios.post(AUTH.url + "editingCupType", param, AUTH.config).then(response => {
+          if(response.data.status){
+            AUTH.deauthenticate()
+          }
           this.loadingShow = false
           this.retrieveCupType();
           this.hide()
@@ -951,7 +977,10 @@ export default {
           e.preventDefault();
           let currentObj = this;
           const config = {
-              headers: { 'content-type': 'multipart/form-data' }
+              headers: {
+                'content-type': 'multipart/form-data',
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+              }
           }
           let formData = new FormData();
           formData.append('image', this.img)
@@ -971,6 +1000,9 @@ export default {
             currentObj.retrieveCategories()
             currentObj.retrieveProducts()
             currentObj.hide()
+            if(response.data.status){
+              AUTH.deauthenticate()
+            }
           })
           .catch(function (error) {
             currentObj.output = error;
@@ -1005,7 +1037,10 @@ export default {
           e.preventDefault();
           let currentObj = this;
           const config = {
-              headers: { 'content-type': 'multipart/form-data' }
+              headers: {
+                'content-type': 'multipart/form-data',
+                Authorization: 'Bearer ' + localStorage.getItem('userToken')
+              }
           }
           let formData = new FormData();
           formData.append('id', this.prodId)
@@ -1022,11 +1057,14 @@ export default {
           formData.append('onlineoverPrice', this.onlineoverPrice)
           this.$axios.post('/updateProduct', formData, config)
           .then(function (response) {
-              currentObj.loadingShow = false
-              currentObj.success = response.data.success
-              currentObj.retrieveCategories()
-              currentObj.retrieveProducts()
-              currentObj.hide()
+            if(response.data.status){
+              AUTH.deauthenticate()
+            }
+            currentObj.loadingShow = false
+            currentObj.success = response.data.success
+            currentObj.retrieveCategories()
+            currentObj.retrieveProducts()
+            currentObj.hide()
           })
           .catch(function (error) {
               currentObj.output = error;
@@ -1044,8 +1082,11 @@ export default {
         status: "Not Available"
       };
       this.$axios
-        .post(AUTH.url + "updateStatusProduct", param)
+        .post(AUTH.url + "updateStatusProduct", param, AUTH.config)
         .then(response => {
+          if(response.data.status){
+            AUTH.deauthenticate()
+          }
           this.retrieveProducts();
           this.loadingShow = false
         });
@@ -1057,8 +1098,11 @@ export default {
         status: "Available"
       };
       this.$axios
-        .post(AUTH.url + "updateStatusProduct", param)
+        .post(AUTH.url + "updateStatusProduct", param, AUTH.config)
         .then(response => {
+          if(response.data.status){
+            AUTH.deauthenticate()
+          }
           this.retrieveProducts();
           this.loadingShow = false
         });
@@ -1074,15 +1118,20 @@ export default {
         let currentObj = this;
 
         const config = {
-          headers: { "content-type": "multipart/form-data" }
-        };
-
+          headers: {
+              "content-type": "multipart/form-data",
+              Authorization: 'Bearer ' + localStorage.getItem('userToken')
+            }
+        }
         let formData = new FormData();
         formData.append("image", this.image);
         formData.append("productCategory", this.productType);
         axios
           .post("/addCategory", formData, config)
           .then(function(response) {
+            if(response.data.status){
+              AUTH.deauthenticate()
+            }
             currentObj.loadingShow = false
             currentObj.success = response.data.success;
             currentObj.retrieveCategories();
@@ -1217,6 +1266,8 @@ export default {
       this.img = null;
     },
     showCategory() {
+      this.image = null
+      this.productType = null
       this.dialogForCategory = true;
       this.imageURL = null;
       this.productType = null;
@@ -1271,7 +1322,10 @@ export default {
           price: this.addOnsPrice,
           status: "Available"
         };
-        this.$axios.post(AUTH.url + "addingAddOns", param).then(response => {
+        this.$axios.post(AUTH.url + "addingAddOns", param, AUTH.config).then(response => {
+          if(response.data.status){
+            AUTH.deauthenticate()
+          }
           this.loadingShow = false
           this.retrieveAddOns();
           this.dialogForAddOns = false;
@@ -1283,7 +1337,10 @@ export default {
     },
     retrieveAddOns() {
       this.loadingShow = true
-      this.$axios.post(AUTH.url + "retrieveAllAddOns").then(response => {
+      this.$axios.post(AUTH.url + "retrieveAllAddOns", {}, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.datas = response.data.addons
         this.loadingShow = false
       });
@@ -1308,7 +1365,10 @@ export default {
           price: this.addOnsPrice,
           status: this.addOnsStat
         };
-        this.$axios.post(AUTH.url + "updateAddOns", param).then(response => {
+        this.$axios.post(AUTH.url + "updateAddOns", param, AUTH.config).then(response => {
+          if(response.data.status){
+            AUTH.deauthenticate()
+          }
           this.loadingShow = false
           this.retrieveAddOns();
           this.hide();
@@ -1325,8 +1385,11 @@ export default {
         status: "Not Available"
       };
       this.$axios
-        .post(AUTH.url + "updateStatusAddOns", param)
+        .post(AUTH.url + "updateStatusAddOns", param, AUTH.config)
         .then(response => {
+          if(response.data.status){
+            AUTH.deauthenticate()
+          }
           this.loadingShow = false
           this.retrieveAddOns();
         });
@@ -1338,22 +1401,31 @@ export default {
         status: "Available"
       };
       this.$axios
-        .post(AUTH.url + "updateStatusAddOns", param)
+        .post(AUTH.url + "updateStatusAddOns", param, AUTH.config)
         .then(response => {
+          if(response.data.status){
+            AUTH.deauthenticate()
+          }
           this.loadingShow = false
           this.retrieveAddOns();
         });
     },
     retrieveProducts() {
       this.loadingShow = true
-      this.$axios.post(AUTH.url + "retrieveAllProduct").then(response => {
+      this.$axios.post(AUTH.url + "retrieveAllProduct", {}, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         this.productData = response.data.product;
       });
     },
     retrieveCategories() {
       this.loadingShow = true
-      this.$axios.post(AUTH.url + "retrieveCategory").then(response => {
+      this.$axios.post(AUTH.url + "retrieveCategory", {}, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         this.categoryData = response.data.addCategory;
         response.data.addCategory.forEach(element => {

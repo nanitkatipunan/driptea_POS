@@ -823,8 +823,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }]), _defineProperty(_ref, "loadingShow", false), _ref;
   },
   mounted: function mounted() {
-    this.retrieveProducts();
     this.retrieveCategories();
+    this.retrieveProducts();
     this.retrieveAddOns();
     this.retrieveCupType();
     this.retrieveCupSize();
@@ -874,10 +874,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: id,
         status: "Not Available"
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAvailableCupType", param).then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAvailableCupType", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
         _this.retrieveCupType();
 
         _this.loadingShow = false;
+
+        if (response.data.status === 'Token is Expired') {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
       });
     },
     availableCupUpdate: function availableCupUpdate(id) {
@@ -888,7 +892,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: id,
         status: "Available"
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAvailableCupType", param).then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAvailableCupType", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this2.retrieveCupType();
 
         _this2.loadingShow = false;
@@ -898,7 +906,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this3 = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllCupType").then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllCupType", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this3.cupData = response.data.cupType;
         _this3.loadingShow = false;
       });
@@ -907,7 +919,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this4 = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupSize").then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCupSize", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this4.loadingShow = false;
         _this4.cupSizeData = response.data.quantityCupsInDB;
         response.data.quantityCupsInDB.forEach(function (element) {});
@@ -918,6 +934,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this5 = this;
 
       this.loadingShow = true;
+      var config = {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('userToken')
+        }
+      };
 
       if (this.inputCupPrice !== null && this.inputCup !== null) {
         var param = {
@@ -926,7 +947,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           price: this.inputCupPrice,
           status: "Available"
         };
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingCupType", param).then(function (response) {
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingCupType", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+          if (response.data.status) {
+            _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+          }
+
           _this5.loadingShow = false;
 
           _this5.retrieveCupType();
@@ -949,7 +974,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           incomingHighDose: this.highDoseCup,
           incomingOverDose: this.overDoseCup
         };
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addIncomingCups", param).then(function (response) {
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addIncomingCups", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+          if (response.data.status) {
+            _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+          }
+
           _this6.loadingShow = false;
 
           _this6.retrieveCupSize();
@@ -974,7 +1003,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           price: this.inputCupPrice,
           status: this.cupStatus
         };
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "editingCupType", param).then(function (response) {
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "editingCupType", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+          if (response.data.status) {
+            _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+          }
+
           _this7.loadingShow = false;
 
           _this7.retrieveCupType();
@@ -1026,7 +1059,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var currentObj = this;
         var config = {
           headers: {
-            'content-type': 'multipart/form-data'
+            'content-type': 'multipart/form-data',
+            Authorization: 'Bearer ' + localStorage.getItem('userToken')
           }
         };
         var formData = new FormData();
@@ -1047,6 +1081,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           currentObj.retrieveCategories();
           currentObj.retrieveProducts();
           currentObj.hide();
+
+          if (response.data.status) {
+            _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+          }
         })["catch"](function (error) {
           currentObj.output = error;
           currentObj.loadingShow = false;
@@ -1082,7 +1120,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var currentObj = this;
         var config = {
           headers: {
-            'content-type': 'multipart/form-data'
+            'content-type': 'multipart/form-data',
+            Authorization: 'Bearer ' + localStorage.getItem('userToken')
           }
         };
         var formData = new FormData();
@@ -1099,6 +1138,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         formData.append('onlinehighPrice', this.onlinehighPrice);
         formData.append('onlineoverPrice', this.onlineoverPrice);
         this.$axios.post('/updateProduct', formData, config).then(function (response) {
+          if (response.data.status) {
+            _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+          }
+
           currentObj.loadingShow = false;
           currentObj.success = response.data.success;
           currentObj.retrieveCategories();
@@ -1121,7 +1164,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: id,
         status: "Not Available"
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param).then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this8.retrieveProducts();
 
         _this8.loadingShow = false;
@@ -1135,7 +1182,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: id,
         status: "Available"
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param).then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusProduct", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this9.retrieveProducts();
 
         _this9.loadingShow = false;
@@ -1153,13 +1204,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var currentObj = this;
         var config = {
           headers: {
-            "content-type": "multipart/form-data"
+            "content-type": "multipart/form-data",
+            Authorization: 'Bearer ' + localStorage.getItem('userToken')
           }
         };
         var formData = new FormData();
         formData.append("image", this.image);
         formData.append("productCategory", this.productType);
         axios.post("/addCategory", formData, config).then(function (response) {
+          if (response.data.status) {
+            _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+          }
+
           currentObj.loadingShow = false;
           currentObj.success = response.data.success;
           currentObj.retrieveCategories();
@@ -1314,6 +1370,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.img = null;
     },
     showCategory: function showCategory() {
+      this.image = null;
+      this.productType = null;
       this.dialogForCategory = true;
       this.imageURL = null;
       this.productType = null;
@@ -1367,7 +1425,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           price: this.addOnsPrice,
           status: "Available"
         };
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingAddOns", param).then(function (response) {
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addingAddOns", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+          if (response.data.status) {
+            _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+          }
+
           _this10.loadingShow = false;
 
           _this10.retrieveAddOns();
@@ -1383,7 +1445,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this11 = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllAddOns").then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllAddOns", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this11.datas = response.data.addons;
         _this11.loadingShow = false;
       });
@@ -1411,7 +1477,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           price: this.addOnsPrice,
           status: this.addOnsStat
         };
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAddOns", param).then(function (response) {
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateAddOns", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+          if (response.data.status) {
+            _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+          }
+
           _this12.loadingShow = false;
 
           _this12.retrieveAddOns();
@@ -1431,7 +1501,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: id,
         status: "Not Available"
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusAddOns", param).then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusAddOns", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this13.loadingShow = false;
 
         _this13.retrieveAddOns();
@@ -1445,7 +1519,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         id: id,
         status: "Available"
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusAddOns", param).then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "updateStatusAddOns", param, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this14.loadingShow = false;
 
         _this14.retrieveAddOns();
@@ -1455,7 +1533,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this15 = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllProduct").then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllProduct", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this15.loadingShow = false;
         _this15.productData = response.data.product;
       });
@@ -1464,7 +1546,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this16 = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCategory").then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveCategory", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this16.loadingShow = false;
         _this16.categoryData = response.data.addCategory;
         response.data.addCategory.forEach(function (element) {
@@ -1883,7 +1969,11 @@ var render = function() {
                                 type: "button",
                                 dark: ""
                               },
-                              on: { click: _vm.showProduct }
+                              on: {
+                                click: function($event) {
+                                  return _vm.showProduct()
+                                }
+                              }
                             },
                             [_vm._v("+ PRODUCT")]
                           )
@@ -1957,7 +2047,7 @@ var render = function() {
               ],
               null,
               false,
-              2516983904
+              2526093254
             )
           })
         : _vm._e(),
