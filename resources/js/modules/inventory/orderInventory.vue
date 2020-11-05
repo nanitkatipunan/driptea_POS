@@ -1,40 +1,53 @@
 <template>
-    <div class="container">
-        <button class="btn btn-primary" v-for="(items, indexes) in categoryData" :key="indexes" @click="changeCategory(items.productCategory)">{{items.productCategory}}</button>
-        <center><h3>{{categoryName}}</h3></center>
-        <div class="zui-wrapper">
-            <div class="zui-scroller">
-                <table class="zui-table" id="table">
-                    <thead>
-                        <tr>
-                            <th style="text-align: center" rowspan="3" class="zui-sticky-col">#</th>
-                            <th style="text-align: center" rowspan="3" class="zui-sticky-col2">Date</th>
-                            <th style="text-align: center" rowspan="3" class="zui-sticky-col3">Name</th>
-                            <th style="text-align: center" rowspan="3" class="zui-sticky-col4">Address</th>
-                            <th :colspan="oneProd.length" style="text-align: center" v-for="(item, index) in category" :key="index">{{item}}
-                                <tr>
-                                    <th style="text-align: center" v-if="categoryName === i.productCategory" v-for="(i, ind) in productData" :key="ind">{{i.productName}}</th>
-                                </tr>
-                            </th>
-                            <th rowspan="3" class="zui-sticky-col5">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(items, indexes) in finalData" :key="indexes">
-                            <td style="text-align: center" class="zui-sticky-col">{{items[0].customerId}}</td>
-                            <td style="text-align: center" class="zui-sticky-col2">{{getDate(items[0].get_customer[0].created_at)}}</td>
-                            <td style="text-align: center" class="zui-sticky-col3">{{items[0].get_customer[0].customerName ? items[0].get_customer[0].customerName : '&nbsp;'}}</td>
-                            <td style="text-align: center" class="zui-sticky-col4">{{items[0].get_customer[0].customerAddress ? items[0].get_customer[0].customerAddress : '&nbsp;'}}</td>
-                            <!-- <td style="text-align: center" v-for="(item, index) in prod" :key="index">{{item.id}}</td> -->
-                            <td style="text-align: center" v-for="(item, index) in prod" :key="index">{{getAllValue(item, items)}}</td>
-                            <td class="zui-sticky-col5" style="text-align: center; font-weight: bold">{{getTotal(items)}} quantity</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <v-card>
+        <div class="my-custom-scrollbar">
+            <v-toolbar flat>
+                <template v-slot:extension>
+                    <v-tabs dark background-color="#ff5b04" fixed-tabs>
+                        <v-tabs-slider></v-tabs-slider>
+                        <v-tab
+                            v-for="(items, indexes) in categoryData" :key="indexes"
+                            @click="changeCategory(items.productCategory)"
+                        >{{items.productCategory}}</v-tab>
+                    </v-tabs>
+                </template>
+            </v-toolbar>
+            <!-- <button class="btn btn-primary" v-for="(items, indexes) in categoryData" :key="indexes" @click="changeCategory(items.productCategory)">{{items.productCategory}}</button> -->
+            <center><h2 style="width:100%; background-color: #ff5b04; color:white; margin-bottom: 0%; padding: 7px;">{{categoryName}}</h2></center>
+            <div class="zui-wrapper">
+                <div class="zui-scroller">
+                    <table class="zui-table" id="table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center" rowspan="3" class="zui-sticky-col">#</th>
+                                <th style="text-align: center" rowspan="3" class="zui-sticky-col2">Date</th>
+                                <th style="text-align: center" rowspan="3" class="zui-sticky-col3">Name</th>
+                                <th style="text-align: center" rowspan="3" class="zui-sticky-col4">Address</th>
+                                <th :colspan="oneProd.length" style="text-align: center" v-for="(item, index) in category" :key="index">{{item}}
+                                    <tr>
+                                        <th style="text-align: center" v-if="categoryName === i.productCategory" v-for="(i, ind) in productData" :key="ind">{{i.productName}}</th>
+                                    </tr>
+                                </th>
+                                <th rowspan="3" class="zui-sticky-col5">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(items, indexes) in finalData" :key="indexes">
+                                <td style="text-align: center" class="zui-sticky-col">{{items[0].customerId}}</td>
+                                <td style="text-align: center" class="zui-sticky-col2">{{getDate(items[0].get_customer[0].created_at)}}</td>
+                                <td style="text-align: center" class="zui-sticky-col3">{{items[0].get_customer[0].customerName ? items[0].get_customer[0].customerName : '&nbsp;'}}</td>
+                                <td style="text-align: center" class="zui-sticky-col4">{{items[0].get_customer[0].customerAddress ? items[0].get_customer[0].customerAddress : '&nbsp;'}}</td>
+                                <!-- <td style="text-align: center" v-for="(item, index) in prod" :key="index">{{item.id}}</td> -->
+                                <td style="text-align: center" v-for="(item, index) in prod" :key="index">{{getAllValue(item, items, index)}}</td>
+                                <td class="zui-sticky-col5" style="text-align: center; font-weight: bold">{{getTotal(items)}} quantity</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <loading v-if="loadingShow"></loading>
-    </div>
+    </v-card>
 </template>
 <style scoped>
 .zui-table {
@@ -140,37 +153,51 @@ export default {
         getCount(){
             this.count++
         },
-        getAllValue(item, items){
+        getAllValue(item, items, index){
             let total = 0
-            // this.count++
-            // if(this.count === this.prod.length){
-            //     this.changeName = 'highDose'
-            // }else if(this.count === (this.prod.length * 2)){
-            //     this.changeName = 'overDose'
+            let category = 'lowDose'
+            let lowLength = this.prod.length / 3
+            let highLength = lowLength + lowLength
+            let overLength = highLength + lowLength
+            let a = 0
+            for (let i = 0; i < this.prod.length; i++) {
+                if(a < lowLength){
+                    if(index === a){
+                        category = 'lowDose'
+                        break
+                    }else{
+                        a++
+                    }
+                }else if(a < highLength && a >= lowLength){
+                    if(index === a){
+                        category = 'highDose'
+                        break
+                    }else{
+                        a++
+                    }
+                }else if(a < overLength && a >= highLength){
+                    if(index === a){
+                        category = 'overDose'
+                        break
+                    }else{
+                        a++
+                    }
+                }
+            }
+            // if(index === 0 || index === 1 || index === 2){
+            //     category = 'lowDose'
+            // }else if(index === 3 || index === 4 || index === 5){
+            //     category = 'highDose'
+            // }else if(index === 6 || index === 7 || index === 8){
+            //     category = 'overDose'
             // }
-            items.forEach((el, index) => {
-                console.log('hahaha', el)
-                if(this.category[this.count] === 'Low Dose'){
+            items.forEach(el => {
+                if(el.size === category){
                     if(el.order_product[0].id === item.id){
-                        console.log('nisulod')
-                        total += el.quantity
-                    }
-                }else if(this.category[this.count] === 'High Dose'){
-                    if(el.order_product[0].id === item.id){
-                        console.log('jhlhkkjg')
-                        total += el.quantity
-                    }
-                }else if(this.category[this.count] === 'Over Dose'){
-                    if(el.order_product[0].id === item.id){
-                        console.log('sdf')
                         total += el.quantity
                     }
                 }
             })
-            this.count++
-            if(this.count === 3){
-                this.count = 0
-            }
             return total
         },
         getTotal(items){
@@ -196,7 +223,6 @@ export default {
                 data.push(item[element])
             })
             this.finalData = data
-            console.log(this.finalData)
         },
         retrieveCategory(){
             this.loadingShow = true
