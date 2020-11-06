@@ -1,15 +1,15 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-if="admin !== null" v-model="drawer" app color="orange darken-4">
+    <v-navigation-drawer v-if="admin !== null" v-model="drawer" app color="#ff5b04">
       <center>
-        <v-sheet color="orange darken-4" class="pa-5">
+        <v-sheet color="#ff5b04" class="pa-5">
           <v-avatar class="mb-10" color="grey darken-1" size="64"></v-avatar>
           <div style="color:white">Aeromel Laure</div>
         </v-sheet>
       </center>
       <v-divider></v-divider>
       <v-list>
-        <v-list-item-group active-class="orange darken-2 blue--text">
+        <v-list-item-group active-class="#ff5b04">
           <v-list-item
             v-for="(item, index) in employee"
             :key="index"
@@ -28,7 +28,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar color="orange darken-1" v-if="admin !== null" app>
+    <v-app-bar color="#ff5b04" v-if="admin !== null" app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-img max-height="64" max-width="42" :src="image"></v-img>
       <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
@@ -82,10 +82,15 @@
         </div>
       </v-app-bar-items>
     </v-app-bar>
+<<<<<<< HEAD
+    <v-app-bar class="cashierNav" color="#ff5b04" v-if="cashier !== null">
+      <a><v-img max-height="64" max-width="42" :src="image" @click="redirect('/casherDashboard')"></v-img></a>
+=======
     <v-app-bar class="cashierNav" color="orange darken-1" v-if="cashier !== null">
       <a href="#">
         <v-img max-height="64" max-width="42" :src="image"></v-img>
       </a>
+>>>>>>> cc6f6672d6c4e7bce98b159635dc27bb30fab83d
       <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
       <v-app-bar-items name="theitem" class="hidden-sm-and-down" app>

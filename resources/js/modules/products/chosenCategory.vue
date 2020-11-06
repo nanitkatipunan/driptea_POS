@@ -1,5 +1,12 @@
 <template>
 <div class="sudlanan">
+    <div>
+         <v-btn icon style="margin-right: 1%;"  @click="previous()">
+                <v-icon >mdi-arrow-all</v-icon>
+            </v-btn>
+            
+
+    </div>
     <center>
         <h1 style="margin-top: 2%;">{{chosenCat}} Milktea</h1>
         <v-row v-if="data !== null && data.length > 0">
@@ -94,6 +101,12 @@ export default {
         },
         redirect(param) {
             ROUTER.push('/order/product/' + param).catch(() => {})
+        },
+        previous(){
+            let type = localStorage.getItem("customerType");
+            console.log(type);
+
+            ROUTER.push('/productCategory/' + type).catch(() => {})
         }
     }
 }
