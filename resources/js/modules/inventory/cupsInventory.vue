@@ -47,15 +47,18 @@
               </v-btn>
               </VueJsonToCsv>
         </v-toolbar>
-        <loading v-if="loadingShow"></loading>
       </template>
+      <template v-slot:item.created_at="{ item }"><span>{{getDate(item.created_at)}}</span> </template>      
+      <template v-slot:item.totalIncoming="{ item }"><span>{{getTotal(item)}}</span> </template>      
     </v-data-table>
+    <loading v-if="loadingShow"></loading>
   </div>
 </template>
 <script>
 import AUTH from '../../services/auth'
 import VueJsonToCsv from 'vue-json-to-csv'
 import loading from '../../basic/loading.vue';
+import moment from 'moment'
 export default {
   data(){
     return {
@@ -74,6 +77,20 @@ export default {
     this.tableForUpcomingCups();
   },
   methods:{
+    getTotal(item){
+      if(this.cupName === 'Upcoming Cups'){
+        return item.incomingLowDose + item.incomingHighDose + item.incomingOverDose
+      }else if(this.cupName === 'Cups Onrack'){
+        return item.onRockLowDose + item.onRockHighDose + item.onRockOverDose
+      }else if(this.cupName === 'Used Cups'){
+        return item.usedCupsLowDose + item.usedCupsHighDose + item.usedCupsOverDose
+      }else if(this.cupName === 'Remaining Cups'){
+        return item.remainingLowDose + item.remainingHighDose + item.remainingOverDose
+      }
+    },
+    getDate(date){
+      return moment(date).format('MM/DD/YYYY')
+    },
     tableForUpcomingCups(){
       this.loadingShow = true
         this.$axios.post(AUTH.url + "retrieveCupForInventory", {}, AUTH.config).then(response => {
@@ -99,7 +116,7 @@ export default {
             {text: "Low Dose (LD)" ,value:"onRockLowDose"},
             {text: "High Dose (HD)" ,value:"onRockHighDose"},
             {text: "Over Dose (OD)" ,value:"onRockOverDose"},
-            {text: "Total" ,value:"totalOnRack"},
+            {text: "Total" ,value:"totalIncoming"},
           ]
           this.cupName = "Cups Onrack"
           this.loadingShow = false
@@ -115,7 +132,7 @@ export default {
           {text: "Low Dose (LD)" ,value:"usedCupsLowDose"},
           {text: "High Dose (HD)" ,value:"usedCupsHighDose"},
           {text: "Over Dose (OD)" ,value:"usedCupsOverDose"},
-          {text: "Total" ,value:"totalUsed"},
+          {text: "Total" ,value:"totalIncoming"},
         ]
         this.cupName = "Used Cups"
         this.loadingShow = false
@@ -130,7 +147,7 @@ export default {
           {text: "Low Dose (LD)" ,value:"remainingLowDose"},
           {text: "High Dose (HD)" ,value:"remainingHighDose"},
           {text: "Remaining Cups Over Dose (OD)" ,value:"remainingOverDose"},
-          {text: "Total" ,value:"totalRemaining"},
+          {text: "Total" ,value:"totalIncoming"},
         ]
         this.cupName = "Remaining Cups"
         this.loadingShow = false

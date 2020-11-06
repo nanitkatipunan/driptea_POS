@@ -13,6 +13,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_json_to_csv__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-json-to-csv */ "./node_modules/vue-json-to-csv/dist/vue-json-to-csv.js");
 /* harmony import */ var vue_json_to_csv__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_json_to_csv__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _basic_loading_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../basic/loading.vue */ "./resources/js/basic/loading.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
 //
 //
 //
@@ -67,6 +69,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 
 
 
@@ -88,6 +93,20 @@ __webpack_require__.r(__webpack_exports__);
     this.tableForUpcomingCups();
   },
   methods: {
+    getTotal: function getTotal(item) {
+      if (this.cupName === 'Upcoming Cups') {
+        return item.incomingLowDose + item.incomingHighDose + item.incomingOverDose;
+      } else if (this.cupName === 'Cups Onrack') {
+        return item.onRockLowDose + item.onRockHighDose + item.onRockOverDose;
+      } else if (this.cupName === 'Used Cups') {
+        return item.usedCupsLowDose + item.usedCupsHighDose + item.usedCupsOverDose;
+      } else if (this.cupName === 'Remaining Cups') {
+        return item.remainingLowDose + item.remainingHighDose + item.remainingOverDose;
+      }
+    },
+    getDate: function getDate(date) {
+      return moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('MM/DD/YYYY');
+    },
     tableForUpcomingCups: function tableForUpcomingCups() {
       var _this = this;
 
@@ -134,7 +153,7 @@ __webpack_require__.r(__webpack_exports__);
           value: "onRockOverDose"
         }, {
           text: "Total",
-          value: "totalOnRack"
+          value: "totalIncoming"
         }];
         _this2.cupName = "Cups Onrack";
         _this2.loadingShow = false;
@@ -160,7 +179,7 @@ __webpack_require__.r(__webpack_exports__);
           value: "usedCupsOverDose"
         }, {
           text: "Total",
-          value: "totalUsed"
+          value: "totalIncoming"
         }];
         _this3.cupName = "Used Cups";
         _this3.loadingShow = false;
@@ -186,7 +205,7 @@ __webpack_require__.r(__webpack_exports__);
           value: "remainingOverDose"
         }, {
           text: "Total",
-          value: "totalRemaining"
+          value: "totalIncoming"
         }];
         _this4.cupName = "Remaining Cups";
         _this4.loadingShow = false;
@@ -382,15 +401,31 @@ var render = function() {
                     )
                   ],
                   1
-                ),
-                _vm._v(" "),
-                _vm.loadingShow ? _c("loading") : _vm._e()
+                )
               ]
             },
             proxy: true
+          },
+          {
+            key: "item.created_at",
+            fn: function(ref) {
+              var item = ref.item
+              return [
+                _c("span", [_vm._v(_vm._s(_vm.getDate(item.created_at)))])
+              ]
+            }
+          },
+          {
+            key: "item.totalIncoming",
+            fn: function(ref) {
+              var item = ref.item
+              return [_c("span", [_vm._v(_vm._s(_vm.getTotal(item)))])]
+            }
           }
         ])
-      })
+      }),
+      _vm._v(" "),
+      _vm.loadingShow ? _c("loading") : _vm._e()
     ],
     1
   )

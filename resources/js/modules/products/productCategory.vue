@@ -282,7 +282,6 @@ export default {
                     change: parseInt(this.convertChange()),
                     order: this.tableData
                 }
-                console.log(this.tableData)
                 this.$axios.post(AUTH.url + 'addCheckout', params, AUTH.config).then(res => {
                     let low = 0
                     let high = 0
