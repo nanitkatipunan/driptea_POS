@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\DB;
 
 
 class UserController extends Controller
@@ -22,6 +23,33 @@ class UserController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
         return response()->json(compact('token'));
+    }
+
+    public function userdata(Request $request){
+        $name = $request->only('uname');
+        // dd($name);
+        $userdata = DB::table('users')->select('fullname as fullname','address as address','contactNumber as CN','name as email','password as pwd')
+            ->where('name', $request->uname)
+            ->get();
+
+        // dd($userdata);
+        return response()->json(compact('userdata'));
+    }
+    public function getUserName(Request $request){
+        $name = $request->only('uname');
+        // dd($name);
+        $userdata = DB::table('users')->select('name as fullname')
+            ->where('id', $request->uname)
+            ->get();
+
+        // dd($userdata);
+        return response()->json(compact('userdata'));
+    }
+    public function SaveNEWdata(Request $request){
+        $userdata = DB::table('users')->where('id', $request->ID)
+        ->update(['name' => $request->newEmail,'fullname' => $request->newfname,'address' => $request->newadd,'contactNumber' => $request->newContact,'password' => $request->newPass]);
+        // dd($userdata);
+        // return response()->json(compact('userdata'));
     }
 
     public function register(Request $request)
@@ -82,4 +110,5 @@ class UserController extends Controller
         JWTAuth::invalidate(JWTAuth::getToken());
         return response()->json(['token' => NULL]);
     }
+    
 }

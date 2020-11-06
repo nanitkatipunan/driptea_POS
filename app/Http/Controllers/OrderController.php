@@ -85,6 +85,16 @@ class OrderController extends Controller
         return response()->json(compact('order', 'addOns'));
     }
 
+    public function retrieveSalesReportPerCategory(Request $request){
+        $totalSalesPerCategory = DB::table('orders')->leftJoin('products', 'orders.productId', '=', 'products.id')
+            ->select(DB::raw('products.productCategory as productCategory'),DB::raw('SUM(orders.subTotal) as subTotal'),DB::raw('orders.created_at as date'))
+            ->groupBy('productCategory','date')
+            ->orderBy('date', 'desc')
+            ->get();
+            // dd($prods);
+        return response()->JSON(compact('totalSalesPerCategory'));
+    }
+
     public function retrieveTopProducts(Request $request){
         $prods = DB::table('orders')->leftJoin('products', 'orders.productId', '=', 'products.id')
             ->select(DB::raw('products.image as img'),DB::raw('SUM(orders.quantity) as quan'),DB::raw('products.productName as pName'))

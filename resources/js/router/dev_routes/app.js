@@ -104,6 +104,30 @@ export default {
                 tokenRequired: true
             }
         },
+        {
+            path: '/salesReport',
+            name: 'salesReport',
+            component: resolve => require(['@/js/modules/inventory/salesReport'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/myprofile/:id',
+            name: 'profile',
+            component: resolve => require(['@/js/modules/profile/myAccounts'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/personalInfo/:id',
+            name: 'personalInfo',
+            component: resolve => require(['@/js/modules/profile/personalInfo'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
         
         {
             path: '/onlineDashboard',
@@ -137,5 +161,6 @@ export default {
                 tokenRequired: true
             }
         },
+        
     ],
-}
+}   
