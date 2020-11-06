@@ -17,11 +17,18 @@ Route::post('register', 'App\Http\Controllers\UserController@register');
 Route::post('login', 'App\Http\Controllers\UserController@authenticate');
 Route::post('tokenRefresh', 'App\Http\Controllers\UserController@tokenRefresh');
 Route::post('deaunthenticate', 'App\Http\Controllers\UserController@deaunthenticate');
+Route::post('getUserData', 'App\Http\Controllers\UserController@userdata');
+Route::post('getUserName', 'App\Http\Controllers\UserController@getUserName');
+Route::post('SaveNEWdata', 'App\Http\Controllers\UserController@SaveNEWdata');
+
 
 Route::post('addCategory','App\Http\Controllers\AddCategoryController@addCategory');
 Route::post('updateCategory','App\Http\Controllers\AddCategoryController@updateCategory');
 Route::post('retrieveCategory','App\Http\Controllers\AddCategoryController@retrieveCategory');
 Route::post('retrieveCategoryAscending','App\Http\Controllers\AddCategoryController@retrieveCategoryAscending');
+
+        Route::post('retrieveCategoryForSales','App\Http\Controllers\AddCategoryController@retrieveCategoryAscending');
+
 
 Route::post('addCustomer','App\Http\Controllers\CustomerDetailsController@insertCustomer');
 
@@ -34,6 +41,10 @@ Route::post('retrieveCustomerOrder','App\Http\Controllers\OrderController@retrie
 Route::post('retrieveOnlineOrder','App\Http\Controllers\OrderController@retrieveOnlineOrder');
 Route::post('retrieveWholeOrder','App\Http\Controllers\OrderController@retrieveWholeOrder');
 Route::post('getOrder','App\Http\Controllers\OrderController@getOrder');
+
+
+Route::post('retrieveSalesReportPerCategory','App\Http\Controllers\OrderController@retrieveSalesReportPerCategory');
+
 
 Route::post('addingAddOns','App\Http\Controllers\AddAddOnsController@addAddons');
 Route::post('retrievingAddOns','App\Http\Controllers\AddAddOnsController@retrieveAddOns');

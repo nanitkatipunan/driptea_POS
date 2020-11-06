@@ -84,17 +84,17 @@ class StoreCheckoutsController extends Controller
 
     public function retrieveDailySales(Request $request)
     {
-        $total = StoreCheckouts::select(DB::raw('SUM(subTotal) as sub'),DB::raw('DAY(created_at) as `date`'),DB::raw('YEAR(created_at) as `year`'))
+        $total = StoreCheckouts::select(DB::raw('SUM(total) as sub'),DB::raw('DAY(created_at) as date'),DB::raw('YEAR(created_at) as year'),DB::raw('MONTH(created_at) as month'))
                 ->whereMonth('created_at', '=', $request->month)
                 ->whereYear('created_at', '=', $request->year)
-                ->groupBy('created_at')
+                ->groupBy('year','month','date')
                  ->get();
         return response()->JSON(compact('total'));
     }
     
     public function retrieveMonthlySales(Request $request)
     {
-        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(subTotal) as sub'),DB::raw('MONTH(created_at) as month')))
+        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(total) as sub'),DB::raw('MONTH(created_at) as month')))
                     ->whereYear('created_at', '=', $request->year)
                     ->groupBy('month')
                     ->get();
@@ -104,7 +104,7 @@ class StoreCheckoutsController extends Controller
 
     public function retrieveQuarterSales(Request $request)
     {
-        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(subTotal) as sub'),DB::raw('MONTH(created_at) as month')))
+        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(total) as sub'),DB::raw('MONTH(created_at) as month')))
                     ->whereYear('created_at', '=', $request->year)
                     ->groupBy('month')
                     ->get();
@@ -114,7 +114,7 @@ class StoreCheckoutsController extends Controller
 
     public function retrieveSemiSales(Request $request)
     {
-        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(subTotal) as sub'),DB::raw('MONTH(created_at) as month')))
+        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(total) as sub'),DB::raw('MONTH(created_at) as month')))
         ->whereYear('created_at', '=', $request->year)
         ->groupBy('month')
         ->get();
@@ -126,7 +126,7 @@ class StoreCheckoutsController extends Controller
     {
         $from = $request->from;
         $to = $request->to;
-        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(subTotal) as sub'),DB::raw('YEAR(created_at) as year')))
+        $subtotal = StoreCheckouts::select(array(DB::raw('SUM(total) as sub'),DB::raw('YEAR(created_at) as year')))
             // ->whereBetween('created_at', [$from, $to])
             ->groupBy('year')
             // ->orderBy('year', 'asc')
@@ -134,4 +134,5 @@ class StoreCheckoutsController extends Controller
         // dd($subtotal);
         return response()->JSON(compact('subtotal'));
     }
+    
 }
