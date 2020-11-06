@@ -12,7 +12,9 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vue-json-csv'
+import bus from './bus'
 
+Vue.prototype.$bus = bus
 Vue.use(Vuetify)
 Vue.prototype.$axios = axios
 const app = new Vue({
