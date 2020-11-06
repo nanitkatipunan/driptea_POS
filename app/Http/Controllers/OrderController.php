@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Order;
 use App\Models\AddOns;
+use App\Events\pusherEvent;
 
 use Illuminate\Http\Request;
 
@@ -25,6 +26,7 @@ class OrderController extends Controller
         $order->status = $request['status'];
         $order->save();
         $this->addAddOns($dataAddOns, $order->id);
+        event(new pusherEvent($order));
         return response()->json(compact('order'));
     }
 
@@ -44,12 +46,17 @@ class OrderController extends Controller
     }
 
     public function retrieveOrder(Request $request){
-        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pending')->where('deleted_at', null)->get();
+        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pending')->where('deleted_at', null)->orderBy('id','DESC')->get();
         return response()->json(compact('order'));
     }
 
     public function retrieveCustomerOrder(Request $request){
-        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'incart')->where('deleted_at', null)->get();
+        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        return response()->json(compact('order'));
+    }
+
+    public function retrieveCustomerOrder(Request $request){
+        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
         return response()->json(compact('order'));
     }
 
@@ -60,6 +67,7 @@ class OrderController extends Controller
             $ord->status = $request['status'];
             $ord->save();
         }
+        event(new pusherEvent($request['status']));
         return response()->json(['success' => 'successfully updated!']);
     }
 

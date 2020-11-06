@@ -12,30 +12,32 @@
             fade-img-on-scroll
             scroll-target="#scrolling-techniques-3"
             >
-            <!-- <template v-slot:img="{ props }">
+            <template v-slot:img="{ props }">
                 <v-img
                 v-bind="props"
                 gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
                 ></v-img>
-            </template> -->
+            </template>
 
-            <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon>
+            <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
-            <v-toolbar-title>Title</v-toolbar-title> -->
+            <v-toolbar-title>Title</v-toolbar-title>
 
             <v-spacer></v-spacer>
 
-            <!-- <v-btn icon>
+            <v-btn icon style="margin-right: 2%;">
                 <v-icon>mdi-magnify</v-icon>
-            </v-btn> -->
+            </v-btn>
 
-            <!-- <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-            </v-btn> -->
+            <v-btn icon @click="direct()" style="margin-right: 2%;">
+                <v-icon>mdi-cart</v-icon>
+                <span style="margin-left: -3%;">Cart</span>
+                <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
+            </v-btn>
 
-            <!-- <v-btn icon>
+            <v-btn icon style="margin-right: 3%;">
                 <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn> -->
+            </v-btn>
 
             <template v-slot:extension>
                 <v-tabs align-with-title>
@@ -50,6 +52,7 @@
             max-height="900"
             >
             <v-container style="margin-top: 200px;">
+                <!-- <button class="btn btn-primary" @click="direct()">Cart {{count}}</button> -->
                 <div :id="item.productCategory" class="categoryStorage" v-for="(item, index) in data" :key="index">
                     <!-- <img class="imgItem" :src="item.image" @click="redirect(item.productCategory)"> -->
                     <h3>{{item.productCategory}}</h3>
@@ -211,10 +214,11 @@
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import $ from 'jquery'
-// import image from '../../../assets/home.jpeg'
+import config from '../../config.js'
 export default {
     data(){
         return{
+            config: config,
             data: null,
             productData: null,
             image: null,
@@ -236,16 +240,32 @@ export default {
             totalAddOns: 0,
             totalPrice: 0,
             cupTypePrice: 0,
-            priceShown: 0
+            priceShown: 0,
+            count: 0
         }
     },
     mounted(){
+        this.count = 0
         this.retrieveCategory()
         this.retrieveProduct()
         this.retrieveAddOns()
         this.retrieveCupType()
+        let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
+            cluster: this.config.PUSHER_APP_CLUSTER,
+            encrypted: true
+        });
+
+          //Subscribe to the channel we specified in our Adonis Application
+        let channel = pusher.subscribe('driptea-channel')
+
+        channel.bind('driptea-data', (data) => {
+            this.count++
+        })
     },
     methods: {
+        direct(){
+            ROUTER.push('/customerCart')
+        },
         getSizePrice(){
             if(this.size === 'highDose'){
                 this.total = this.highprice
@@ -325,9 +345,7 @@ export default {
                     addOns: this.addOns,
                     subTotal: this.priceShown
                 }
-                console.log(parameter)
                 this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
-                    console.log(response.data.order)
                     $('#viewDetails').modal('hide')
                 })
             }

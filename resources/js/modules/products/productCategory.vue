@@ -141,12 +141,14 @@ th {
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import receipt from '../order/receipt.vue'
+import config from '../../config.js'
 export default {
     data(){
         return{
             data: null,
             tableData: null,
             customerType: this.$route.params.image,
+            config: config,
             deliveryFee: 0,
             totalPrice: 0,
             incash: 0,
@@ -156,7 +158,8 @@ export default {
             fee: 0,
             error: false,
             receiptShow: false,
-            receiptData: null
+            receiptData: null,
+            count: 0
         }
     },
     components: {
@@ -165,6 +168,18 @@ export default {
     mounted(){
         this.retrieveCategory()
         this.retrieveProduct()
+        let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
+            cluster: this.config.PUSHER_APP_CLUSTER,
+            encrypted: true
+        });
+
+        let channel = pusher.subscribe('driptea-channel')
+        channel.bind('driptea-data', (data) => {
+            if(data.order === 'pendingCustomer'){
+                this.count++
+                this.retrieveProduct()
+            }
+        })
     },
     methods: {
         hideReceipt(){
