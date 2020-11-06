@@ -251,7 +251,7 @@ export default {
                 });
             })
         },
-          retrievePending(){
+        retrievePending(){
             let parameter = {
                 id: localStorage.getItem('customerId'),
             }
@@ -259,7 +259,7 @@ export default {
                 if(response.data.status){
                     AUTH.deauthenticate()
                 }
-            this.loadingShow = false
+                this.loadingShow = false
             // this.tableDataPending = response.data.order
 
                 Object.keys(response.data.order).forEach(element => {

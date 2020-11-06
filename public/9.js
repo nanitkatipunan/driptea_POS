@@ -150,8 +150,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       return total;
     },
-    showData: function showData() {
-      console.log(this.finalData);
+    showData: function showData() {// console.log(this.finalData)
     },
     dataMethod: function dataMethod(item) {
       var _this = this;
@@ -173,7 +172,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveAllProduct').then(function (res) {
-        console.log(res.data.product);
         _this3.productData = res.data.product;
       });
     },
@@ -181,7 +179,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCategory').then(function (res) {
-        console.log(res.data.addCategory);
         _this4.categoryData = res.data.addCategory;
       });
     }

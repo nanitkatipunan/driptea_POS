@@ -140,7 +140,7 @@ export default {
             return total
         },
         showData(){
-            console.log(this.finalData)
+            // console.log(this.finalData)
         },
         dataMethod(item){
             Object.keys(item).forEach(element => {
@@ -155,15 +155,12 @@ export default {
         },
         getAllProducts(){
              this.$axios.post(AUTH.url + 'retrieveAllProduct').then(res => {
-                console.log(res.data.product)
                 this.productData = res.data.product
-                
             })
 
         },
         getAllCategory(){
             this.$axios.post(AUTH.url + 'retrieveCategory').then(res => {
-                console.log(res.data.addCategory)
                 this.categoryData = res.data.addCategory
 
             })

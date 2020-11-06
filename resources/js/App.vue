@@ -41,10 +41,16 @@
                 <v-icon medium color="black" right>mdi-bell-ring</v-icon>
               </v-btn>
             </template>
-            <v-list style="max-height: 200px" class="overflow-y-auto notifDropdown">
-              <!-- ang Click kay wala pay nay method -->
-              <v-list-item v-for="(item, index) in items" :key="index">
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list
+              style="max-height: 300px; max-width: 300px"
+              class="overflow-y-auto notifDropdown"
+            >
+              <v-list-item
+                v-for="(item, index) in storeOrder"
+                :key="index"
+                @click="getOrder(item, $event)"
+              >
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -98,8 +104,6 @@
               style="max-height: 300px; max-width: 300px"
               class="overflow-y-auto notifDropdown"
             >
-              <!-- ang Click kay wala pay nay method -->
-              <!-- <product ref="product"></product> -->
               <v-list-item
                 v-for="(item, index) in storeOrder"
                 :key="index"
@@ -261,7 +265,6 @@ export default {
       cluster: this.config.PUSHER_APP_CLUSTER,
       encrypted: true
     });
-
     let channel = pusher.subscribe("driptea-channel");
     let obj = this;
     channel.bind("driptea-data", data => {
