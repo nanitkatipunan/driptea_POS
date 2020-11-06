@@ -39,6 +39,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
                 <v-icon medium color="black" right>mdi-bell-ring</v-icon>
+                <span style="background-color: white; color: red; border-radius: 50%; font-size: 15px; margin-left: -5%; margin-top: -25%; z-index: 9999">{{count > 0 ? '&nbsp;' + count + '&nbsp;' : ''}}</span>
               </v-btn>
             </template>
             <v-list
@@ -50,7 +51,7 @@
                 :key="index"
                 @click="getOrder(item, $event)"
               >
-                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }} has order</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -98,6 +99,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
                 <v-icon medium color="black" right>mdi-bell-ring</v-icon>
+                <span style="background-color: white; color: red; border-radius: 50%; font-size: 15px; margin-left: -5%; margin-top: -25%; z-index: 9999">{{count > 0 ? '&nbsp;' + count + '&nbsp;' : ''}}</span>
               </v-btn>
             </template>
             <v-list
@@ -109,7 +111,7 @@
                 :key="index"
                 @click="getOrder(item, $event)"
               >
-                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }} has order</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -123,20 +125,18 @@
                 <v-icon medium color="black" right>mdi-arrow-down-drop-circle</v-icon>
               </v-btn>
             </template>
-            <v-list
+            <!-- <v-list
               style="max-height: 300px; max-width: 300px"
               class="overflow-y-auto notifDropdown"
             >
-              <!-- ang Click kay wala pay nay method -->
-              <!-- <product ref="product"></product> -->
               <v-list-item
                 v-for="(item, index) in storeOrder"
                 :key="index"
                 @click="getOrder(item, $event)"
               >
-                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }} has order</v-list-item-title>
               </v-list-item>
-            </v-list>
+            </v-list> -->
           </v-menu>
         </div>
       </v-app-bar-items>
@@ -260,7 +260,9 @@ export default {
   mounted() {
     this.admin = localStorage.getItem("adminId");
     this.cashier = localStorage.getItem("cashierId");
-    this.retrieve();
+    if(this.admin || this.cashier){
+      this.retrieve();
+    }
     let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
       cluster: this.config.PUSHER_APP_CLUSTER,
       encrypted: true
@@ -292,13 +294,17 @@ export default {
       ROUTER.push("/productCategory/online").catch(() => {});
     },
     retrieve() {
-      this.$axios.post(AUTH.url + "retrieveOnlineOrder").then(res => {
-        let storage = [];
+      let storage = [];
+      this.$axios.post(AUTH.url + "retrieveOnlineOrder", {}, AUTH.config).then(res => {
+        if(res.data.status){
+            AUTH.deauthenticate()
+        }
         this.tableData = res.data.order;
         Object.keys(this.tableData).forEach(element => {
           storage.push(this.tableData[element]);
         });
         this.storeOrder = storage;
+        this.count = this.storeOrder.length
       });
     },
     logout(){
