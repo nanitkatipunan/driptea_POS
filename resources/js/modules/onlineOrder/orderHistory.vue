@@ -31,20 +31,55 @@
             </v-menu>
                     </div>
                 </div>
-                <!--/row-->
             </div>
          </div>
         <center>
-            <h1>Order History</h1>
-            <div v-if="tableData !== null && tableData.length > 0">
-                <table class="table table-responsive" id="myTable">
-                    <tr>
+          
+       
+            
+             <div v-if="tableDataCompleteOrder">
+             <v-simple-table
+
+                :items-per-page="5"
+                class="elevation-3"
+                >
+                <template v-slot:top>
+                    <v-toolbar class="mb-2" color="#ff5b04" dark flat>
+                    <v-toolbar-title class="col pa-3 py-4 white--text">Complete Orders</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <v-text-field
+                        v-model="search"
+                        clearable
+                        flat
+                        solo-inverted
+                        prepend-inner-icon="mdi-magnify"
+                        class="mt-7"
+                        label="Search"
+                    ></v-text-field>
+                    <v-divider class="mx-4" vertical></v-divider>
+                     <v-btn
+                        color="primary"
+                        type="button"
+                        class="btn btn-primary btnModal"
+                        dark
+                        @click="tableDataPendingOrders = true,tableDataCompleteOrder=false"
+                    >+ Pending Orders</v-btn>
+                   
+                    </v-toolbar>
+                </template>
+                
+                  <thead >
+                    <tr v-if="tableData !== null && tableData.length > 0">
                         <th style="width: 30%;">Date</th>
                         <th>Order #</th>
                         <th>Product&nbsp;Ordered</th>
                         <th>Total</th>
                         <th style="width: 15px;">Action</th>
                     </tr>
+                     <div v-else>
+                        <empty :title="'No Complete Orders!'"></empty>
+                    </div>
+                        
+                  </thead>
                     <tbody>
                         <tr v-for="(item, index) in tableData" :key="index">
                             <td>{{getDate(item[0])}}</td>
@@ -56,35 +91,80 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>
-            </div>
-             <div v-else-if="tableDataPending !== null && tableDataPending.length > 0">
-                <table class="table table-responsive" id="myTable">
-                    <tr>
-                        <th style="width: 30%;">Date</th>
+             
+                <template>
+                   
+                </template>
+               
+                </v-simple-table>
+                </div>
+                 
+            <div v-if="tableDataPendingOrders">
+             <v-simple-table
+               
+                :items-per-page="5"
+                class="elevation-3"
+                >
+                <template v-slot:top>
+                    <v-toolbar class="mb-2" color="#ff5b04" dark flat>
+                    <v-toolbar-title class="col pa-3 py-4 white--text">Pending Orders</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <v-text-field
+                        v-model="search"
+                        clearable
+                        flat
+                        solo-inverted
+                        prepend-inner-icon="mdi-magnify"
+                        class="mt-7"
+                        label="Search"
+                    ></v-text-field>
+                    <v-divider class="mx-4" vertical></v-divider>
+                     <v-btn
+                        color="primary"
+                        type="button"
+                        class="btn btn-primary btnModal"
+                        dark
+                        @click="tableDataCompleteOrder = true, tableDataPendingOrders = false"
+                    >+ Completed Orders</v-btn>
+                   
+                    </v-toolbar>
+                </template>
+                  <thead>
+                    <tr v-if="tableDataPending !== null && tableDataPending.length > 0">
+                        <th scope="2">Date</th>
                         <th>Order #</th>
                         <th>Product&nbsp;Ordered</th>
                         <th>Total</th>
+                        <th>Status</th>
+
                         <th style="width: 15px;">Action</th>
                     </tr>
+                      <div v-else>
+                        <empty :title="'No Pending Orders!'"></empty>
+                    </div>
+              
+
+                    </thead>
                     <tbody>
                         <tr v-for="(items, index) in tableDataPending" :key="index">
-                            <td>{{getDate(items[0])}}</td>
+                            <td scope="2">{{getDate(items[0])}}</td>
                             <td>{{items[0].id}}</td>
                             <td>{{getProduct(items)}}</td>
 
                             <!-- <td>{{items.order_product[0].productName}}</td> -->
                             <td>₱ {{getTotal(items)}}</td>
+                            <td>Pending Order</td>
                             <td>
                                 <button class="btn btn-primary">View</button>
                             </td>
                         </tr>
                     </tbody>
-                </table>
-            </div>
-            <div v-else>
-                <empty :title="'No History!'"></empty>
-            </div>
+                <template>
+                   
+                </template>
+               
+                </v-simple-table>
+                </div>
+               
             
         </center>
 
@@ -97,6 +177,7 @@
 <style scoped>
 .table {
     width: 70%;
+    margin-left:5%
 }
 </style>
 <script>
@@ -110,9 +191,12 @@ export default {
     data(){
         return{
             tableData:[],
+            tableDataCompleteOrder:true,
+            tableDataPendingOrders:false,
             config: config,
             loadingShow:false,
-            tableDataPending:[]
+            tableDataPending:[],
+            search:null,
         }
     },
     mounted(){

@@ -166,6 +166,87 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -176,9 +257,12 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       tableData: [],
+      tableDataCompleteOrder: true,
+      tableDataPendingOrders: false,
       config: _config_js__WEBPACK_IMPORTED_MODULE_2__["default"],
       loadingShow: false,
-      tableDataPending: []
+      tableDataPending: [],
+      search: null
     };
   },
   mounted: function mounted() {
@@ -301,7 +385,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.table[data-v-0f3ac740] {\r\n    width: 70%;\n}\r\n", ""]);
+exports.push([module.i, "\n.table[data-v-0f3ac740] {\r\n    width: 70%;\r\n    margin-left:5%\n}\r\n", ""]);
 
 // exports
 
@@ -534,117 +618,322 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("center", [
-        _c("h1", [_vm._v("Order History")]),
-        _vm._v(" "),
-        _vm.tableData !== null && _vm.tableData.length > 0
-          ? _c("div", [
-              _c(
-                "table",
-                {
-                  staticClass: "table table-responsive",
-                  attrs: { id: "myTable" }
-                },
-                [
-                  _c("tr", [
-                    _c("th", { staticStyle: { width: "30%" } }, [
-                      _vm._v("Date")
-                    ]),
+        _vm.tableDataCompleteOrder
+          ? _c(
+              "div",
+              [
+                _c(
+                  "v-simple-table",
+                  {
+                    staticClass: "elevation-3",
+                    attrs: { "items-per-page": 5 },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "top",
+                          fn: function() {
+                            return [
+                              _c(
+                                "v-toolbar",
+                                {
+                                  staticClass: "mb-2",
+                                  attrs: {
+                                    color: "#ff5b04",
+                                    dark: "",
+                                    flat: ""
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "v-toolbar-title",
+                                    {
+                                      staticClass: "col pa-3 py-4 white--text"
+                                    },
+                                    [_vm._v("Complete Orders")]
+                                  ),
+                                  _vm._v("      \n                   "),
+                                  _c("v-text-field", {
+                                    staticClass: "mt-7",
+                                    attrs: {
+                                      clearable: "",
+                                      flat: "",
+                                      "solo-inverted": "",
+                                      "prepend-inner-icon": "mdi-magnify",
+                                      label: "Search"
+                                    },
+                                    model: {
+                                      value: _vm.search,
+                                      callback: function($$v) {
+                                        _vm.search = $$v
+                                      },
+                                      expression: "search"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-divider", {
+                                    staticClass: "mx-4",
+                                    attrs: { vertical: "" }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      staticClass: "btn btn-primary btnModal",
+                                      attrs: {
+                                        color: "primary",
+                                        type: "button",
+                                        dark: ""
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          ;(_vm.tableDataPendingOrders = true),
+                                            (_vm.tableDataCompleteOrder = false)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("+ Pending Orders")]
+                                  )
+                                ],
+                                1
+                              )
+                            ]
+                          },
+                          proxy: true
+                        }
+                      ],
+                      null,
+                      false,
+                      3019199777
+                    )
+                  },
+                  [
                     _vm._v(" "),
-                    _c("th", [_vm._v("Order #")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Product Ordered")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Total")]),
-                    _vm._v(" "),
-                    _c("th", { staticStyle: { width: "15px" } }, [
-                      _vm._v("Action")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.tableData, function(item, index) {
-                      return _c("tr", { key: index }, [
-                        _c("td", [_vm._v(_vm._s(_vm.getDate(item[0])))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(
-                              item[0].get_checkouts
-                                ? item[0].get_checkouts[0].customerId
-                                : ""
-                            )
+                    _c("thead", [
+                      _vm.tableData !== null && _vm.tableData.length > 0
+                        ? _c("tr", [
+                            _c("th", { staticStyle: { width: "30%" } }, [
+                              _vm._v("Date")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Order #")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Product Ordered")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Total")]),
+                            _vm._v(" "),
+                            _c("th", { staticStyle: { width: "15px" } }, [
+                              _vm._v("Action")
+                            ])
+                          ])
+                        : _c(
+                            "div",
+                            [
+                              _c("empty", {
+                                attrs: { title: "No Complete Orders!" }
+                              })
+                            ],
+                            1
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(_vm.getProduct(item)))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(item[0].get_checkouts[0].total))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c("button", { staticClass: "btn btn-primary" }, [
-                            _vm._v("View")
-                          ])
-                        ])
-                      ])
-                    }),
-                    0
-                  )
-                ]
-              )
-            ])
-          : _vm.tableDataPending !== null && _vm.tableDataPending.length > 0
-          ? _c("div", [
-              _c(
-                "table",
-                {
-                  staticClass: "table table-responsive",
-                  attrs: { id: "myTable" }
-                },
-                [
-                  _c("tr", [
-                    _c("th", { staticStyle: { width: "30%" } }, [
-                      _vm._v("Date")
                     ]),
                     _vm._v(" "),
-                    _c("th", [_vm._v("Order #")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Product Ordered")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Total")]),
-                    _vm._v(" "),
-                    _c("th", { staticStyle: { width: "15px" } }, [
-                      _vm._v("Action")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.tableDataPending, function(items, index) {
-                      return _c("tr", { key: index }, [
-                        _c("td", [_vm._v(_vm._s(_vm.getDate(items[0])))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(items[0].id))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(_vm.getProduct(items)))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("₱ " + _vm._s(_vm.getTotal(items)))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c("button", { staticClass: "btn btn-primary" }, [
-                            _vm._v("View")
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.tableData, function(item, index) {
+                        return _c("tr", { key: index }, [
+                          _c("td", [_vm._v(_vm._s(_vm.getDate(item[0])))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                item[0].get_checkouts
+                                  ? item[0].get_checkouts[0].customerId
+                                  : ""
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(_vm.getProduct(item)))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(item[0].get_checkouts[0].total))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("button", { staticClass: "btn btn-primary" }, [
+                              _vm._v("View")
+                            ])
                           ])
                         ])
-                      ])
-                    }),
-                    0
-                  )
-                ]
-              )
-            ])
-          : _c("div", [_c("empty", { attrs: { title: "No History!" } })], 1)
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    void 0
+                  ],
+                  2
+                )
+              ],
+              1
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.tableDataPendingOrders
+          ? _c(
+              "div",
+              [
+                _c(
+                  "v-simple-table",
+                  {
+                    staticClass: "elevation-3",
+                    attrs: { "items-per-page": 5 },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "top",
+                          fn: function() {
+                            return [
+                              _c(
+                                "v-toolbar",
+                                {
+                                  staticClass: "mb-2",
+                                  attrs: {
+                                    color: "#ff5b04",
+                                    dark: "",
+                                    flat: ""
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "v-toolbar-title",
+                                    {
+                                      staticClass: "col pa-3 py-4 white--text"
+                                    },
+                                    [_vm._v("Pending Orders")]
+                                  ),
+                                  _vm._v("      \n                   "),
+                                  _c("v-text-field", {
+                                    staticClass: "mt-7",
+                                    attrs: {
+                                      clearable: "",
+                                      flat: "",
+                                      "solo-inverted": "",
+                                      "prepend-inner-icon": "mdi-magnify",
+                                      label: "Search"
+                                    },
+                                    model: {
+                                      value: _vm.search,
+                                      callback: function($$v) {
+                                        _vm.search = $$v
+                                      },
+                                      expression: "search"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-divider", {
+                                    staticClass: "mx-4",
+                                    attrs: { vertical: "" }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      staticClass: "btn btn-primary btnModal",
+                                      attrs: {
+                                        color: "primary",
+                                        type: "button",
+                                        dark: ""
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          ;(_vm.tableDataCompleteOrder = true),
+                                            (_vm.tableDataPendingOrders = false)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("+ Completed Orders")]
+                                  )
+                                ],
+                                1
+                              )
+                            ]
+                          },
+                          proxy: true
+                        }
+                      ],
+                      null,
+                      false,
+                      3047919653
+                    )
+                  },
+                  [
+                    _vm._v(" "),
+                    _c("thead", [
+                      _vm.tableDataPending !== null &&
+                      _vm.tableDataPending.length > 0
+                        ? _c("tr", [
+                            _c("th", { attrs: { scope: "2" } }, [
+                              _vm._v("Date")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Order #")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Product Ordered")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Total")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Status")]),
+                            _vm._v(" "),
+                            _c("th", { staticStyle: { width: "15px" } }, [
+                              _vm._v("Action")
+                            ])
+                          ])
+                        : _c(
+                            "div",
+                            [
+                              _c("empty", {
+                                attrs: { title: "No Pending Orders!" }
+                              })
+                            ],
+                            1
+                          )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.tableDataPending, function(items, index) {
+                        return _c("tr", { key: index }, [
+                          _c("td", { attrs: { scope: "2" } }, [
+                            _vm._v(_vm._s(_vm.getDate(items[0])))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(items[0].id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(_vm.getProduct(items)))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v("₱ " + _vm._s(_vm.getTotal(items)))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Pending Order")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("button", { staticClass: "btn btn-primary" }, [
+                              _vm._v("View")
+                            ])
+                          ])
+                        ])
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    void 0
+                  ],
+                  2
+                )
+              ],
+              1
+            )
+          : _vm._e()
       ]),
       _vm._v(" "),
       _vm.loadingShow ? _c("loading") : _vm._e()
