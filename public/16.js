@@ -153,7 +153,6 @@ __webpack_require__.r(__webpack_exports__);
       prod: [],
       categoryName: 'Classic',
       finalData: [],
-      count: 0,
       changeName: 'lowDose'
     };
   },
@@ -166,9 +165,6 @@ __webpack_require__.r(__webpack_exports__);
     this.retrieveCheckout();
   },
   methods: {
-    getCount: function getCount() {
-      this.count++;
-    },
     getAllValue: function getAllValue(item, items, index) {
       var total = 0;
       var category = 'lowDose';
@@ -200,14 +196,7 @@ __webpack_require__.r(__webpack_exports__);
             a++;
           }
         }
-      } // if(index === 0 || index === 1 || index === 2){
-      //     category = 'lowDose'
-      // }else if(index === 3 || index === 4 || index === 5){
-      //     category = 'highDose'
-      // }else if(index === 6 || index === 7 || index === 8){
-      //     category = 'overDose'
-      // }
-
+      }
 
       items.forEach(function (el) {
         if (el.size === category) {
@@ -233,6 +222,10 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + 'retrieveAllCheckouts', {}, _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].config).then(function (res) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].deauthenticate();
+        }
+
         _this.dataMethod(res.data.storeOrder);
 
         _this.loadingShow = false;
@@ -243,13 +236,17 @@ __webpack_require__.r(__webpack_exports__);
       Object.keys(item).forEach(function (element) {
         data.push(item[element]);
       });
-      this.finalData = data;
+      this.finalData = data.reverse();
     },
     retrieveCategory: function retrieveCategory() {
       var _this2 = this;
 
       this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + 'retrieveCategoryAscending', {}, _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].config).then(function (res) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].deauthenticate();
+        }
+
         _this2.categoryData = res.data.addCategory;
         _this2.loadingShow = false;
       });

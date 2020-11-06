@@ -137,7 +137,6 @@ export default {
             prod: [],
             categoryName: 'Classic',
             finalData: [],
-            count: 0,
             changeName: 'lowDose'
         }
     },
@@ -150,9 +149,6 @@ export default {
         this.retrieveCheckout()
     },
     methods: {
-        getCount(){
-            this.count++
-        },
         getAllValue(item, items, index){
             let total = 0
             let category = 'lowDose'
@@ -184,13 +180,6 @@ export default {
                     }
                 }
             }
-            // if(index === 0 || index === 1 || index === 2){
-            //     category = 'lowDose'
-            // }else if(index === 3 || index === 4 || index === 5){
-            //     category = 'highDose'
-            // }else if(index === 6 || index === 7 || index === 8){
-            //     category = 'overDose'
-            // }
             items.forEach(el => {
                 if(el.size === category){
                     if(el.order_product[0].id === item.id){
@@ -213,6 +202,9 @@ export default {
         retrieveCheckout(){
             this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveAllCheckouts', {}, AUTH.config).then(res => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.dataMethod(res.data.storeOrder)
                 this.loadingShow = false
             })
@@ -222,11 +214,14 @@ export default {
             Object.keys(item).forEach(element => {
                 data.push(item[element])
             })
-            this.finalData = data
+            this.finalData = data.reverse()
         },
         retrieveCategory(){
             this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveCategoryAscending', {}, AUTH.config).then(res => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.categoryData = res.data.addCategory
                 this.loadingShow = false
             })

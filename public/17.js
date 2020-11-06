@@ -161,6 +161,10 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCategoryAscending', {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (res) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this5.loadingShow = false;
         _this5.categoryData = res.data.addCategory;
       });
@@ -170,12 +174,16 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllSales", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this6.loadingShow = false;
         var store = [];
         Object.keys(response.data.storeOrder).forEach(function (element) {
           store.push(response.data.storeOrder[element]);
         });
-        _this6.store = store;
+        _this6.store = store.reverse();
         _this6.storage2 = [];
 
         _this6.store.forEach(function (el) {

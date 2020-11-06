@@ -291,7 +291,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       successMessage: null,
-      errorMessage: null,
+      errorMessage1: null,
       errorMessage2: null,
       errorMessage3: null,
       errorMessage4: null,
@@ -313,14 +313,15 @@ __webpack_require__.r(__webpack_exports__);
     redirect: function redirect(route) {
       _router__WEBPACK_IMPORTED_MODULE_1__["default"].push(route)["catch"](function () {});
     },
-    register: function register() {
+    register: function register(e) {
       var _this = this;
 
       e.preventDefault();
+      console.log('klasjdflkasjdfl');
       this.loadingShow = true;
       this.validate("fullname");
       this.validate("address");
-      this.validate("contactNum");
+      this.validate("contact");
       this.validate("email");
       this.validate("password");
       this.validate("confirmPass");
@@ -334,7 +335,7 @@ __webpack_require__.r(__webpack_exports__);
         password_confirmation: this.confirmPass
       };
 
-      if (this.errorMessage === null && this.errorMessage2 === null && this.errorMessage3 === null && this.errorMessage4 === null && this.errorMessage5 === null && this.errorMessage6 === null && this.errorMessage7 === null) {
+      if (this.errorMessage1 === null && this.errorMessage2 === null && this.errorMessage3 === null && this.errorMessage4 === null && this.errorMessage5 === null && this.errorMessage6 === null && this.errorMessage7 === null) {
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "register", parameter).then(function (response) {
           _this.loadingShow = false;
           sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
@@ -352,7 +353,7 @@ __webpack_require__.r(__webpack_exports__);
           _this.loadingShow = false;
         });
       } else {
-        this.errorMessage = "Please fill up all fields";
+        this.errorMessage1 = "Please fill up all fields";
         this.loadingShow = false;
       }
     },
@@ -382,16 +383,16 @@ __webpack_require__.r(__webpack_exports__);
       var specialChar = /^[A-Za-z0-9 ]+$/;
 
       if (input === "fullname") {
-        this.errorMessage = null;
+        this.errorMessage1 = null;
 
         if (reqWhiteSpace.test(this.fullname)) {
-          this.errorMessage = "Fullname should not contain a number.";
+          this.errorMessage1 = "Fullname should not contain a number.";
         } else if (this.fullname === "") {
           this.errorMessage2 = "Fullname is required.";
         } else if (!specialChar.test(this.fullname)) {
           this.errorMessage2 = "Fullname should not contain a special character.";
         } else {
-          this.errorMessage = null;
+          this.errorMessage1 = null;
           this.errorMessage2 = null;
         }
       } else if (input === "email") {
@@ -431,7 +432,7 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           this.errorMessage10 = null;
         }
-      } else if (input === "contactNum") {
+      } else if (input === "contact") {
         this.errorMessage8 = null;
         this.successMessage9 = null;
 
@@ -444,7 +445,7 @@ __webpack_require__.r(__webpack_exports__);
           this.errorMessage9 = null;
         }
       } else if (this.contactNum != null && this.address != null && this.fullname.length >= 6 && this.email !== null && this.password !== null && this.password.length >= 6 && this.password.localeCompare(this.confirmPass) === 0 && this.type !== null && _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].validateEmail(this.email) === true) {
-        this.errorMessage = null;
+        this.errorMessage1 = null;
       } else {
         this.errorMessage7 = "Please fill in all required fields.";
         this.errorMessage7 = null;
@@ -587,11 +588,11 @@ var render = function() {
                         "center",
                         [
                           _c("i", [
-                            _vm.errorMessage !== null
+                            _vm.errorMessage1 !== null
                               ? _c(
                                   "span",
                                   { staticClass: "text-danger text-center" },
-                                  [_vm._v(_vm._s(_vm.errorMessage))]
+                                  [_vm._v(_vm._s(_vm.errorMessage1))]
                                 )
                               : _vm._e()
                           ]),
@@ -689,7 +690,7 @@ var render = function() {
                           ),
                           _vm._v(" "),
                           _c("i", [
-                            _vm.errorMessage !== null
+                            _vm.errorMessage8 !== null
                               ? _c(
                                   "span",
                                   { staticClass: "text-danger text-center" },
@@ -699,7 +700,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("i", [
-                            _vm.errorMessage2 !== null
+                            _vm.errorMessage9 !== null
                               ? _c(
                                   "span",
                                   { staticClass: "text-danger text-center" },
@@ -726,7 +727,7 @@ var render = function() {
                                     },
                                     on: {
                                       keyup: function($event) {
-                                        return _vm.validate("contactNum")
+                                        return _vm.validate("contact")
                                       }
                                     },
                                     model: {

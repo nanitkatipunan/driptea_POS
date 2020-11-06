@@ -232,7 +232,7 @@ export default {
       })
     },
     logout(){
-      AUTH.deaunthenticate()
+      AUTH.deauthenticate()
     }
   }
 };
