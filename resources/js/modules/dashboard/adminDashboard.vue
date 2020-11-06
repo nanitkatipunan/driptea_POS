@@ -327,7 +327,10 @@ export default {
       let totalfrmDB = [];
       // let xs = this.xlabels;
       let ldate = this.lastDate;
-      Axios.post(AUTH.url + "getDailySales", params).then(response => {
+      Axios.post(AUTH.url + "getDailySales", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.total.forEach(element => {
           let d = element.date;
@@ -505,7 +508,10 @@ export default {
       let params = {
         year: this.yrvalue
       };
-      Axios.post(AUTH.url + "getyears", params).then(response => {
+      Axios.post(AUTH.url + "getyears", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.years.forEach(element => {
           let yr = element.year;
@@ -521,7 +527,10 @@ export default {
       let params = {
         year: yyyy
       };
-      Axios.post(AUTH.url + "getmonthlySales", params).then(response => {
+      Axios.post(AUTH.url + "getmonthlySales", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.subtotal.forEach(element => {
           let sub = element.sub;
@@ -554,7 +563,10 @@ export default {
       let params = {
         year: yyyy
       };
-      Axios.post(AUTH.url + "getQuarterlySales", params).then(response => {
+      Axios.post(AUTH.url + "getQuarterlySales", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.subtotal.forEach(element => {
           let sub = element.sub;
@@ -621,7 +633,10 @@ export default {
       let params = {
         year: yyyy
       };
-      Axios.post(AUTH.url + "getSemi-AnnualSales", params).then(response => {
+      Axios.post(AUTH.url + "getSemi-AnnualSales", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.subtotal.forEach(element => {
           let sub = element.sub;
@@ -698,7 +713,10 @@ export default {
         from: startingYR,
         to: endYear
       };
-      Axios.post(AUTH.url + "getAnnualSales", params).then(response => {
+      Axios.post(AUTH.url + "getAnnualSales", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.subtotal.forEach(element => {
           if (element.year <= endYear && element.year == startingYR) {
@@ -736,7 +754,10 @@ export default {
         year: null
       };
       let indexes = [];
-      Axios.post(AUTH.url + "getTopProd", params).then(response => {
+      Axios.post(AUTH.url + "getTopProd", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         let resLen = response.data.prods.length;
         response.data.prods.forEach(element => {

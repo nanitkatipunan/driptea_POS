@@ -1,5 +1,10 @@
 <template>
     <div class="sudlanan">
+        <div>
+         <v-btn icon style="margin-right: 1%;"  @click="previous()">
+                <v-icon >mdi-home</v-icon>
+            </v-btn>
+    </div>
         <center>
             <h1 style="margin-top: 2%; color: black">{{itemSelected}}</h1>
             <div class="row">
@@ -164,6 +169,9 @@ export default {
         retrieveCupType() {
             this.loadingShow = true
             this.$axios.post(AUTH.url + "retrieveCupType", {}, AUTH.config).then(response => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.cupData = response.data.cupType;
                 this.loadingShow = false
             });
@@ -214,6 +222,9 @@ export default {
         retrieveProducts() {
             this.loadingShow = true
             this.$axios.post(AUTH.url + "retrieveAllProduct", {}, AUTH.config).then(response => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.productData = response.data.product;
                 this.loadingShow = false
             });
@@ -221,6 +232,9 @@ export default {
         retrieveAddOns() {
             this.loadingShow = true
             this.$axios.post(AUTH.url + "retrievingAddOns", {}, AUTH.config).then(response => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.addOnsData = response.data.addons;
                 this.loadingShow = false
             });
@@ -228,6 +242,9 @@ export default {
         getProduct(){
             this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveOneProduct', {id: this.itemId}, AUTH.config).then(response => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.itemSelected = response.data.product[0].productName
                 this.lowPrice = response.data.product[0].lowPrice
                 this.highPrice = response.data.product[0].highPrice
@@ -269,6 +286,9 @@ export default {
         },
         addAddOns(params, event){
             this.$axios.post(AUTH.url + "retrieveOneAddOn", {id: params.id}, AUTH.config).then(response => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 if(this.customerType === 'foodpanda' || this.customerType === 'grab'){
                     this.addOnsPrice = response.data.addons.onlineAddOnsPrice
                 }else{
@@ -316,12 +336,19 @@ export default {
                 }
                 this.$axios.post(AUTH.url + 'addOrder', parameter, AUTH.config).then(response => {
                     this.loadingShow = false
+                    if(response.data.status){
+                        AUTH.deauthenticate()
+                    }
                     ROUTER.push('/productCategory/'+localStorage.getItem('customerType')).catch(()=>{})
                 })
             
             }
             this.cupTypeEvent = event.target;
         },
+        previous(){
+            let type = localStorage.getItem("customerType");
+            ROUTER.push('/productCategory/' + type).catch(() => {})
+        }
     }
 }
 </script>

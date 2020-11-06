@@ -157,7 +157,10 @@ export default {
           customerType: type,
         };
         console.log(parameter)
-        this.$axios.post(AUTH.url + "addCustomer", parameter).then((res) => {
+        this.$axios.post(AUTH.url + "addCustomer", parameter, AUTH.config).then((res) => {
+          if(res.data.status){
+              AUTH.deauthenticate()
+          }
           localStorage.setItem("customerId", res.data.customerDetails.id);
           localStorage.setItem(
             "customerType", res.data.customerDetails.customerType
@@ -175,7 +178,10 @@ export default {
         customerAddress: this.address,
         customerContactNumber: this.contactNumber,
       };
-      this.$axios.post(AUTH.url + "addCustomer", param).then((response) => {
+      this.$axios.post(AUTH.url + "addCustomer", param, AUTH.config).then((response) => {
+        if(response.data.status){
+            AUTH.deauthenticate()
+        }
         localStorage.setItem("customerId", response.data.customerDetails.id);
         localStorage.setItem(
           "customerType",

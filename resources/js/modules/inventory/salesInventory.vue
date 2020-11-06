@@ -133,6 +133,9 @@ export default {
         retrieveCategory(){
             this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveCategoryAscending', {}, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.loadingShow = false
                 this.categoryData = res.data.addCategory
             })
@@ -140,12 +143,15 @@ export default {
         retrieveSale(){
             this.loadingShow = true
             this.$axios.post(AUTH.url + "retrieveAllSales", {}, AUTH.config).then(response => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.loadingShow = false
                 let store = []
                 Object.keys(response.data.storeOrder).forEach(element => {
                     store.push(response.data.storeOrder[element])
                 });
-                this.store = store
+                this.store = store.reverse()
                 this.storage2 = []
                 this.store.forEach(el => {
                     this.storage = []

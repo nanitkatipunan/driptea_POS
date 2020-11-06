@@ -94,6 +94,9 @@ export default {
     tableForUpcomingCups(){
       this.loadingShow = true
         this.$axios.post(AUTH.url + "retrieveCupForInventory", {}, AUTH.config).then(response => {
+          if(response.data.status){
+              AUTH.deauthenticate()
+          }
           this.dataInDB = response.data.quantityCupsInDB
           this.headersForCup = [
             {text: "Date" ,value:"created_at"},
@@ -110,6 +113,9 @@ export default {
     tableForCupsOnrack(){
       this.loadingShow = true
         this.$axios.post(AUTH.url + "retrieveCupForInventory", {}, AUTH.config).then(response => {
+          if(response.data.status){
+              AUTH.deauthenticate()
+          }
           this.dataInDB = response.data.quantityCupsInDB
           this.headersForCup = [
             {text: "Date" ,value:"created_at"},
@@ -126,6 +132,9 @@ export default {
     tableForUsedCups(){
       this.loadingShow = true
       this.$axios.post(AUTH.url + "retrieveCupForInventory", {}, AUTH.config).then(response => {
+        if(response.data.status){
+            AUTH.deauthenticate()
+        }
         this.dataInDB = response.data.quantityCupsInDB
         this.headersForCup = [
           {text: "Date" ,value:"created_at"},
@@ -141,6 +150,9 @@ export default {
     tableForRemainingCups(){
       this.loadingShow = true
       this.$axios.post(AUTH.url + "retrieveCupForInventory", {}, AUTH.config).then(response => {
+        if(response.data.status){
+            AUTH.deauthenticate()
+        }
         this.dataInDB = response.data.quantityCupsInDB
         this.headersForCup = [
           {text: "Date" ,value:"created_at"},

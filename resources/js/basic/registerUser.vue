@@ -20,9 +20,9 @@
               <center>
                 <i>
                   <span
-                    v-if="errorMessage !== null"
+                    v-if="errorMessage1 !== null"
                     class="text-danger text-center"
-                  >{{errorMessage}}</span>
+                  >{{errorMessage1}}</span>
                 </i>
                 <i>
                   <span
@@ -66,13 +66,13 @@
                 </v-row>
                 <i>
                   <span
-                    v-if="errorMessage !== null"
+                    v-if="errorMessage8 !== null"
                     class="text-danger text-center"
                   >{{errorMessage8}}</span>
                 </i>
                 <i>
                   <span
-                    v-if="errorMessage2 !== null"
+                    v-if="errorMessage9 !== null"
                     class="text-danger text-center"
                   >{{errorMessage9}}</span>
                 </i>
@@ -83,7 +83,7 @@
                       label="Contact Number"
                       outlined
                       v-model="contactNum"
-                      v-on:keyup="validate('contactNum')"
+                      v-on:keyup="validate('contact')"
                       type="number"
                       id="contactNum"
                       required
@@ -268,7 +268,7 @@ export default {
         emailMatch: () => "The email and password you entered don't match"
       },
       successMessage: null,
-      errorMessage: null,
+      errorMessage1: null,
       errorMessage2: null,
       errorMessage3: null,
       errorMessage4: null,
@@ -290,12 +290,12 @@ export default {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
-    register() {
+    register(e) {
       e.preventDefault()
       this.loadingShow = true
       this.validate("fullname");
       this.validate("address");
-      this.validate("contactNum");
+      this.validate("contact");
       this.validate("email");
       this.validate("password");
       this.validate("confirmPass");
@@ -309,7 +309,7 @@ export default {
         password_confirmation: this.confirmPass
       };
       if (
-        this.errorMessage === null &&
+        this.errorMessage1 === null &&
         this.errorMessage2 === null &&
         this.errorMessage3 === null &&
         this.errorMessage4 === null &&
@@ -335,7 +335,7 @@ export default {
             this.loadingShow = false
           });
       } else {
-        this.errorMessage = "Please fill up all fields";
+        this.errorMessage1 = "Please fill up all fields";
         this.loadingShow = false
       }
     },
@@ -364,16 +364,16 @@ export default {
       let reqWhiteSpace = /\d/;
       let specialChar = /^[A-Za-z0-9 ]+$/;
       if (input === "fullname") {
-        this.errorMessage = null;
+        this.errorMessage1 = null;
         if (reqWhiteSpace.test(this.fullname)) {
-          this.errorMessage = "Fullname should not contain a number.";
+          this.errorMessage1 = "Fullname should not contain a number.";
         } else if (this.fullname === "") {
           this.errorMessage2 = "Fullname is required.";
         } else if (!specialChar.test(this.fullname)) {
           this.errorMessage2 =
             "Fullname should not contain a special character.";
         } else {
-          this.errorMessage = null;
+          this.errorMessage1 = null;
           this.errorMessage2 = null;
         }
       } else if (input === "email") {
@@ -414,7 +414,7 @@ export default {
         } else {
           this.errorMessage10 = null;
         }
-      } else if (input === "contactNum") {
+      } else if (input === "contact") {
         this.errorMessage8 = null;
         this.successMessage9 = null;
         if (this.contactNum.length > 11) {
@@ -436,7 +436,7 @@ export default {
         this.type !== null &&
         AUTH.validateEmail(this.email) === true
       ) {
-        this.errorMessage = null;
+        this.errorMessage1 = null;
       } else {
         this.errorMessage7 = "Please fill in all required fields.";
         this.errorMessage7 = null;

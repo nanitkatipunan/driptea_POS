@@ -1,5 +1,10 @@
 <template>
     <div class="sudlanan">
+         <div>
+         <v-btn icon style="margin-right: 1%;"  @click="previous()">
+                <v-icon >mdi-home</v-icon>
+            </v-btn>
+    </div>
         <div class="row firstRow">
             <div class="col-md-6">
                 <center>
@@ -204,6 +209,9 @@ export default {
         retrieveCategory(){
             this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveCategory', {}, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.data = res.data.addCategory
                 this.loadingShow = false
             })
@@ -228,6 +236,9 @@ export default {
                     id: localStorage.getItem('customerId')
                 }
                 this.$axios.post(AUTH.url + 'getOrder', params, AUTH.config).then(res => {
+                    if(res.data.status){
+                        AUTH.deauthenticate()
+                    }
                     this.tableData = res.data.order
                     this.loadingShow = false
                 })
@@ -236,6 +247,9 @@ export default {
                     id: localStorage.getItem('customerId')
                 }
                 this.$axios.post(AUTH.url + 'retrieveOrder', params, AUTH.config).then(res => {
+                    if(res.data.status){
+                        AUTH.deauthenticate()
+                    }
                     this.tableData = res.data.order
                     this.loadingShow = false
                 })
@@ -256,6 +270,9 @@ export default {
         deleteOrder(prodId){
             this.loadingShow = true
             this.$axios.post(AUTH.url + 'deleteOrder', {id: prodId}, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.retrieveProduct()
                 this.loadingShow = false
             })
@@ -267,6 +284,9 @@ export default {
                 status: 'complete'
             }
             this.$axios.post(AUTH.url + 'updateStatus', params, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 let params = {
                     customerId: localStorage.getItem('customerId'),
                     cashierId: localStorage.getItem('cashierId') ? localStorage.getItem('cashierId') : localStorage.getItem('adminId'),
@@ -278,6 +298,9 @@ export default {
                     order: this.tableData
                 }
                 this.$axios.post(AUTH.url + 'addCheckout', params, AUTH.config).then(res => {
+                    if(res.data.status){
+                        AUTH.deauthenticate()
+                    }
                     let low = 0
                     let high = 0
                     let over = 0
@@ -296,10 +319,16 @@ export default {
                         usedCupsOverDose: over
                     }
                     this.$axios.post(AUTH.url + 'updateRemainingCups', param, AUTH.config).then(response => {
+                        if(response.data.status){
+                            AUTH.deauthenticate()
+                        }
                         let parameter = {
                             id: res.data.storeCheckouts.id,
                         }
                         this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter, AUTH.config).then(response => {
+                            if(response.data.status){
+                                AUTH.deauthenticate()
+                            }
                             this.loadingShow = false
                             this.receiptData = response.data.storeOrder
                             this.receiptShow = true
@@ -324,6 +353,11 @@ export default {
                     this.error = true
                 }
             }
+        },
+         previous(){
+             let type = localStorage.getItem("customerType");
+
+            ROUTER.push('/casherDashboard').catch(() => {})
         }
     }
 }

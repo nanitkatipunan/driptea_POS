@@ -62,6 +62,7 @@ export default {
                     this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
                     ROUTER.push('/onlineDashboard')
                 }
+                window.location.reload()
             })
             return true
         } else {
