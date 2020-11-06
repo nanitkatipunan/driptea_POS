@@ -1,5 +1,10 @@
 <template>
     <div class="sudlanan">
+        <div>
+         <v-btn icon style="margin-right: 1%;"  @click="previous()">
+                <v-icon >mdi-home</v-icon>
+            </v-btn>
+    </div>
         <center>
             <h1 style="margin-top: 2%; color: black">{{itemSelected}}</h1>
             <div class="row">
@@ -340,6 +345,10 @@ export default {
             }
             this.cupTypeEvent = event.target;
         },
+        previous(){
+            let type = localStorage.getItem("customerType");
+            ROUTER.push('/productCategory/' + type).catch(() => {})
+        }
     }
 }
 </script>

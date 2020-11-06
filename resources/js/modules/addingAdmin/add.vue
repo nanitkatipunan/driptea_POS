@@ -1,13 +1,10 @@
 <template>
   <div>
-    <center style="margin-top: 5%">
-      <h1 v-if="prod">Adding Products</h1>
-      <h1 v-if="cat">Adding Categories</h1>
-      <h1 v-if="ons">Adding Add-ons</h1>
-      <h1 v-if="cup">Adding Cup Type</h1>
-      <h1 v-if="size">Adding Cup Size Quantity</h1><br>
-    </center>
+    <center>
     <v-toolbar flat>
+       <v-toolbar-title >
+        
+       </v-toolbar-title>
       <template v-slot:extension>
         <v-tabs dark background-color="#ff5b04" fixed-tabs>
           <v-tabs-slider></v-tabs-slider>
@@ -29,6 +26,8 @@
         </v-tabs>
       </template>
     </v-toolbar>
+    </center>
+
 
     <!-- Table for Category -->
     <v-data-table
@@ -469,7 +468,9 @@
                 </v-dialog>
             </v-row>
         </template>
-        <loading v-if="loadingShow"></loading>
+
+
+
   </div>
 </template>
 
@@ -530,6 +531,10 @@ img {
 }
 hr {
   border: 1px solid gray;
+}
+h1{
+  text-align: center;
+  margin-top: 3%;
 }
 th {
   text-align: center;
@@ -675,10 +680,6 @@ export default {
       productData: [],
       categoryData: [],
       categoryName: [],
-      showProductModal: false,
-      showCategoryModal: false,
-      showCupTypeModal: false,
-      showCupSizeModal: false,
       btnCupType: false,
       btnEditCupType: false,
       inputCupPrice: null,
@@ -707,6 +708,7 @@ export default {
       overDoseCup: null,
       cupSizeData: [],
       search: null,
+      title: null,
       dialogForCupType: false,
       dialogForProduct: false,
       dialogForCategory: false,
@@ -852,7 +854,12 @@ export default {
         }
         this.loadingShow = false
         this.cupSizeData = response.data.quantityCupsInDB;
-        response.data.quantityCupsInDB.forEach(element => {});
+            
+        response.data.quantityCupsInDB.forEach(element => {
+            
+          
+        });
+
         let totalCup = response.data.quantityCupsInDB.incomingOverDose;
       });
     },

@@ -292,7 +292,6 @@ export default {
     },
     register(e) {
       e.preventDefault()
-      console.log('klasjdflkasjdfl')
       this.loadingShow = true
       this.validate("fullname");
       this.validate("address");
