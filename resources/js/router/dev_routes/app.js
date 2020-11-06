@@ -105,6 +105,31 @@ export default {
             }
         },
         {
+            path: '/salesReport',
+            name: 'salesReport',
+            component: resolve => require(['@/js/modules/inventory/salesReport'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/myprofile/:id',
+            name: 'profile',
+            component: resolve => require(['@/js/modules/profile/myAccounts'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/personalInfo/:id',
+            name: 'personalInfo',
+            component: resolve => require(['@/js/modules/profile/personalInfo'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        
+        {
             path: '/cupsInventory',
             name: 'cupsInventory',
             component: resolve => require(['@/js/modules/inventory/cupsInventory'], resolve),
@@ -136,21 +161,6 @@ export default {
                 tokenRequired: true
             }
         },
-        // {
-        //     path: '/:any',
-        //     name: 'any',
-        //     component: resolve => require(['@/js/basic/landing'], resolve),
-        //     meta: {
-        //         tokenRequired: false
-        //     }
-        // },
-        // {
-        //     path: '/:any',
-        //     name: 'any',
-        //     component: resolve => require(['@/js/modules/dashboard/casherDashboard'], resolve),
-        //     meta: {
-        //         tokenRequired: true
-        //     }
-        // },
+        
     ],
-}
+}   

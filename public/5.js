@@ -153,6 +153,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveProduct', {
         type: this.chosenCat
       }, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (res) {
+        if (res.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
         _this.data = res.data.product;
         _this.loadingShow = false;
       });

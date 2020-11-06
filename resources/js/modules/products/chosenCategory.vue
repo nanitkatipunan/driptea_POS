@@ -88,6 +88,9 @@ export default {
             this.$axios.post(AUTH.url + 'retrieveProduct', {
                 type: this.chosenCat
             }, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.data = res.data.product
                 this.loadingShow = false
             })

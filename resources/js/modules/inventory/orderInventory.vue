@@ -202,7 +202,7 @@ export default {
         retrieveCheckout(){
             this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveAllCheckouts', {}, AUTH.config).then(res => {
-                if(response.data.status){
+                if(res.data.status){
                     AUTH.deauthenticate()
                 }
                 this.dataMethod(res.data.storeOrder)
@@ -219,7 +219,7 @@ export default {
         retrieveCategory(){
             this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveCategoryAscending', {}, AUTH.config).then(res => {
-                if(response.data.status){
+                if(res.data.status){
                     AUTH.deauthenticate()
                 }
                 this.categoryData = res.data.addCategory

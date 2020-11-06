@@ -44,34 +44,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -85,81 +57,153 @@ __webpack_require__.r(__webpack_exports__);
       store: [],
       storage: [],
       storage2: [],
-      addOnsAmount: 0
+      storeAmount: [],
+      dataAddOns: [],
+      cupType: []
     };
   },
   mounted: function mounted() {
     this.retrieveCategory();
+    this.retrieveCupType();
     this.retrieveSale();
+    this.retrieveAddOns();
   },
   components: {
     VueJsonToCsv: vue_json_to_csv__WEBPACK_IMPORTED_MODULE_1___default.a,
     loading: _basic_loading_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   methods: {
-    getAddOns: function getAddOns(index) {
+    getTotal: function getTotal(index) {
+      var amount = 0;
+      var id = 0;
+      this.store[index].forEach(function (el) {
+        if (el.get_checkouts[0].id !== id) {
+          id = el.get_checkouts[0].id;
+          amount += parseInt(el.get_checkouts[0].total);
+        }
+      });
+      return parseInt(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    },
+    getCupType: function getCupType(index) {
       var _this = this;
 
-      var addOns = 0;
-      this.addOnsAmount = 0;
+      var amount = 0;
+      this.store[index].forEach(function (el) {
+        _this.cupType.forEach(function (cup) {
+          if (el.cupType === cup.cupTypeName) {
+            if (el.customerType !== 'fb' && el.customerType !== 'walkin') {
+              amount += cup.inputCupOnlinePrice * el.quantity;
+            } else {
+              amount += cup.cupTypePrice * el.quantity;
+            }
+          }
+        });
+      });
+      return parseInt(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    },
+    getDeliveryFee: function getDeliveryFee(index) {
+      var amount = 0;
+      this.store[index].forEach(function (el) {
+        amount += el.get_checkouts[0].deliveryFee;
+      });
+      return parseInt(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    },
+    getAddOns: function getAddOns(index) {
+      var _this2 = this;
+
+      var amount = 0;
       this.store[index].forEach(function (el) {
         el.same_order.forEach(function (e) {
-          _this.loadingShow = true;
-
-          _this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOneAddOnName', {
-            addOns: e.addOns
-          }, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (res) {
-            _this.loadingShow = false;
-            addOns += res.data.addons[0].addons_price;
-            _this.addOnsAmount += res.data.addons[0].addons_price;
+          _this2.dataAddOns.forEach(function (add) {
+            if (e.addOns === add.addons_name) {
+              if (el.customerType !== 'fb' && el.customerType !== 'walkin') {
+                amount += add.onlineAddOnsPrice * el.quantity;
+              } else {
+                amount += add.addons_price * el.quantity;
+              }
+            }
           });
         });
       });
-      console.log(addOns, this.addOnsAmount); // return this.addOnsAmount
+      return parseInt(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    },
+    retrieveCupType: function retrieveCupType() {
+      var _this3 = this;
+
+      this.loadingShow = true;
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllCupType", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
+        _this3.cupType = response.data.cupType;
+        _this3.loadingShow = false;
+      });
+    },
+    retrieveAddOns: function retrieveAddOns() {
+      var _this4 = this;
+
+      this.loadingShow = true;
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllAddOns", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
+        _this4.dataAddOns = response.data.addons;
+        _this4.loadingShow = false;
+      });
     },
     getDate: function getDate(index) {
       return moment__WEBPACK_IMPORTED_MODULE_3___default()(this.store[index][0].created_at).format('MM/DD/YYYY');
     },
     retrieveCategory: function retrieveCategory() {
-      var _this2 = this;
+      var _this5 = this;
 
       this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveCategoryAscending', {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (res) {
-        _this2.loadingShow = false;
-        _this2.categoryData = res.data.addCategory;
+        if (res.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
+        _this5.loadingShow = false;
+        _this5.categoryData = res.data.addCategory;
       });
     },
     retrieveSale: function retrieveSale() {
-      var _this3 = this;
+      var _this6 = this;
 
       this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "retrieveAllSales", {}, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
-        _this3.loadingShow = false;
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+        }
+
+        _this6.loadingShow = false;
         var store = [];
         Object.keys(response.data.storeOrder).forEach(function (element) {
           store.push(response.data.storeOrder[element]);
         });
-        _this3.store = store;
-        _this3.storage2 = [];
+        _this6.store = store.reverse();
+        _this6.storage2 = [];
 
-        _this3.store.forEach(function (el) {
-          _this3.storage = [];
+        _this6.store.forEach(function (el) {
+          _this6.storage = [];
 
-          _this3.categoryData.forEach(function (cat) {
-            var a = 0;
+          _this6.categoryData.forEach(function (cat) {
+            var amount = 0;
             el.forEach(function (e) {
               if (e.order_product[0].productCategory === cat.productCategory) {
-                a += e.subTotal;
+                amount += e.choosenPrice * e.quantity;
               }
             });
 
-            _this3.storage.push({
+            _this6.storage.push({
               'category': cat.productCategory,
-              'value': a
+              'value': parseInt(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
             });
           });
 
-          _this3.storage2.push(_this3.storage);
+          _this6.storage2.push(_this6.storage);
         });
       });
     }
@@ -184,70 +228,102 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("v-card", [
-    _c("div", { staticClass: "my-custom-scrollbar" }, [
-      _c(
-        "table",
-        {
-          staticClass: "table table-bordered table-striped categoryTable",
-          attrs: { id: "myTable" }
-        },
-        [
-          _c("thead", { staticClass: "thead-light" }, [
-            _c(
-              "tr",
-              { staticClass: "header" },
-              [
-                _c("th", { attrs: { scope: "col" } }, [_vm._v("Date")]),
-                _vm._v(" "),
-                _vm._l(_vm.categoryData, function(item, index) {
-                  return _c("th", { key: index, attrs: { scope: "col" } }, [
-                    _vm._v(_vm._s(item.productCategory))
-                  ])
-                }),
-                _vm._v(" "),
-                _c("th", { attrs: { scope: "col" } }, [_vm._v("Add Ons")]),
-                _vm._v(" "),
-                _c("th", { attrs: { scope: "col" } }, [_vm._v("Delivery Fee")]),
-                _vm._v(" "),
-                _c("th", { attrs: { scope: "col" } }, [_vm._v("Total Sales")])
-              ],
-              2
-            )
-          ]),
-          _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "my-custom-scrollbar" },
+      [
+        _c("center", [
           _c(
-            "tbody",
-            _vm._l(_vm.storage2, function(item, index) {
-              return _c(
-                "tr",
-                { key: index },
-                [
-                  _c("td", [_vm._v(_vm._s(_vm.getDate(index)))]),
-                  _vm._v(" "),
-                  _vm._l(item, function(i, ind) {
-                    return _c("td", { key: ind, attrs: { scope: "row" } }, [
-                      _vm._v("Php " + _vm._s(i.value))
-                    ])
-                  }),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      _vm._s(_vm.addOnsAmount) + _vm._s(_vm.getAddOns(index))
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("234")]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("456")])
-                ],
-                2
-              )
-            }),
-            0
+            "h2",
+            {
+              staticStyle: {
+                width: "100%",
+                "background-color": "#ff5b04",
+                color: "white",
+                "margin-bottom": "0%",
+                padding: "7px",
+                "margin-top": "7%"
+              }
+            },
+            [_vm._v("Sales Inventory")]
           )
-        ]
-      )
-    ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "table",
+          { staticClass: "table categoryTable", attrs: { id: "myTable" } },
+          [
+            _c(
+              "thead",
+              {
+                staticStyle: { color: "white", padding: "10px" },
+                attrs: { bgcolor: "#ff5b04" }
+              },
+              [
+                _c(
+                  "tr",
+                  { staticClass: "header" },
+                  [
+                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Date")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.categoryData, function(item, index) {
+                      return _c("th", { key: index, attrs: { scope: "col" } }, [
+                        _vm._v(_vm._s(item.productCategory))
+                      ])
+                    }),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Add Ons")]),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [
+                      _vm._v("Delivery Fee")
+                    ]),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Cup Type")]),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [
+                      _vm._v("Total Sales")
+                    ])
+                  ],
+                  2
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.storage2, function(item, index) {
+                return _c(
+                  "tr",
+                  { key: index },
+                  [
+                    _c("td", [_vm._v(_vm._s(_vm.getDate(index)))]),
+                    _vm._v(" "),
+                    _vm._l(item, function(i, ind) {
+                      return _c("td", { key: ind, attrs: { scope: "row" } }, [
+                        _vm._v("₱ " + _vm._s(i.value))
+                      ])
+                    }),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("₱ " + _vm._s(_vm.getAddOns(index)))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v("₱ " + _vm._s(_vm.getDeliveryFee(index)))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("₱ " + _vm._s(_vm.getCupType(index)))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("₱ " + _vm._s(_vm.getTotal(index)))])
+                  ],
+                  2
+                )
+              }),
+              0
+            )
+          ]
+        )
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []

@@ -91,24 +91,24 @@
         </v-toolbar>
         <div class="prods">
           <v-card>
-            <div>
+            <div class="theimage">
               <v-img class="white--text align-end thetop3" :src="topProdArr[0].img">
                 <v-card-title class="Prod_name">
-                  <i></i>
+                  <i>{{topProdArr[0].pName}}</i>
                 </v-card-title>
               </v-img>
             </div>
-            <div>
+            <div class="theimage">
               <v-img class="white--text align-end thetop3" :src="topProdArr[1].img">
                 <v-card-title class="Prod_name">
-                  <i></i>
+                  <i>{{topProdArr[1].pName}}</i>
                 </v-card-title>
               </v-img>
             </div>
-            <div>
+            <div class="theimage">
               <v-img class="white--text align-end thetop3" :src="topProdArr[2].img">
                 <v-card-title class="Prod_name">
-                  <i></i>
+                  <i>{{topProdArr[2].pName}}</i>
                 </v-card-title>
               </v-img>
             </div>
@@ -189,7 +189,11 @@
   border: 1px solid #999999;
   border-radius: 1%;
 }
-.thetop3 {
+.thetop3{
+  height: 180px;
+  width: auto;
+}
+.theimage {
   margin: 2%;
   height: 200px;
   width: auto;
@@ -293,6 +297,7 @@ export default {
   },
   computed: {},
   mounted() {
+    console.log("...................... ",AUTH.user.fullname);
     this.getTop3();
     console.log("ang top3 ", this.topProdArr);
     let date = new Date();
@@ -322,7 +327,10 @@ export default {
       let totalfrmDB = [];
       // let xs = this.xlabels;
       let ldate = this.lastDate;
-      Axios.post(AUTH.url + "getDailySales", params).then(response => {
+      Axios.post(AUTH.url + "getDailySales", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.total.forEach(element => {
           let d = element.date;
@@ -372,6 +380,7 @@ export default {
         this.xlabels.push(i);
       }
       this.categories = this.xlabels;
+      // console.log("........ " + this.categories);
     },
     onFilter() {
       if (this.thefilter == "Daily") {
@@ -411,6 +420,7 @@ export default {
             curve: "smooth"
           }
         };
+        // console.log("monthly cat bruh " + this.categories);
         this.ok = false;
         this.ok2 = true;
         this.ok3 = false;
@@ -498,7 +508,10 @@ export default {
       let params = {
         year: this.yrvalue
       };
-      Axios.post(AUTH.url + "getyears", params).then(response => {
+      Axios.post(AUTH.url + "getyears", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.years.forEach(element => {
           let yr = element.year;
@@ -514,7 +527,10 @@ export default {
       let params = {
         year: yyyy
       };
-      Axios.post(AUTH.url + "getmonthlySales", params).then(response => {
+      Axios.post(AUTH.url + "getmonthlySales", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.subtotal.forEach(element => {
           let sub = element.sub;
@@ -547,7 +563,10 @@ export default {
       let params = {
         year: yyyy
       };
-      Axios.post(AUTH.url + "getQuarterlySales", params).then(response => {
+      Axios.post(AUTH.url + "getQuarterlySales", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.subtotal.forEach(element => {
           let sub = element.sub;
@@ -614,7 +633,10 @@ export default {
       let params = {
         year: yyyy
       };
-      Axios.post(AUTH.url + "getSemi-AnnualSales", params).then(response => {
+      Axios.post(AUTH.url + "getSemi-AnnualSales", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.subtotal.forEach(element => {
           let sub = element.sub;
@@ -681,14 +703,20 @@ export default {
       let endYear = values[1];
       let graphLabel = startingYR + " - " + endYear;
       this.MonthLabel = graphLabel;
+      // console.log("************* 1 " + startingYR);
       let gap = endYear - startingYR;
+      // console.log("************* 2 " + gap);
+
       let array = [];
       let labelsArr = [];
       let params = {
         from: startingYR,
         to: endYear
       };
-      Axios.post(AUTH.url + "getAnnualSales", params).then(response => {
+      Axios.post(AUTH.url + "getAnnualSales", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         response.data.subtotal.forEach(element => {
           if (element.year <= endYear && element.year == startingYR) {
@@ -699,6 +727,7 @@ export default {
         });
         this.points = array;
         this.annualLabels = labelsArr;
+        // console.log("--------------- " + this.points);
         this.series = [
           {
             data: this.points
@@ -725,12 +754,16 @@ export default {
         year: null
       };
       let indexes = [];
-      Axios.post(AUTH.url + "getTopProd", params).then(response => {
+      Axios.post(AUTH.url + "getTopProd", params, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         let resLen = response.data.prods.length;
         response.data.prods.forEach(element => {
           indexes.push(response.data.prods.indexOf(element));
         });
+        // console.log(",,,,,, ", indexes);
         for (var i = 0; i < 3; i++) {
           if (indexes.includes(i)) {
             this.topProdArr.push({

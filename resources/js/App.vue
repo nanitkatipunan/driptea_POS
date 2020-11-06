@@ -33,7 +33,7 @@
       <v-img max-height="64" max-width="42" :src="image"></v-img>
       <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-items name="theitem" class="hidden-sm-and-down" app >
+      <v-app-bar-items name="theitem" class="hidden-sm-and-down" app>
         <div>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
@@ -51,14 +51,44 @@
         </div>
       </v-app-bar-items>
       <v-app-bar-items>
-        <button class="btn" @click="logout()">Logout</button>
+        <div>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-bind="attrs" v-on="on" icon>
+                <v-icon medium color="black" right>mdi-arrow-down-drop-circle</v-icon>
+              </v-btn>
+            </template>
+            <v-list
+              style="max-height: 300px; max-width: 300px"
+              class="overflow-y-auto notifDropdown"
+            >
+              <!-- ang Click kay wala pay nay method -->
+              <!-- <product ref="product"></product> -->
+              <v-list-item
+                v-for="(item, index) in account"
+                :key="index"
+                @click="redirect(item.route+admin)"
+              >
+                <v-list-item-icon>
+                  <v-icon color="black darken-2">{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.text }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
       </v-app-bar-items>
     </v-app-bar>
     <v-app-bar class="cashierNav" color="orange darken-1" v-if="cashier !== null">
-      <a><v-img max-height="64" max-width="42" :src="image" @click="redirect('/casherDashboard')"></v-img></a>
+      <a href="#">
+        <v-img max-height="64" max-width="42" :src="image"></v-img>
+      </a>
       <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-items name="theitem" class="hidden-sm-and-down" app >
+      <v-app-bar-items name="theitem" class="hidden-sm-and-down" app>
         <div>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
@@ -66,10 +96,42 @@
                 <v-icon medium color="black" right>mdi-bell-ring</v-icon>
               </v-btn>
             </template>
-            <v-list style="max-height: 300px; max-width: 300px" class="overflow-y-auto notifDropdown">
+            <v-list
+              style="max-height: 300px; max-width: 300px"
+              class="overflow-y-auto notifDropdown"
+            >
               <!-- ang Click kay wala pay nay method -->
               <!-- <product ref="product"></product> -->
-              <v-list-item v-for="(item, index) in storeOrder" :key="index" @click="getOrder(item, $event)">
+              <v-list-item
+                v-for="(item, index) in storeOrder"
+                :key="index"
+                @click="getOrder(item, $event)"
+              >
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+      </v-app-bar-items>
+      <v-app-bar-items>
+        <div>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-bind="attrs" v-on="on" icon>
+                <v-icon medium color="black" right>mdi-arrow-down-drop-circle</v-icon>
+              </v-btn>
+            </template>
+            <v-list
+              style="max-height: 300px; max-width: 300px"
+              class="overflow-y-auto notifDropdown"
+            >
+              <!-- ang Click kay wala pay nay method -->
+              <!-- <product ref="product"></product> -->
+              <v-list-item
+                v-for="(item, index) in storeOrder"
+                :key="index"
+                @click="getOrder(item, $event)"
+              >
                 <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
               </v-list-item>
             </v-list>
@@ -93,7 +155,7 @@
   height: 60px;
 }
 .cashierNav {
-    max-height: 65px;
+  max-height: 65px;
 }
 .color {
   background: #89afe8;
@@ -104,11 +166,12 @@ import image from "../assets/logo.png";
 import AUTH from "./services/auth";
 import ROUTER from "./router";
 import { mdiAccount } from "@mdi/js";
-import { App } from '@/js/App.vue'
-import config from './config.js'
-import product from './modules/products/productCategory.vue'
+import { App } from "@/js/App.vue";
+import config from "./config.js";
+import product from "./modules/products/productCategory.vue";
 export default {
   data: () => ({
+    username: AUTH.user.fullname,
     admin: localStorage.getItem("adminId"),
     cashier: localStorage.getItem("cashierId"),
     drawer: null,
@@ -146,8 +209,11 @@ export default {
         active: false
       }
     ],
+    account: [
+      { icon: "mdi-account", text: "My Account", route: "/myprofile/" },
+      { icon: "mdi-logout", text: "Logout", route: "/logout/" }
+    ],
     employee: [
-      { icon: "mdi-account", text: "My Account", route: "/MyAccount" },
       { icon: "mdi-apps", text: "Dashboard", route: "/adminDashboard" },
       {
         icon: "mdi-poll",
@@ -178,7 +244,7 @@ export default {
         icon: "mdi-account-multiple-plus",
         text: "Register Account",
         route: "/registerAccount"
-      },
+      }
     ],
     items: [
       { title: "Click Me" },
@@ -188,22 +254,21 @@ export default {
     ],
     count: 0,
   }),
-  components: {
-  },
+  components: {},
   mounted() {
-    this.retrieve()
     this.admin = localStorage.getItem("adminId");
     this.cashier = localStorage.getItem("cashierId");
-  
+    this.retrieve();
     let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
-        cluster: this.config.PUSHER_APP_CLUSTER,
-        encrypted: true
+      cluster: this.config.PUSHER_APP_CLUSTER,
+      encrypted: true
     });
-    let channel = pusher.subscribe('driptea-channel')
-    let obj = this
-    channel.bind('driptea-data', (data) => {
-      this.retrieve()
-    })
+
+    let channel = pusher.subscribe("driptea-channel");
+    let obj = this;
+    channel.bind("driptea-data", data => {
+      this.retrieve();
+    });
   },
   components: {
     product
@@ -213,23 +278,27 @@ export default {
       return this.menu;
     },
     redirect(route) {
-      ROUTER.push(route).catch(() => {});
+      if (route === "/logout/" + this.admin) {
+        this.logout();
+      } else {
+        ROUTER.push(route).catch(() => {});
+      }
     },
     getOrder(item, event) {
-      event.target.classList.add('color')
+      event.target.classList.add("color");
       localStorage.setItem("customerId", item[0].customerId);
-      localStorage.setItem("customerType", 'online');
+      localStorage.setItem("customerType", "online");
       ROUTER.push("/productCategory/online").catch(() => {});
     },
-    retrieve(){
-      this.$axios.post(AUTH.url + 'retrieveOnlineOrder').then(res => {
-        let storage = []
-        this.tableData = res.data.order
+    retrieve() {
+      this.$axios.post(AUTH.url + "retrieveOnlineOrder").then(res => {
+        let storage = [];
+        this.tableData = res.data.order;
         Object.keys(this.tableData).forEach(element => {
-          storage.push(this.tableData[element])
+          storage.push(this.tableData[element]);
         });
-        this.storeOrder = storage
-      })
+        this.storeOrder = storage;
+      });
     },
     logout(){
       AUTH.deauthenticate()

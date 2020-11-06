@@ -133,7 +133,7 @@ export default {
         retrieveCategory(){
             this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveCategoryAscending', {}, AUTH.config).then(res => {
-                if(response.data.status){
+                if(res.data.status){
                     AUTH.deauthenticate()
                 }
                 this.loadingShow = false
