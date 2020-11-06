@@ -218,8 +218,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.userID = this.$route.params.id;
     this.retrieveUserDatas(this.userID);
-    console.log("ang response ", this.userID); // this.$bus.$on('redirect',data => {
-    // })
+    console.log("ang response ", this.userID);
   },
   methods: {
     retrieveUserDatas: function retrieveUserDatas(id) {

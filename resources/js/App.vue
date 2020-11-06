@@ -128,11 +128,17 @@
               <!-- ang Click kay wala pay nay method -->
               <!-- <product ref="product"></product> -->
               <v-list-item
-                v-for="(item, index) in storeOrder"
+                v-for="(item, index) in account"
                 :key="index"
-                @click="getOrder(item, $event)"
+                @click="redirect(item.route+admin)"
               >
-                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
+                <v-list-item-icon>
+                  <v-icon color="black darken-2">{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.text }}</v-list-item-title>
+                </v-list-item-content>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -171,7 +177,7 @@ import config from "./config.js";
 import product from "./modules/products/productCategory.vue";
 export default {
   data: () => ({
-    username: AUTH.user.fullname,
+    username: null,
     admin: localStorage.getItem("adminId"),
     cashier: localStorage.getItem("cashierId"),
     drawer: null,
@@ -252,13 +258,14 @@ export default {
       { title: "Click Me" },
       { title: "Click Me 2...................." }
     ],
-    count: 0,
+    count: 0
   }),
   components: {},
   mounted() {
     this.admin = localStorage.getItem("adminId");
     this.cashier = localStorage.getItem("cashierId");
-    console.log("========================== ", this.admin);
+    console.log("========================== ", this.username);
+    // this.getusername(this.userID);
     this.retrieve();
     let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
       cluster: this.config.PUSHER_APP_CLUSTER,
@@ -286,6 +293,18 @@ export default {
         ROUTER.push(route).catch(() => {});
       }
     },
+    // getusername(id){
+    //   console.log("na piste na baya ko nimo ahh ",id)
+    //   let params = {
+    //     uname: id
+    //   };
+    //   Axios.post(AUTH.url + "getUserName", params).then(response => {
+    //     response.data.userdata.forEach(element => {
+    //       console.log("********************************* ",element)
+    //       this.username = element.fullname;
+    //     })
+    //   })
+    // },
     getOrder(item, event) {
       event.target.classList.add("color");
       localStorage.setItem("customerId", item[0].customerId);
@@ -303,7 +322,7 @@ export default {
       });
     },
     logout() {
-      AUTH.deaunthenticate();
+      AUTH.deauthenticate();
     }
   }
 };

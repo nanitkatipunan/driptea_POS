@@ -207,8 +207,7 @@ export default {
     this.retrieveUserDatas(this.userID);
         console.log("ang response ", this.userID);
 
-    // this.$bus.$on('redirect',data => {
-    // })
+        
   },
 
   methods: {
