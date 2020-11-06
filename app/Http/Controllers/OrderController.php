@@ -20,6 +20,7 @@ class OrderController extends Controller
         $order->customerId = $request['customerId'];
         $order->onlineId = $request['onlineId'];
         $order->productId = $request['productId'];
+        $order->customerType = $request['customerType'];
         $order->quantity = $request['quantity'];
         $order->size = $request['size'];
         $order->sugarLevel = $request['sugarLevel'];

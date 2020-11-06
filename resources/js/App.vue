@@ -216,22 +216,32 @@ export default {
     employee: [
       { icon: "mdi-apps", text: "Dashboard", route: "/adminDashboard" },
       {
-        icon: "mdi-calendar-account",
+        icon: "mdi-poll",
         text: "Sales Inventory",
         route: "/salesInventory"
       },
       {
         icon: "mdi-calendar-account",
+        text: "Order Inventory",
+        route: "/orderInventory"
+      },
+      {
+        icon: "mdi-cup",
+        text: "Cups Inventory",
+        route: "/cupsInventory"
+      },
+      {
+        icon: "mdi-plus-box",
         text: "Adding",
         route: "/addProductCategoryAddOns"
       },
       {
-        icon: "mdi-calendar-account",
+        icon: "mdi-point-of-sale",
         text: "POS",
-        route: "/cashierDashboard"
+        route: "/casherDashboard"
       },
       {
-        icon: "mdi-calendar-account",
+        icon: "mdi-account-multiple-plus",
         text: "Register Account",
         route: "/registerAccount"
       }
@@ -242,7 +252,7 @@ export default {
       { title: "Click Me" },
       { title: "Click Me 2...................." }
     ],
-    count: 0
+    count: 0,
   }),
   components: {},
   mounted() {

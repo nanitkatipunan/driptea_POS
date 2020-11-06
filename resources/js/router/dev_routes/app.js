@@ -130,6 +130,22 @@ export default {
         },
         
         {
+            path: '/cupsInventory',
+            name: 'cupsInventory',
+            component: resolve => require(['@/js/modules/inventory/cupsInventory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/orderInventory',
+            name: 'orderInventory',
+            component: resolve => require(['@/js/modules/inventory/orderInventory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
             path: '/onlineDashboard',
             name: 'onlineDashboard',
             component: resolve => require(['@/js/modules/dashboard/onlineOrderDashboard'], resolve),
@@ -141,22 +157,6 @@ export default {
             path: '/productCategory/:image?',
             name: 'productCategory',
             component: resolve => require(['@/js/modules/products/productCategory'], resolve),
-            meta: {
-                tokenRequired: true
-            }
-        },
-        {
-            path: '/:any',
-            name: 'any',
-            component: resolve => require(['@/js/basic/landing'], resolve),
-            meta: {
-                tokenRequired: false
-            }
-        },
-        {
-            path: '/:any',
-            name: 'any',
-            component: resolve => require(['@/js/modules/dashboard/casherDashboard'], resolve),
             meta: {
                 tokenRequired: true
             }

@@ -115,6 +115,7 @@
           </v-card>
         </div>
       </div>
+      <loading v-if="loadingShow"></loading>
     </div>
   </div>
 </template>
@@ -210,7 +211,8 @@ import Datepicker from "vuejs-datepicker";
 import { arch } from "os";
 import swal from "sweetalert";
 import nodataImg from "../../../assets/noDatatoShow.png";
-import index from "../../services/auth";
+import loading from '../../basic/loading.vue';
+// import index from "../../services/auth";
 
 export default {
   data() {
@@ -284,12 +286,14 @@ export default {
       semi_Data: [],
       topProdArr: [],
       defaultDate: null,
-      DatePickerFormat: "yyyy"
+      DatePickerFormat: "yyyy",
+      loadingShow: false
     };
   },
   components: {
     salesChart,
-    Datepicker
+    Datepicker,
+    loading
   },
   computed: {},
   mounted() {
@@ -312,6 +316,7 @@ export default {
   created() {},
   methods: {
     getDailySummary() {
+      this.loadingShow = true
       this.points = [];
       let params = {
         month: this.theMonth,
@@ -323,7 +328,7 @@ export default {
       // let xs = this.xlabels;
       let ldate = this.lastDate;
       Axios.post(AUTH.url + "getDailySales", params).then(response => {
-        // console.log("daily response ",response.data.total);
+        this.loadingShow = false
         response.data.total.forEach(element => {
           let d = element.date;
           let tots = element.sub;
@@ -496,10 +501,12 @@ export default {
       this.getAnnualSummary(this.Multiyrvalue);
     },
     getYears() {
+      this.loadingShow = true
       let params = {
         year: this.yrvalue
       };
       Axios.post(AUTH.url + "getyears", params).then(response => {
+        this.loadingShow = false
         response.data.years.forEach(element => {
           let yr = element.year;
           this.years.push({ text: yr, value: yr });
@@ -507,6 +514,7 @@ export default {
       });
     },
     getMonthlySummary(yyyy) {
+      this.loadingShow = true
       this.points = [];
       let monthsfrmDB = [];
       let i;
@@ -514,7 +522,7 @@ export default {
         year: yyyy
       };
       Axios.post(AUTH.url + "getmonthlySales", params).then(response => {
-        // console.log(response);
+        this.loadingShow = false
         response.data.subtotal.forEach(element => {
           let sub = element.sub;
           let month = element.month;
@@ -539,6 +547,7 @@ export default {
       });
     },
     getQuarterlySummary(yyyy) {
+      this.loadingShow = true
       this.points = [];
       let monthsfrmDB = [];
       let i;
@@ -546,6 +555,7 @@ export default {
         year: yyyy
       };
       Axios.post(AUTH.url + "getQuarterlySales", params).then(response => {
+        this.loadingShow = false
         response.data.subtotal.forEach(element => {
           let sub = element.sub;
           let month = element.month;
@@ -603,6 +613,7 @@ export default {
       this.forthQ = [];
     },
     getSemi_AnnualSummary(yyyy) {
+      this.loadingShow = true
       this.semi_Data = [];
       this.points = [];
       let monthsfrmDB = [];
@@ -611,6 +622,7 @@ export default {
         year: yyyy
       };
       Axios.post(AUTH.url + "getSemi-AnnualSales", params).then(response => {
+        this.loadingShow = false
         response.data.subtotal.forEach(element => {
           let sub = element.sub;
           let month = element.month;
@@ -670,6 +682,7 @@ export default {
       this.second_Half = [];
     },
     getAnnualSummary(values) {
+      this.loadingShow = true
       this.points = [];
       let startingYR = values[0];
       let endYear = values[1];
@@ -686,6 +699,7 @@ export default {
         to: endYear
       };
       Axios.post(AUTH.url + "getAnnualSales", params).then(response => {
+        this.loadingShow = false
         response.data.subtotal.forEach(element => {
           if (element.year <= endYear && element.year == startingYR) {
             array.push(element.sub);
@@ -717,12 +731,13 @@ export default {
       });
     },
     getTop3() {
+      this.loadingShow = true
       let params = {
         year: null
       };
       let indexes = [];
       Axios.post(AUTH.url + "getTopProd", params).then(response => {
-        // console.log("asfdsdg ", response.data.prods);
+        this.loadingShow = false
         let resLen = response.data.prods.length;
         response.data.prods.forEach(element => {
           indexes.push(response.data.prods.indexOf(element));
