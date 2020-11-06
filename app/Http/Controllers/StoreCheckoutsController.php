@@ -74,7 +74,6 @@ class StoreCheckoutsController extends Controller
         return response()->json(compact('storeOrder'));
     }
 
-   
     public function retrieveAllSales(Request $request){
         $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCheckouts')->where('deleted_at', null)->get()->groupBy(function($item)
         {
@@ -85,12 +84,11 @@ class StoreCheckoutsController extends Controller
 
     public function retrieveDailySales(Request $request)
     {
-        $total = StoreCheckouts::select(DB::raw('SUM(subTotal) as sub'),DB::raw('DAY(created_at) as `date`'),DB::raw('YEAR(created_at) as `year`'),DB::raw('MONTH(created_at) as `month`'))
+        $total = StoreCheckouts::select(DB::raw('SUM(total) as sub'),DB::raw('DAY(created_at) as date'),DB::raw('YEAR(created_at) as year'),DB::raw('MONTH(created_at) as month'))
                 ->whereMonth('created_at', '=', $request->month)
                 ->whereYear('created_at', '=', $request->year)
                 ->groupBy('year','month','date')
                  ->get();
-                //  dd($total);
         return response()->JSON(compact('total'));
     }
     
@@ -136,6 +134,5 @@ class StoreCheckoutsController extends Controller
         // dd($subtotal);
         return response()->JSON(compact('subtotal'));
     }
-
-
+    
 }

@@ -1,15 +1,4 @@
 <template>
-<<<<<<< HEAD
-
-    
-</template>
-<script>
-export default {
-
-    
-}
-</script>
-=======
     <div>
       <table class="table">
         <thead>
@@ -77,4 +66,3 @@ export default {
     }
 }
 </script>
->>>>>>> cc6f6672d6c4e7bce98b159635dc27bb30fab83d
