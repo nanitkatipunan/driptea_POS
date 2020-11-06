@@ -126,6 +126,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -159,6 +166,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     redirect: function redirect(param) {
       _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/order/product/' + param)["catch"](function () {});
+    },
+    previous: function previous() {
+      var type = localStorage.getItem("customerType");
+      console.log(type);
+      _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + type)["catch"](function () {});
     }
   }
 });
@@ -196,7 +208,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* width */\n[data-v-a3679af6]::-webkit-scrollbar {\r\n    width: 1px;\n}\n.noImage[data-v-a3679af6] {\r\n    margin-top: 10%;\r\n    height: 200px;\r\n    width: 30%;\n}\n.imgItem[data-v-a3679af6] {\r\n    height: 200px;\r\n    width: 80%;\n}\n.row[data-v-a3679af6] {\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.secRow[data-v-a3679af6] {\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.sudlanan[data-v-a3679af6] {\r\n    background-color: white;\r\n    height: 92.8vh;\r\n    overflow: hidden;\r\n    color: white;\r\n    font-family: Roboto Slab;\n}\n.imageSize[data-v-a3679af6] {\r\n    height: 250px;\r\n    margin-top: 2%;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* width */\n[data-v-a3679af6]::-webkit-scrollbar {\r\n    width: 1px;\n}\n.noImage[data-v-a3679af6] {\r\n    margin-top: 10%;\r\n    height: 200px;\r\n    width: 30%;\n}\n.imgItem[data-v-a3679af6] {\r\n    height: 200px;\r\n    width: 80%;\n}\n.row[data-v-a3679af6] {\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.secRow[data-v-a3679af6] {\r\n    width: 80%;\r\n    height: 650px;\r\n    overflow-y: scroll;\n}\n.sudlanan[data-v-a3679af6] {\r\n    background-color: white;\r\n    height: 92.8vh;\r\n    overflow: hidden;\r\n    color: white;\r\n    font-family: Roboto Slab;\n}\n.imageSize[data-v-a3679af6] {\r\n    height: 250px;\r\n    margin-top: 2%;\n}\r\n", ""]);
 
 // exports
 
@@ -321,6 +333,27 @@ var render = function() {
     "div",
     { staticClass: "sudlanan" },
     [
+      _c(
+        "div",
+        [
+          _c(
+            "v-btn",
+            {
+              staticStyle: { "margin-right": "1%" },
+              attrs: { icon: "" },
+              on: {
+                click: function($event) {
+                  return _vm.previous()
+                }
+              }
+            },
+            [_c("v-icon", [_vm._v("mdi-arrow-all")])],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c(
         "center",
         [

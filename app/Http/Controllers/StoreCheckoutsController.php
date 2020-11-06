@@ -74,6 +74,7 @@ class StoreCheckoutsController extends Controller
         return response()->json(compact('storeOrder'));
     }
 
+   
     public function retrieveAllSales(Request $request){
         $storeOrder = StoreOrder::with('orderProduct')->with('sameOrder')->with('getCheckouts')->where('deleted_at', null)->get()->groupBy(function($item)
         {
@@ -135,4 +136,6 @@ class StoreCheckoutsController extends Controller
         // dd($subtotal);
         return response()->JSON(compact('subtotal'));
     }
+
+
 }

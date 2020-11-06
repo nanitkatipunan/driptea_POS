@@ -56,6 +56,9 @@ Route::post('retrieveAllCheckouts','App\Http\Controllers\StoreCheckoutsControlle
 Route::post('retrieveOnlineCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveOnlineCheckouts');
 Route::post('retrieveAllSales','App\Http\Controllers\StoreCheckoutsController@retrieveAllSales');
 
+Route::post('retrieveOnlineOrders','App\Http\Controllers\OrderController@retrieveOnlineOrder');
+
+
 Route::post('getDailySales','App\Http\Controllers\StoreCheckoutsController@retrieveDailySales');
 Route::post('getmonthlySales','App\Http\Controllers\StoreCheckoutsController@retrieveMonthlySales');
 Route::post('getQuarterlySales','App\Http\Controllers\StoreCheckoutsController@retrieveQuarterSales');

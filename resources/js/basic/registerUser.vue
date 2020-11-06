@@ -290,7 +290,7 @@ export default {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
-    register() {
+    register(e) {
       e.preventDefault()
       this.loadingShow = true
       this.validate("fullname");

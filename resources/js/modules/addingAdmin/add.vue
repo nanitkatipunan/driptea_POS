@@ -1,11 +1,6 @@
 <template>
   <div>
     <center>
-        <h1 class="font-weight-regular" v-if = "tableForCategory">Adding Category</h1>
-          <h1 class="font-weight-regular" v-if = "tableForProduct">Adding Product</h1>
-          <h1 class="font-weight-regular" v-if = "tableForAddOns">Adding Add Ons</h1>
-          <h1 class="font-weight-regular" v-if = "tableForCupType">Adding Cup Type</h1>
-          <h1 class="font-weight-regular" v-if = "tableForCupSize">Adding Cup Size</h1>
     <v-toolbar flat>
        <v-toolbar-title >
         

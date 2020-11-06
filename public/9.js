@@ -117,6 +117,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -374,6 +379,10 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.cupTypeEvent = event.target;
+    },
+    previous: function previous() {
+      var type = localStorage.getItem("customerType");
+      _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/productCategory/' + type)["catch"](function () {});
     }
   }
 });
@@ -608,6 +617,27 @@ var render = function() {
     "div",
     { staticClass: "sudlanan" },
     [
+      _c(
+        "div",
+        [
+          _c(
+            "v-btn",
+            {
+              staticStyle: { "margin-right": "1%" },
+              attrs: { icon: "" },
+              on: {
+                click: function($event) {
+                  return _vm.previous()
+                }
+              }
+            },
+            [_c("v-icon", [_vm._v("mdi-home")])],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c(
         "center",
         [

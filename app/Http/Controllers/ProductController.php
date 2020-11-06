@@ -65,12 +65,12 @@ class ProductController extends Controller
     }
 
     public function retrieveAllProduct(Request $request){
-        $product = Product::orderBy('id','DESC')->get();
+        $product = Product::where('status','Available')->orderBy('id','DESC')->get();
         return response()->json(compact('product'));
     }
 
     public function retrieveAllProductAscending(Request $request){
-        $product = Product::orderBy('id','ASC')->get();
+        $product = Product::orderBy('id','ASC')->where('status','Available')->get();
         return response()->json(compact('product'));
     }
 

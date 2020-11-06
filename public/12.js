@@ -313,7 +313,7 @@ __webpack_require__.r(__webpack_exports__);
     redirect: function redirect(route) {
       _router__WEBPACK_IMPORTED_MODULE_1__["default"].push(route)["catch"](function () {});
     },
-    register: function register() {
+    register: function register(e) {
       var _this = this;
 
       e.preventDefault();

@@ -1,46 +1,45 @@
 <template>
-    <div class="container">
-         <v-app-bar
-            absolute
-            color="orange"
-            dark
-            shrink-on-scroll
-            prominent
-            scroll-target="#scrolling-techniques-3"
-            >
-            <!-- <template v-slot:img="{ props }">
-                <v-img
-                v-bind="props"
-                gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
-                ></v-img>
-            </template> -->
 
-            <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
-
-            <v-spacer></v-spacer>
-
-            <v-btn icon style="margin-right: 2%;">
-                <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-
-            <!-- <v-btn icon @click="direct()" style="margin-right: 2%;">
-                <v-icon>mdi-cart</v-icon>
-                <span style="margin-left: -3%;">Cart</span>
-                <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
-            </v-btn> -->
-             <v-btn icon style="margin-right: 1%;"  @click="home()">
+    <div>
+         <div class="header" style="background-color:#ff5b04">
+            <div class="container" >
+                <div class="row">
+                    <div class="col-6">
+                        DRIPTEA
+                    </div>
+                    <div class="col-6 text-right">
+                    <v-btn icon style="margin-right: 2%;">
+                        <v-icon>mdi-magnify</v-icon>
+                    </v-btn>
+                    
+                    <v-btn icon style="margin-right: 1%;"  @click="home()">
                 <v-icon >mdi-home</v-icon>
             </v-btn>
+            <v-menu bottom left>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn dark icon v-bind="attrs" v-on="on">
+                        <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item >
+                        <v-list-item-title>Profile</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-title @click="direct">Order History</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+
             
+           
 
-
-            <v-btn icon style="margin-right: 3%;">
-                <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-            </v-app-bar>
-
-                <v-card mb="20px">
-                    <v-container style="margin-top:10%">
+                    </div>
+                </div>
+                <!--/row-->
+            </div>
+             <v-card mb="20px">
+                    <v-container fluid>
                          <center>
                             <h1>Your Cart</h1>
                             <div v-if="tableData !== null && tableData.length > 0">
@@ -85,14 +84,101 @@
 
                     </v-container>
                 </v-card>
+            <!--container-->
+        </div>
+         <!-- <v-app-bar
+            absolute
+            color="orange"
+            dark
+            shrink-on-scroll
+            prominent
+            scroll-target="#scrolling-techniques-3"
+            > -->
+            <!-- <template v-slot:img="{ props }">
+                <v-img
+                v-bind="props"
+                gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
+                ></v-img>
+            </template> -->
+
+            <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+
+            <!-- <v-spacer></v-spacer> -->
+
+            <!-- <v-btn icon style="margin-right: 2%;">
+                <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+            -->
+            <!-- <v-btn icon @click="direct()" style="margin-right: 2%;">
+                <v-icon>mdi-cart</v-icon>
+                <span style="margin-left: -3%;">Cart</span>
+                <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
+            </v-btn> -->
+             
+               
+
+            <!-- This is a modal for processing -->
+
+            <template>
+  <div class="text-center">
+    <v-dialog
+      v-model="processModal"
+      width="500"
+    >
+        <v-card-title class="headline grey lighten-2">
+          Order
+        </v-card-title>
+                <v-row
+                    class="fill-height"
+                    align-content="center"
+                    justify="center"
+                >
+                    <v-col
+                    class="subtitle-1 text-center"
+                    cols="12"
+                    >
+                    Processing your order .......
+                    </v-col>
+                    <v-col cols="6">
+                    <v-progress-linear
+                        color="deep-purple accent-4"
+                        indeterminate
+                        rounded
+                        height="6"
+                    ></v-progress-linear>
+                    </v-col>
+                </v-row>
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="processModal = false"
+          >
+            Okay
+          </v-btn>
+        </v-card-actions>
+    
+    </v-dialog>
+  </div>
+</template>
+      
+  <loading v-if="loadingShow"></loading>
+
+
+
            </div>
 </template>
 <style scoped>
 .table {
     width: 70%;
 }
+
 </style>
 <script>
+import loading from '../../basic/loading.vue';
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import config from '../../config.js'
@@ -105,11 +191,21 @@ export default {
             count: 0,
             subTotal: 0,
             total: 0,
-            deliveryFee: 0
+            deliveryFee: 0,
+            processModal:false,
+            loadingShow:false,
+
+            items:[
+                {
+                    title: "Profile"
+                },
+                {title: "Name"}
+            ]
         }
     },
     components: {
-        empty
+        empty,
+        loading
     },
     mounted(){
         this.count = 0
@@ -132,11 +228,15 @@ export default {
             ROUTER.push('/onlineDashboard').catch(()=>{})
         },
         retrieveProduct(){
+            this.loadingShow = true
             let params = {
                 id: localStorage.getItem('customerOnlineId')
             }
             this.$axios.post(AUTH.url + 'retrieveCustomerOrder', params).then(res => {
                 this.tableData = res.data.order
+            this.loadingShow = false
+
+
             })
         },
         getAddOns(item){
@@ -157,6 +257,8 @@ export default {
             })
         },
         orderNow(){
+            this.loadingShow = true
+
             let params = {
                 id: localStorage.getItem('customerOnlineId'),
                 status: 'pendingCustomer'
@@ -164,6 +266,10 @@ export default {
             this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
                 this.retrieveProduct()
                 localStorage.removeItem('customerOnlineId')
+            this.loadingShow = false
+
+                this.processModal = true
+
             })
         },
         getSubTotal(){
@@ -186,6 +292,11 @@ export default {
             this.deliveryFee = deliveryFee
             return parseInt(deliveryFee).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
         },
+        direct(){
+            ROUTER.push('/orderHistory').catch(()=>{})
+
+
+        }
     }
 }
 </script>

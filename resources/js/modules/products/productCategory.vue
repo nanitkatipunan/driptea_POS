@@ -1,5 +1,10 @@
 <template>
     <div class="sudlanan">
+         <div>
+         <v-btn icon style="margin-right: 1%;"  @click="previous()">
+                <v-icon >mdi-home</v-icon>
+            </v-btn>
+    </div>
         <div class="row firstRow">
             <div class="col-md-6">
                 <center>
@@ -325,6 +330,11 @@ export default {
                     this.error = true
                 }
             }
+        },
+         previous(){
+             let type = localStorage.getItem("customerType");
+
+            ROUTER.push('/casherDashboard').catch(() => {})
         }
     }
 }

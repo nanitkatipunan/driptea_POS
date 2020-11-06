@@ -658,11 +658,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -1633,36 +1628,6 @@ var render = function() {
       _c(
         "center",
         [
-          _vm.tableForCategory
-            ? _c("h1", { staticClass: "font-weight-regular" }, [
-                _vm._v("Adding Category")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.tableForProduct
-            ? _c("h1", { staticClass: "font-weight-regular" }, [
-                _vm._v("Adding Product")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.tableForAddOns
-            ? _c("h1", { staticClass: "font-weight-regular" }, [
-                _vm._v("Adding Add Ons")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.tableForCupType
-            ? _c("h1", { staticClass: "font-weight-regular" }, [
-                _vm._v("Adding Cup Type")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.tableForCupSize
-            ? _c("h1", { staticClass: "font-weight-regular" }, [
-                _vm._v("Adding Cup Size")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
           _c(
             "v-toolbar",
             {

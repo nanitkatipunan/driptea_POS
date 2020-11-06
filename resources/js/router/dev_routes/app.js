@@ -136,6 +136,14 @@ export default {
                 tokenRequired: true
             }
         },
+        {
+            path: '/orderHistory',
+            name: 'orderHistory',
+            component: resolve => require(['@/js/modules/onlineOrder/orderHistory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
         // {
         //     path: '/:any',
         //     name: 'any',
