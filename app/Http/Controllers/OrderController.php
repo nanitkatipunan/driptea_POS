@@ -104,12 +104,4 @@ class OrderController extends Controller
             ->get();
         return response()->JSON(compact('prods'));
     }
-    
-
-    // public function retrieveOnlineOrders(Request $request){
-    //     $orderOnline = Order::->with('orderProduct')->where('onlineId', $request->id)->where('deleted_at', null)->get();
-    //     // dd($orderOnline);
-    //     return response()->json(compact('orderOnline'));
-    // }
-
 }

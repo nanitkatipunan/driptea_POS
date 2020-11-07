@@ -41,65 +41,10 @@
                 <v-icon medium color="black" right>mdi-bell-ring</v-icon>
               </v-btn>
             </template>
-            <v-list style="max-height: 200px" class="overflow-y-auto notifDropdown">
-              <!-- ang Click kay wala pay nay method -->
-              <v-list-item v-for="(item, index) in items" :key="index">
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
-      </v-app-bar-items>
-      <v-app-bar-items>
-        <div>
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon medium color="black" right>mdi-arrow-down-drop-circle</v-icon>
-              </v-btn>
-            </template>
             <v-list
               style="max-height: 300px; max-width: 300px"
               class="overflow-y-auto notifDropdown"
             >
-              <!-- ang Click kay wala pay nay method -->
-              <!-- <product ref="product"></product> -->
-              <v-list-item
-                v-for="(item, index) in account"
-                :key="index"
-                @click="redirect(item.route+admin)"
-              >
-                <v-list-item-icon>
-                  <v-icon color="black darken-2">{{ item.icon }}</v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.text }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
-      </v-app-bar-items>
-    </v-app-bar>
-    <v-app-bar class="cashierNav" color="#ff5b04" v-if="cashier !== null">
-      <a><v-img max-height="64" max-width="42" :src="image" @click="redirect('/casherDashboard')"></v-img></a>
-      <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
-      <v-spacer></v-spacer>
-      <v-app-bar-items name="theitem" class="hidden-sm-and-down" app>
-        <div>
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn v-bind="attrs" v-on="on" icon>
-                <v-icon medium color="black" right>mdi-bell-ring</v-icon>
-              </v-btn>
-            </template>
-            <v-list
-              style="max-height: 300px; max-width: 300px"
-              class="overflow-y-auto notifDropdown"
-            >
-              <!-- ang Click kay wala pay nay method -->
-              <!-- <product ref="product"></product> -->
               <v-list-item
                 v-for="(item, index) in storeOrder"
                 :key="index"
@@ -128,7 +73,68 @@
               <v-list-item
                 v-for="(item, index) in account"
                 :key="index"
-                @click="redirect(item.route+admin)"
+                @click="redirect(item.route+username)"
+              >
+                <v-list-item-icon>
+                  <v-icon color="black darken-2">{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.text }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+      </v-app-bar-items>
+    </v-app-bar>
+    <v-app-bar class="cashierNav" color="#ff5b04" v-if="cashier !== null">
+      <a>
+        <v-img max-height="64" max-width="42" :src="image" @click="redirect('/casherDashboard')"></v-img>
+      </a>
+      <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
+      <v-spacer></v-spacer>
+      <v-app-bar-items name="theitem" class="hidden-sm-and-down" app>
+        <div>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-bind="attrs" v-on="on" icon>
+                <v-icon medium color="black" right>mdi-bell-ring</v-icon>
+              </v-btn>
+            </template>
+            <v-list
+              style="max-height: 300px; max-width: 300px"
+              class="overflow-y-auto notifDropdown"
+            >
+              <v-list-item
+                v-for="(item, index) in storeOrder"
+                :key="index"
+                @click="getOrder(item, $event)"
+              >
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+      </v-app-bar-items>
+      <v-app-bar-items>
+        <div>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-bind="attrs" v-on="on" icon>
+                <v-icon medium color="black" right>mdi-arrow-down-drop-circle</v-icon>
+              </v-btn>
+            </template>
+            <v-list
+              style="max-height: 300px; max-width: 300px"
+              class="overflow-y-auto notifDropdown"
+            >
+              <!-- ang Click kay wala pay nay method -->
+              <!-- <product ref="product"></product> -->
+              <v-list-item
+                v-for="(item, index) in account"
+                :key="index"
+                @click="redirect(item.route+username)"
               >
                 <v-list-item-icon>
                   <v-icon color="black darken-2">{{ item.icon }}</v-icon>
@@ -269,7 +275,6 @@ export default {
       cluster: this.config.PUSHER_APP_CLUSTER,
       encrypted: true
     });
-
     let channel = pusher.subscribe("driptea-channel");
     let obj = this;
     channel.bind("driptea-data", data => {
@@ -284,10 +289,20 @@ export default {
       return this.menu;
     },
     redirect(route) {
-      if (route === "/logout/" + this.admin) {
-        this.logout();
-      } else {
-        ROUTER.push(route).catch(() => {});
+      if (this.admin != null) {
+        this.username = this.admin;
+        if (route === "/logout/" + this.admin) {
+          this.logout();
+        } else {
+          ROUTER.push(route).catch(() => {});
+        }
+      }else if (this.cashier != null) {
+        this.username = this.cashier;
+        if (route === "/logout/" + this.cashier) {
+          this.logout();
+        } else {
+          ROUTER.push(route).catch(() => {});
+        }
       }
     },
     // getusername(id){

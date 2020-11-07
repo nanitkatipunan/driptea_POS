@@ -78,7 +78,7 @@
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
-            <h3>Customer Information</h3>
+            <h3>Customer's Information</h3>
             <button type="button" class="close" data-dismiss="modal">
               &times;</button
             ><br />

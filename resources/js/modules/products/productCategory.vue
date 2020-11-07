@@ -1,8 +1,8 @@
 <template>
     <div class="sudlanan">
          <div>
-         <v-btn icon style="margin-right: 1%;"  @click="previous()">
-                <v-icon >mdi-home</v-icon>
+         <v-btn  style="margin-left: 3%;margin-top:10px" class= "warning" @click="previous()">
+                <v-icon >mdi-home</v-icon>&nbsp;&nbsp;Back
             </v-btn>
     </div>
         <div class="row firstRow">
@@ -109,7 +109,7 @@ p{
 }
 .firstRow{
     margin-bottom: 5%;
-    margin-top: 3%;
+    margin-top: 1%;
 }
 .sudlanan{
     background-color:white;

@@ -7,16 +7,29 @@
                         DRIPTEA
                     </div>
                     <div class="col-6 text-right">
-                    <v-btn icon style="margin-right: 2%;">
-                        <v-icon>mdi-magnify</v-icon>
+                    <v-btn icon style="margin-right: 2%;" @click="home()">
+                        <v-icon>mdi-home</v-icon>
                     </v-btn>
-                    
-
                     <v-btn icon @click="direct()" style="margin-right: 2%;">
                         <v-icon>mdi-cart</v-icon>
                         <span style="margin-left: -3%;">Cart</span>
                         <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
                     </v-btn>
+                              <v-menu bottom left>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn dark icon v-bind="attrs" v-on="on">
+                                <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item >
+                                <v-list-item-title @click="profile">Profile</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-list-item-title @click="direct">Order History</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
                     </div>
                 </div>
                 <!--/row-->
@@ -65,101 +78,7 @@
             </div>
             <!--/row-->
         </div>
-        <!--container-->
-    <!-- <div class="page">
-        <v-card class="overflow-hidden">
-            <v-app-bar
-            absolute
-            color="orange"
-            dark
-            shrink-on-scroll
-            prominent
-            fade-img-on-scroll
-            scroll-target="#scrolling-techniques-3"
-            > -->
-            <!-- <template v-slot:img="{ props }">
-                <v-img
-                v-bind="props"
-                gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
-                ></v-img>
-            </template> -->
-
-            <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
-
-            <!-- <v-toolbar-title>Title</v-toolbar-title>
-
-            <v-spacer></v-spacer>
-
-            <v-btn icon style="margin-right: 2%;">
-                <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-            
-
-            <v-btn icon @click="direct()" style="margin-right: 2%;">
-                <v-icon>mdi-cart</v-icon>
-                <span style="margin-left: -3%;">Cart</span>
-                <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
-            </v-btn>
-
-            <v-btn icon style="margin-right: 3%;">
-                <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn> -->
-            
-
-            <!-- <template v-slot:extension>
-                <v-tabs align-with-title>
-                    <v-tab v-for="(item, index) in data" :key="index"><a :href="'#'+item.productCategory" style="color: white;">{{item.productCategory}}</a></v-tab>
-                </v-tabs>
-            </template> -->
-            
-            <!-- </v-app-bar>
-           <nav class="navbar navbar-expand-sm sticky-top navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="#">Brand</a>
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar1">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbar1">
-                    <ul class="navbar-nav">
-                        <li class="nav-item "  v-for="(item, index) in data" :key="index">
-                            <a class="nav--link" :href="'#'+item.productCategory" style="color: white;">{{item.productCategory}}</a>
-                        </li>
-                      
-                    </ul>
-                </div>
-            </div>
-        </nav>-->
-<!--                 
-            <v-sheet
-            id="scrolling-techniques-3"
-            class="overflow-y-auto"
-            height="100%"
-            max-height="900"
-            >
-            <v-container style="margin-top: 300px;" fluid>
-              
-
-               
-                <div  class="categoryStorage" v-for="(item, index) in data" :key="index" >
-                    <h3>{{item.productCategory}}</h3>
-                    <div v-if="productData !== null && data.length > 0" class="row" :id="item.productCategory"   >
-                        <div v-if="item.productCategory === items.productCategory" class="col-md-3 imageSize" v-for="(items, ind) in productData" :key="ind">
-                            <center>
-                                <img class="imgItem" data-toggle="modal" data-target="#viewDetails" :src="items.image" @click="showModal(items)">
-                                <h4>{{items.productName}}</h4>
-                            </center>
-                        </div>
-                    </div>
-                    <div v-else class="secRow">
-                        <center>
-                            <img class="noImage" src="@/assets/data.png">
-                            <h2>No Product Yet</h2>
-                        </center>   
-                    </div>
-                </div>
-            </v-container>
-            </v-sheet> -->
-           
+       
           
         <div class="modal fade" id="viewDetails" role="dialog">
             <div class="modal-dialog modal-lg">
