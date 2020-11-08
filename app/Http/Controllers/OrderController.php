@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\AddOns;
+use App\Models\StoreOrder;
+use Illuminate\Support\Facades\DB;
 use App\Events\pusherEvent;
 
 use Illuminate\Http\Request;
@@ -15,8 +18,9 @@ class OrderController extends Controller
         $dataAddOns = $data['addOns'];
         $order = new Order();
         $order->customerId = $request['customerId'];
-        // $order->cashierId = $request['cashierId'];
+        $order->onlineId = $request['onlineId'];
         $order->productId = $request['productId'];
+        $order->customerType = $request['customerType'];
         $order->quantity = $request['quantity'];
         $order->size = $request['size'];
         $order->sugarLevel = $request['sugarLevel'];
@@ -50,8 +54,13 @@ class OrderController extends Controller
         return response()->json(compact('order'));
     }
 
-    public function retrieveCustomerOrder(Request $request){
-        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get();
+    public function getOrder(Request $request){
+        $order = Order::with('getCustomer')->with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        return response()->json(compact('order'));
+    }
+
+    public function retrieveOnlineOrder(Request $request){
+        $order = Order::with('getCustomer')->with('orderProduct')->with('sameOrder')->where('status', 'pendingCustomer')->where('deleted_at', null)->orderBy('id','DESC')->get()->groupBy('customerId');
         return response()->json(compact('order'));
     }
 
@@ -76,4 +85,31 @@ class OrderController extends Controller
         $addOns = AddOns::where('orderId', $request->id)->get(['addOns']);
         return response()->json(compact('order', 'addOns'));
     }
+
+    public function retrieveSalesReportPerCategory(Request $request){
+        $totalSalesPerCategory = DB::table('orders')->leftJoin('products', 'orders.productId', '=', 'products.id')
+            ->select(DB::raw('products.productCategory as productCategory'),DB::raw('SUM(orders.subTotal) as subTotal'),DB::raw('orders.created_at as date'))
+            ->groupBy('productCategory','date')
+            ->orderBy('date', 'desc')
+            ->get();
+            // dd($prods);
+        return response()->JSON(compact('totalSalesPerCategory'));
+    }
+
+    public function retrieveTopProducts(Request $request){
+        $prods = DB::table('orders')->leftJoin('products', 'orders.productId', '=', 'products.id')
+            ->select(DB::raw('products.image as img'),DB::raw('SUM(orders.quantity) as quan'),DB::raw('products.productName as pName'))
+            ->groupBy('img','pName')
+            ->orderBy('quan', 'desc')
+            ->get();
+        return response()->JSON(compact('prods'));
+    }
+    
+
+    // public function retrieveOnlineOrders(Request $request){
+    //     $orderOnline = Order::->with('orderProduct')->where('onlineId', $request->id)->where('deleted_at', null)->get();
+    //     // dd($orderOnline);
+    //     return response()->json(compact('orderOnline'));
+    // }
+
 }

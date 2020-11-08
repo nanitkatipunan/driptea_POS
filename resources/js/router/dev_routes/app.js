@@ -49,6 +49,14 @@ export default {
             }
         },
         {
+            path: '/adminDashboard',
+            name: 'adminDashboard',
+            component: resolve => require(['@/js/modules/dashboard/adminDashboard'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
             path: '/chosenCategory/:itemChosen',
             name: 'chosenCategory',
             component: resolve => require(['@/js/modules/products/chosenCategory'], resolve),
@@ -62,6 +70,14 @@ export default {
             component: resolve => require(['@/js/modules/onlineOrder/productOnline'], resolve),
             meta: {
                 tokenRequired: false
+            }
+        },
+        {
+            path: '/orderHistory',
+            name: 'orderHistory',
+            component: resolve => require(['@/js/modules/onlineOrder/orderHistory'], resolve),
+            meta: {
+                tokenRequired: true
             }
         },
         {
@@ -81,22 +97,54 @@ export default {
             }
         },
         {
-            path: '/adminDashboard',
-            name: 'adminDashboard',
-            component: resolve => require(['@/js/modules/dashboard/adminDashboard'], resolve),
+            path: '/salesInventory',
+            name: 'salesInventory',
+            component: resolve => require(['@/js/modules/inventory/salesInventory'], resolve),
             meta: {
                 tokenRequired: true
             }
         },
         {
-            path: '/salesInventory',
-            name: 'salesInventory',
-            component: resolve => require(['@/js/modules/inventory/cupsInventory'], resolve),
+            path: '/salesReport',
+            name: 'salesReport',
+            component: resolve => require(['@/js/modules/inventory/salesReport'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/myprofile/:id',
+            name: 'profile',
+            component: resolve => require(['@/js/modules/profile/myAccounts'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/personalInfo/:id',
+            name: 'personalInfo',
+            component: resolve => require(['@/js/modules/profile/personalInfo'], resolve),
             meta: {
                 tokenRequired: true
             }
         },
         
+        {
+            path: '/cupsInventory',
+            name: 'cupsInventory',
+            component: resolve => require(['@/js/modules/inventory/cupsInventory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
+        {
+            path: '/orderInventory',
+            name: 'orderInventory',
+            component: resolve => require(['@/js/modules/inventory/orderInventory'], resolve),
+            meta: {
+                tokenRequired: true
+            }
+        },
         {
             path: '/onlineDashboard',
             name: 'onlineDashboard',
@@ -114,52 +162,28 @@ export default {
             }
         },
         {
-            path: '/:any',
-            name: 'any',
-            component: resolve => require(['@/js/basic/landing'], resolve),
-            meta: {
-                tokenRequired: false
-            }
-        },
-        {
-            path: '/:any',
-            name: 'any',
-            component: resolve => require(['@/js/modules/dashboard/casherDashboard'], resolve),
+            path: '/orderHistory',
+            name: 'orderHistory',
+            component: resolve => require(['@/js/modules/onlineOrder/orderHistory'], resolve),
             meta: {
                 tokenRequired: true
             }
         },
         // {
-        //     path: '/userDashboard',
-        //     name: 'userDashboard',
-        //     component: resolve => require(['@/assets/js/modules/dashboard/userDashboard'], resolve),
+        //     path: '/:any',
+        //     name: 'any',
+        //     component: resolve => require(['@/js/basic/landing'], resolve),
         //     meta: {
-        //         tokenRequired: true
+        //         tokenRequired: false
         //     }
         // },
         // {
-        //     path: '/profile',
-        //     name: 'profile',
-        //     component: resolve => require(['@/assets/js/modules/profile/profile'], resolve),
-        //     meta: {
-        //         tokenRequired: true
-        //     }
-        // },
-        // {
-        //     path: '/cart',
-        //     name: 'cart',
-        //     component: resolve => require(['@/assets/js/modules/order/cart'], resolve),
-        //     meta: {
-        //         tokenRequired: true
-        //     }
-        // },
-        // {
-        //     path: '/order',
-        //     name: 'order',
-        //     component: resolve => require(['@/assets/js/modules/order/order'], resolve),
+        //     path: '/:any',
+        //     name: 'any',
+        //     component: resolve => require(['@/js/modules/dashboard/casherDashboard'], resolve),
         //     meta: {
         //         tokenRequired: true
         //     }
         // },
     ],
-}
+}   

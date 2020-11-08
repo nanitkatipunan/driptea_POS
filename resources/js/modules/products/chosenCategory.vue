@@ -1,5 +1,12 @@
 <template>
 <div class="sudlanan">
+    <div>
+         <v-btn icon style="margin-right: 1%;"  @click="previous()">
+                <v-icon >mdi-arrow-all</v-icon>
+            </v-btn>
+            
+
+    </div>
     <center>
         <h1 style="margin-top: 2%;">{{chosenCat}} Milktea</h1>
         <v-row v-if="data !== null && data.length > 0">
@@ -12,11 +19,9 @@
         </v-row>
 
         <div v-else class="secRow">
-            <center>
-                <img class="noImage" src="@/assets/data.png">
-                <h2>No Product Yet</h2>
-            </center>
+            <empty :title="'No Product Yet!'"></empty>
         </div>
+        <loading v-if="loadingShow"></loading>
     </center>
 </div>
 </template>
@@ -67,26 +72,44 @@
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
+import empty from '../../basic/empty.vue'
+import loading from '../../basic/loading.vue';
 export default {
     data() {
         return {
             chosenCat: this.$route.params.itemChosen,
-            data: null
+            data: null,
+            loadingShow: false
         }
     },
     mounted() {
         this.retrieveProduct()
     },
+    components: {
+        empty,
+        loading
+    },
     methods: {
         retrieveProduct() {
+            this.loadingShow = true
             this.$axios.post(AUTH.url + 'retrieveProduct', {
                 type: this.chosenCat
-            }).then(res => {
+            }, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.data = res.data.product
+                this.loadingShow = false
             })
         },
         redirect(param) {
             ROUTER.push('/order/product/' + param).catch(() => {})
+        },
+        previous(){
+            let type = localStorage.getItem("customerType");
+            console.log(type);
+
+            ROUTER.push('/productCategory/' + type).catch(() => {})
         }
     }
 }

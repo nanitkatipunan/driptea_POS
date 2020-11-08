@@ -1,5 +1,10 @@
 <template>
     <div class="sudlanan">
+         <div>
+         <v-btn icon style="margin-right: 1%;"  @click="previous()">
+                <v-icon >mdi-home</v-icon>
+            </v-btn>
+    </div>
         <div class="row firstRow">
             <div class="col-md-6">
                 <center>
@@ -9,6 +14,7 @@
                             <img v-if="customerType === 'foodpanda'" style="width: 70px; height: 50px;" src="@/assets/foodpanda1.png">
                             <img v-if="customerType === 'grab'" style="width: 70px; height: 50px;" src="@/assets/grab2.png">
                             <img v-if="customerType === 'fb'" style="width: 70px; height: 50px;" src="@/assets/fb1.png"><br>
+                            <img v-if="customerType === 'online'" style="width: 70px; height: 50px;" src="@/assets/logo.png"><br>
                             <span v-if="error" style="color: red; font-style: italic">All data are required!</span>
                             <table class="table table-responsive table-bordered " id="myTable">
                                 <tr class="overline">
@@ -36,23 +42,22 @@
                         <div class="row">
                             <div class="col-md-6"></div>
                             <div class="col-md-6 overline" style="text-align:left;">
-                                <p v-if="customerType === 'fb'" style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
-                                <p v-if="customerType === 'fb'" style="display: inline;">₱ {{getSubTotal()}}</p><br>
-                                <p v-if="customerType === 'fb'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
-                                <input v-if="customerType === 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="fee">
+                                <p v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;">Subtotal:&emsp;&emsp;&emsp;</p>
+                                <p v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;">₱ {{getSubTotal()}}</p><br>
+                                <p v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;">Delivery&nbsp;Fee:&emsp;</p>
+                                <input v-if="customerType === 'fb' || customerType === 'online'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="fee">
                                 <p style="display: inline;" class="pStyle">Total:&emsp;&emsp;&emsp;&emsp;</p>
                                 <p style="display: inline;" class="pStyle">₱ {{convertTotalPrice()}}</p><br>
-                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Amount:&emsp;&emsp;&nbsp;&nbsp;&nbsp;</p>
-                                <input v-if="customerType !== 'fb'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
-                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
-                                <p v-if="customerType !== 'fb'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
+                                <p v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" class="pStyle">Amount:&emsp;&emsp;&nbsp;&nbsp;&nbsp;</p>
+                                <input v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" type="number" placeholder="₱ 0.00" v-model="cash"><br>
+                                <p v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" class="pStyle">Change:&emsp;&emsp;&emsp;</p>
+                                <p v-if="customerType !== 'fb'  && customerType !== 'online'" style="display: inline;" class="pStyle">₱ {{convertChange()}}</p>
                                 <div >
                                  <button class="btn btn-primary checkout overline" @click="checkoutOrder">Checkout</button>
                                 </div>
                             </div>
                         </div>
                     </v-card>
-                   
                 </center>
             </div>
             <div class="col-md-6">
@@ -61,13 +66,14 @@
                         <div class="col-md-5 secondCol" v-for="(item, index) in data" :key="index">
                           <v-card class="elevation-5" max-width="250" height="250">
                             <v-img  max-width="250" height="250" :src="item.image" @click="redirect(item.productCategory)"></v-img>
-                             </v-card>
+                          </v-card>
 
                         </div>
                     </div>
                 </div>
             </div>
             <receipt v-if="receiptShow" :showData="receiptData"></receipt>
+            <loading v-if="loadingShow"></loading>
        </div>
     </div>
 </template>
@@ -133,15 +139,13 @@ th {
         overflow-y: scroll;
     }
 }
-
-
-
 </style>
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import receipt from '../order/receipt.vue'
 import config from '../../config.js'
+import loading from '../../basic/loading.vue';
 export default {
     data(){
         return{
@@ -159,27 +163,16 @@ export default {
             error: false,
             receiptShow: false,
             receiptData: null,
-            count: 0
+            loadingShow: false
         }
     },
     components: {
-        receipt
+        receipt,
+        loading
     },
     mounted(){
         this.retrieveCategory()
         this.retrieveProduct()
-        let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
-            cluster: this.config.PUSHER_APP_CLUSTER,
-            encrypted: true
-        });
-
-        let channel = pusher.subscribe('driptea-channel')
-        channel.bind('driptea-data', (data) => {
-            if(data.order === 'pendingCustomer'){
-                this.count++
-                this.retrieveProduct()
-            }
-        })
     },
     methods: {
         hideReceipt(){
@@ -214,8 +207,13 @@ export default {
             }
         },
         retrieveCategory(){
-            this.$axios.post(AUTH.url + 'retrieveCategory').then(res => {
+            this.loadingShow = true
+            this.$axios.post(AUTH.url + 'retrieveCategory', {}, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.data = res.data.addCategory
+                this.loadingShow = false
             })
         },
         getSubTotal(){
@@ -232,12 +230,30 @@ export default {
             ROUTER.push('/chosenCategory/'+param).catch(()=>{})
         },
         retrieveProduct(){
-            let params = {
-                id: localStorage.getItem('customerId')
+            this.loadingShow = true
+            if(this.customerType === 'online'){
+                let params = {
+                    id: localStorage.getItem('customerId')
+                }
+                this.$axios.post(AUTH.url + 'getOrder', params, AUTH.config).then(res => {
+                    if(res.data.status){
+                        AUTH.deauthenticate()
+                    }
+                    this.tableData = res.data.order
+                    this.loadingShow = false
+                })
+            }else{
+                let params = {
+                    id: localStorage.getItem('customerId')
+                }
+                this.$axios.post(AUTH.url + 'retrieveOrder', params, AUTH.config).then(res => {
+                    if(res.data.status){
+                        AUTH.deauthenticate()
+                    }
+                    this.tableData = res.data.order
+                    this.loadingShow = false
+                })
             }
-            this.$axios.post(AUTH.url + 'retrieveOrder', params).then(res => {
-                this.tableData = res.data.order
-            })
         },
         getAddOns(item){
             let storeAddOns = ""
@@ -252,19 +268,28 @@ export default {
             return storeAddOns
         },
         deleteOrder(prodId){
-            this.$axios.post(AUTH.url + 'deleteOrder', {id: prodId}).then(res => {
+            this.loadingShow = true
+            this.$axios.post(AUTH.url + 'deleteOrder', {id: prodId}, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.retrieveProduct()
+                this.loadingShow = false
             })
         },
         checkoutMethod(){
+            this.loadingShow = true
             let params = {
                 id: localStorage.getItem('customerId'),
                 status: 'complete'
             }
-            this.$axios.post(AUTH.url + 'updateStatus', params).then(res => {
+            this.$axios.post(AUTH.url + 'updateStatus', params, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 let params = {
                     customerId: localStorage.getItem('customerId'),
-                    cashierId: localStorage.getItem('cashierId'),
+                    cashierId: localStorage.getItem('cashierId') ? localStorage.getItem('cashierId') : localStorage.getItem('adminId'),
                     subTotal: parseInt(this.getSubTotal()),
                     deliveryFee: this.fee,
                     total: parseInt(this.convertTotalPrice()),
@@ -272,8 +297,10 @@ export default {
                     change: parseInt(this.convertChange()),
                     order: this.tableData
                 }
-                console.log(this.tableData)
-                this.$axios.post(AUTH.url + 'addCheckout', params).then(res => {
+                this.$axios.post(AUTH.url + 'addCheckout', params, AUTH.config).then(res => {
+                    if(res.data.status){
+                        AUTH.deauthenticate()
+                    }
                     let low = 0
                     let high = 0
                     let over = 0
@@ -291,11 +318,18 @@ export default {
                         usedCupsHighDose: high,
                         usedCupsOverDose: over
                     }
-                    this.$axios.post(AUTH.url + 'updateRemainingCups', param).then(response => {
+                    this.$axios.post(AUTH.url + 'updateRemainingCups', param, AUTH.config).then(response => {
+                        if(response.data.status){
+                            AUTH.deauthenticate()
+                        }
                         let parameter = {
                             id: res.data.storeCheckouts.id,
                         }
-                        this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter).then(response => {
+                        this.$axios.post(AUTH.url + 'retrieveCheckouts', parameter, AUTH.config).then(response => {
+                            if(response.data.status){
+                                AUTH.deauthenticate()
+                            }
+                            this.loadingShow = false
                             this.receiptData = response.data.storeOrder
                             this.receiptShow = true
                         })
@@ -304,8 +338,7 @@ export default {
             })
         },
         checkoutOrder(){
-            if(this.customerType !== 'fb'){
-                console.log(this.convertTotalPrice(), this.cash, this.convertChange())
+            if(this.customerType !== 'fb' && this.customerType !== 'online'){
                 if(this.convertTotalPrice() !== null && this.cash !== null && this.convertChange() >= 0){
                     this.error = false
                     this.checkoutMethod()
@@ -320,6 +353,11 @@ export default {
                     this.error = true
                 }
             }
+        },
+         previous(){
+             let type = localStorage.getItem("customerType");
+
+            ROUTER.push('/casherDashboard').catch(() => {})
         }
     }
 }

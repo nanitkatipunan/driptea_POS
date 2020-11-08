@@ -33,6 +33,11 @@ class AddAddOnsController extends Controller
         return response()->json(compact('addons'));
     }
 
+    public function retrieveOneAddOnName(Request $request){
+        $addons = AddAddOns::where('addons_name', $request['addOns'])->get();
+        return response()->json(compact('addons'));
+    }
+
     public function updateStatusAvailable(Request $request){
         $addons = AddAddOns::firstOrCreate(['id' => $request->id]);
         $addons->status = $request['status'];

@@ -12,7 +12,33 @@ export default {
         fullname: null,
         userType: null
     },
-    authenticateForAll(routes = null) {
+    config: {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('userToken')
+        }
+    },
+    authenticateRequests() {
+        let token = localStorage.getItem('userToken')
+        if (token) {
+            let toReturn = false
+            this.setToken(token)
+            axios({
+                method: 'post', //you can set what request you want to be
+                url: this.url + 'user',
+                headers: {
+                  Authorization: 'Bearer ' + token
+                }
+            }).then(res => {
+                toReturn = true
+            }).catch(err => {
+                toReturn = false
+            })
+            return toReturn
+        } else {
+            return false
+        }
+    },
+    authenticateForAll() {
         let token = localStorage.getItem('userToken')
         if (token) {
             this.setToken(token)
@@ -25,18 +51,22 @@ export default {
             }).then(res => {
                 if(res.data.user.account_type.toUpperCase() === 'ADMIN'){
                     this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
-                    ROUTER.push('/addProductCategoryAddOns')
+                    ROUTER.push('/adminDashboard')
                 }else if(res.data.user.account_type.toUpperCase() === 'CASHIER'){
                     this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
                     ROUTER.push('/casherDashboard')
                 }else{
+                    localStorage.setItem('fullName', res.data.user.fullname)
+                    localStorage.setItem('address', res.data.user.address)
+                    localStorage.setItem('contactNumber', res.data.user.contactNumber)
                     this.setUser(res.data.user.id, res.data.user.name, res.data.user.account_type)
                     ROUTER.push('/onlineDashboard')
                 }
+                window.location.reload()
             })
             return true
         } else {
-            return false
+            return false    
         }
     },
     setUser(cashierId, fullname, userType) {
@@ -59,15 +89,28 @@ export default {
             axios.post(this.url+'tokenRefresh', ).then(response => {
               this.setToken(response['token'])
             }).catch(err => {
-                this.deaunthenticate()
+                this.deauthenticate()
             })
           }, 1000 * 60 * 60) // 50min
         }
-      },
-    deaunthenticate(){
+    },
+    refreshToken(){
+        axios.post(this.url+'tokenRefresh', ).then(response => {
+            this.setToken(response['token'])
+        }).catch(err => {
+            this.deauthenticate()
+        })
+    },
+    deauthenticate(){
         localStorage.removeItem('userToken')
+        localStorage.removeItem('adminId')
         localStorage.removeItem('cashierId')
-        this.setUser(null)
+        localStorage.removeItem('customerId')
+        localStorage.removeItem('customerType')
+        localStorage.removeItem('fullName')
+        localStorage.removeItem('address')
+        localStorage.removeItem('contactNumber')
+        localStorage.removeItem('customerOnlineId')
         axios.post(this.url+'deaunthenticate')
         this.token = null
         ROUTER.go('/')

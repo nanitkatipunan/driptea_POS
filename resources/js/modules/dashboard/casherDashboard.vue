@@ -129,49 +129,65 @@
         </div>
       </div>
     </div>
+    <loading v-if="loadingShow"></loading>
   </v-container>
 </template>
 
 <script>
 import AUTH from "../../services/auth";
 import ROUTER from "../../router";
+import loading from '../../basic/loading.vue';
 export default {
   data() {
     return {
       fullName: null,
       address: null,
       contactNumber: null,
+      loadingShow: false
     };
+  },
+  components: {
+    loading
   },
   methods: {
     redirect(type) {
       if (type !== "fb") {
+        this.loadingShow = true
         let parameter = {
           customerType: type,
         };
         console.log(parameter)
-        this.$axios.post(AUTH.url + "addCustomer", parameter).then((res) => {
+        this.$axios.post(AUTH.url + "addCustomer", parameter, AUTH.config).then((res) => {
+          if(res.data.status){
+              AUTH.deauthenticate()
+          }
           localStorage.setItem("customerId", res.data.customerDetails.id);
           localStorage.setItem(
             "customerType", res.data.customerDetails.customerType
           );
+          this.loadingShow = false
           ROUTER.push("/productCategory/" + res.data.customerDetails.customerType).catch(() => {});
         });
       }
     },
     continueFb() {
+      this.loadingShow = true
       let param = {
         customerType: "fb",
         customerName: this.fullName,
         customerAddress: this.address,
         customerContactNumber: this.contactNumber,
       };
-      this.$axios.post(AUTH.url + "addCustomer", param).then((response) => {
+      this.$axios.post(AUTH.url + "addCustomer", param, AUTH.config).then((response) => {
+        if(response.data.status){
+            AUTH.deauthenticate()
+        }
         localStorage.setItem("customerId", response.data.customerDetails.id);
         localStorage.setItem(
           "customerType",
           response.data.customerDetails.customerType
         );
+        this.loadingShow = false
         ROUTER.push("/productCategory/fb").catch(() => {});
       });
     },

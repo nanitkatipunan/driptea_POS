@@ -1,8 +1,5 @@
 import AUTH from '../services/auth'
 let beforeEnter = (to, from, next) => {
-  // localStorage.setItem('usertoken', 'abcde')
-  // localStorage.setItem('usertoken', 'abcde')
-  // TODO Redirect if no token when token is required in meta.tokenRequired
   AUTH.currentPath = to.path
   let userID = null
   if(localStorage.getItem('cashierId') !== null){
@@ -15,7 +12,13 @@ let beforeEnter = (to, from, next) => {
   let token = localStorage.getItem('userToken')
   if(token !== null && userID > 0){
     if(to.path === '/' || to.meta.tokenRequired === false){
-      next({path: '/casherDashboard'})
+      if(localStorage.getItem('cashierId')){
+        next({path: '/casherDashboard'})
+      }else if(localStorage.getItem('adminId')){
+        next({path: '/adminDashboard'})
+      }else if(localStorage.getItem('customerId')){
+        next({path: '/onlineDashboard'})
+      }
     }else{
       next()
     }

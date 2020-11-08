@@ -1,6 +1,72 @@
-<template>
-    <div>
-            <!-- <img class="dripteaImage" :src="image" > -->
+<template >
+    <div>   
+        <div class="header" style="background-color:#ff5b04">
+            <div class="container" >
+                <div class="row">
+                    <div class="col-6">
+                        DRIPTEA
+                    </div>
+                    <div class="col-6 text-right">
+                    <v-btn icon style="margin-right: 2%;">
+                        <v-icon>mdi-magnify</v-icon>
+                    </v-btn>
+                    
+
+                    <v-btn icon @click="direct()" style="margin-right: 2%;">
+                        <v-icon>mdi-cart</v-icon>
+                        <span style="margin-left: -3%;">Cart</span>
+                        <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
+                    </v-btn>
+                    </div>
+                </div>
+                <!--/row-->
+            </div>
+            <!--container-->
+        </div>
+        <nav class="navbar navbar-expand-sm sticky-top navbar-light " style="background-color:#ff5b04">
+                    <div class="container">
+                            <ul class="nav nav-tabs justify-content-center">
+                                <li class="nav-item"  v-for="(item, index) in data" :key="index">
+                                    <a class="nav-link" :href="'#'+item.productCategory" style="color: white;">{{item.productCategory}}</a>
+                                </li>
+                            
+                            </ul>
+                    </div>
+                </nav>
+
+
+        <div class="container" fluid>
+            <div class="row">
+                <div class="col-12 py-4">
+                    
+                    <div  :id="item.productCategory"  class="categoryStorage" v-for="(item, index) in data" :key="index" >
+                            <br>
+                        
+                            <h3>{{item.productCategory}}</h3>
+                            <br>
+                            <div v-if="productData !== null && data.length > 0" class="row"   >
+                                <div v-if="item.productCategory === items.productCategory" class="col-md-3 imageSize" v-for="(items, ind) in productData" :key="ind">
+                                    <center>
+                                        <img class="imgItem" data-toggle="modal" data-target="#viewDetails" :src="items.image" @click="showModal(items)">
+                                        <br>
+                                        <h4>{{items.productName}}</h4>
+                                    </center>
+                                </div>
+                            </div>
+                            <div v-else class="secRow">
+                                <center>
+                                    <img class="noImage" src="@/assets/data.png">
+                                    <h2>No Product Yet</h2>
+                                </center>   
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+        <!--container-->
+    <!-- <div class="page">
         <v-card class="overflow-hidden">
             <v-app-bar
             absolute
@@ -8,26 +74,26 @@
             dark
             shrink-on-scroll
             prominent
-            src="https://picsum.photos/1920/1080?random"
             fade-img-on-scroll
             scroll-target="#scrolling-techniques-3"
-            >
-            <template v-slot:img="{ props }">
+            > -->
+            <!-- <template v-slot:img="{ props }">
                 <v-img
                 v-bind="props"
                 gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
                 ></v-img>
-            </template>
+            </template> -->
 
             <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
-            <v-toolbar-title>Title</v-toolbar-title>
+            <!-- <v-toolbar-title>Title</v-toolbar-title>
 
             <v-spacer></v-spacer>
 
             <v-btn icon style="margin-right: 2%;">
                 <v-icon>mdi-magnify</v-icon>
             </v-btn>
+            
 
             <v-btn icon @click="direct()" style="margin-right: 2%;">
                 <v-icon>mdi-cart</v-icon>
@@ -37,26 +103,46 @@
 
             <v-btn icon style="margin-right: 3%;">
                 <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
+            </v-btn> -->
+            
 
-            <template v-slot:extension>
+            <!-- <template v-slot:extension>
                 <v-tabs align-with-title>
                     <v-tab v-for="(item, index) in data" :key="index"><a :href="'#'+item.productCategory" style="color: white;">{{item.productCategory}}</a></v-tab>
                 </v-tabs>
-            </template>
-            </v-app-bar>
+            </template> -->
+            
+            <!-- </v-app-bar>
+           <nav class="navbar navbar-expand-sm sticky-top navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="#">Brand</a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar1">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbar1">
+                    <ul class="navbar-nav">
+                        <li class="nav-item "  v-for="(item, index) in data" :key="index">
+                            <a class="nav--link" :href="'#'+item.productCategory" style="color: white;">{{item.productCategory}}</a>
+                        </li>
+                      
+                    </ul>
+                </div>
+            </div>
+        </nav>-->
+<!--                 
             <v-sheet
             id="scrolling-techniques-3"
             class="overflow-y-auto"
             height="100%"
             max-height="900"
             >
-            <v-container style="margin-top: 200px;">
-                <!-- <button class="btn btn-primary" @click="direct()">Cart {{count}}</button> -->
-                <div :id="item.productCategory" class="categoryStorage" v-for="(item, index) in data" :key="index">
-                    <!-- <img class="imgItem" :src="item.image" @click="redirect(item.productCategory)"> -->
+            <v-container style="margin-top: 300px;" fluid>
+              
+
+               
+                <div  class="categoryStorage" v-for="(item, index) in data" :key="index" >
                     <h3>{{item.productCategory}}</h3>
-                    <div v-if="productData !== null && data.length > 0" class="row">
+                    <div v-if="productData !== null && data.length > 0" class="row" :id="item.productCategory"   >
                         <div v-if="item.productCategory === items.productCategory" class="col-md-3 imageSize" v-for="(items, ind) in productData" :key="ind">
                             <center>
                                 <img class="imgItem" data-toggle="modal" data-target="#viewDetails" :src="items.image" @click="showModal(items)">
@@ -72,8 +158,9 @@
                     </div>
                 </div>
             </v-container>
-            </v-sheet>
-        </v-card>
+            </v-sheet> -->
+           
+          
         <div class="modal fade" id="viewDetails" role="dialog">
             <div class="modal-dialog modal-lg">
             <!-- Modal content-->
@@ -130,16 +217,6 @@
                                                     <input type="checkbox" :id="item.addons_name" :value="item.addons_name" v-model="addOns" @click="addTotalPrice(item, $event)">
                                                     <label :for="item.addons_name">{{item.addons_name}} (+ ₱{{item.onlineAddOnsPrice}})</label><br>
                                                 </div>
-                                                <!-- <input type="checkbox" id="coffeeJelly" value="coffeeJelly" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="coffeeJelly">Coffee Jelly</label><br>
-                                                <input type="checkbox" id="oreo" value="oreo" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="oreo">Crushed Oreo</label><br>
-                                                <input type="checkbox" id="tapioca" value="tapioca" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="tapioca">Tapioca</label><br>
-                                                <input type="checkbox" id="pudding" value="pudding" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="pudding">Pudding</label><br>
-                                                <input type="checkbox" id="nataJelly" value="nataJelly" v-model="addOns" @click="addTotalPrice($event)">
-                                                <label for="nataJelly">Nata Jelly</label><br> -->
                                             </div>
                                         </div>
                                     </form>
@@ -160,9 +237,11 @@
                 </div>
             </div>
         </div>
+        <loading v-if="loadingShow"></loading>
     </div>
 </template>
 <style scoped>
+
 .categoryStorage{
     margin-top: 3%;
     border-radius: 5px;
@@ -209,12 +288,15 @@
         width: 50%;
     }
 }
+
 </style>
 <script>
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import $ from 'jquery'
 import config from '../../config.js'
+import loading from '../../basic/loading.vue';
+
 export default {
     data(){
         return{
@@ -241,8 +323,13 @@ export default {
             totalPrice: 0,
             cupTypePrice: 0,
             priceShown: 0,
-            count: 0
+            count: 0,
+            loadingShow:false,
+            loading:false
         }
+    },
+    components:{
+        loading
     },
     mounted(){
         this.count = 0
@@ -250,21 +337,21 @@ export default {
         this.retrieveProduct()
         this.retrieveAddOns()
         this.retrieveCupType()
+
         let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
             cluster: this.config.PUSHER_APP_CLUSTER,
             encrypted: true
         });
-
-          //Subscribe to the channel we specified in our Adonis Application
         let channel = pusher.subscribe('driptea-channel')
-
         channel.bind('driptea-data', (data) => {
-            this.count++
+            if(data.order.status === 'incart'){
+                this.count++
+            }
         })
     },
     methods: {
         direct(){
-            ROUTER.push('/customerCart')
+            ROUTER.push('/customerCart').catch(()=>{})
         },
         getSizePrice(){
             if(this.size === 'highDose'){
@@ -277,7 +364,10 @@ export default {
             this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
         },
         getCupPrice(){
-            this.$axios.post(AUTH.url + 'retrieveOneCupType', {cupType: this.cupType}).then(res => {
+            this.$axios.post(AUTH.url + 'retrieveOneCupType', {cupType: this.cupType}, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.cupTypePrice = res.data.cupType[0].inputCupOnlinePrice
                 this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
             })
@@ -286,30 +376,49 @@ export default {
             this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
         },
         retrieveCupType(){
-            this.$axios.post(AUTH.url + "retrieveCupType").then(response => {
+            this.$axios.post(AUTH.url + "retrieveCupType", {}, AUTH.config).then(response => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.cupData = response.data.cupType
             });
         },
         retrieveAddOns() {
-            this.$axios.post(AUTH.url + "retrievingAddOns").then(response => {
+            this.$axios.post(AUTH.url + "retrievingAddOns", {}, AUTH.config).then(response => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.addOnsData = response.data.addons;
             });
         },
         retrieveCategory(){
-            this.$axios.post(AUTH.url + 'retrieveCategoryAscending').then(res => {
+            this.loadingShow = true
+            this.$axios.post(AUTH.url + 'retrieveCategoryAscending', {}, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.data = res.data.addCategory
+                this.loadingShow = false
             })
         },
         redirect(param){
             ROUTER.push('/productOnline/'+param).catch(()=>{})
         },
         retrieveProduct(){
-            this.$axios.post(AUTH.url + 'retrieveAllProductAscending').then(res => {
+            this.loadingShow = true
+            this.$axios.post(AUTH.url + "retrieveAllProductAscending", {}, AUTH.config).then(res => {
+                if(res.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.productData = res.data.product
+                this.loadingShow = false
             })
         },
         addTotalPrice(item, event){
-            this.$axios.post(AUTH.url + "retrieveOneAddOn", {id: item.id}).then(response => {
+            this.$axios.post(AUTH.url + "retrieveOneAddOn", {id: item.id}, AUTH.config).then(response => {
+                if(response.data.status){
+                    AUTH.deauthenticate()
+                }
                 this.addOnsPrice = response.data.addons.onlineAddOnsPrice
                 if(event.target.checked){
                     this.totalAddOns += this.addOnsPrice
@@ -333,21 +442,62 @@ export default {
                 this.errorMessage1 = 'cup type is required!'
             }
             if(this.quantity > 0 && this.size !== null && this.sugarLevel !== null && this.cupType !== null){
-                let parameter = {
-                    customerId: localStorage.getItem('customerId'),
-                    productId: this.itemId,
-                    quantity: this.quantity,
-                    size: this.size,
-                    sugarLevel: this.sugarLevel,
-                    choosenPrice: this.total,
-                    cupType: this.cupType,
-                    status: 'incart',
-                    addOns: this.addOns,
-                    subTotal: this.priceShown
+                if(localStorage.getItem('customerOnlineId') === null){
+                    let param = {
+                        customerType: "onlineOrder",
+                        customerName: localStorage.getItem('fullName'),
+                        customerAddress: localStorage.getItem('address'),
+                        customerContactNumber: localStorage.getItem('contactNumber'),
+                    };
+                    this.$axios.post(AUTH.url + "addCustomer", param, AUTH.config).then(res => {
+                        if(res.data.status){
+                            AUTH.deauthenticate()
+                        }
+                        localStorage.setItem('customerOnlineId', res.data.customerDetails.id)
+                        let parameter = {
+                            customerId: res.data.customerDetails.id,
+                            onlineId: localStorage.getItem('customerId'),
+                            productId: this.itemId,
+                            quantity: this.quantity,
+                            customerType: 'online',
+                            size: this.size,
+                            sugarLevel: this.sugarLevel,
+                            choosenPrice: this.total,
+                            cupType: this.cupType,
+                            status: 'incart',
+                            addOns: this.addOns,
+                            subTotal: this.priceShown
+                        }
+                        this.$axios.post(AUTH.url + 'addOrder', parameter, AUTH.config).then(response => {
+                            if(response.data.status){
+                                AUTH.deauthenticate()
+                            }
+                            $('#viewDetails').modal('hide')
+                        })
+                    })
+                }else{
+
+                    let parameter = {
+                        customerId: localStorage.getItem('customerOnlineId'),
+                        onlineId: localStorage.getItem('customerId'),
+                        productId: this.itemId,
+                        quantity: this.quantity,
+                        customerType: 'online',
+                        size: this.size,
+                        sugarLevel: this.sugarLevel,
+                        choosenPrice: this.total,
+                        cupType: this.cupType,
+                        status: 'incart',
+                        addOns: this.addOns,
+                        subTotal: this.priceShown
+                    }
+                    this.$axios.post(AUTH.url + 'addOrder', parameter, AUTH.config).then(response => {
+                        if(response.data.status){
+                            AUTH.deauthenticate()
+                        }
+                        $('#viewDetails').modal('hide')
+                    })
                 }
-                this.$axios.post(AUTH.url + 'addOrder', parameter).then(response => {
-                    $('#viewDetails').modal('hide')
-                })
             }
         },
         cancel(){
@@ -370,9 +520,7 @@ export default {
             this.description = item.description
             this.itemId = item.id
             this.getSizePrice()
-
         }
     }
 }
 </script>
-

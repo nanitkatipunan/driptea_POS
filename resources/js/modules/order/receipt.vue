@@ -34,7 +34,7 @@
             <p v-if="customerType !== 'fb'"><b>Amount: {{Amount}}</b></p>
             <p v-if="customerType !== 'fb'"><b>Change: {{Change}}</b></p>
         </div>
-        <button type="button" class="btn btn-primary float-right" @click="hide()">Close</button>
+        <button type="button" class="btn btn-primary float-right" @click="hide()">OK</button>
 
     </div>
 </div>
