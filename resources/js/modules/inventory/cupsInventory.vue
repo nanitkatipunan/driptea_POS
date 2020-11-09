@@ -172,7 +172,6 @@ export default {
 <style scoped>
 .table{
   margin-left: 50px;
-  margin-top: 50px;
   width: 90%;
 }
 td{

@@ -204,6 +204,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -222,11 +242,11 @@ __webpack_require__.r(__webpack_exports__);
       deliveryFee: 0,
       processModal: false,
       loadingShow: false,
-      items: [{
-        title: "Profile"
-      }, {
-        title: "Name"
-      }]
+      payment: null,
+      available: null,
+      error: '',
+      payments: ["Cash on Delivery", "G-cash"],
+      availability: ["Call me", "Cancel Order"]
     };
   },
   components: {
@@ -304,22 +324,26 @@ __webpack_require__.r(__webpack_exports__);
     orderNow: function orderNow() {
       var _this4 = this;
 
-      this.loadingShow = true;
-      var params = {
-        id: localStorage.getItem("customerOnlineId"),
-        status: "pendingCustomer"
-      };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "updateStatus", params, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
-        if (res.data.status) {
-          _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
-        }
+      if (this.payment !== null) {
+        this.loadingShow = true;
+        var params = {
+          id: localStorage.getItem("customerOnlineId"),
+          status: "pendingCustomer"
+        };
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "updateStatus", params, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
+          if (res.data.status) {
+            _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
+          }
 
-        _this4.retrieveProduct();
+          _this4.retrieveProduct();
 
-        localStorage.removeItem("customerOnlineId");
-        _this4.loadingShow = false;
-        _this4.processModal = true;
-      });
+          localStorage.removeItem("customerOnlineId");
+          _this4.loadingShow = false;
+          _this4.processModal = true;
+        });
+      } else {
+        this.error = "This filed is required";
+      }
     },
     getSubTotal: function getSubTotal() {
       var total = 0;
@@ -380,7 +404,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.table[data-v-118875fa] {\r\n  width: 70%;\n}\r\n", ""]);
+exports.push([module.i, "\n.table[data-v-118875fa] {\r\n width: 70%;\n}\r\n", ""]);
 
 // exports
 
@@ -522,16 +546,6 @@ var render = function() {
                   _c(
                     "v-btn",
                     {
-                      staticStyle: { "margin-right": "2%" },
-                      attrs: { icon: "" }
-                    },
-                    [_c("v-icon", [_vm._v("mdi-magnify")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
                       staticStyle: { "margin-right": "1%" },
                       attrs: { icon: "" },
                       on: {
@@ -541,6 +555,42 @@ var render = function() {
                       }
                     },
                     [_c("v-icon", [_vm._v("mdi-home")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticStyle: { "margin-right": "2%" },
+                      attrs: { icon: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.direct()
+                        }
+                      }
+                    },
+                    [
+                      _c("v-icon", [_vm._v("mdi-cart")]),
+                      _vm._v(" "),
+                      _c("span", { staticStyle: { "margin-left": "-3%" } }, [
+                        _vm._v("Cart")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          staticStyle: {
+                            "background-color": "red",
+                            color: "white",
+                            "border-radius": "20%",
+                            "font-size": "10px",
+                            "margin-left": "-10%",
+                            "margin-top": "-20%"
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.count > 0 ? "New" : ""))]
+                      )
+                    ],
                     1
                   ),
                   _vm._v(" "),
@@ -800,16 +850,58 @@ var render = function() {
                             attrs: { id: "myTable" }
                           }),
                           _vm._v(" "),
-                          _c("div", { staticClass: "row" }, [
-                            _c("div", { staticClass: "col-md-8" }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "col-md-4",
-                                staticStyle: { "text-align": "left" }
-                              },
-                              [
+                          _c(
+                            "div",
+                            { staticClass: "row" },
+                            [
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "12", md: "4" } },
+                                [
+                                  _vm.error !== null
+                                    ? _c(
+                                        "span",
+                                        { staticStyle: { color: "red" } },
+                                        [_vm._v(_vm._s(_vm.error))]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.payments,
+                                      label: "Mode of Payment",
+                                      dense: "",
+                                      outlined: ""
+                                    },
+                                    model: {
+                                      value: _vm.payment,
+                                      callback: function($$v) {
+                                        _vm.payment = $$v
+                                      },
+                                      expression: "payment"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.availability,
+                                      label: "If not availabe",
+                                      dense: "",
+                                      outlined: ""
+                                    },
+                                    model: {
+                                      value: _vm.available,
+                                      callback: function($$v) {
+                                        _vm.available = $$v
+                                      },
+                                      expression: "available"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("v-col", { attrs: { cols: "12", md: "8" } }, [
                                 _c("p", [
                                   _vm._v(
                                     "Subtotal: ₱" + _vm._s(_vm.getSubTotal())
@@ -826,9 +918,10 @@ var render = function() {
                                 _c("h5", [
                                   _vm._v("Total: ₱" + _vm._s(_vm.getTotal()))
                                 ])
-                              ]
-                            )
-                          ]),
+                              ])
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c(
                             "button",

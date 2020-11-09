@@ -486,7 +486,7 @@ var render = function() {
           _c("div", { staticClass: "modal-dialog modal-lg" }, [
             _c("div", { staticClass: "modal-content" }, [
               _c("div", { staticClass: "modal-header" }, [
-                _c("h3", [_vm._v("Customer Information")]),
+                _c("h3", [_vm._v("Customer's Information")]),
                 _vm._v(" "),
                 _c(
                   "button",

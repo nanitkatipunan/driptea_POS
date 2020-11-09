@@ -1,183 +1,184 @@
 <template>
- <div>
-         <div class="header" style="background-color:#ff5b04">
-            <div class="container" >
-                <div class="row">
-                    <div class="col-6">
-                        DRIPTEA
-                    </div>
-                    <div class="col-6 text-right">
-                    <v-btn icon style="margin-right: 2%;">
-                        <v-icon>mdi-magnify</v-icon>
+<div>
+        <div class="header" style="background-color:#ff5b04">
+           <div class="container" >
+               <div class="row">
+                   <div class="col-6">
+                       DRIPTEA
+                   </div>
+                   <div class="col-6 text-right">
+                   <v-btn icon style="margin-right: 2%;"  @click="home()">
+                        <v-icon >mdi-home</v-icon>
                     </v-btn>
-                    
-                    <v-btn icon style="margin-right: 1%;"  @click="home()">
-                <v-icon >mdi-home</v-icon>
-            </v-btn>
-            <v-menu bottom left>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn dark icon v-bind="attrs" v-on="on">
-                        <v-icon>mdi-dots-vertical</v-icon>
+                     <v-btn icon @click="direct()" style="margin-right: 2%;">
+                        <v-icon>mdi-cart</v-icon>
+                        <span style="margin-left: -3%;">Cart</span>
+                        <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
                     </v-btn>
-                </template>
-                <v-list>
-                    <v-list-item >
-                        <v-list-item-title>Profile</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-title @click="direct">Order History</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-                    </div>
-                </div>
-            </div>
-         </div>
-        <center>
+                    <v-menu bottom left>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn dark icon v-bind="attrs" v-on="on">
+                                <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item >
+                                <v-list-item-title @click="profile">Profile</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-list-item-title @click="direct">Order History</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                   </div>
+               </div>
+           </div>
+        </div>
+       <center>
+        
+     
           
-       
-            
-             <div v-if="tableDataCompleteOrder">
-             <v-simple-table
-
-                :items-per-page="5"
-                class="elevation-3"
-                >
-                <template v-slot:top>
-                    <v-toolbar class="mb-2" color="#ff5b04" dark flat>
-                    <v-toolbar-title class="col pa-3 py-4 white--text">Complete Orders</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <v-text-field
-                        v-model="search"
-                        clearable
-                        flat
-                        solo-inverted
-                        prepend-inner-icon="mdi-magnify"
-                        class="mt-7"
-                        label="Search"
-                    ></v-text-field>
-                    <v-divider class="mx-4" vertical></v-divider>
-                     <v-btn
-                        color="primary"
-                        type="button"
-                        class="btn btn-primary btnModal"
-                        dark
-                        @click="tableDataPendingOrders = true,tableDataCompleteOrder=false"
-                    >+ Pending Orders</v-btn>
-                   
-                    </v-toolbar>
-                </template>
-                
-                  <thead >
-                    <tr v-if="tableData !== null && tableData.length > 0">
-                        <th style="width: 30%;">Date</th>
-                        <th>Order #</th>
-                        <th>Product&nbsp;Ordered</th>
-                        <th>Total</th>
-                        <th style="width: 15px;">Action</th>
-                    </tr>
-                     <div v-else>
-                        <empty :title="'No Complete Orders!'"></empty>
-                    </div>
-                        
-                  </thead>
-                    <tbody>
-                        <tr v-for="(item, index) in tableData" :key="index">
-                            <td>{{getDate(item[0])}}</td>
-                            <td>{{item[0].get_checkouts ? item[0].get_checkouts[0].customerId : ''}}</td>
-                            <td>{{getProduct(item)}}</td>
-                            <td>{{item[0].get_checkouts[0].total}}</td>
-                            <td>
-                                <button class="btn btn-primary">View</button>
-                            </td>
-                        </tr>
-                    </tbody>
-             
-                <template>
-                   
-                </template>
-               
-                </v-simple-table>
-                </div>
+            <div v-if="tableDataCompleteOrder">
+            <v-simple-table
+ 
+               :items-per-page="5"
+               class="elevation-3"
+               >
+               <template v-slot:top>
+                   <v-toolbar class="mb-2" color="#ff5b04" dark flat>
+                   <v-toolbar-title class="col pa-3 py-4 white--text">Complete Orders</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <v-text-field
+                       v-model="search"
+                       clearable
+                       flat
+                       solo-inverted
+                       prepend-inner-icon="mdi-magnify"
+                       class="mt-7"
+                       label="Search"
+                   ></v-text-field>
+                   <v-divider class="mx-4" vertical></v-divider>
+                    <v-btn
+                       color="primary"
+                       type="button"
+                       class="btn btn-primary btnModal"
+                       dark
+                       @click="tableDataPendingOrders = true,tableDataCompleteOrder=false"
+                   >+ Pending Orders</v-btn>
                  
-            <div v-if="tableDataPendingOrders">
-             <v-simple-table
-               
-                :items-per-page="5"
-                class="elevation-3"
-                >
-                <template v-slot:top>
-                    <v-toolbar class="mb-2" color="#ff5b04" dark flat>
-                    <v-toolbar-title class="col pa-3 py-4 white--text">Pending Orders</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <v-text-field
-                        v-model="search"
-                        clearable
-                        flat
-                        solo-inverted
-                        prepend-inner-icon="mdi-magnify"
-                        class="mt-7"
-                        label="Search"
-                    ></v-text-field>
-                    <v-divider class="mx-4" vertical></v-divider>
-                     <v-btn
-                        color="primary"
-                        type="button"
-                        class="btn btn-primary btnModal"
-                        dark
-                        @click="tableDataCompleteOrder = true, tableDataPendingOrders = false"
-                    >+ Completed Orders</v-btn>
-                   
-                    </v-toolbar>
-                </template>
-                  <thead>
-                    <tr v-if="tableDataPending !== null && tableDataPending.length > 0">
-                        <th scope="2">Date</th>
-                        <th>Order #</th>
-                        <th>Product&nbsp;Ordered</th>
-                        <th>Total</th>
-                        <th>Status</th>
-
-                        <th style="width: 15px;">Action</th>
-                    </tr>
-                      <div v-else>
-                        <empty :title="'No Pending Orders!'"></empty>
-                    </div>
+                   </v-toolbar>
+               </template>
               
-
-                    </thead>
-                    <tbody>
-                        <tr v-for="(items, index) in tableDataPending" :key="index">
-                            <td scope="2">{{getDate(items[0])}}</td>
-                            <td>{{items[0].id}}</td>
-                            <td>{{getProduct(items)}}</td>
-
-                            <!-- <td>{{items.order_product[0].productName}}</td> -->
-                            <td>₱ {{getTotal(items)}}</td>
-                            <td>Pending Order</td>
-                            <td>
-                                <button class="btn btn-primary">View</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                <template>
-                   
-                </template>
+                 <thead >
+                   <tr v-if="tableData !== null && tableData.length > 0">
+                       <th style="width: 30%;">Date</th>
+                       <th>Order #</th>
+                       <th>Product&nbsp;Ordered</th>
+                       <th>Total</th>
+                       <th style="width: 15px;">Action</th>
+                   </tr>
+                    <div v-else>
+                       <empty :title="'No Complete Orders!'"></empty>
+                   </div>
+                      
+                 </thead>
+                   <tbody>
+                       <tr v-for="(item, index) in tableData" :key="index">
+                           <td>{{getDate(item[0])}}</td>
+                           <td>{{item[0].get_checkouts ? item[0].get_checkouts[0].customerId : ''}}</td>
+                           <td>{{getProduct(item)}}</td>
+                           <td>{{item[0].get_checkouts[0].total}}</td>
+                           <td>
+                               <button class="btn btn-primary">View</button>
+                           </td>
+                       </tr>
+                   </tbody>
+           
+               <template>
+                 
+               </template>
+             
+               </v-simple-table>
+               </div>
                
-                </v-simple-table>
-                </div>
-               
+           <div v-if="tableDataPendingOrders">
+            <v-simple-table
+             
+               :items-per-page="5"
+               class="elevation-3"
+               >
+               <template v-slot:top>
+                   <v-toolbar class="mb-2" color="#ff5b04" dark flat>
+                   <v-toolbar-title class="col pa-3 py-4 white--text">Pending Orders</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <v-text-field
+                       v-model="search"
+                       clearable
+                       flat
+                       solo-inverted
+                       prepend-inner-icon="mdi-magnify"
+                       class="mt-7"
+                       label="Search"
+                   ></v-text-field>
+                   <v-divider class="mx-4" vertical></v-divider>
+                    <v-btn
+                       color="primary"
+                       type="button"
+                       class="btn btn-primary btnModal"
+                       dark
+                       @click="tableDataCompleteOrder = true, tableDataPendingOrders = false"
+                   >+ Completed Orders</v-btn>
+                 
+                   </v-toolbar>
+               </template>
+                 <thead>
+                   <tr v-if="tableDataPending !== null && tableDataPending.length > 0">
+                       <th scope="2">Date</th>
+                       <th>Order #</th>
+                       <th>Product&nbsp;Ordered</th>
+                       <th>Total</th>
+                       <th>Status</th>
+ 
+                       <th style="width: 15px;">Action</th>
+                   </tr>
+                     <div v-else>
+                       <empty :title="'No Pending Orders!'"></empty>
+                   </div>
             
-        </center>
-
-  <loading v-if="loadingShow"></loading>
-
-    </div>
-
-
+ 
+                   </thead>
+                   <tbody>
+                       <tr v-for="(items, index) in tableDataPending" :key="index">
+                           <td scope="2">{{getDate(items[0])}}</td>
+                           <td>{{items[0].id}}</td>
+                           <td>{{getProduct(items)}}</td>
+ 
+                           <!-- <td>{{items.order_product[0].productName}}</td> -->
+                           <td>₱ {{getTotal(items)}}</td>
+                           <td>Pending Order</td>
+                           <td>
+                               <button class="btn btn-primary">View</button>
+                           </td>
+                       </tr>
+                   </tbody>
+               <template>
+                 
+               </template>
+             
+               </v-simple-table>
+               </div>
+             
+          
+       </center>
+ 
+ <loading v-if="loadingShow"></loading>
+ 
+   </div>
+ 
+ 
 </template>
 <style scoped>
 .table {
-    width: 70%;
-    margin-left:5%
+   width: 70%;
+   margin-left:5%
 }
 </style>
 <script>
@@ -286,6 +287,7 @@ export default {
             ROUTER.push('/orderHistory').catch(()=>{})
         }
 
-    }
+ 
+   }
 }
 </script>

@@ -136,6 +136,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -146,14 +197,14 @@ __webpack_require__.r(__webpack_exports__);
     return {
       tableData: [],
       productData: [],
-      category: ['Low Dose', 'High Dose', 'Over Dose'],
+      category: ["Low Dose", "High Dose", "Over Dose"],
       loadingShow: false,
       categoryData: [],
       oneProd: [],
       prod: [],
-      categoryName: 'Classic',
+      categoryName: "Classic",
       finalData: [],
-      changeName: 'lowDose'
+      changeName: "lowDose"
     };
   },
   components: {
@@ -167,7 +218,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     getAllValue: function getAllValue(item, items, index) {
       var total = 0;
-      var category = 'lowDose';
+      var category = "lowDose";
       var lowLength = this.prod.length / 3;
       var highLength = lowLength + lowLength;
       var overLength = highLength + lowLength;
@@ -176,21 +227,21 @@ __webpack_require__.r(__webpack_exports__);
       for (var i = 0; i < this.prod.length; i++) {
         if (a < lowLength) {
           if (index === a) {
-            category = 'lowDose';
+            category = "lowDose";
             break;
           } else {
             a++;
           }
         } else if (a < highLength && a >= lowLength) {
           if (index === a) {
-            category = 'highDose';
+            category = "highDose";
             break;
           } else {
             a++;
           }
         } else if (a < overLength && a >= highLength) {
           if (index === a) {
-            category = 'overDose';
+            category = "overDose";
             break;
           } else {
             a++;
@@ -215,13 +266,13 @@ __webpack_require__.r(__webpack_exports__);
       return subTotal;
     },
     getDate: function getDate(date) {
-      return moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('MM/DD/YYYY');
+      return moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format("MM/DD/YYYY");
     },
     retrieveCheckout: function retrieveCheckout() {
       var _this = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + 'retrieveAllCheckouts', {}, _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].config).then(function (res) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + "retrieveAllCheckouts", {}, _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].config).then(function (res) {
         if (res.data.status) {
           _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].deauthenticate();
         }
@@ -242,7 +293,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + 'retrieveCategoryAscending', {}, _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].config).then(function (res) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + "retrieveCategoryAscending", {}, _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].config).then(function (res) {
         if (res.data.status) {
           _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].deauthenticate();
         }
@@ -311,7 +362,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.zui-table[data-v-1e034772] {\r\n    border: none;\r\n    /* border-right: solid 1px #DDEFEF; */\r\n    border-collapse: separate;\r\n    border-spacing: 0;\r\n    font: normal 13px Arial, sans-serif;\n}\n.zui-table thead th[data-v-1e034772] {\r\n    /* background-color: #DDEFEF; */\r\n    border: none;\r\n    color: #336B6B;\r\n    padding: 10px;\r\n    text-align: left;\r\n    /* text-shadow: 1px 1px 1px #fff; */\r\n    white-space: nowrap;\n}\n.zui-table tbody td[data-v-1e034772] {\r\n    /* border-bottom: solid 1px #DDEFEF; */\r\n    color: #333;\r\n    padding: 10px;\r\n    /* text-shadow: 1px 1px 1px #fff; */\r\n    white-space: nowrap;\n}\n.zui-wrapper[data-v-1e034772] {\r\n    position: relative;\n}\n.zui-scroller[data-v-1e034772] {\r\n    margin-left: 570px;\r\n    overflow-x: scroll;\r\n    overflow-y: visible;\r\n    padding-bottom: 5px;\r\n    width: 500px;\n}\n.zui-table .zui-sticky-col[data-v-1e034772] {\r\n    /* border-left: solid 1px #DDEFEF; */\r\n    left: 0;\r\n    position: absolute;\r\n    top: auto;\r\n    width: 80px;\n}\n.zui-table .zui-sticky-col2[data-v-1e034772] {\r\n    /* border-right: solid 1px #DDEFEF; */\r\n    left: 80px;\r\n    position: absolute;\r\n    top: auto;\r\n    width: 110px;\n}\n.zui-table .zui-sticky-col3[data-v-1e034772] {\r\n    /* border-right: solid 1px #DDEFEF; */\r\n    left: 190px;\r\n    position: absolute;\r\n    top: auto;\r\n    width: 180px;\n}\n.zui-table .zui-sticky-col4[data-v-1e034772] {\r\n    /* border-right: solid 1px #DDEFEF; */\r\n    left: 370px;\r\n    position: absolute;\r\n    top: auto;\r\n    width: 200px;\n}\n.zui-table .zui-sticky-col5[data-v-1e034772] {\r\n    /* border-right: solid 1px #DDEFEF; */\r\n    left: 1070px;\r\n    position: absolute;\r\n    top: auto;\r\n    width: 100px;\n}\r\n", ""]);
+exports.push([module.i, "\n.zui-table[data-v-1e034772] {\r\n  border: none;\r\n  /* border-right: solid 1px #DDEFEF; */\r\n  border-collapse: separate;\r\n  border-spacing: 0;\r\n  font: normal 13px Arial, sans-serif;\n}\n.zui-table thead th[data-v-1e034772] {\r\n  /* background-color: #DDEFEF; */\r\n  border: none;\r\n  color: #336b6b;\r\n  padding: 10px;\r\n  text-align: left;\r\n  /* text-shadow: 1px 1px 1px #fff; */\r\n  white-space: nowrap;\n}\n.zui-table tbody td[data-v-1e034772] {\r\n  /* border-bottom: solid 1px #DDEFEF; */\r\n  color: #333;\r\n  padding: 10px;\r\n  /* text-shadow: 1px 1px 1px #fff; */\r\n  white-space: nowrap;\n}\n.zui-wrapper[data-v-1e034772] {\r\n  position: relative;\n}\n.zui-scroller[data-v-1e034772] {\r\n  margin-left: 570px;\r\n  overflow-x: scroll;\r\n  overflow-y: visible;\r\n  padding-bottom: 5px;\r\n  width: 500px;\n}\n.zui-table .zui-sticky-col[data-v-1e034772] {\r\n  /* border-left: solid 1px #DDEFEF; */\r\n  left: 0;\r\n  position: absolute;\r\n  top: auto;\r\n  width: 80px;\n}\n.zui-table .zui-sticky-col2[data-v-1e034772] {\r\n  /* border-right: solid 1px #DDEFEF; */\r\n  left: 80px;\r\n  position: absolute;\r\n  top: auto;\r\n  width: 110px;\n}\n.zui-table .zui-sticky-col3[data-v-1e034772] {\r\n  /* border-right: solid 1px #DDEFEF; */\r\n  left: 190px;\r\n  position: absolute;\r\n  top: auto;\r\n  width: 180px;\n}\n.zui-table .zui-sticky-col4[data-v-1e034772] {\r\n  /* border-right: solid 1px #DDEFEF; */\r\n  left: 370px;\r\n  position: absolute;\r\n  top: auto;\r\n  width: 200px;\n}\n.zui-table .zui-sticky-col5[data-v-1e034772] {\r\n  /* border-right: solid 1px #DDEFEF; */\r\n  left: 1070px;\r\n  position: absolute;\r\n  top: auto;\r\n  width: 100px;\n}\r\n", ""]);
 
 // exports
 
@@ -364,276 +415,305 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-card",
+    "div",
+    { staticClass: "my-custom-scrollbar" },
     [
+      _c("v-toolbar", {
+        attrs: { flat: "" },
+        scopedSlots: _vm._u([
+          {
+            key: "extension",
+            fn: function() {
+              return [
+                _c(
+                  "v-tabs",
+                  {
+                    attrs: {
+                      dark: "",
+                      "background-color": "#ff5b04",
+                      "fixed-tabs": ""
+                    }
+                  },
+                  [
+                    _c("v-tabs-slider"),
+                    _vm._v(" "),
+                    _vm._l(_vm.categoryData, function(items, indexes) {
+                      return _c(
+                        "v-tab",
+                        {
+                          key: indexes,
+                          on: {
+                            click: function($event) {
+                              return _vm.changeCategory(items.productCategory)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(items.productCategory))]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      }),
+      _vm._v(" "),
       _c(
-        "div",
-        { staticClass: "my-custom-scrollbar" },
-        [
-          _c("v-toolbar", {
-            attrs: { flat: "" },
-            scopedSlots: _vm._u([
-              {
-                key: "extension",
-                fn: function() {
-                  return [
-                    _c(
-                      "v-tabs",
-                      {
+        "v-simple-table",
+        {
+          staticClass: "elevation-3 zui-table",
+          attrs: { "items-per-page": 5, id: "table" },
+          scopedSlots: _vm._u([
+            {
+              key: "top",
+              fn: function() {
+                return [
+                  _c(
+                    "v-toolbar",
+                    {
+                      staticClass: "mb-2",
+                      attrs: { color: "#ff5b04", dark: "", flat: "" }
+                    },
+                    [
+                      _c(
+                        "v-toolbar-title",
+                        { staticClass: "col pa-3 py-4 white--text" },
+                        [_vm._v(_vm._s(_vm.categoryName))]
+                      ),
+                      _vm._v("      \n        "),
+                      _c("v-text-field", {
+                        staticClass: "mt-7",
                         attrs: {
-                          dark: "",
-                          "background-color": "#ff5b04",
-                          "fixed-tabs": ""
+                          clearable: "",
+                          flat: "",
+                          "solo-inverted": "",
+                          "prepend-inner-icon": "mdi-magnify",
+                          label: "Search"
                         }
-                      },
-                      [
-                        _c("v-tabs-slider"),
-                        _vm._v(" "),
-                        _vm._l(_vm.categoryData, function(items, indexes) {
-                          return _c(
-                            "v-tab",
-                            {
-                              key: indexes,
-                              on: {
-                                click: function($event) {
-                                  return _vm.changeCategory(
-                                    items.productCategory
-                                  )
-                                }
-                              }
-                            },
-                            [_vm._v(_vm._s(items.productCategory))]
-                          )
-                        })
-                      ],
-                      2
-                    )
-                  ]
-                },
-                proxy: true
-              }
-            ])
-          }),
-          _vm._v(" "),
-          _c("center", [
-            _c(
-              "h2",
-              {
-                staticStyle: {
-                  width: "100%",
-                  "background-color": "#ff5b04",
-                  color: "white",
-                  "margin-bottom": "0%",
-                  padding: "7px"
-                }
+                      }),
+                      _vm._v(" "),
+                      _c("v-divider", {
+                        staticClass: "mx-4",
+                        attrs: { vertical: "" }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        { staticClass: "mr-6", attrs: { color: "success" } },
+                        [
+                          _vm._v("\n          Export\n          "),
+                          _c("i", {
+                            staticClass: "mdi mdi-export-variant",
+                            attrs: { "aria-hidden": "true" }
+                          })
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ]
               },
-              [_vm._v(_vm._s(_vm.categoryName))]
-            )
-          ]),
+              proxy: true
+            }
+          ])
+        },
+        [
           _vm._v(" "),
           _c("div", { staticClass: "zui-wrapper" }, [
             _c("div", { staticClass: "zui-scroller" }, [
-              _c(
-                "table",
-                { staticClass: "zui-table", attrs: { id: "table" } },
-                [
-                  _c("thead", [
+              _c("thead", [
+                _c(
+                  "tr",
+                  [
                     _c(
-                      "tr",
-                      [
-                        _c(
-                          "th",
-                          {
-                            staticClass: "zui-sticky-col",
-                            staticStyle: { "text-align": "center" },
-                            attrs: { rowspan: "3" }
-                          },
-                          [_vm._v("#")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "th",
-                          {
-                            staticClass: "zui-sticky-col2",
-                            staticStyle: { "text-align": "center" },
-                            attrs: { rowspan: "3" }
-                          },
-                          [_vm._v("Date")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "th",
-                          {
-                            staticClass: "zui-sticky-col3",
-                            staticStyle: { "text-align": "center" },
-                            attrs: { rowspan: "3" }
-                          },
-                          [_vm._v("Name")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "th",
-                          {
-                            staticClass: "zui-sticky-col4",
-                            staticStyle: { "text-align": "center" },
-                            attrs: { rowspan: "3" }
-                          },
-                          [_vm._v("Address")]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.category, function(item, index) {
-                          return _c(
-                            "th",
-                            {
-                              key: index,
-                              staticStyle: { "text-align": "center" },
-                              attrs: { colspan: _vm.oneProd.length }
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(item) +
-                                  "\n                                "
-                              ),
-                              _c(
-                                "tr",
-                                _vm._l(_vm.productData, function(i, ind) {
-                                  return _vm.categoryName === i.productCategory
-                                    ? _c(
-                                        "th",
-                                        {
-                                          key: ind,
-                                          staticStyle: {
-                                            "text-align": "center"
-                                          }
-                                        },
-                                        [_vm._v(_vm._s(i.productName))]
-                                      )
-                                    : _vm._e()
-                                }),
-                                0
-                              )
-                            ]
-                          )
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "th",
-                          {
-                            staticClass: "zui-sticky-col5",
-                            attrs: { rowspan: "3" }
-                          },
-                          [_vm._v("Total")]
-                        )
-                      ],
-                      2
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.finalData, function(items, indexes) {
+                      "th",
+                      {
+                        staticClass: "zui-sticky-col",
+                        staticStyle: { "text-align": "center" },
+                        attrs: { rowspan: "3" }
+                      },
+                      [_vm._v("#")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "th",
+                      {
+                        staticClass: "zui-sticky-col2",
+                        staticStyle: { "text-align": "center" },
+                        attrs: { rowspan: "3" }
+                      },
+                      [_vm._v("Date")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "th",
+                      {
+                        staticClass: "zui-sticky-col3",
+                        staticStyle: { "text-align": "center" },
+                        attrs: { rowspan: "3" }
+                      },
+                      [_vm._v("Name")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "th",
+                      {
+                        staticClass: "zui-sticky-col4",
+                        staticStyle: { "text-align": "center" },
+                        attrs: { rowspan: "3" }
+                      },
+                      [_vm._v("Address")]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.category, function(item, index) {
                       return _c(
-                        "tr",
-                        { key: indexes },
+                        "th",
+                        {
+                          key: index,
+                          staticStyle: { "text-align": "center" },
+                          attrs: { colspan: _vm.oneProd.length }
+                        },
                         [
-                          _c(
-                            "td",
-                            {
-                              staticClass: "zui-sticky-col",
-                              staticStyle: { "text-align": "center" }
-                            },
-                            [_vm._v(_vm._s(items[0].customerId))]
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(item) +
+                              "\n              "
                           ),
-                          _vm._v(" "),
                           _c(
-                            "td",
-                            {
-                              staticClass: "zui-sticky-col2",
-                              staticStyle: { "text-align": "center" }
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.getDate(
-                                    items[0].get_customer[0].created_at
+                            "tr",
+                            _vm._l(_vm.productData, function(i, ind) {
+                              return _vm.categoryName === i.productCategory
+                                ? _c(
+                                    "th",
+                                    {
+                                      key: ind,
+                                      staticStyle: { "text-align": "center" }
+                                    },
+                                    [_vm._v(_vm._s(i.productName))]
                                   )
-                                )
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              staticClass: "zui-sticky-col3",
-                              staticStyle: { "text-align": "center" }
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  items[0].get_customer[0].customerName
-                                    ? items[0].get_customer[0].customerName
-                                    : " "
-                                )
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              staticClass: "zui-sticky-col4",
-                              staticStyle: { "text-align": "center" }
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  items[0].get_customer[0].customerAddress
-                                    ? items[0].get_customer[0].customerAddress
-                                    : " "
-                                )
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.prod, function(item, index) {
-                            return _c(
-                              "td",
-                              {
-                                key: index,
-                                staticStyle: { "text-align": "center" }
-                              },
-                              [
-                                _vm._v(
-                                  _vm._s(_vm.getAllValue(item, items, index))
-                                )
-                              ]
-                            )
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              staticClass: "zui-sticky-col5",
-                              staticStyle: {
-                                "text-align": "center",
-                                "font-weight": "bold"
-                              }
-                            },
-                            [_vm._v(_vm._s(_vm.getTotal(items)) + " quantity")]
+                                : _vm._e()
+                            }),
+                            0
                           )
-                        ],
-                        2
+                        ]
                       )
                     }),
-                    0
+                    _vm._v(" "),
+                    _c(
+                      "th",
+                      {
+                        staticClass: "zui-sticky-col5",
+                        attrs: { rowspan: "3" }
+                      },
+                      [_vm._v("Total")]
+                    )
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.finalData, function(items, indexes) {
+                  return _c(
+                    "tr",
+                    { key: indexes },
+                    [
+                      _c(
+                        "td",
+                        {
+                          staticClass: "zui-sticky-col",
+                          staticStyle: { "text-align": "center" }
+                        },
+                        [_vm._v(_vm._s(items[0].customerId))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass: "zui-sticky-col2",
+                          staticStyle: { "text-align": "center" }
+                        },
+                        [
+                          _vm._v(
+                            _vm._s(
+                              _vm.getDate(items[0].get_customer[0].created_at)
+                            )
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass: "zui-sticky-col3",
+                          staticStyle: { "text-align": "center" }
+                        },
+                        [
+                          _vm._v(
+                            _vm._s(
+                              items[0].get_customer[0].customerName
+                                ? items[0].get_customer[0].customerName
+                                : " "
+                            )
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass: "zui-sticky-col4",
+                          staticStyle: { "text-align": "center" }
+                        },
+                        [
+                          _vm._v(
+                            _vm._s(
+                              items[0].get_customer[0].customerAddress
+                                ? items[0].get_customer[0].customerAddress
+                                : " "
+                            )
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.prod, function(item, index) {
+                        return _c(
+                          "td",
+                          {
+                            key: index,
+                            staticStyle: { "text-align": "center" }
+                          },
+                          [_vm._v(_vm._s(_vm.getAllValue(item, items, index)))]
+                        )
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass: "zui-sticky-col5",
+                          staticStyle: {
+                            "text-align": "center",
+                            "font-weight": "bold"
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.getTotal(items)) + " quantity")]
+                      )
+                    ],
+                    2
                   )
-                ]
+                }),
+                0
               )
             ])
-          ])
+          ]),
+          _vm._v(" "),
+          void 0
         ],
-        1
+        2
       ),
       _vm._v(" "),
       _vm.loadingShow ? _c("loading") : _vm._e()

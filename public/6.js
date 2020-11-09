@@ -286,8 +286,12 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
+                    _c("br")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-sm-4" }, [
+                  _c("div", [
                     _c(
                       "button",
                       {
@@ -295,21 +299,17 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.redirect(_vm.userName)
+                            return _vm.redirect(_vm.ID)
                           }
                         }
                       },
-                      [_vm._v("Save changes")]
+                      [
+                        _c("img", {
+                          staticClass: "PI",
+                          attrs: { src: _vm.PErsonalInfo }
+                        })
+                      ]
                     )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-4" }, [
-                  _c("div", [
-                    _c("img", {
-                      staticClass: "PI",
-                      attrs: { src: _vm.PErsonalInfo }
-                    })
                   ])
                 ])
               ])

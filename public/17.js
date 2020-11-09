@@ -244,7 +244,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.table[data-v-2d64b2de]{\r\n  margin-left: 50px;\r\n  margin-top: 50px;\r\n  width: 90%;\n}\ntd[data-v-2d64b2de]{\r\n  text-align: center\n}\r\n", ""]);
+exports.push([module.i, "\n.table[data-v-2d64b2de]{\r\n  margin-left: 50px;\r\n  width: 90%;\n}\ntd[data-v-2d64b2de]{\r\n  text-align: center\n}\r\n", ""]);
 
 // exports
 

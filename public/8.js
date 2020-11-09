@@ -226,87 +226,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -653,9 +572,7 @@ var render = function() {
           _c("div", { staticClass: "container" }, [
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-6" }, [
-                _vm._v(
-                  "\n                        DRIPTEA\n                    "
-                )
+                _vm._v("\n                    DRIPTEA\n                ")
               ]),
               _vm._v(" "),
               _c(
@@ -666,9 +583,14 @@ var render = function() {
                     "v-btn",
                     {
                       staticStyle: { "margin-right": "2%" },
-                      attrs: { icon: "" }
+                      attrs: { icon: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.home()
+                        }
+                      }
                     },
-                    [_c("v-icon", [_vm._v("mdi-magnify")])],
+                    [_c("v-icon", [_vm._v("mdi-home")])],
                     1
                   ),
                   _vm._v(" "),
@@ -703,6 +625,71 @@ var render = function() {
                           }
                         },
                         [_vm._v(_vm._s(_vm.count > 0 ? "New" : ""))]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-menu",
+                    {
+                      attrs: { bottom: "", left: "" },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "activator",
+                          fn: function(ref) {
+                            var on = ref.on
+                            var attrs = ref.attrs
+                            return [
+                              _c(
+                                "v-btn",
+                                _vm._g(
+                                  _vm._b(
+                                    { attrs: { dark: "", icon: "" } },
+                                    "v-btn",
+                                    attrs,
+                                    false
+                                  ),
+                                  on
+                                ),
+                                [_c("v-icon", [_vm._v("mdi-dots-vertical")])],
+                                1
+                              )
+                            ]
+                          }
+                        }
+                      ])
+                    },
+                    [
+                      _vm._v(" "),
+                      _c(
+                        "v-list",
+                        [
+                          _c(
+                            "v-list-item",
+                            [
+                              _c(
+                                "v-list-item-title",
+                                { on: { click: _vm.profile } },
+                                [_vm._v("Profile")]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item",
+                            [
+                              _c(
+                                "v-list-item-title",
+                                { on: { click: _vm.direct } },
+                                [_vm._v("Order History")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
                       )
                     ],
                     1
@@ -850,9 +837,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                          " +
+                            "\n                      " +
                               _vm._s(_vm.success) +
-                              "\n                        "
+                              "\n                    "
                           )
                         ]
                       )

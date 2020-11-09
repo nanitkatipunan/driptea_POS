@@ -122,6 +122,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -648,15 +649,15 @@ var render = function() {
           _c(
             "v-btn",
             {
-              staticStyle: { "margin-right": "1%" },
-              attrs: { icon: "" },
+              staticClass: "warning",
+              staticStyle: { "margin-left": "3%", "margin-top": "10px" },
               on: {
                 click: function($event) {
                   return _vm.previous()
                 }
               }
             },
-            [_c("v-icon", [_vm._v("mdi-home")])],
+            [_c("v-icon", [_vm._v("mdi-home")]), _vm._v("  Back\n        ")],
             1
           )
         ],

@@ -247,6 +247,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -391,7 +392,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.table[data-v-0f3ac740] {\r\n    width: 70%;\r\n    margin-left:5%\n}\r\n", ""]);
+exports.push([module.i, "\n.table[data-v-0f3ac740] {\r\n   width: 70%;\r\n   margin-left:5%\n}\r\n", ""]);
 
 // exports
 
@@ -525,7 +526,9 @@ var render = function() {
           _c("div", { staticClass: "container" }, [
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-6" }, [
-                _vm._v("\n                       DRIPTEA\n                   ")
+                _vm._v(
+                  "\r\n                       DRIPTEA\r\n                   "
+                )
               ]),
               _vm._v(" "),
               _c(
@@ -536,16 +539,6 @@ var render = function() {
                     "v-btn",
                     {
                       staticStyle: { "margin-right": "2%" },
-                      attrs: { icon: "" }
-                    },
-                    [_c("v-icon", [_vm._v("mdi-magnify")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticStyle: { "margin-right": "1%" },
                       attrs: { icon: "" },
                       on: {
                         click: function($event) {
@@ -554,6 +547,42 @@ var render = function() {
                       }
                     },
                     [_c("v-icon", [_vm._v("mdi-home")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticStyle: { "margin-right": "2%" },
+                      attrs: { icon: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.direct()
+                        }
+                      }
+                    },
+                    [
+                      _c("v-icon", [_vm._v("mdi-cart")]),
+                      _vm._v(" "),
+                      _c("span", { staticStyle: { "margin-left": "-3%" } }, [
+                        _vm._v("Cart")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          staticStyle: {
+                            "background-color": "red",
+                            color: "white",
+                            "border-radius": "20%",
+                            "font-size": "10px",
+                            "margin-left": "-10%",
+                            "margin-top": "-20%"
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.count > 0 ? "New" : ""))]
+                      )
+                    ],
                     1
                   ),
                   _vm._v(" "),
@@ -594,7 +623,13 @@ var render = function() {
                         [
                           _c(
                             "v-list-item",
-                            [_c("v-list-item-title", [_vm._v("Profile")])],
+                            [
+                              _c(
+                                "v-list-item-title",
+                                { on: { click: _vm.profile } },
+                                [_vm._v("Profile")]
+                              )
+                            ],
                             1
                           ),
                           _vm._v(" "),
@@ -657,7 +692,7 @@ var render = function() {
                                     },
                                     [_vm._v("Complete Orders")]
                                   ),
-                                  _vm._v("      \n                   "),
+                                  _vm._v("      \r\n                   "),
                                   _c("v-text-field", {
                                     staticClass: "mt-7",
                                     attrs: {
@@ -709,7 +744,7 @@ var render = function() {
                       ],
                       null,
                       false,
-                      3019199777
+                      1322362191
                     )
                   },
                   [
@@ -816,7 +851,7 @@ var render = function() {
                                     },
                                     [_vm._v("Pending Orders")]
                                   ),
-                                  _vm._v("      \n                   "),
+                                  _vm._v("      \r\n                   "),
                                   _c("v-text-field", {
                                     staticClass: "mt-7",
                                     attrs: {
@@ -868,7 +903,7 @@ var render = function() {
                       ],
                       null,
                       false,
-                      3047919653
+                      3530496459
                     )
                   },
                   [
