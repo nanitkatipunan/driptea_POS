@@ -657,7 +657,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -666,6 +665,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _ref;
 
     return _ref = {
+      editCat: false,
       tableForCategory: true,
       tableForProduct: false,
       tableForAddOns: false,
@@ -718,7 +718,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       status: null,
       prodId: null,
       priceEvent: ""
-    }, _defineProperty(_ref, "online", false), _defineProperty(_ref, "errorMessage", null), _defineProperty(_ref, "lowDoseCup", null), _defineProperty(_ref, "highDoseCup", null), _defineProperty(_ref, "overDoseCup", null), _defineProperty(_ref, "cupSizeData", []), _defineProperty(_ref, "search", null), _defineProperty(_ref, "title", null), _defineProperty(_ref, "dialogForCupType", false), _defineProperty(_ref, "dialogForProduct", false), _defineProperty(_ref, "dialogForCategory", false), _defineProperty(_ref, "dialogForAddOns", false), _defineProperty(_ref, "dialogForCupSize", false), _defineProperty(_ref, "dataHeader", null), _defineProperty(_ref, "headersForAddOns", [{
+    }, _defineProperty(_ref, "online", false), _defineProperty(_ref, "errorMessage", null), _defineProperty(_ref, "lowDoseCup", null), _defineProperty(_ref, "highDoseCup", null), _defineProperty(_ref, "overDoseCup", null), _defineProperty(_ref, "cupSizeData", []), _defineProperty(_ref, "search", null), _defineProperty(_ref, "title", null), _defineProperty(_ref, "dialogForCupType", false), _defineProperty(_ref, "dialogForProduct", false), _defineProperty(_ref, "dialogForCategory", false), _defineProperty(_ref, "dialogForAddOns", false), _defineProperty(_ref, "dialogForCupSize", false), _defineProperty(_ref, "dataHeader", null), _defineProperty(_ref, "catId", null), _defineProperty(_ref, "headersForAddOns", [{
       text: "#",
       value: "id"
     }, {
@@ -765,10 +765,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, {
       text: "Product Category",
       value: "productCategory"
-    }, {
-      text: "Status",
-      value: "status"
-    }, {
+    }, // { text: "Status", value: "status" },
+    {
       text: "ACTION",
       value: "actions",
       sortable: false
@@ -1191,6 +1189,49 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.image = e.target.files[0];
       this.imageURL = URL.createObjectURL(e.target.files[0]);
     },
+    editCategories: function editCategories(item) {
+      this.dialogForCategory = true;
+      this.editCat = true;
+      this.image = item.image;
+      this.imageURL = item.image;
+      this.productType = item.productCategory;
+      this.catId = item.id;
+    },
+    updateCategory: function updateCategory(e) {
+      this.loadingShow = true;
+
+      if (this.image !== null && this.productType !== null) {
+        e.preventDefault();
+        var currentObj = this;
+        var config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: 'Bearer ' + localStorage.getItem('userToken')
+          }
+        };
+        var formData = new FormData();
+        formData.append("id", this.catId);
+        formData.append("image", this.image);
+        formData.append("productCategory", this.productType);
+        axios.post("/updateCategory", formData, config).then(function (response) {
+          if (response.data.status) {
+            _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
+          }
+
+          currentObj.loadingShow = false;
+          currentObj.success = response.data.success;
+          currentObj.retrieveCategories();
+          currentObj.retrieveProducts();
+          currentObj.hide();
+        })["catch"](function (error) {
+          currentObj.loadingShow = false;
+          currentObj.output = error;
+        });
+      } else {
+        this.errorMessage = "All fields are required!";
+        this.loadingShow = false;
+      }
+    },
     formSubmit: function formSubmit(e) {
       this.loadingShow = true;
 
@@ -1365,6 +1406,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.img = null;
     },
     showCategory: function showCategory() {
+      this.editCat = false;
       this.image = null;
       this.productType = null;
       this.dialogForCategory = true;
@@ -1996,7 +2038,6 @@ var render = function() {
                         : _c(
                             "v-icon",
                             {
-                              staticClass: "btn btn-warning",
                               attrs: { small: "" },
                               on: {
                                 click: function($event) {
@@ -2012,7 +2053,7 @@ var render = function() {
               ],
               null,
               false,
-              2526093254
+              2534127425
             )
           })
         : _vm._e(),
@@ -2123,7 +2164,6 @@ var render = function() {
                         : _c(
                             "v-icon",
                             {
-                              staticClass: "btn btn-warning",
                               attrs: { small: "" },
                               on: {
                                 click: function($event) {
@@ -2139,7 +2179,7 @@ var render = function() {
               ],
               null,
               false,
-              2603534780
+              3905875131
             )
           })
         : _vm._e(),
@@ -2250,7 +2290,6 @@ var render = function() {
                         : _c(
                             "v-icon",
                             {
-                              staticClass: "btn btn-warning",
                               attrs: { small: "" },
                               on: {
                                 click: function($event) {
@@ -2266,7 +2305,7 @@ var render = function() {
               ],
               null,
               false,
-              3930184894
+              2963331001
             )
           })
         : _vm._e(),
@@ -2467,18 +2506,40 @@ var render = function() {
                                   [_vm._v(" Close")]
                                 ),
                                 _vm._v(" "),
-                                _c(
-                                  "v-btn",
-                                  {
-                                    staticClass: "btn btn-primary",
-                                    attrs: {
-                                      color: "blue darken-1",
-                                      text: "",
-                                      type: "submit"
-                                    }
-                                  },
-                                  [_vm._v("Add Category")]
-                                )
+                                !_vm.editCat
+                                  ? _c(
+                                      "v-btn",
+                                      {
+                                        staticClass: "btn btn-primary",
+                                        attrs: {
+                                          color: "blue darken-1",
+                                          text: "",
+                                          type: "submit"
+                                        }
+                                      },
+                                      [_vm._v("Add Category")]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.editCat
+                                  ? _c(
+                                      "v-btn",
+                                      {
+                                        staticClass: "btn btn-primary",
+                                        attrs: {
+                                          color: "blue darken-1",
+                                          text: "",
+                                          type: "button"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.updateCategory($event)
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Edit Category")]
+                                    )
+                                  : _vm._e()
                               ],
                               1
                             )
@@ -3502,7 +3563,9 @@ var render = function() {
           ],
           1
         )
-      ]
+      ],
+      _vm._v(" "),
+      _vm.loadingShow ? _c("loading") : _vm._e()
     ],
     2
   )

@@ -223,7 +223,7 @@ export default {
             })
             return total
         },
-         getProduct(item){
+        getProduct(item){
             let product = ""
             let index = item.length
             item.forEach(el => {
