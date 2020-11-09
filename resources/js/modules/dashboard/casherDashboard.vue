@@ -156,7 +156,6 @@ export default {
         let parameter = {
           customerType: type,
         };
-        console.log(parameter)
         this.$axios.post(AUTH.url + "addCustomer", parameter, AUTH.config).then((res) => {
           if(res.data.status){
               AUTH.deauthenticate()

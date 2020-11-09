@@ -171,7 +171,6 @@ __webpack_require__.r(__webpack_exports__);
         var parameter = {
           customerType: type
         };
-        console.log(parameter);
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + "addCustomer", parameter, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (res) {
           if (res.data.status) {
             _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
