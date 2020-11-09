@@ -73,7 +73,7 @@
               <v-list-item
                 v-for="(item, index) in account"
                 :key="index"
-                @click="redirect(item.route+username)"
+                @click="redirect(item.route+admin)"
               >
                 <v-list-item-icon>
                   <v-icon color="black darken-2">{{ item.icon }}</v-icon>
@@ -134,7 +134,7 @@
               <v-list-item
                 v-for="(item, index) in account"
                 :key="index"
-                @click="redirect(item.route+username)"
+                @click="redirect(item.route+cashier)"
               >
                 <v-list-item-icon>
                   <v-icon color="black darken-2">{{ item.icon }}</v-icon>
@@ -290,14 +290,12 @@ export default {
     },
     redirect(route) {
       if (this.admin != null) {
-        this.username = this.admin;
         if (route === "/logout/" + this.admin) {
           this.logout();
         } else {
           ROUTER.push(route).catch(() => {});
         }
       }else if (this.cashier != null) {
-        this.username = this.cashier;
         if (route === "/logout/" + this.cashier) {
           this.logout();
         } else {

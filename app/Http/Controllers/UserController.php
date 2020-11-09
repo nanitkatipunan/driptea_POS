@@ -29,7 +29,7 @@ class UserController extends Controller
         $name = $request->only('uname');
         // dd($name);
         $userdata = DB::table('users')->select('fullname as fullname','address as address','contactNumber as CN','name as email','password as pwd')
-            ->where('name', $request->uname)
+            ->where('id', $request->uname)
             ->get();
 
         // dd($userdata);
@@ -46,10 +46,9 @@ class UserController extends Controller
         return response()->json(compact('userdata'));
     }
     public function SaveNEWdata(Request $request){
-        $userdata = DB::table('users')->where('id', $request->ID)
-        ->update(['name' => $request->newEmail,'fullname' => $request->newfname,'address' => $request->newadd,'contactNumber' => $request->newContact,'password' => $request->newPass]);
-        // dd($userdata);
-        // return response()->json(compact('userdata'));
+        $userdata = DB::table('users')->where('id', $request->ID)->update([$request->col => $request->data]);
+        // return $this->userdata($request);
+        // $this.userdata();
     }
 
     public function register(Request $request)

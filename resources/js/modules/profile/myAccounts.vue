@@ -26,12 +26,12 @@
                     class="description"
                   >See the data in your Driptea Account and feel free to update them.</p>
                   <br>
-                  <button type="button" class="btn savebtn" @click="redirect(userName)">Save changes</button>
+                  <!-- <button type="button" class="btn savebtn" @click="redirect(userName)"></button> -->
                 </div>
               </div>
               <div class="col-sm-4">
                 <div>
-                  <img class="PI" :src="PErsonalInfo">
+                  <button type="button" class="btn savebtn" @click="redirect(ID)"><img class="PI" :src="PErsonalInfo"></button>
                 </div>
               </div>
             </div>
