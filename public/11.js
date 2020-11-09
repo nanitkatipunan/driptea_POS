@@ -14,6 +14,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/auth */ "./resources/js/services/auth/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_3__);
 //
 //
 //
@@ -189,6 +191,191 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
  // import imongAccount from "./myAccounts";
@@ -196,10 +383,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      errorMessage: null,
+      modalShow: true,
       profilepic: _assets_profile_jpg__WEBPACK_IMPORTED_MODULE_0___default.a,
       fullname: "churva",
       show: false,
-      emailAdd: "",
+      emailAdd: null,
       contactnum: null,
       address: null,
       Fname: null,
@@ -210,7 +399,17 @@ __webpack_require__.r(__webpack_exports__);
       newcontactnum: null,
       newaddress: null,
       newName: null,
-      Cpassword: null
+      Cpassword: null,
+      theEmail: "name",
+      fn: "fullname",
+      add: "address",
+      dbcontact: "contactNumber",
+      pwd: "password",
+      forNameUpdate: "forNameUpdate",
+      forAddressUpdate: "forAddressUpdate",
+      forCNUpdate: "forCNUpdate",
+      forEmailUpdate: "forEmailUpdate",
+      forPWDupdate: "forPWDupdate"
     };
   },
   components: {// imongAccount
@@ -218,8 +417,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.userID = this.$route.params.id;
     this.retrieveUserDatas(this.userID);
-    console.log("ang response ", this.userID); // this.$bus.$on('redirect',data => {
-    // })
+    console.log("ang response ", this.userID);
   },
   methods: {
     retrieveUserDatas: function retrieveUserDatas(id) {
@@ -264,19 +462,48 @@ __webpack_require__.r(__webpack_exports__);
         console.log("------- ", _this.emailAdd, _this.contactnum, _this.address, _this.Fname, _this.password);
       });
     },
-    Save: function Save() {
-      console.log("hoyy");
-      var params = {
-        ID: this.userID,
-        newEmail: this.newemailAdd,
-        newContact: this.newcontactnum,
-        newadd: this.newaddress,
-        newfname: this.newName,
-        newPass: this.newpassword
-      };
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + "SaveNEWdata", params).then(function (response) {})["catch"](function (err) {
-        console.log("error imong pag update ", err);
-      });
+    Save: function Save(data, colname, modalID) {
+      var _this2 = this;
+
+      if (modalID === "forPWDupdate") {
+        if (this.Cpassword === this.newpassword) {
+          var params = {
+            ID: this.userID,
+            data: data,
+            col: colname
+          };
+          axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + "SaveNEWdata", params).then(function (response) {
+            _this2.retrieveUserDatas(_this2.userID);
+
+            jquery__WEBPACK_IMPORTED_MODULE_3___default()("#" + modalID).modal("hide");
+          })["catch"](function (err) {
+            console.log("error imong pag update ", err);
+          });
+        } else {
+          this.errorMessage = "Password did not match";
+        }
+      } else {
+        var _params = {
+          ID: this.userID,
+          data: data,
+          col: colname
+        };
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + "SaveNEWdata", _params).then(function (response) {
+          _this2.retrieveUserDatas(_this2.userID);
+
+          jquery__WEBPACK_IMPORTED_MODULE_3___default()("#" + modalID).modal("hide");
+        })["catch"](function (err) {
+          console.log("error imong pag update ", err);
+        });
+      }
+
+      this.errorMessage = null;
+      this.newpassword = null;
+      this.newemailAdd = null;
+      this.newcontactnum = null;
+      this.newaddress = null;
+      this.newName = null;
+      this.Cpassword = null;
     }
   }
 });
@@ -295,7 +522,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.savebtn {\r\n  color: orange;\n}\n.thetitle {\r\n  margin-top: 3%;\r\n  font-family: \"Google Sans\", Roboto, Arial, sans-serif;\r\n  font-weight: 400;\n}\n.title {\r\n  font-family: \"Google Sans\", Roboto, Arial, sans-serif;\r\n  font-weight: 400;\n}\n.subtitle {\r\n  font-size: 15px;\n}\n.container {\r\n  margin-top: 3%;\r\n  border: 1px solid gray;\r\n  border-radius: 1%;\r\n  width: 70%;\r\n  margin-bottom: 5%;\n}\n.profilePic {\r\n  height: 60px;\r\n  width: 60px;\r\n  border-radius: 100%;\n}\n.thelabel {\r\n  font-size: 13px;\n}\r\n", ""]);
+exports.push([module.i, "\n.updateText {\r\n  width: auto;\r\n  vertical-align: middle;\n}\n.theUpdatebtn {\r\n  background-color: #ff5b04;\r\n  width: 100%;\r\n  height: 30px;\r\n  border-radius: 2px;\r\n  padding: 0%;\n}\n.savebtn {\r\n  color: #ff5b04;\n}\n.thetitle {\r\n  margin-top: 3%;\r\n  font-family: \"Google Sans\", Roboto, Arial, sans-serif;\r\n  font-weight: 400;\n}\n.title {\r\n  font-family: \"Google Sans\", Roboto, Arial, sans-serif;\r\n  font-weight: 400;\n}\n.subtitle {\r\n  font-size: 15px;\n}\n.container {\r\n  margin-top: 3%;\r\n  border: 1px solid gray;\r\n  border-radius: 1%;\r\n  width: 70%;\r\n  margin-bottom: 5%;\n}\n.profilePic {\r\n  height: 60px;\r\n  width: 60px;\r\n  border-radius: 100%;\n}\n.thelabel {\r\n  font-size: 13px;\n}\r\n", ""]);
 
 // exports
 
@@ -369,160 +596,202 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "container" },
-      [
-        _c("span", { staticClass: "title" }, [_vm._v("Profile")]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-left DP" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-sm-3 thelabel" }, [_vm._v("PHOTO")]),
-            _vm._v(" "),
-            _vm._m(0),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-3 text-right" }, [
-              _c("img", {
-                staticClass: "profilePic",
-                attrs: { src: _vm.profilepic }
-              })
+    _c("div", { staticClass: "container" }, [
+      _c("span", { staticClass: "title" }, [_vm._v("Profile")]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-left DP" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-sm-3 thelabel" }, [_vm._v("PHOTO")]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-3 text-right" }, [
+            _c("img", {
+              staticClass: "profilePic",
+              attrs: { src: _vm.profilepic }
+            })
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-left Fname" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-sm-3 thelabel" }, [_vm._v("NAME")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("span", [_vm._v(_vm._s(_vm.Fname))])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-sm-3 text-right" },
+            [
+              _c(
+                "v-button",
+                {
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "modal",
+                    "data-target": "#forNameUpdate"
+                  }
+                },
+                [_c("v-icon", [_vm._v("mdi-chevron-right")])],
+                1
+              )
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-left Address" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-sm-3 thelabel" }, [_vm._v("ADDRESS")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("span", [_vm._v(_vm._s(_vm.address))])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-sm-3 text-right" },
+            [
+              _c(
+                "v-button",
+                {
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "modal",
+                    "data-target": "#forAddressUpdate"
+                  }
+                },
+                [_c("v-icon", [_vm._v("mdi-chevron-right")])],
+                1
+              )
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-left ContactNum" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-sm-3 thelabel" }, [
+            _vm._v("CONTACT NUMBER")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("span", [_vm._v(_vm._s(_vm.contactnum))])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-sm-3 text-right" },
+            [
+              _c(
+                "v-button",
+                {
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "modal",
+                    "data-target": "#forCNUpdate"
+                  }
+                },
+                [_c("v-icon", [_vm._v("mdi-chevron-right")])],
+                1
+              )
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-left Email" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-sm-3 thelabel" }, [
+            _vm._v("USERNAME/EMAIL ADDRESS")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("span", [_vm._v(_vm._s(_vm.emailAdd))])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-sm-3 text-right" },
+            [
+              _c(
+                "v-button",
+                {
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "modal",
+                    "data-target": "#forEmailUpdate"
+                  }
+                },
+                [_c("v-icon", [_vm._v("mdi-chevron-right")])],
+                1
+              )
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-left Password" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-sm-3 thelabel" }, [_vm._v("PASSWORD")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("span", { attrs: { type: "password" } }, [
+              _vm._v(_vm._s(_vm.password))
             ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-left Fname" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-sm-3 thelabel" }, [_vm._v("NAME")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("span", [_vm._v(_vm._s(_vm.Fname))])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-sm-3 text-right" },
-              [_c("v-icon", [_vm._v("mdi-chevron-right")])],
-              1
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-left Address" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-sm-3 thelabel" }, [
-              _vm._v("ADDRESS")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("span", [_vm._v(_vm._s(_vm.address))])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-sm-3 text-right" },
-              [_c("v-icon", [_vm._v("mdi-chevron-right")])],
-              1
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-left ContactNum" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-sm-3 thelabel" }, [
-              _vm._v("CONTACT NUMBER")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("span", [_vm._v(_vm._s(_vm.contactnum))])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-sm-3 text-right" },
-              [_c("v-icon", [_vm._v("mdi-chevron-right")])],
-              1
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-left Email" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-sm-3 thelabel" }, [
-              _vm._v("USERNAME/EMAIL ADDRESS")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("span", [_vm._v(_vm._s(_vm.emailAdd))])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-sm-3 text-right" },
-              [_c("v-icon", [_vm._v("mdi-chevron-right")])],
-              1
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-left Password" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-sm-3 thelabel" }, [
-              _vm._v("PASSWORD")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("span", { attrs: { type: "password" } }, [
-                _vm._v(_vm._s(_vm.password))
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-sm-3 text-right" },
-              [_c("v-icon", [_vm._v("mdi-chevron-right")])],
-              1
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c(
-          "v-button",
-          {
-            attrs: {
-              type: "button",
-              "data-toggle": "modal",
-              "data-target": "#exampleModal"
-            }
-          },
-          [_vm._v("Update")]
-        )
-      ],
-      1
-    ),
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-sm-3 text-right" },
+            [
+              _c(
+                "v-button",
+                {
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "modal",
+                    "data-target": "#forPWDupdate"
+                  }
+                },
+                [_c("v-icon", [_vm._v("mdi-chevron-right")])],
+                1
+              )
+            ],
+            1
+          )
+        ])
+      ])
+    ]),
     _vm._v(" "),
     _c(
       "div",
       {
         staticClass: "modal fade",
         attrs: {
-          id: "exampleModal",
+          id: _vm.forNameUpdate,
           tabindex: "-1",
           role: "dialog",
-          "aria-labelledby": "exampleModalLabel",
+          "aria-labelledby": "Updatename",
           "aria-hidden": "true"
         }
       },
@@ -564,10 +833,64 @@ var render = function() {
                         }
                       }
                     })
-                  ]),
-                  _vm._v(" "),
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn closebtn",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Cancel")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn savebtn",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.Save(_vm.newName, _vm.fn, _vm.forNameUpdate)
+                      }
+                    }
+                  },
+                  [_vm._v("Save changes")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: _vm.forAddressUpdate,
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "UpdateAddress",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("form", [
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "add" } }, [
+                    _c("label", { attrs: { for: "adr" } }, [
                       _vm._v("Address:")
                     ]),
                     _vm._v(" "),
@@ -584,7 +907,7 @@ var render = function() {
                       attrs: {
                         placeholder: _vm.address,
                         type: "text",
-                        id: "add"
+                        id: "adr"
                       },
                       domProps: { value: _vm.newaddress },
                       on: {
@@ -596,8 +919,66 @@ var render = function() {
                         }
                       }
                     })
-                  ]),
-                  _vm._v(" "),
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn closebtn",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Cancel")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn savebtn",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.Save(
+                          _vm.newaddress,
+                          _vm.add,
+                          _vm.forAddressUpdate
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v("Save changes")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: _vm.forCNUpdate,
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "UpdateCN",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("form", [
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "cn" } }, [
                       _vm._v("Contact Number:")
@@ -615,7 +996,7 @@ var render = function() {
                       staticClass: "form-control",
                       attrs: {
                         placeholder: _vm.contactnum,
-                        type: "number",
+                        type: "text",
                         id: "cn"
                       },
                       domProps: { value: _vm.newcontactnum },
@@ -628,10 +1009,67 @@ var render = function() {
                         }
                       }
                     })
-                  ]),
-                  _vm._v(" "),
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn closebtn",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Cancel")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn savebtn",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.Save(
+                          _vm.newcontactnum,
+                          _vm.dbcontact,
+                          _vm.forCNUpdate
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v("Save changes")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: _vm.forEmailUpdate,
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "UpdateEmailAddress"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(4),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("form", [
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "email" } }, [
+                    _c("label", { attrs: { for: "usrE" } }, [
                       _vm._v("Username/Email Address:")
                     ]),
                     _vm._v(" "),
@@ -647,8 +1085,8 @@ var render = function() {
                       staticClass: "form-control",
                       attrs: {
                         placeholder: _vm.emailAdd,
-                        type: "email",
-                        id: "email"
+                        type: "text",
+                        id: "usrE"
                       },
                       domProps: { value: _vm.newemailAdd },
                       on: {
@@ -660,10 +1098,67 @@ var render = function() {
                         }
                       }
                     })
-                  ]),
-                  _vm._v(" "),
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn closebtn",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Cancel")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn savebtn",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.Save(
+                          _vm.newemailAdd,
+                          _vm.theEmail,
+                          _vm.forEmailUpdate
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v("Save changes")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: _vm.forPWDupdate,
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "UpdatePWD"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(5),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("form", [
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "pwd" } }, [
+                    _c("label", { attrs: { for: "passw" } }, [
                       _vm._v("Password:")
                     ]),
                     _vm._v(" "),
@@ -680,7 +1175,7 @@ var render = function() {
                       attrs: {
                         placeholder: _vm.password,
                         type: "password",
-                        id: "pwd"
+                        id: "passw"
                       },
                       domProps: { value: _vm.newpassword },
                       on: {
@@ -694,8 +1189,16 @@ var render = function() {
                     })
                   ]),
                   _vm._v(" "),
+                  _c("i", [
+                    _vm.errorMessage !== null
+                      ? _c("span", { staticClass: "text-danger text-center" }, [
+                          _vm._v(_vm._s(_vm.errorMessage))
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "cpwd" } }, [
+                    _c("label", { attrs: { for: "cpass" } }, [
                       _vm._v("Confirm Password:")
                     ]),
                     _vm._v(" "),
@@ -709,7 +1212,11 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "password", id: "cpwd" },
+                      attrs: {
+                        placeholder: "Type new password here...",
+                        type: "password",
+                        id: "cpass"
+                      },
                       domProps: { value: _vm.Cpassword },
                       on: {
                         input: function($event) {
@@ -731,7 +1238,7 @@ var render = function() {
                     staticClass: "btn closebtn",
                     attrs: { type: "button", "data-dismiss": "modal" }
                   },
-                  [_vm._v("Close")]
+                  [_vm._v("Cancel")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -739,7 +1246,15 @@ var render = function() {
                   {
                     staticClass: "btn savebtn",
                     attrs: { type: "button" },
-                    on: { click: _vm.Save }
+                    on: {
+                      click: function($event) {
+                        return _vm.Save(
+                          _vm.newpassword,
+                          _vm.pwd,
+                          _vm.forPWDupdate
+                        )
+                      }
+                    }
                   },
                   [_vm._v("Save changes")]
                 )
@@ -765,11 +1280,103 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "Updatename" } }, [
+        _vm._v("Update Name")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "UpdateAddress" } }, [
+        _vm._v("Update Address")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "UpdateCN" } }, [
+        _vm._v("Update Contact Number")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
       _c(
         "h5",
-        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
-        [_vm._v("Personal Information")]
+        { staticClass: "modal-title", attrs: { id: "UpdateEmailAddress" } },
+        [_vm._v("Update Username/Email")]
       ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "UpdatePWD" } }, [
+        _vm._v("Update Password")
+      ]),
       _vm._v(" "),
       _c(
         "button",
@@ -868,7 +1475,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_personalInfo_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./personalInfo.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modules/profile/personalInfo.vue?vue&type=style&index=0&lang=css&");
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_personalInfo_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_personalInfo_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_personalInfo_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_personalInfo_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_personalInfo_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
 
 /***/ }),
 

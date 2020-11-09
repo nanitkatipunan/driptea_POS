@@ -109,7 +109,7 @@ p{
 }
 .firstRow{
     margin-bottom: 5%;
-    margin-top: 3%;
+    margin-top: 1%;
 }
 .sudlanan{
     background-color:white;

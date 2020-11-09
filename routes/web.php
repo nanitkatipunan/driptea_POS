@@ -41,6 +41,8 @@ Route::post('retrieveOnlineOrder','App\Http\Controllers\OrderController@retrieve
 Route::post('retrieveWholeOrder','App\Http\Controllers\OrderController@retrieveWholeOrder');
 Route::post('getOrder','App\Http\Controllers\OrderController@getOrder');
 
+Route::post('retrieveCustomerPendingOrders','App\Http\Controllers\OrderController@retrieveOnlineOrder');
+
 
 Route::post('retrieveSalesReportPerCategory','App\Http\Controllers\OrderController@retrieveSalesReportPerCategory');
 

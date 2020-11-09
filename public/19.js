@@ -44,6 +44,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -232,62 +253,93 @@ var render = function() {
       "div",
       { staticClass: "my-custom-scrollbar" },
       [
-        _c("center", [
-          _c(
-            "h2",
-            {
-              staticStyle: {
-                width: "100%",
-                "background-color": "#ff5b04",
-                color: "white",
-                "margin-bottom": "0%",
-                padding: "7px",
-                "margin-top": "7%"
-              }
-            },
-            [_vm._v("Sales Inventory")]
-          )
-        ]),
-        _vm._v(" "),
         _c(
-          "table",
-          { staticClass: "table categoryTable", attrs: { id: "myTable" } },
-          [
-            _c(
-              "thead",
+          "v-simple-table",
+          {
+            staticClass: "elevation-3",
+            attrs: { "items-per-page": 5 },
+            scopedSlots: _vm._u([
               {
-                staticStyle: { color: "white", padding: "10px" },
-                attrs: { bgcolor: "#ff5b04" }
-              },
-              [
-                _c(
-                  "tr",
-                  { staticClass: "header" },
-                  [
-                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Date")]),
-                    _vm._v(" "),
-                    _vm._l(_vm.categoryData, function(item, index) {
-                      return _c("th", { key: index, attrs: { scope: "col" } }, [
-                        _vm._v(_vm._s(item.productCategory))
-                      ])
-                    }),
-                    _vm._v(" "),
-                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Add Ons")]),
-                    _vm._v(" "),
-                    _c("th", { attrs: { scope: "col" } }, [
-                      _vm._v("Delivery Fee")
-                    ]),
-                    _vm._v(" "),
-                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Cup Type")]),
-                    _vm._v(" "),
-                    _c("th", { attrs: { scope: "col" } }, [
-                      _vm._v("Total Sales")
+                key: "top",
+                fn: function() {
+                  return [
+                    _c(
+                      "v-toolbar",
+                      {
+                        staticClass: "mb-2",
+                        attrs: { color: "#ff5b04", dark: "", flat: "" }
+                      },
+                      [
+                        _c(
+                          "v-toolbar-title",
+                          { staticClass: "col pa-3 py-4 white--text" },
+                          [_vm._v("Sales Inventory")]
+                        ),
+                        _vm._v("      \n             "),
+                        _c("v-text-field", {
+                          staticClass: "mt-7",
+                          attrs: {
+                            clearable: "",
+                            flat: "",
+                            "solo-inverted": "",
+                            "prepend-inner-icon": "mdi-magnify",
+                            label: "Search"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("v-divider", {
+                          staticClass: "mx-4",
+                          attrs: { vertical: "" }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "v-btn",
+                          { staticClass: "mr-6", attrs: { color: "success" } },
+                          [
+                            _vm._v("\n                Export "),
+                            _c("i", {
+                              staticClass: "mdi mdi-export-variant",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                },
+                proxy: true
+              }
+            ])
+          },
+          [
+            _vm._v(" "),
+            _c("thead", [
+              _c(
+                "tr",
+                { staticClass: "header" },
+                [
+                  _c("th", { attrs: { scope: "col" } }, [_vm._v("Date")]),
+                  _vm._v(" "),
+                  _vm._l(_vm.categoryData, function(item, index) {
+                    return _c("th", { key: index, attrs: { scope: "col" } }, [
+                      _vm._v(_vm._s(item.productCategory))
                     ])
-                  ],
-                  2
-                )
-              ]
-            ),
+                  }),
+                  _vm._v(" "),
+                  _c("th", { attrs: { scope: "col" } }, [_vm._v("Add Ons")]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { scope: "col" } }, [
+                    _vm._v("Delivery Fee")
+                  ]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { scope: "col" } }, [_vm._v("Cup Type")]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { scope: "col" } }, [_vm._v("Total Sales")])
+                ],
+                2
+              )
+            ]),
             _vm._v(" "),
             _c(
               "tbody",
@@ -318,8 +370,11 @@ var render = function() {
                 )
               }),
               0
-            )
-          ]
+            ),
+            _vm._v(" "),
+            void 0
+          ],
+          2
         )
       ],
       1

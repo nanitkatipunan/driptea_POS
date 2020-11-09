@@ -1,14 +1,14 @@
 <template>
 <div class="sudlanan">
     <div>
-         <v-btn icon style="margin-right: 1%;"  @click="previous()">
-                <v-icon >mdi-arrow-all</v-icon>
+         <v-btn  style="margin-left: 3%;margin-top:10px" class= "warning" @click="previous()">
+                <v-icon >mdi-home</v-icon>&nbsp;&nbsp;Back
             </v-btn>
-            
 
     </div>
     <center>
-        <h1 style="margin-top: 2%;">{{chosenCat}} Milktea</h1>
+        <v-card class="elevation-3">
+        <h1 style="margin-top: 2%;color:black">{{chosenCat}}</h1>
         <v-row v-if="data !== null && data.length > 0">
             <v-col cols="3" v-for="(item, index) in data" :key="index">
                 <v-card class="pa-2">
@@ -21,6 +21,8 @@
         <div v-else class="secRow">
             <empty :title="'No Product Yet!'"></empty>
         </div>
+        </v-card>
+
         <loading v-if="loadingShow"></loading>
     </center>
 </div>
@@ -83,7 +85,7 @@ export default {
         }
     },
     mounted() {
-        this.retrieveProduct()
+        this.retrieveProduct() 
     },
     components: {
         empty,
