@@ -782,4 +782,3 @@ export default {
   }
 };
 </script>
-
