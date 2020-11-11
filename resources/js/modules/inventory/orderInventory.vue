@@ -249,6 +249,7 @@ export default {
           if (res.data.status) {
             AUTH.deauthenticate();
           }
+          console.log('checkout', res.data.storeOrder)
           this.dataMethod(res.data.storeOrder);
           this.loadingShow = false;
         });
@@ -268,6 +269,7 @@ export default {
           if (res.data.status) {
             AUTH.deauthenticate();
           }
+          console.log('category', res.data.addCategory)
           this.categoryData = res.data.addCategory;
           this.loadingShow = false;
         });
@@ -280,6 +282,7 @@ export default {
           if (response.data.status) {
             AUTH.deauthenticate();
           }
+          console.log('products', response.data.product)
           this.productData = response.data.product;
           this.loadingShow = false;
           this.getProdLength();

@@ -705,7 +705,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -895,9 +894,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     loading: _basic_loading_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   methods: {
-    getImage: function getImage(item) {
-      return _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + item;
-    },
     deleteNow: function deleteNow() {
       if (this.deleteParam === 'category') {
         this.deleteCategory(this.deleteID);
@@ -2181,18 +2177,6 @@ var render = function() {
                   proxy: true
                 },
                 {
-                  key: "item.image",
-                  fn: function(ref) {
-                    var item = ref.item
-                    return [
-                      _c("v-img", {
-                        staticStyle: { width: "50px", hieght: "50px" },
-                        attrs: { src: item.image }
-                      })
-                    ]
-                  }
-                },
-                {
                   key: "item.id",
                   fn: function(ref) {
                     var item = ref.item
@@ -2202,6 +2186,18 @@ var render = function() {
                           _vm._s(_vm.getNumberDate(item.created_at, item.id))
                         )
                       ])
+                    ]
+                  }
+                },
+                {
+                  key: "item.image",
+                  fn: function(ref) {
+                    var item = ref.item
+                    return [
+                      _c("v-img", {
+                        staticStyle: { width: "50px", hieght: "50px" },
+                        attrs: { src: item.image }
+                      })
                     ]
                   }
                 },
@@ -2242,7 +2238,7 @@ var render = function() {
               ],
               null,
               false,
-              777134060
+              3083376748
             )
           })
         : _vm._e(),
