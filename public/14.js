@@ -705,6 +705,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -715,6 +716,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _ref;
 
     return _ref = {
+      auth: _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"],
       dialogConfirmation: false,
       editCat: false,
       tableForCategory: true,
@@ -893,6 +895,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     loading: _basic_loading_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   methods: {
+    getImage: function getImage(item) {
+      return _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + item;
+    },
     deleteNow: function deleteNow() {
       if (this.deleteParam === 'category') {
         this.deleteCategory(this.deleteID);
@@ -2176,6 +2181,18 @@ var render = function() {
                   proxy: true
                 },
                 {
+                  key: "item.image",
+                  fn: function(ref) {
+                    var item = ref.item
+                    return [
+                      _c("v-img", {
+                        staticStyle: { width: "50px", hieght: "50px" },
+                        attrs: { src: item.image }
+                      })
+                    ]
+                  }
+                },
+                {
                   key: "item.id",
                   fn: function(ref) {
                     var item = ref.item
@@ -2185,18 +2202,6 @@ var render = function() {
                           _vm._s(_vm.getNumberDate(item.created_at, item.id))
                         )
                       ])
-                    ]
-                  }
-                },
-                {
-                  key: "item.image",
-                  fn: function(ref) {
-                    var item = ref.item
-                    return [
-                      _c("v-img", {
-                        staticStyle: { width: "50px", hieght: "50px" },
-                        attrs: { src: item.image }
-                      })
                     ]
                   }
                 },
@@ -2237,7 +2242,7 @@ var render = function() {
               ],
               null,
               false,
-              3083376748
+              777134060
             )
           })
         : _vm._e(),

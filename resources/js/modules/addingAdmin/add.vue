@@ -59,6 +59,7 @@
           >+CATEGORY</v-btn>
         </v-toolbar>
       </template>
+      <template v-slot:item.image="{ item }"><span>{{getImage(item.image)}}</span> </template>
       <template v-slot:item.id="{ item }"><span>{{getNumberDate(item.created_at, item.id)}}</span> </template>
       <template v-slot:item.image="{ item }">
         <v-img :src="item.image" style="width:50px;hieght:50px"></v-img>
@@ -694,6 +695,7 @@ import moment from 'moment'
 export default {
   data() {
     return {
+      auth: AUTH,
       dialogConfirmation: false,
       editCat: false,
       tableForCategory: true,
@@ -833,6 +835,9 @@ export default {
     loading
   },
   methods: {
+    getImage(item){
+      return AUTH.url + item
+    },
     deleteNow(){
       if(this.deleteParam === 'category'){
         this.deleteCategory(this.deleteID)
