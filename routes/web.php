@@ -23,6 +23,8 @@ Route::post('SaveNEWdata', 'App\Http\Controllers\UserController@SaveNEWdata');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
+    Route::post('retrieve', 'App\Http\Controllers\UserController@retrieve');
+
     Route::post('formSubmit','App\Http\Controllers\ProductController@formSubmit');
     Route::post('updateProduct','App\Http\Controllers\ProductController@updateProduct');
     Route::post('retrieveProduct','App\Http\Controllers\ProductController@retrieveProduct');
@@ -30,12 +32,15 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('retrieveAllProduct','App\Http\Controllers\ProductController@retrieveAllProduct');
     Route::post('retrieveAllProductAscending','App\Http\Controllers\ProductController@retrieveAllProductAscending');
     Route::post('updateStatusProduct','App\Http\Controllers\ProductController@updateStatusProduct');
+    Route::post('deleteProduct','App\Http\Controllers\ProductController@deleteProduct');
+    Route::post('RetrieveWithDelete','App\Http\Controllers\ProductController@RetrieveWithDelete');
 
     Route::post('addCategory','App\Http\Controllers\AddCategoryController@addCategory');
     Route::post('updateCategory','App\Http\Controllers\AddCategoryController@updateCategory');
     Route::post('retrieveCategory','App\Http\Controllers\AddCategoryController@retrieveCategory');
     Route::post('retrieveCategoryAscending','App\Http\Controllers\AddCategoryController@retrieveCategoryAscending');
     Route::post('retrieveCategoryForSales','App\Http\Controllers\AddCategoryController@retrieveCategoryAscending');
+    Route::post('deleteCategory','App\Http\Controllers\AddCategoryController@deleteCategory');
 
     Route::post('addCustomer','App\Http\Controllers\CustomerDetailsController@insertCustomer');
     Route::post('retrieveCustomer','App\Http\Controllers\CustomerDetailsController@retrieveCustomer');
@@ -59,6 +64,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('retrieveOneAddOn','App\Http\Controllers\AddAddOnsController@retrieveOneAddOn');
     Route::post('retrieveAllAddOns','App\Http\Controllers\AddAddOnsController@retrieveAllAddOns');
     Route::post('retrieveOneAddOnName','App\Http\Controllers\AddAddOnsController@retrieveOneAddOnName');
+    Route::post('deleteAddOns','App\Http\Controllers\AddAddOnsController@deleteAddOns');
+    Route::post('retrieveWithDeleteAddOns','App\Http\Controllers\AddAddOnsController@retrieveWithDeleteAddOns');
 
     Route::post('addingCupType','App\Http\Controllers\CupTypeController@addingCupType');
     Route::post('retrieveCupType','App\Http\Controllers\CupTypeController@retrieveCupType');
@@ -66,6 +73,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('updateAvailableCupType','App\Http\Controllers\CupTypeController@updateAvailableCupType');
     Route::post('editingCupType','App\Http\Controllers\CupTypeController@editingCupType');
     Route::post('retrieveAllCupType','App\Http\Controllers\CupTypeController@retrieveAllCupType');
+    Route::post('deleteCupType','App\Http\Controllers\CupTypeController@deleteCupType');
 
     Route::post('addCheckout','App\Http\Controllers\StoreCheckoutsController@addCheckout');
     Route::post('retrieveCheckouts','App\Http\Controllers\StoreCheckoutsController@retrieveCheckouts');
