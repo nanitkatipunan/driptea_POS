@@ -1231,13 +1231,13 @@ export default {
         this.imgURL = URL.createObjectURL(e.target.files[0])
     },
     formSubmitProduct(e) {
+      e.preventDefault();
       this.loadingShow = true
       if (this.img !== null && this.prodType !== null && this.productName !== null &&
        this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null &&
        this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null &&
        this.lowPrice > 0 && this.highPrice > 0 && this.overPrice > 0 &&
        this.onlinelowPrice > 0 && this.onlinehighPrice > 0 && this.onlineoverPrice > 0 && this.errorMessage1 === null){
-          e.preventDefault();
           let currentObj = this;
           const config = {
               headers: {

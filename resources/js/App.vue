@@ -322,6 +322,7 @@ export default {
             AUTH.deauthenticate()
         }
         this.tableData = res.data.order;
+        console.log(this.tableData)
         Object.keys(this.tableData).forEach(element => {
           storage.push(this.tableData[element]);
         });
