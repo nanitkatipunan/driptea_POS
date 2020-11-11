@@ -192,6 +192,7 @@ export default {
   },
   methods: {
     getAllValue(item, items, index) {
+      console.log('sulod')
       let total = 0;
       let category = "lowDose";
       let lowLength = this.prod.length / 3;

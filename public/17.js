@@ -208,6 +208,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getAllValue: function getAllValue(item, items, index) {
+      console.log('sulod');
       var total = 0;
       var category = "lowDose";
       var lowLength = this.prod.length / 3;
