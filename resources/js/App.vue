@@ -39,12 +39,19 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
                 <v-icon medium color="black" right>mdi-bell-ring</v-icon>
+                <span style="background-color: white; color: red; border-radius: 50%; font-size: 15px; margin-left: -5%; margin-top: -25%; z-index: 9999">{{count > 0 ? '&nbsp;' + count + '&nbsp;' : ''}}</span>
               </v-btn>
             </template>
-            <v-list style="max-height: 200px" class="overflow-y-auto notifDropdown">
-              <!-- ang Click kay wala pay nay method -->
-              <v-list-item v-for="(item, index) in items" :key="index">
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list
+              style="max-height: 300px; max-width: 300px"
+              class="overflow-y-auto notifDropdown"
+            >
+              <v-list-item
+                v-for="(item, index) in storeOrder"
+                :key="index"
+                @click="getOrder(item, $event)"
+              >
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }} has order</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -83,7 +90,9 @@
       </v-app-bar-items>
     </v-app-bar>
     <v-app-bar class="cashierNav" color="#ff5b04" v-if="cashier !== null">
-      <a><v-img max-height="64" max-width="42" :src="image" @click="redirect('/casherDashboard')"></v-img></a>
+      <a>
+        <v-img max-height="64" max-width="42" :src="image" @click="redirect('/casherDashboard')"></v-img>
+      </a>
       <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
       <v-app-bar-items name="theitem" class="hidden-sm-and-down" app>
@@ -92,20 +101,19 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
                 <v-icon medium color="black" right>mdi-bell-ring</v-icon>
+                <span style="background-color: white; color: red; border-radius: 50%; font-size: 15px; margin-left: -5%; margin-top: -25%; z-index: 9999">{{count > 0 ? '&nbsp;' + count + '&nbsp;' : ''}}</span>
               </v-btn>
             </template>
             <v-list
               style="max-height: 300px; max-width: 300px"
               class="overflow-y-auto notifDropdown"
             >
-              <!-- ang Click kay wala pay nay method -->
-              <!-- <product ref="product"></product> -->
               <v-list-item
                 v-for="(item, index) in storeOrder"
                 :key="index"
                 @click="getOrder(item, $event)"
               >
-                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }} has order</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -119,20 +127,18 @@
                 <v-icon medium color="black" right>mdi-arrow-down-drop-circle</v-icon>
               </v-btn>
             </template>
-            <v-list
+            <!-- <v-list
               style="max-height: 300px; max-width: 300px"
               class="overflow-y-auto notifDropdown"
             >
-              <!-- ang Click kay wala pay nay method -->
-              <!-- <product ref="product"></product> -->
               <v-list-item
-                v-for="(item, index) in storeOrder"
+                v-for="(item, index) in account"
                 :key="index"
-                @click="getOrder(item, $event)"
+                @click="redirect(item.route+cashier)"
               >
-                <v-list-item-title>{{ item[0].get_customer[0].customerName }}{{item[0].get_customer[0].id}} has order</v-list-item-title>
+                <v-list-item-title>{{ item[0].get_customer[0].customerName }} has order</v-list-item-title>
               </v-list-item>
-            </v-list>
+            </v-list> -->
           </v-menu>
         </div>
       </v-app-bar-items>
@@ -169,7 +175,7 @@ import config from "./config.js";
 import product from "./modules/products/productCategory.vue";
 export default {
   data: () => ({
-    username: AUTH.user.fullname,
+    username: null,
     admin: localStorage.getItem("adminId"),
     cashier: localStorage.getItem("cashierId"),
     drawer: null,
@@ -250,18 +256,19 @@ export default {
       { title: "Click Me" },
       { title: "Click Me 2...................." }
     ],
-    count: 0,
+    count: 0
   }),
   components: {},
   mounted() {
     this.admin = localStorage.getItem("adminId");
     this.cashier = localStorage.getItem("cashierId");
-    this.retrieve();
+    if(this.admin || this.cashier){
+      this.retrieve();
+    }
     let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
       cluster: this.config.PUSHER_APP_CLUSTER,
       encrypted: true
     });
-
     let channel = pusher.subscribe("driptea-channel");
     let obj = this;
     channel.bind("driptea-data", data => {
@@ -276,12 +283,32 @@ export default {
       return this.menu;
     },
     redirect(route) {
-      if (route === "/logout/" + this.admin) {
-        this.logout();
-      } else {
-        ROUTER.push(route).catch(() => {});
+      if (this.admin != null) {
+        if (route === "/logout/" + this.admin) {
+          this.logout();
+        } else {
+          ROUTER.push(route).catch(() => {});
+        }
+      }else if (this.cashier != null) {
+        if (route === "/logout/" + this.cashier) {
+          this.logout();
+        } else {
+          ROUTER.push(route).catch(() => {});
+        }
       }
     },
+    // getusername(id){
+    //   console.log("na piste na baya ko nimo ahh ",id)
+    //   let params = {
+    //     uname: id
+    //   };
+    //   Axios.post(AUTH.url + "getUserName", params).then(response => {
+    //     response.data.userdata.forEach(element => {
+    //       console.log("********************************* ",element)
+    //       this.username = element.fullname;
+    //     })
+    //   })
+    // },
     getOrder(item, event) {
       event.target.classList.add("color");
       localStorage.setItem("customerId", item[0].customerId);
@@ -289,17 +316,23 @@ export default {
       ROUTER.push("/productCategory/online").catch(() => {});
     },
     retrieve() {
-      this.$axios.post(AUTH.url + "retrieveOnlineOrder").then(res => {
-        let storage = [];
+      console.log('sadfsafdasfsdf')
+      let storage = [];
+      this.$axios.post(AUTH.url + "retrieveOnlineOrder", {}, AUTH.config).then(res => {
+        if(res.data.status){
+            AUTH.deauthenticate()
+        }
         this.tableData = res.data.order;
+        console.log(this.tableData)
         Object.keys(this.tableData).forEach(element => {
           storage.push(this.tableData[element]);
         });
         this.storeOrder = storage;
+        this.count = this.storeOrder.length
       });
     },
-    logout(){
-      AUTH.deauthenticate()
+    logout() {
+      AUTH.deauthenticate();
     }
   }
 };

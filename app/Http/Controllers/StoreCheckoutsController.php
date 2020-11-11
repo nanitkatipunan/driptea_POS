@@ -64,9 +64,8 @@ class StoreCheckoutsController extends Controller
     public function retrieveYears(Request $request)
     {
         $years = StoreCheckouts::select(array(DB::raw('YEAR(created_at) as year')))
-                    ->groupBy('year')
-                    ->get();
-
+        ->groupBy('year')
+        ->get();
         return response()->JSON(compact('years'));
     }
     public function retrieveAllCheckouts(Request $request){
@@ -84,21 +83,20 @@ class StoreCheckoutsController extends Controller
 
     public function retrieveDailySales(Request $request)
     {
-        $total = StoreCheckouts::select(DB::raw('SUM(subTotal) as sub'),DB::raw('DAY(created_at) as `date`'),DB::raw('YEAR(created_at) as `year`'),DB::raw('MONTH(created_at) as `month`'))
-                ->whereMonth('created_at', '=', $request->month)
-                ->whereYear('created_at', '=', $request->year)
-                ->groupBy('year','month','date')
-                 ->get();
-                //  dd($total);
+        $total = StoreCheckouts::select(DB::raw('SUM(total) as sub'),DB::raw('DAY(created_at) as date'),DB::raw('YEAR(created_at) as year'),DB::raw('MONTH(created_at) as month'))
+        ->whereMonth('created_at', '=', $request->month)
+        ->whereYear('created_at', '=', $request->year)
+        ->groupBy('year','month','date')
+        ->get();
         return response()->JSON(compact('total'));
     }
     
     public function retrieveMonthlySales(Request $request)
     {
         $subtotal = StoreCheckouts::select(array(DB::raw('SUM(total) as sub'),DB::raw('MONTH(created_at) as month')))
-                    ->whereYear('created_at', '=', $request->year)
-                    ->groupBy('month')
-                    ->get();
+        ->whereYear('created_at', '=', $request->year)
+        ->groupBy('month')
+        ->get();
 
         return response()->JSON(compact('subtotal'));
     }
@@ -135,6 +133,4 @@ class StoreCheckoutsController extends Controller
         // dd($subtotal);
         return response()->JSON(compact('subtotal'));
     }
-
-
 }

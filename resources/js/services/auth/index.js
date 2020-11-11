@@ -23,7 +23,7 @@ export default {
             let toReturn = false
             this.setToken(token)
             axios({
-                method: 'post', //you can set what request you want to be
+                method: 'post',
                 url: this.url + 'user',
                 headers: {
                   Authorization: 'Bearer ' + token

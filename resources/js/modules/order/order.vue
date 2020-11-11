@@ -1,9 +1,10 @@
 <template>
     <div class="sudlanan">
         <div>
-         <v-btn icon style="margin-right: 1%;"  @click="previous()">
-                <v-icon >mdi-home</v-icon>
+          <v-btn  style="margin-left: 3%;margin-top:10px" class= "warning" @click="previous()">
+                <v-icon >mdi-home</v-icon>&nbsp;&nbsp;Back
             </v-btn>
+
     </div>
         <center>
             <h1 style="margin-top: 2%; color: black">{{itemSelected}}</h1>
@@ -332,7 +333,7 @@ export default {
                     cupType: this.cupType,
                     status: 'pending',
                     addOns: this.addOns,
-                    subTotal: this.quantity * (this.total + this.addOnsAmount + this.cupPrice)
+                    subTotal: parseInt(this.quantity) * (parseInt(this.total) + parseInt(this.addOnsAmount) + parseInt(this.cupPrice))
                 }
                 this.$axios.post(AUTH.url + 'addOrder', parameter, AUTH.config).then(response => {
                     this.loadingShow = false

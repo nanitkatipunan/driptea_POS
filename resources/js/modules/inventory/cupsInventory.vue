@@ -97,7 +97,7 @@ export default {
           if(response.data.status){
               AUTH.deauthenticate()
           }
-          this.dataInDB = response.data.quantityCupsInDB
+          this.dataInDB = response.data.quantityCupsInDB.reverse()
           this.headersForCup = [
             {text: "Date" ,value:"created_at"},
             {text: "Low Dose (LD)" ,value:"incomingLowDose"},
@@ -116,7 +116,7 @@ export default {
           if(response.data.status){
               AUTH.deauthenticate()
           }
-          this.dataInDB = response.data.quantityCupsInDB
+          this.dataInDB = response.data.quantityCupsInDB.reverse()
           this.headersForCup = [
             {text: "Date" ,value:"created_at"},
             {text: "Low Dose (LD)" ,value:"onRockLowDose"},
@@ -135,7 +135,7 @@ export default {
         if(response.data.status){
             AUTH.deauthenticate()
         }
-        this.dataInDB = response.data.quantityCupsInDB
+        this.dataInDB = response.data.quantityCupsInDB.reverse()
         this.headersForCup = [
           {text: "Date" ,value:"created_at"},
           {text: "Low Dose (LD)" ,value:"usedCupsLowDose"},
@@ -153,7 +153,7 @@ export default {
         if(response.data.status){
             AUTH.deauthenticate()
         }
-        this.dataInDB = response.data.quantityCupsInDB
+        this.dataInDB = response.data.quantityCupsInDB.reverse()
         this.headersForCup = [
           {text: "Date" ,value:"created_at"},
           {text: "Low Dose (LD)" ,value:"remainingLowDose"},
@@ -172,11 +172,9 @@ export default {
 <style scoped>
 .table{
   margin-left: 50px;
-  margin-top: 50px;
   width: 90%;
 }
 td{
   text-align: center
 }
 </style>
-

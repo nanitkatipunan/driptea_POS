@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+        "postinstall": "npm run prod",
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch": "npm run development -- --watch",
@@ -27,7 +28,6 @@
         "bootstrap": "^4.1.1",
         "jquery": "^3.5.1",
         "json-schema": "^0.2.5",
-        "jsonwebtoken": "^8.5.1",
         "moment": "^2.29.1",
         "popper.js": "^1.16.1",
         "pusher-js": "^7.0.0",

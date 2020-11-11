@@ -31,7 +31,9 @@
             <span>{{Fname}}</span>
           </div>
           <div class="col-sm-3 text-right">
-            <v-icon>mdi-chevron-right</v-icon>
+            <v-button type="button" data-toggle="modal" data-target="#forNameUpdate">
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-button>
           </div>
         </div>
       </div>
@@ -43,7 +45,9 @@
             <span>{{address}}</span>
           </div>
           <div class="col-sm-3 text-right">
-            <v-icon>mdi-chevron-right</v-icon>
+            <v-button type="button" data-toggle="modal" data-target="#forAddressUpdate">
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-button>
           </div>
         </div>
       </div>
@@ -55,7 +59,9 @@
             <span>{{contactnum}}</span>
           </div>
           <div class="col-sm-3 text-right">
-            <v-icon>mdi-chevron-right</v-icon>
+            <v-button type="button" data-toggle="modal" data-target="#forCNUpdate">
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-button>
           </div>
         </div>
       </div>
@@ -67,7 +73,9 @@
             <span>{{emailAdd}}</span>
           </div>
           <div class="col-sm-3 text-right">
-            <v-icon>mdi-chevron-right</v-icon>
+            <v-button type="button" data-toggle="modal" data-target="#forEmailUpdate">
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-button>
           </div>
         </div>
       </div>
@@ -79,25 +87,25 @@
             <span type="password">{{password}}</span>
           </div>
           <div class="col-sm-3 text-right">
-            <v-icon>mdi-chevron-right</v-icon>
+            <v-button type="button" data-toggle="modal" data-target="#forPWDupdate">
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-button>
           </div>
         </div>
       </div>
-      <hr>
-      <v-button type="button" data-toggle="modal" data-target="#exampleModal">Update</v-button>
     </div>
     <div
       class="modal fade"
-      id="exampleModal"
+      :id="forNameUpdate"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="Updatename"
       aria-hidden="true"
     >
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Personal Information</h5>
+            <h5 class="modal-title" id="Updatename">Update Name</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -106,33 +114,198 @@
             <form>
               <div class="form-group">
                 <label for="usr">Name:</label>
-                <input  :placeholder="Fname" v-model="newName" type="text" class="form-control" id="usr">
-              </div>
-              <div class="form-group">
-                <label for="add">Address:</label>
-                <input :placeholder="address" v-model="newaddress" type="text" class="form-control" id="add">
-              </div>
-              <div class="form-group">
-                <label for="cn">Contact Number:</label>
-                <input :placeholder="contactnum" v-model="newcontactnum" type="number" class="form-control" id="cn">
-              </div>
-              <div class="form-group">
-                <label for="email">Username/Email Address:</label>
-                <input :placeholder="emailAdd" v-model="newemailAdd" type="email" class="form-control" id="email">
-              </div>
-              <div class="form-group">
-                <label for="pwd">Password:</label>
-                <input :placeholder="password" v-model="newpassword" type="password" class="form-control" id="pwd">
-              </div>
-              <div class="form-group">
-                <label for="cpwd">Confirm Password:</label>
-                <input v-model="Cpassword" type="password" class="form-control" id="cpwd">
+                <input
+                  :placeholder="Fname"
+                  v-model="newName"
+                  type="text"
+                  class="form-control"
+                  id="usr"
+                >
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn closebtn" data-dismiss="modal">Close</button>
-            <button type="button" class="btn savebtn" @click="Save">Save changes</button>
+            <button type="button" class="btn closebtn" data-dismiss="modal">Cancel</button>
+            <button
+              type="button"
+              class="btn savebtn"
+              @click="Save(newName,fn,forNameUpdate)"
+            >Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      :id="forAddressUpdate"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="UpdateAddress"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="UpdateAddress">Update Address</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="adr">Address:</label>
+                <input
+                  :placeholder="address"
+                  v-model="newaddress"
+                  type="text"
+                  class="form-control"
+                  id="adr"
+                >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn closebtn" data-dismiss="modal">Cancel</button>
+            <button
+              type="button"
+              class="btn savebtn"
+              @click="Save(newaddress,add,forAddressUpdate)"
+            >Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      :id="forCNUpdate"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="UpdateCN"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="UpdateCN">Update Contact Number</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="cn">Contact Number:</label>
+                <input
+                  :placeholder="contactnum"
+                  v-model="newcontactnum"
+                  type="text"
+                  class="form-control"
+                  id="cn"
+                >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn closebtn" data-dismiss="modal">Cancel</button>
+            <button
+              type="button"
+              class="btn savebtn"
+              @click="Save(newcontactnum,dbcontact,forCNUpdate)"
+            >Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      :id="forEmailUpdate"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="UpdateEmailAddress"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="UpdateEmailAddress">Update Username/Email</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="usrE">Username/Email Address:</label>
+                <input
+                  :placeholder="emailAdd"
+                  v-model="newemailAdd"
+                  type="text"
+                  class="form-control"
+                  id="usrE"
+                >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn closebtn" data-dismiss="modal">Cancel</button>
+            <button
+              type="button"
+              class="btn savebtn"
+              @click="Save(newemailAdd,theEmail,forEmailUpdate)"
+            >Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      :id="forPWDupdate"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="UpdatePWD"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="UpdatePWD">Update Password</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="passw">Password:</label>
+                <input
+                  :placeholder="password"
+                  v-model="newpassword"
+                  type="password"
+                  class="form-control"
+                  id="passw"
+                >
+              </div>
+              <i>
+                <span v-if="errorMessage !== null" class="text-danger text-center">{{errorMessage}}</span>
+              </i>
+              <div class="form-group">
+                <label for="cpass">Confirm Password:</label>
+                <input
+                  placeholder="Type new password here..."
+                  v-model="Cpassword"
+                  type="password"
+                  class="form-control"
+                  id="cpass"
+                >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn closebtn" data-dismiss="modal">Cancel</button>
+            <button
+              type="button"
+              class="btn savebtn"
+              @click="Save(newpassword,pwd,forPWDupdate)"
+            >Save changes</button>
           </div>
         </div>
       </div>
@@ -141,8 +314,19 @@
 </template>
 
 <style>
+.updateText {
+  width: auto;
+  vertical-align: middle;
+}
+.theUpdatebtn {
+  background-color: #ff5b04;
+  width: 100%;
+  height: 30px;
+  border-radius: 2px;
+  padding: 0%;
+}
 .savebtn {
-  color: orange;
+  color: #ff5b04;
 }
 .thetitle {
   margin-top: 3%;
@@ -177,15 +361,18 @@
 import ProfilePic from "../../../assets/profile.jpg";
 import AUTH from "../../services/auth";
 import Axios from "axios";
+import $ from "jquery";
 // import imongAccount from "./myAccounts";
 
 export default {
   data() {
     return {
+      errorMessage: null,
+      modalShow: true,
       profilepic: ProfilePic,
       fullname: "churva",
       show: false,
-      emailAdd: "",
+      emailAdd: null,
       contactnum: null,
       address: null,
       Fname: null,
@@ -196,7 +383,17 @@ export default {
       newcontactnum: null,
       newaddress: null,
       newName: null,
-      Cpassword: null
+      Cpassword: null,
+      theEmail: "name",
+      fn: "fullname",
+      add: "address",
+      dbcontact: "contactNumber",
+      pwd: "password",
+      forNameUpdate: "forNameUpdate",
+      forAddressUpdate: "forAddressUpdate",
+      forCNUpdate: "forCNUpdate",
+      forEmailUpdate: "forEmailUpdate",
+      forPWDupdate: "forPWDupdate"
     };
   },
   components: {
@@ -205,10 +402,7 @@ export default {
   mounted() {
     this.userID = this.$route.params.id;
     this.retrieveUserDatas(this.userID);
-        console.log("ang response ", this.userID);
-
-    // this.$bus.$on('redirect',data => {
-    // })
+    console.log("ang response ", this.userID);
   },
 
   methods: {
@@ -255,21 +449,47 @@ export default {
         );
       });
     },
-    Save() {
-      console.log("hoyy")
-      let params = {
-        ID: this.userID,
-        newEmail: this.newemailAdd,
-        newContact: this.newcontactnum,
-        newadd: this.newaddress,
-        newfname: this.newName ,
-        newPass: this.newpassword,
-      } 
-      Axios.post(AUTH.url + "SaveNEWdata", params).then(response => {
-
-      }).catch(err => {
-          console.log("error imong pag update ",err)
+    Save(data, colname, modalID) {
+      if (modalID === "forPWDupdate") {
+        if (this.Cpassword === this.newpassword) {
+          let params = {
+            ID: this.userID,
+            data: data,
+            col: colname
+          };
+          Axios.post(AUTH.url + "SaveNEWdata", params)
+            .then(response => {
+              this.retrieveUserDatas(this.userID);
+              $("#" + modalID).modal("hide");
+            })
+            .catch(err => {
+              console.log("error imong pag update ", err);
+            });
+        } else {
+          this.errorMessage = "Password did not match";
+        }
+      } else {
+        let params = {
+          ID: this.userID,
+          data: data,
+          col: colname
+        };
+        Axios.post(AUTH.url + "SaveNEWdata", params)
+          .then(response => {
+            this.retrieveUserDatas(this.userID);
+            $("#" + modalID).modal("hide");
           })
+          .catch(err => {
+            console.log("error imong pag update ", err);
+          });
+      }
+      this.errorMessage = null;
+      this.newpassword = null;
+      this.newemailAdd = null;
+      this.newcontactnum = null;
+      this.newaddress = null;
+      this.newName = null;
+      this.Cpassword = null;
     }
   }
 };

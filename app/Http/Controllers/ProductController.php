@@ -40,9 +40,15 @@ class ProductController extends Controller
     }
 
     public function updateProduct(Request $request){
-        // $imageName = time().'.'.$request->image->getClientOriginalExtension();
         $data = $request->all();
         $product = Product::firstOrCreate(['id' => $request->id]);
+        if($product->image === $data['image']){
+            $product->image = $data['image'];
+        }else{
+            $imageName = time().'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('images'), $imageName);
+            $product->image = 'images/'.$imageName;
+        }
         $product->lowPrice = $data['lowPrice'];
         $product->highPrice = $data['highPrice'];
         $product->overPrice = $data['overPrice'];
@@ -53,35 +59,46 @@ class ProductController extends Controller
         $product->description = $data['description'];
         $product->productName = $data['productName'];
         $product->status = $data['status'];
-        $product->image = $data['image'];
         $product->save();
         return response()->json(compact('product'));
     }
 
     public function retrieveProduct(Request $request){
         $type = $request['type'];
-        $product = Product::where('productCategory', $type)->where('status', 'Available')->get();
+        $product = Product::where('productCategory', $type)->where('status', 'Available')->where('remove', null)->get();
         return response()->json(compact('product'));
     }
 
     public function retrieveAllProduct(Request $request){
-        $product = Product::where('status','Available')->orderBy('id','DESC')->get();
+        $product = Product::orderBy('productName','ASC')->where('remove', null)->get();
+        return response()->json(compact('product'));
+    }
+
+    public function RetrieveWithDelete(Request $request){
+        $product = Product::orderBy('productName','ASC')->get();
         return response()->json(compact('product'));
     }
 
     public function retrieveAllProductAscending(Request $request){
-        $product = Product::orderBy('id','ASC')->where('status','Available')->get();
+        $product = Product::orderBy('id','ASC')->where('remove', null)->get();
         return response()->json(compact('product'));
     }
 
     public function retrieveOneProduct(Request $request){
-        $product = Product::where('id', $request->id)->get();
+        $product = Product::where('id', $request->id)->where('remove', null)->get();
         return response()->json(compact('product'));
     }
 
     public function updateStatusProduct(Request $request){
         $product = Product::firstOrCreate(['id' => $request->id]);
         $product->status = $request['status'];
+        $product->save();
+        return response()->json(['success' => 'successfully updated!']);
+    }
+
+    public function deleteProduct(Request $request){
+        $product = Product::firstOrCreate(['id' => $request->id]);
+        $product->remove = 'deleted';
         $product->save();
         return response()->json(['success' => 'successfully updated!']);
     }
