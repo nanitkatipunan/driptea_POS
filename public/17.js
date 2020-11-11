@@ -208,7 +208,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getAllValue: function getAllValue(item, items, index) {
-      console.log('sulod');
       var total = 0;
       var category = "lowDose";
       var lowLength = this.prod.length / 3;
@@ -241,7 +240,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      console.log('haha', items);
       items.forEach(function (el) {
         if (el.size === category) {
           if (el.order_product[0].id === item.id) {
@@ -332,7 +330,6 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.prod = storeProd;
-      console.log(this.prod);
       this.loadingShow = false;
     },
     changeCategory: function changeCategory(param) {

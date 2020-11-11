@@ -192,7 +192,6 @@ export default {
   },
   methods: {
     getAllValue(item, items, index) {
-      console.log('sulod')
       let total = 0;
       let category = "lowDose";
       let lowLength = this.prod.length / 3;
@@ -223,7 +222,6 @@ export default {
           }
         }
       }
-      console.log('haha', items)
       items.forEach(el => {
         if (el.size === category) {
           if (el.order_product[0].id === item.id) {
@@ -305,7 +303,6 @@ export default {
         });
       }
       this.prod = storeProd;
-      console.log(this.prod)
       this.loadingShow = false;
     },
     changeCategory(param) {
