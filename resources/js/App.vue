@@ -316,6 +316,7 @@ export default {
       ROUTER.push("/productCategory/online").catch(() => {});
     },
     retrieve() {
+      console.log('sadfsafdasfsdf')
       let storage = [];
       this.$axios.post(AUTH.url + "retrieveOnlineOrder", {}, AUTH.config).then(res => {
         if(res.data.status){
