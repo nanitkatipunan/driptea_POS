@@ -1,9 +1,25 @@
 <template>
     <v-card>
         <div class="my-custom-scrollbar">
-            <center><h2 style="width:100%; background-color: #ff5b04; color:white; margin-bottom: 0%; padding: 7px; margin-top: 7%;">Sales Inventory</h2></center>
-            <table class="table categoryTable" id="myTable">
-                <thead bgcolor="#ff5b04" style="color: white; padding: 10px;">
+                <v-simple-table :items-per-page="5" class="elevation-3">
+             <template v-slot:top>
+               <v-toolbar class="mb-2" color="#ff5b04" dark flat>
+                 <v-toolbar-title class="col pa-3 py-4 white--text">Sales Inventory</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <v-text-field
+                   clearable
+                   flat
+                   solo-inverted
+                   prepend-inner-icon="mdi-magnify"
+                   class="mt-7"
+                   label="Search"
+                 ></v-text-field>
+                 <v-divider class="mx-4" vertical></v-divider>
+                   <v-btn color="success" class="mr-6">
+                    Export <i class="mdi mdi-export-variant" aria-hidden="true"></i>
+              </v-btn>
+               </v-toolbar>
+             </template>
+                <thead >
                     <tr class="header">
                         <th scope="col">Date</th>
                         <th scope="col" v-for="(item, index) in categoryData" :key="index">{{item.productCategory}}</th>
@@ -23,7 +39,12 @@
                         <td>₱ {{getTotal(index)}}</td>
                     </tr>
                 </tbody>
-            </table>
+
+             <template></template>
+           </v-simple-table>
+           
+               
+            
         </div>
     </v-card>
 </template>
