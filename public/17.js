@@ -240,6 +240,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
+      console.log('haha', items);
       items.forEach(function (el) {
         if (el.size === category) {
           if (el.order_product[0].id === item.id) {
@@ -268,8 +269,6 @@ __webpack_require__.r(__webpack_exports__);
           _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].deauthenticate();
         }
 
-        console.log('checkout', res.data.storeOrder);
-
         _this.dataMethod(res.data.storeOrder);
 
         _this.loadingShow = false;
@@ -291,7 +290,6 @@ __webpack_require__.r(__webpack_exports__);
           _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].deauthenticate();
         }
 
-        console.log('category', res.data.addCategory);
         _this2.categoryData = res.data.addCategory;
         _this2.loadingShow = false;
       });
@@ -305,7 +303,6 @@ __webpack_require__.r(__webpack_exports__);
           _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].deauthenticate();
         }
 
-        console.log('products', response.data.product);
         _this3.productData = response.data.product;
         _this3.loadingShow = false;
 
