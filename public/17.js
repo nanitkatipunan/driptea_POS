@@ -332,6 +332,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.prod = storeProd;
+      console.log(this.prod);
       this.loadingShow = false;
     },
     changeCategory: function changeCategory(param) {

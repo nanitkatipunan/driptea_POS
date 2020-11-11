@@ -305,6 +305,7 @@ export default {
         });
       }
       this.prod = storeProd;
+      console.log(this.prod)
       this.loadingShow = false;
     },
     changeCategory(param) {
