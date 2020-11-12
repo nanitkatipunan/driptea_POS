@@ -463,6 +463,9 @@ export default {
     retrieve(){
       this.loadingShow = true
       this.$axios.post(AUTH.url + "retrieve", {}, AUTH.config).then(response => {
+        if(response.data.status){
+          AUTH.deauthenticate()
+        }
         this.loadingShow = false
         this.userData = response.data.user
       })
@@ -650,7 +653,7 @@ export default {
         this.password.length >= 6 &&
         this.password.localeCompare(this.confirmPass) === 0 &&
         this.type !== null &&
-        AUTH.validateEmail(this.email) === true
+        this.validateEmail(this.email) === true
       ) {
         this.errorMessage1 = null;
       } else {

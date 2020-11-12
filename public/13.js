@@ -415,7 +415,11 @@ __webpack_require__.r(__webpack_exports__);
           _this.authenticate(_this.username, _this.password);
         })["catch"](function (error) {
           if (error.response.status === 300) {
-            _this.errorMessage3 = "Username already exist";
+            _this.errorMessage14 = "Username already exist";
+          }
+
+          if (error.response.status === 301) {
+            _this.errorMessage3 = "Email already exist";
           }
 
           _this.loadingShow = false;
@@ -539,7 +543,7 @@ __webpack_require__.r(__webpack_exports__);
           this.errorMessage8 = null;
           this.errorMessage9 = null;
         }
-      } else if (this.contactNum != null && this.address != null && this.firstname.length >= 6 && this.email !== null && this.password !== null && this.password.length >= 6 && this.password.localeCompare(this.confirmPass) === 0 && this.type !== null && _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].validateEmail(this.email) === true) {
+      } else if (this.contactNum != null && this.address != null && this.firstname.length >= 6 && this.email !== null && this.password !== null && this.password.length >= 6 && this.password.localeCompare(this.confirmPass) === 0 && this.type !== null && this.validateEmail(this.email) === true) {
         this.errorMessage1 = null;
       } else {
         this.errorMessage7 = "Please fill in all required fields.";

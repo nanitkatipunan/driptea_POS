@@ -17,11 +17,12 @@ Route::post('register', 'App\Http\Controllers\UserController@register');
 Route::post('login', 'App\Http\Controllers\UserController@authenticate');
 Route::post('tokenRefresh', 'App\Http\Controllers\UserController@tokenRefresh');
 Route::post('deaunthenticate', 'App\Http\Controllers\UserController@deaunthenticate');
-Route::post('getUserData', 'App\Http\Controllers\UserController@userdata');
-Route::post('getUserName', 'App\Http\Controllers\UserController@getUserName');
-Route::post('SaveNEWdata', 'App\Http\Controllers\UserController@SaveNEWdata');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::post('updateImage', 'App\Http\Controllers\UserController@updateImage');
+    Route::post('getUserData', 'App\Http\Controllers\UserController@userdata');
+    Route::post('getUserName', 'App\Http\Controllers\UserController@getUserName');
+    Route::post('SaveNEWdata', 'App\Http\Controllers\UserController@SaveNEWdata');
     Route::post('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
     Route::post('retrieve', 'App\Http\Controllers\UserController@retrieve');
 

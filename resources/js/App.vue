@@ -297,18 +297,6 @@ export default {
         }
       }
     },
-    // getusername(id){
-    //   console.log("na piste na baya ko nimo ahh ",id)
-    //   let params = {
-    //     uname: id
-    //   };
-    //   Axios.post(AUTH.url + "getUserName", params).then(response => {
-    //     response.data.userdata.forEach(element => {
-    //       console.log("********************************* ",element)
-    //       this.username = element.fullname;
-    //     })
-    //   })
-    // },
     getOrder(item, event) {
       event.target.classList.add("color");
       localStorage.setItem("customerId", item[0].customerId);
@@ -316,14 +304,12 @@ export default {
       ROUTER.push("/productCategory/online").catch(() => {});
     },
     retrieve() {
-      console.log('sadfsafdasfsdf')
       let storage = [];
       this.$axios.post(AUTH.url + "retrieveOnlineOrder", {}, AUTH.config).then(res => {
         if(res.data.status){
             AUTH.deauthenticate()
         }
         this.tableData = res.data.order;
-        console.log(this.tableData)
         Object.keys(this.tableData).forEach(element => {
           storage.push(this.tableData[element]);
         });
