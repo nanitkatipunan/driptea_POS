@@ -268,7 +268,7 @@ __webpack_require__.r(__webpack_exports__);
       description: null,
       addOns: null,
       success: null,
-      productName: null,
+      productNameOrder: null,
       search: null,
       tableData: null,
       config: _config_js__WEBPACK_IMPORTED_MODULE_4__["default"],
@@ -481,39 +481,35 @@ __webpack_require__.r(__webpack_exports__);
         _this8.priceShown = _this8.quantity * (_this8.total + _this8.totalAddOns + _this8.cupTypePrice);
       });
     },
-    showModal: function showModal(item, id) {
-      var _this9 = this;
+    showModal: function showModal(item) {
+      console.log(item, "this is "); // this.$axios.post(AUTH.url + "retrieveCustomersOrdersForEdit",{id:id}, AUTH.config).then(res => {
+      // if(res.data.status){
+      //     AUTH.deauthenticate()
+      //         // }
+      //    this.tableDataForEdit = res.data.order;
+      //    console.log(this.tableDataForEdit);
+      // this.idForProduct=id
 
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "retrieveCustomersOrdersForEdit", {
-        id: id
-      }, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
-        if (res.data.status) {
-          _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
-        }
+      this.size = item.size;
+      this.sugarLevel = item.sugarLevel;
+      this.cupType = item.cupType; // this.addOns = item.same_order[0].addOns
 
-        _this9.tableDataForEdit = res.data.order;
-        console.log(_this9.tableDataForEdit);
-      });
-      this.idForProduct = id;
-      this.size = 'lowDose';
-      this.sugarLevel = null;
-      this.cupType = null;
-      this.addOns = [];
-      this.quantity = 1;
-      this.total = 0;
-      this.totalAddOns = 0;
-      this.cupTypePrice = 0;
-      this.price = item.onlinelowPrice;
-      this.highprice = item.onlinehighPrice;
-      this.overprice = item.onlineoverPrice;
-      this.productName = item.productName;
-      this.image = item.image;
+      this.quantity = item.quantity; // this.total = 0
+      // this.totalAddOns = 0
+      // this.cupTypePrice = 0
+
+      this.price = item.order_product[0].onlinelowPrice; // this.highprice = item.order_product[0].onlinehighPrice
+      // this.overprice = item.order_product[0].onlineoverPrice
+      // console.log(item.order_product[0].productName)
+
+      this.productNameOrder = item.order_product[0].productName;
+      this.image = item.order_product[0].image;
       this.description = item.description;
       this.itemId = item.id;
-      this.getSizePrice();
+      this.getSizePrice(); //  });
     },
     orderNow: function orderNow() {
-      var _this10 = this;
+      var _this9 = this;
 
       if (this.payment !== null) {
         var params = {
@@ -527,7 +523,7 @@ __webpack_require__.r(__webpack_exports__);
 
           sweetalert__WEBPACK_IMPORTED_MODULE_0___default()("Order Successfully!", "Processing .........", "success");
 
-          _this10.retrieveProduct();
+          _this9.retrieveProduct();
 
           localStorage.removeItem("customerOnlineId");
         });
@@ -551,7 +547,7 @@ __webpack_require__.r(__webpack_exports__);
       return parseInt(total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
     },
     getDeliveryFee: function getDeliveryFee() {
-      var deliveryFee = 100;
+      var deliveryFee = 50;
       this.deliveryFee = deliveryFee;
       return parseInt(deliveryFee).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
     }
@@ -866,10 +862,7 @@ var render = function() {
                                           },
                                           on: {
                                             click: function($event) {
-                                              return _vm.showModal(
-                                                item,
-                                                item.id
-                                              )
+                                              return _vm.showModal(item)
                                             }
                                           }
                                         },
@@ -1032,33 +1025,26 @@ var render = function() {
                       "div",
                       { staticClass: "col-md-6" },
                       [
-                        _c(
-                          "center",
-                          _vm._l(_vm.tableDataForEdit, function(item, index) {
-                            return _c("div", { key: index }, [
-                              _c("br"),
-                              _vm._v(" "),
-                              _c("h3", [
-                                _vm._v(
-                                  "Base Price (₱" + _vm._s(_vm.price) + ")"
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("h3", [
-                                _vm._v(
-                                  _vm._s(item.order_product[0].productName)
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("p", { staticClass: "productDescription" }, [
-                                _vm._v(
-                                  _vm._s(item.order_product[0].description)
-                                )
-                              ])
-                            ])
+                        _c("center", [
+                          _c("img", {
+                            staticClass: "imageSize2",
+                            attrs: { src: _vm.image }
                           }),
-                          0
-                        )
+                          _vm._v(" "),
+                          _c("div", [
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("h3", [
+                              _vm._v("Base Price (₱" + _vm._s(_vm.price) + ")")
+                            ]),
+                            _vm._v(" "),
+                            _c("h3", [_vm._v(_vm._s(_vm.productNameOrder))]),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "productDescription" }, [
+                              _vm._v(_vm._s(_vm.description))
+                            ])
+                          ])
+                        ])
                       ],
                       1
                     ),

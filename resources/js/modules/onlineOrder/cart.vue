@@ -44,7 +44,7 @@
                  <td>
                   <v-icon
                     small
-                   data-toggle="modal" data-target="#myModal" @click="showModal(item,item.id)"
+                   data-toggle="modal" data-target="#myModal" @click="showModal(item)"
                   >❌</v-icon>
                  </td>
                </tr>
@@ -98,13 +98,13 @@
                           {{success}}
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6" >
                                 <center>
-                                    <!-- <img class="imageSize2" :src="image"> -->
-                                    <div v-for="(item, index) in tableDataForEdit" :key="index" ><br>
+                                    <img class="imageSize2" :src="image">
+                                    <div ><br>
                                         <h3>Base Price (₱{{price}})</h3>
-                                        <h3>{{item.order_product[0].productName}}</h3>
-                                        <p class="productDescription">{{item.order_product[0].description}}</p>
+                                        <h3>{{productNameOrder}}</h3>
+                                        <p class="productDescription">{{description}}</p>
                                     </div>
                                 </center>
                             </div>
@@ -202,7 +202,7 @@ export default {
       description:null,
      addOns:null,
      success:null,
-     productName:null,
+     productNameOrder:null,
        search:null,
      tableData: null,
      config: config,
@@ -389,38 +389,36 @@ export default {
                 this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
             })
         },
-         showModal(item,id){
-
-            this.$axios.post(AUTH.url + "retrieveCustomersOrdersForEdit",{id:id}, AUTH.config).then(res => {
-            if(res.data.status){
-                AUTH.deauthenticate()
-            }
-       this.tableDataForEdit = res.data.order;
-       console.log(this.tableDataForEdit);
+         showModal(item){
+             console.log(item,"this is ")
 
 
-            });
+            // this.$axios.post(AUTH.url + "retrieveCustomersOrdersForEdit",{id:id}, AUTH.config).then(res => {
+            // if(res.data.status){
+            //     AUTH.deauthenticate()
+    //         // }
+    //    this.tableDataForEdit = res.data.order;
+    //    console.log(this.tableDataForEdit);
 
-
-
-
-            this.idForProduct=id
-            this.size = 'lowDose'
-            this.sugarLevel = null
-            this.cupType = null
-            this.addOns = []
-            this.quantity = 1
-            this.total = 0
-            this.totalAddOns = 0
-            this.cupTypePrice = 0
-            this.price = item.onlinelowPrice
-            this.highprice = item.onlinehighPrice
-            this.overprice = item.onlineoverPrice
-            this.productName = item.productName
-            this.image = item.image
+            // this.idForProduct=id
+            this.size = item.size
+            this.sugarLevel = item.sugarLevel
+            this.cupType = item.cupType
+            // this.addOns = item.same_order[0].addOns
+            this.quantity = item.quantity
+            // this.total = 0
+            // this.totalAddOns = 0
+            // this.cupTypePrice = 0
+            this.price = item.order_product[0].onlinelowPrice
+            // this.highprice = item.order_product[0].onlinehighPrice
+            // this.overprice = item.order_product[0].onlineoverPrice
+            // console.log(item.order_product[0].productName)
+            this.productNameOrder = item.order_product[0].productName
+            this.image = item.order_product[0].image
             this.description = item.description
             this.itemId = item.id
             this.getSizePrice()
+            //  });
         },
    orderNow() {
      if(this.payment !== null){
@@ -467,7 +465,7 @@ export default {
        .replace(/\d(?=(\d{3})+\.)/g, "$&,");
    },
    getDeliveryFee() {
-     let deliveryFee = 100;
+     let deliveryFee = 50;
      this.deliveryFee = deliveryFee;
      return parseInt(deliveryFee)
        .toFixed(2)
