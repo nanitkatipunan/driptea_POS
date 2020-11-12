@@ -1,73 +1,24 @@
 <template>
 <div>
-        <div class="header" style="background-color:#ff5b04">
-           <div class="container" >
-               <div class="row">
-                   <div class="col-6">
-                       DRIPTEA
-                   </div>
-                   <div class="col-6 text-right">
-                   <v-btn icon style="margin-right: 2%;"  @click="home()">
-                        <v-icon >mdi-home</v-icon>
-                    </v-btn>
-                     <v-btn icon @click="direct()" style="margin-right: 2%;">
-                        <v-icon>mdi-cart</v-icon>
-                        <span style="margin-left: -3%;">Cart</span>
-                        <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
-                    </v-btn>
-                    <v-menu bottom left>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn dark icon v-bind="attrs" v-on="on">
-                                <v-icon>mdi-dots-vertical</v-icon>
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item >
-                                <v-list-item-title @click="profile">Profile</v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title @click="direct">Order History</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                   </div>
-               </div>
-           </div>
-        </div>
        <center>
-        
-     
-          
+            <v-card>
+                <v-tabs
+                color="deep-orange accent-4"
+                right
+                >
+                <v-tab @click="tableDataCompleteOrder=true,tableDataPendingOrders=false">Completed Orders</v-tab>
+                <v-tab @click="tableDataCompleteOrder=false,tableDataPendingOrders=true">Pending Orders</v-tab>
+
+              
+                </v-tabs>
+            </v-card>
+ 
             <div v-if="tableDataCompleteOrder">
             <v-simple-table
  
                :items-per-page="5"
                class="elevation-3"
                >
-               <template v-slot:top>
-                   <v-toolbar class="mb-2" color="#ff5b04" dark flat>
-                   <v-toolbar-title class="col pa-3 py-4 white--text">Complete Orders</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <v-text-field
-                       v-model="search"
-                       clearable
-                       flat
-                       solo-inverted
-                       prepend-inner-icon="mdi-magnify"
-                       class="mt-7"
-                       label="Search"
-                   ></v-text-field>
-                   <v-divider class="mx-4" vertical></v-divider>
-                    <v-btn
-                       color="primary"
-                       type="button"
-                       class="btn btn-primary btnModal"
-                       dark
-                       @click="tableDataPendingOrders = true,tableDataCompleteOrder=false"
-                   >+ Pending Orders</v-btn>
-                 
-                   </v-toolbar>
-               </template>
-              
                  <thead >
                    <tr v-if="tableData !== null && tableData.length > 0">
                        <th style="width: 30%;">Date</th>
@@ -106,29 +57,7 @@
                :items-per-page="5"
                class="elevation-3"
                >
-               <template v-slot:top>
-                   <v-toolbar class="mb-2" color="#ff5b04" dark flat>
-                   <v-toolbar-title class="col pa-3 py-4 white--text">Pending Orders</v-toolbar-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <v-text-field
-                       v-model="search"
-                       clearable
-                       flat
-                       solo-inverted
-                       prepend-inner-icon="mdi-magnify"
-                       class="mt-7"
-                       label="Search"
-                   ></v-text-field>
-                   <v-divider class="mx-4" vertical></v-divider>
-                    <v-btn
-                       color="primary"
-                       type="button"
-                       class="btn btn-primary btnModal"
-                       dark
-                       @click="tableDataCompleteOrder = true, tableDataPendingOrders = false"
-                   >+ Completed Orders</v-btn>
-                 
-                   </v-toolbar>
-               </template>
+              
                  <thead>
                    <tr v-if="tableDataPending !== null && tableDataPending.length > 0">
                        <th scope="2">Date</th>
@@ -165,12 +94,13 @@
              
                </v-simple-table>
                </div>
+               
              
           
        </center>
  
  <loading v-if="loadingShow"></loading>
- 
+  
    </div>
  
  
@@ -250,13 +180,15 @@ export default {
                 Object.keys(response.data.storeOrder).forEach(element => {
                     this.tableData.push(response.data.storeOrder[element])
                 });
+            this.tableDataCompleteOrder=true
+
             })
         },
         retrievePending(){
             let parameter = {
                 id: localStorage.getItem('customerId'),
             }
-            this.$axios.post(AUTH.url + 'retrieveOnlineOrders', parameter, AUTH.config).then(response => {
+            this.$axios.post(AUTH.url + 'retrievePendingOrders', parameter, AUTH.config).then(response => {
                 if(response.data.status){
                     AUTH.deauthenticate()
                 }

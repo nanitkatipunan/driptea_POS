@@ -65,7 +65,13 @@ class OrderController extends Controller
     }
 
     public function retrieveCustomerOrder(Request $request){
-        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        $order = Order::with('orderProduct')->with('sameOrder')->where('onlineId', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        dd($order);
+        return response()->json(compact('order'));
+    }
+    public function retrieveCustomersOrdersForEdit(Request $request){
+        $order = Order::with('orderProduct')->with('sameOrder')->where('id', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        // dd($order);
         return response()->json(compact('order'));
     }
 
@@ -104,4 +110,21 @@ class OrderController extends Controller
             ->get();
         return response()->JSON(compact('prods'));
     }
+    public function updateCustomerOrder(Request $request){
+        dd($request);
+
+         $order = Order::with('orderProduct')->where('id', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        $data = $request->all();
+        $product = Order::firstOrCreate(['id' => $request->id]);
+
+  
+        $product->quantity = $data['quantity'];
+        $product->size = $data['size'];
+        $product->sugarLevel = $data['sugarLevel'];
+        $product->cupType = $data['cupType'];
+       
+        // $product->save();
+        // return response()->json(compact('product'));
+    }
+
 }

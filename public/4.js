@@ -178,76 +178,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -318,6 +248,7 @@ __webpack_require__.r(__webpack_exports__);
         Object.keys(response.data.storeOrder).forEach(function (element) {
           _this.tableData.push(response.data.storeOrder[element]);
         });
+        _this.tableDataCompleteOrder = true;
       });
     },
     retrievePending: function retrievePending() {
@@ -326,7 +257,7 @@ __webpack_require__.r(__webpack_exports__);
       var parameter = {
         id: localStorage.getItem('customerId')
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrieveOnlineOrders', parameter, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].url + 'retrievePendingOrders', parameter, _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].config).then(function (response) {
         if (response.data.status) {
           _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"].deauthenticate();
         }
@@ -517,465 +448,208 @@ var render = function() {
     "div",
     [
       _c(
-        "div",
-        {
-          staticClass: "header",
-          staticStyle: { "background-color": "#ff5b04" }
-        },
+        "center",
         [
-          _c("div", { staticClass: "container" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-6" }, [
-                _vm._v(
-                  "\r\n                       DRIPTEA\r\n                   "
-                )
-              ]),
-              _vm._v(" "),
+          _c(
+            "v-card",
+            [
               _c(
-                "div",
-                { staticClass: "col-6 text-right" },
+                "v-tabs",
+                { attrs: { color: "deep-orange accent-4", right: "" } },
                 [
                   _c(
-                    "v-btn",
+                    "v-tab",
                     {
-                      staticStyle: { "margin-right": "2%" },
-                      attrs: { icon: "" },
                       on: {
                         click: function($event) {
-                          return _vm.home()
+                          ;(_vm.tableDataCompleteOrder = true),
+                            (_vm.tableDataPendingOrders = false)
                         }
                       }
                     },
-                    [_c("v-icon", [_vm._v("mdi-home")])],
-                    1
+                    [_vm._v("Completed Orders")]
                   ),
                   _vm._v(" "),
                   _c(
-                    "v-btn",
+                    "v-tab",
                     {
-                      staticStyle: { "margin-right": "2%" },
-                      attrs: { icon: "" },
                       on: {
                         click: function($event) {
-                          return _vm.direct()
+                          ;(_vm.tableDataCompleteOrder = false),
+                            (_vm.tableDataPendingOrders = true)
                         }
                       }
                     },
-                    [
-                      _c("v-icon", [_vm._v("mdi-cart")]),
-                      _vm._v(" "),
-                      _c("span", { staticStyle: { "margin-left": "-3%" } }, [
-                        _vm._v("Cart")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          staticStyle: {
-                            "background-color": "red",
-                            color: "white",
-                            "border-radius": "20%",
-                            "font-size": "10px",
-                            "margin-left": "-10%",
-                            "margin-top": "-20%"
-                          }
-                        },
-                        [_vm._v(_vm._s(_vm.count > 0 ? "New" : ""))]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-menu",
-                    {
-                      attrs: { bottom: "", left: "" },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "activator",
-                          fn: function(ref) {
-                            var on = ref.on
-                            var attrs = ref.attrs
-                            return [
-                              _c(
-                                "v-btn",
-                                _vm._g(
-                                  _vm._b(
-                                    { attrs: { dark: "", icon: "" } },
-                                    "v-btn",
-                                    attrs,
-                                    false
-                                  ),
-                                  on
-                                ),
-                                [_c("v-icon", [_vm._v("mdi-dots-vertical")])],
-                                1
-                              )
-                            ]
-                          }
-                        }
-                      ])
-                    },
-                    [
-                      _vm._v(" "),
-                      _c(
-                        "v-list",
-                        [
-                          _c(
-                            "v-list-item",
-                            [
-                              _c(
-                                "v-list-item-title",
-                                { on: { click: _vm.profile } },
-                                [_vm._v("Profile")]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-item",
-                            [
-                              _c(
-                                "v-list-item-title",
-                                { on: { click: _vm.direct } },
-                                [_vm._v("Order History")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
+                    [_vm._v("Pending Orders")]
                   )
                 ],
                 1
               )
-            ])
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c("center", [
-        _vm.tableDataCompleteOrder
-          ? _c(
-              "div",
-              [
-                _c(
-                  "v-simple-table",
-                  {
-                    staticClass: "elevation-3",
-                    attrs: { "items-per-page": 5 },
-                    scopedSlots: _vm._u(
-                      [
-                        {
-                          key: "top",
-                          fn: function() {
-                            return [
-                              _c(
-                                "v-toolbar",
-                                {
-                                  staticClass: "mb-2",
-                                  attrs: {
-                                    color: "#ff5b04",
-                                    dark: "",
-                                    flat: ""
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "v-toolbar-title",
-                                    {
-                                      staticClass: "col pa-3 py-4 white--text"
-                                    },
-                                    [_vm._v("Complete Orders")]
-                                  ),
-                                  _vm._v("      \r\n                   "),
-                                  _c("v-text-field", {
-                                    staticClass: "mt-7",
-                                    attrs: {
-                                      clearable: "",
-                                      flat: "",
-                                      "solo-inverted": "",
-                                      "prepend-inner-icon": "mdi-magnify",
-                                      label: "Search"
-                                    },
-                                    model: {
-                                      value: _vm.search,
-                                      callback: function($$v) {
-                                        _vm.search = $$v
-                                      },
-                                      expression: "search"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("v-divider", {
-                                    staticClass: "mx-4",
-                                    attrs: { vertical: "" }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      staticClass: "btn btn-primary btnModal",
-                                      attrs: {
-                                        color: "primary",
-                                        type: "button",
-                                        dark: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          ;(_vm.tableDataPendingOrders = true),
-                                            (_vm.tableDataCompleteOrder = false)
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("+ Pending Orders")]
-                                  )
-                                ],
-                                1
-                              )
-                            ]
-                          },
-                          proxy: true
-                        }
-                      ],
-                      null,
-                      false,
-                      1322362191
-                    )
-                  },
-                  [
-                    _vm._v(" "),
-                    _c("thead", [
-                      _vm.tableData !== null && _vm.tableData.length > 0
-                        ? _c("tr", [
-                            _c("th", { staticStyle: { width: "30%" } }, [
-                              _vm._v("Date")
-                            ]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v("Order #")]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v("Product Ordered")]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v("Total")]),
-                            _vm._v(" "),
-                            _c("th", { staticStyle: { width: "15px" } }, [
-                              _vm._v("Action")
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _vm.tableDataCompleteOrder
+            ? _c(
+                "div",
+                [
+                  _c(
+                    "v-simple-table",
+                    {
+                      staticClass: "elevation-3",
+                      attrs: { "items-per-page": 5 }
+                    },
+                    [
+                      _c("thead", [
+                        _vm.tableData !== null && _vm.tableData.length > 0
+                          ? _c("tr", [
+                              _c("th", { staticStyle: { width: "30%" } }, [
+                                _vm._v("Date")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", [_vm._v("Order #")]),
+                              _vm._v(" "),
+                              _c("th", [_vm._v("Product Ordered")]),
+                              _vm._v(" "),
+                              _c("th", [_vm._v("Total")]),
+                              _vm._v(" "),
+                              _c("th", { staticStyle: { width: "15px" } }, [
+                                _vm._v("Action")
+                              ])
                             ])
-                          ])
-                        : _c(
-                            "div",
-                            [
-                              _c("empty", {
-                                attrs: { title: "No Complete Orders!" }
-                              })
-                            ],
-                            1
-                          )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.tableData, function(item, index) {
-                        return _c("tr", { key: index }, [
-                          _c("td", [_vm._v(_vm._s(_vm.getDate(item[0])))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                item[0].get_checkouts
-                                  ? item[0].get_checkouts[0].customerId
-                                  : ""
-                              )
+                          : _c(
+                              "div",
+                              [
+                                _c("empty", {
+                                  attrs: { title: "No Complete Orders!" }
+                                })
+                              ],
+                              1
                             )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.getProduct(item)))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(item[0].get_checkouts[0].total))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("button", { staticClass: "btn btn-primary" }, [
-                              _vm._v("View")
-                            ])
-                          ])
-                        ])
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    void 0
-                  ],
-                  2
-                )
-              ],
-              1
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.tableDataPendingOrders
-          ? _c(
-              "div",
-              [
-                _c(
-                  "v-simple-table",
-                  {
-                    staticClass: "elevation-3",
-                    attrs: { "items-per-page": 5 },
-                    scopedSlots: _vm._u(
-                      [
-                        {
-                          key: "top",
-                          fn: function() {
-                            return [
-                              _c(
-                                "v-toolbar",
-                                {
-                                  staticClass: "mb-2",
-                                  attrs: {
-                                    color: "#ff5b04",
-                                    dark: "",
-                                    flat: ""
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "v-toolbar-title",
-                                    {
-                                      staticClass: "col pa-3 py-4 white--text"
-                                    },
-                                    [_vm._v("Pending Orders")]
-                                  ),
-                                  _vm._v("      \r\n                   "),
-                                  _c("v-text-field", {
-                                    staticClass: "mt-7",
-                                    attrs: {
-                                      clearable: "",
-                                      flat: "",
-                                      "solo-inverted": "",
-                                      "prepend-inner-icon": "mdi-magnify",
-                                      label: "Search"
-                                    },
-                                    model: {
-                                      value: _vm.search,
-                                      callback: function($$v) {
-                                        _vm.search = $$v
-                                      },
-                                      expression: "search"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("v-divider", {
-                                    staticClass: "mx-4",
-                                    attrs: { vertical: "" }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      staticClass: "btn btn-primary btnModal",
-                                      attrs: {
-                                        color: "primary",
-                                        type: "button",
-                                        dark: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          ;(_vm.tableDataCompleteOrder = true),
-                                            (_vm.tableDataPendingOrders = false)
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("+ Completed Orders")]
-                                  )
-                                ],
-                                1
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.tableData, function(item, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", [_vm._v(_vm._s(_vm.getDate(item[0])))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  item[0].get_checkouts
+                                    ? item[0].get_checkouts[0].customerId
+                                    : ""
+                                )
                               )
-                            ]
-                          },
-                          proxy: true
-                        }
-                      ],
-                      null,
-                      false,
-                      3530496459
-                    )
-                  },
-                  [
-                    _vm._v(" "),
-                    _c("thead", [
-                      _vm.tableDataPending !== null &&
-                      _vm.tableDataPending.length > 0
-                        ? _c("tr", [
-                            _c("th", { attrs: { scope: "2" } }, [
-                              _vm._v("Date")
                             ]),
                             _vm._v(" "),
-                            _c("th", [_vm._v("Order #")]),
+                            _c("td", [_vm._v(_vm._s(_vm.getProduct(item)))]),
                             _vm._v(" "),
-                            _c("th", [_vm._v("Product Ordered")]),
+                            _c("td", [
+                              _vm._v(_vm._s(item[0].get_checkouts[0].total))
+                            ]),
                             _vm._v(" "),
-                            _c("th", [_vm._v("Total")]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v("Status")]),
-                            _vm._v(" "),
-                            _c("th", { staticStyle: { width: "15px" } }, [
-                              _vm._v("Action")
+                            _c("td", [
+                              _c("button", { staticClass: "btn btn-primary" }, [
+                                _vm._v("View")
+                              ])
                             ])
                           ])
-                        : _c(
-                            "div",
-                            [
-                              _c("empty", {
-                                attrs: { title: "No Pending Orders!" }
-                              })
-                            ],
-                            1
-                          )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.tableDataPending, function(items, index) {
-                        return _c("tr", { key: index }, [
-                          _c("td", { attrs: { scope: "2" } }, [
-                            _vm._v(_vm._s(_vm.getDate(items[0])))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(items[0].id))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.getProduct(items)))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v("₱ " + _vm._s(_vm.getTotal(items)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Pending Order")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("button", { staticClass: "btn btn-primary" }, [
-                              _vm._v("View")
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      void 0
+                    ],
+                    2
+                  )
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.tableDataPendingOrders
+            ? _c(
+                "div",
+                [
+                  _c(
+                    "v-simple-table",
+                    {
+                      staticClass: "elevation-3",
+                      attrs: { "items-per-page": 5 }
+                    },
+                    [
+                      _c("thead", [
+                        _vm.tableDataPending !== null &&
+                        _vm.tableDataPending.length > 0
+                          ? _c("tr", [
+                              _c("th", { attrs: { scope: "2" } }, [
+                                _vm._v("Date")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", [_vm._v("Order #")]),
+                              _vm._v(" "),
+                              _c("th", [_vm._v("Product Ordered")]),
+                              _vm._v(" "),
+                              _c("th", [_vm._v("Total")]),
+                              _vm._v(" "),
+                              _c("th", [_vm._v("Status")]),
+                              _vm._v(" "),
+                              _c("th", { staticStyle: { width: "15px" } }, [
+                                _vm._v("Action")
+                              ])
+                            ])
+                          : _c(
+                              "div",
+                              [
+                                _c("empty", {
+                                  attrs: { title: "No Pending Orders!" }
+                                })
+                              ],
+                              1
+                            )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.tableDataPending, function(items, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", { attrs: { scope: "2" } }, [
+                              _vm._v(_vm._s(_vm.getDate(items[0])))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(items[0].id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(_vm.getProduct(items)))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v("₱ " + _vm._s(_vm.getTotal(items)))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("Pending Order")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("button", { staticClass: "btn btn-primary" }, [
+                                _vm._v("View")
+                              ])
                             ])
                           ])
-                        ])
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    void 0
-                  ],
-                  2
-                )
-              ],
-              1
-            )
-          : _vm._e()
-      ]),
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      void 0
+                    ],
+                    2
+                  )
+                ],
+                1
+              )
+            : _vm._e()
+        ],
+        1
+      ),
       _vm._v(" "),
       _vm.loadingShow ? _c("loading") : _vm._e()
     ],
@@ -1054,7 +728,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_empty_vue_vue_type_style_index_0_id_2b20b1c4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./empty.vue?vue&type=style&index=0&id=2b20b1c4&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/basic/empty.vue?vue&type=style&index=0&id=2b20b1c4&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_empty_vue_vue_type_style_index_0_id_2b20b1c4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_empty_vue_vue_type_style_index_0_id_2b20b1c4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_empty_vue_vue_type_style_index_0_id_2b20b1c4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_empty_vue_vue_type_style_index_0_id_2b20b1c4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_empty_vue_vue_type_style_index_0_id_2b20b1c4_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
 
 /***/ }),
 
@@ -1141,7 +815,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_orderHistory_vue_vue_type_style_index_0_id_0f3ac740_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./orderHistory.vue?vue&type=style&index=0&id=0f3ac740&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modules/onlineOrder/orderHistory.vue?vue&type=style&index=0&id=0f3ac740&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_orderHistory_vue_vue_type_style_index_0_id_0f3ac740_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_orderHistory_vue_vue_type_style_index_0_id_0f3ac740_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_orderHistory_vue_vue_type_style_index_0_id_0f3ac740_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_orderHistory_vue_vue_type_style_index_0_id_0f3ac740_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_orderHistory_vue_vue_type_style_index_0_id_0f3ac740_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
 
 /***/ }),
 
