@@ -251,7 +251,7 @@ export default {
    retrieveProduct() {
      this.loadingShow = true;
      let params = {
-       id: localStorage.getItem("customerOnlineId")
+       id: localStorage.getItem("customerId")
      };
      this.$axios.post(AUTH.url + "retrieveCustomerOrder", params, AUTH.config).then(res => {
        if(res.data.status){
@@ -424,7 +424,7 @@ export default {
      if(this.payment !== null){
  
      let params = {
-       id: localStorage.getItem("customerOnlineId"),
+       id: localStorage.getItem("customerId"),
        status: "pendingCustomer"
      };
      this.$axios.post(AUTH.url + "updateStatus", params, AUTH.config).then(res => {

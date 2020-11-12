@@ -318,7 +318,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loadingShow = true;
       var params = {
-        id: localStorage.getItem("customerOnlineId")
+        id: localStorage.getItem("customerId")
       };
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "retrieveCustomerOrder", params, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
         if (res.data.status) {
@@ -513,7 +513,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.payment !== null) {
         var params = {
-          id: localStorage.getItem("customerOnlineId"),
+          id: localStorage.getItem("customerId"),
           status: "pendingCustomer"
         };
         this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "updateStatus", params, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
