@@ -65,12 +65,16 @@ class OrderController extends Controller
     }
 
     public function retrieveCustomerOrder(Request $request){
-        $order = Order::with('orderProduct')->with('sameOrder')->where('customerId', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        $order = Order::with('orderProduct')->with('sameOrder')->where('onlineId', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
         return response()->json(compact('order'));
     }
 
     public function updateStatus(Request $request){
-        $order = Order::where('customerId', $request->id)->where('deleted_at', null)->get();
+        if($request['status'] === 'complete'){
+            $order = Order::where('customerId', $request->id)->where('deleted_at', null)->get();
+        }else{
+            $order = Order::where('onlineId', $request->id)->where('deleted_at', null)->get();
+        }
         foreach ($order as $value) {
             $ord = Order::firstOrCreate(['id' => $value->id]);
             $ord->status = $request['status'];
