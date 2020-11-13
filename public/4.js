@@ -65,6 +65,72 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _basic_loading_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../basic/loading.vue */ "./resources/js/basic/loading.vue");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_5__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -193,7 +259,20 @@ __webpack_require__.r(__webpack_exports__);
       config: _config_js__WEBPACK_IMPORTED_MODULE_2__["default"],
       loadingShow: false,
       tableDataPending: [],
-      search: null
+      search: null,
+      productName: null,
+      description: null,
+      image: null,
+      cupType: null,
+      cupSize: null,
+      size: null,
+      sugarLevel: null,
+      addOns: null,
+      priceShown: null,
+      quantity: null,
+      basePrice: null,
+      sizeName: null,
+      orderDate: null
     };
   },
   mounted: function mounted() {
@@ -204,7 +283,7 @@ __webpack_require__.r(__webpack_exports__);
     empty: _basic_empty_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     loading: _basic_loading_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  methods: {
+  methods: _defineProperty({
     getDate: function getDate(item) {
       return moment__WEBPACK_IMPORTED_MODULE_5___default()(item.updated_at).format('MM/DD/YYYY');
     },
@@ -231,6 +310,18 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       return product;
+    },
+    getSizePrice: function getSizePrice() {
+      if (this.size === 'highDose') {
+        this.sizeName = "High Dose";
+        this.basePrice = this.highPrice;
+      } else if (this.size === 'overDose') {
+        this.sizeName = "Over Dose";
+        this.basePrice = this.overPrice;
+      } else if (this.size === 'lowDose') {
+        this.sizeName = "Low Dose";
+        this.basePrice = this.price;
+      }
     },
     retrieve: function retrieve() {
       var _this = this;
@@ -281,13 +372,28 @@ __webpack_require__.r(__webpack_exports__);
       });
       return storeAddOns;
     },
-    home: function home() {
-      _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/onlineDashboard')["catch"](function () {});
-    },
-    direct: function direct() {
-      _router__WEBPACK_IMPORTED_MODULE_1__["default"].push('/orderHistory')["catch"](function () {});
+    viewOrder: function viewOrder(item) {
+      console.log(item);
+      this.size = item[0].size;
+      this.sugarLevel = item[0].sugarLevel;
+      this.cupType = item[0].cupType;
+      this.addOns = item[0].same_order[0].addOns;
+      this.quantity = item[0].quantity;
+      this.priceShown = item[0].subTotal;
+      this.orderDate = item[0].created_at; // this.cupTypePrice = 0
+
+      this.price = item[0].order_product[0].onlinelowPrice;
+      this.highPrice = item[0].order_product[0].onlinehighPrice;
+      this.overPrice = item[0].order_product[0].onlineoverPrice;
+      this.productName = item[0].order_product[0].productName;
+      this.image = item[0].order_product[0].image;
+      this.description = item[0].order_product[0].description; // this.itemId = item.id
+
+      this.getSizePrice(); //  });
     }
-  }
+  }, "getDate", function getDate(date) {
+    return moment__WEBPACK_IMPORTED_MODULE_5___default()(date).format('MM/DD/YYYY');
+  })
 });
 
 /***/ }),
@@ -551,9 +657,22 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("td", [
-                              _c("button", { staticClass: "btn btn-primary" }, [
-                                _vm._v("View")
-                              ])
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    "data-toggle": "modal",
+                                    "data-target": "#myModal"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.viewOrder(item)
+                                    }
+                                  }
+                                },
+                                [_vm._v("View")]
+                              )
                             ])
                           ])
                         }),
@@ -630,9 +749,22 @@ var render = function() {
                             _c("td", [_vm._v("Pending Order")]),
                             _vm._v(" "),
                             _c("td", [
-                              _c("button", { staticClass: "btn btn-primary" }, [
-                                _vm._v("View")
-                              ])
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    "data-toggle": "modal",
+                                    "data-target": "#myModal"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.viewOrder(items)
+                                    }
+                                  }
+                                },
+                                [_vm._v("View")]
+                              )
                             ])
                           ])
                         }),
@@ -651,12 +783,202 @@ var render = function() {
         1
       ),
       _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "modal fade", attrs: { id: "myModal", role: "dialog" } },
+        [
+          _c("div", { staticClass: "modal-dialog modal-lg" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "div",
+                    { staticClass: "col-md-6" },
+                    [
+                      _c("center", [
+                        _c("img", {
+                          staticClass: "imageSize2",
+                          attrs: { src: _vm.image }
+                        }),
+                        _vm._v(" "),
+                        _c("div", [
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("h3", [
+                            _vm._v(
+                              "Base Price (₱" + _vm._s(_vm.basePrice) + ")"
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("h3", [_vm._v(_vm._s(_vm.productName))]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "productDescription" }, [
+                            _vm._v(_vm._s(_vm.description))
+                          ])
+                        ])
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "modalDiv" }, [
+                      _c("div", { staticStyle: { float: "left" } }, [
+                        _c(
+                          "label",
+                          {
+                            staticStyle: {
+                              "font-size": "15px",
+                              "font-weight": "bold"
+                            },
+                            attrs: { for: "sizdatee" }
+                          },
+                          [_vm._v("Date :")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", [_vm._v(_vm._s(_vm.getDate(_vm.orderDate)))]),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticStyle: {
+                              "font-size": "15px",
+                              "font-weight": "bold"
+                            },
+                            attrs: { for: "size" }
+                          },
+                          [_vm._v("Cup Size:")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", [_vm._v(_vm._s(_vm.sizeName))]),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticStyle: {
+                              "font-size": "15px",
+                              "font-weight": "bold"
+                            },
+                            attrs: { for: "cupType" }
+                          },
+                          [_vm._v("Cup Type :")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", [_vm._v(_vm._s(_vm.cupType))]),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticStyle: {
+                              "font-size": "15px",
+                              "font-weight": "bold"
+                            },
+                            attrs: { for: "sugarLevel" }
+                          },
+                          [_vm._v("Sugar Level:")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", [_vm._v(_vm._s(_vm.sugarLevel))]),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticStyle: {
+                              "font-size": "15px",
+                              "font-weight": "bold"
+                            },
+                            attrs: { for: "size" }
+                          },
+                          [_vm._v("Add Ons(Optional):")]
+                        ),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("p", [_vm._v(_vm._s(_vm.addOns))]),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticStyle: {
+                              "font-size": "15px",
+                              "font-weight": "bold",
+                              display: "inline"
+                            },
+                            attrs: { for: "quantity" }
+                          },
+                          [_vm._v("Quantity:")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", [_vm._v(_vm._s(_vm.quantity))]),
+                        _vm._v(" "),
+                        _c(
+                          "p",
+                          {
+                            staticStyle: {
+                              float: "right",
+                              "margin-right": "5%",
+                              "font-size": "20px"
+                            }
+                          },
+                          [
+                            _vm._v("TOTAL: "),
+                            _c("b", [
+                              _vm._v(" ₱" + _vm._s(_vm.priceShown) + ".00")
+                            ])
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("br")
+              ]),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
       _vm.loadingShow ? _c("loading") : _vm._e()
     ],
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("×")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Okay")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 

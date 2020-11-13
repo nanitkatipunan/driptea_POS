@@ -58,13 +58,15 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
-/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _basic_loading_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../basic/loading.vue */ "./resources/js/basic/loading.vue");
-/* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/auth */ "./resources/js/services/auth/index.js");
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../router */ "./resources/js/router/index.js");
-/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../config.js */ "./resources/js/config.js");
-/* harmony import */ var _basic_empty_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../basic/empty.vue */ "./resources/js/basic/empty.vue");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _basic_loading_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../basic/loading.vue */ "./resources/js/basic/loading.vue");
+/* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/auth */ "./resources/js/services/auth/index.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../router */ "./resources/js/router/index.js");
+/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../config.js */ "./resources/js/config.js");
+/* harmony import */ var _basic_empty_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../basic/empty.vue */ "./resources/js/basic/empty.vue");
 //
 //
 //
@@ -247,6 +249,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
@@ -265,13 +272,15 @@ __webpack_require__.r(__webpack_exports__);
       addOnsData: [],
       cupData: [],
       price: null,
+      image: null,
+      basePrice: 0,
       description: null,
       addOns: null,
       success: null,
       productNameOrder: null,
       search: null,
       tableData: null,
-      config: _config_js__WEBPACK_IMPORTED_MODULE_4__["default"],
+      config: _config_js__WEBPACK_IMPORTED_MODULE_5__["default"],
       count: 0,
       subTotal: 0,
       total: 0,
@@ -283,13 +292,14 @@ __webpack_require__.r(__webpack_exports__);
       error: '',
       idForProduct: null,
       tableDataForEdit: [],
+      itemId: null,
       payments: ["Cash on Delivery", "G-cash"],
       availability: ["Call me", "Cancel Order"]
     };
   },
   components: {
-    empty: _basic_empty_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
-    loading: _basic_loading_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    empty: _basic_empty_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+    loading: _basic_loading_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   mounted: function mounted() {
     var _this = this;
@@ -297,6 +307,7 @@ __webpack_require__.r(__webpack_exports__);
     this.count = 0;
     this.retrieveProduct();
     this.retrieveCupType();
+    this.retrieveAddOns();
     var pusher = new Pusher(this.config.PUSHER_APP_KEY, {
       cluster: this.config.PUSHER_APP_CLUSTER,
       encrypted: true
@@ -311,7 +322,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     home: function home() {
-      _router__WEBPACK_IMPORTED_MODULE_3__["default"].push("/onlineDashboard")["catch"](function () {});
+      _router__WEBPACK_IMPORTED_MODULE_4__["default"].push("/onlineDashboard")["catch"](function () {});
     },
     retrieveProduct: function retrieveProduct() {
       var _this2 = this;
@@ -320,9 +331,9 @@ __webpack_require__.r(__webpack_exports__);
       var params = {
         id: localStorage.getItem("customerId")
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "retrieveCustomerOrder", params, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].url + "retrieveCustomerOrder", params, _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].config).then(function (res) {
         if (res.data.status) {
-          _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
+          _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].deauthenticate();
         }
 
         _this2.tableData = res.data.order;
@@ -344,7 +355,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteOrder: function deleteOrder(prodId) {
       var _this3 = this;
 
-      sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
+      sweetalert__WEBPACK_IMPORTED_MODULE_1___default()({
         title: "Are you sure you want to delete?",
         text: "Once deleted, you will not be able to recover this order!",
         icon: "warning",
@@ -352,103 +363,115 @@ __webpack_require__.r(__webpack_exports__);
         dangerMode: true
       }).then(function (willDelete) {
         if (willDelete) {
-          _this3.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "deleteOrder", {
+          _this3.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].url + "deleteOrder", {
             id: prodId
-          }, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
+          }, _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].config).then(function (res) {
             if (res.data.status) {
-              _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
+              _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].deauthenticate();
             }
           });
 
           _this3.retrieveProduct();
 
-          sweetalert__WEBPACK_IMPORTED_MODULE_0___default()("Your order is succssfully deleted!", {
+          sweetalert__WEBPACK_IMPORTED_MODULE_1___default()("Your order is succssfully deleted!", {
             icon: "success"
           });
         } else {
-          sweetalert__WEBPACK_IMPORTED_MODULE_0___default()("Your order remains to cart");
+          sweetalert__WEBPACK_IMPORTED_MODULE_1___default()("Your order remains to cart");
         }
       });
     },
     updateCustomerOrder: function updateCustomerOrder() {
+      var _this4 = this;
+
       var param = {
-        id: this.idForProduct,
+        id: this.itemId,
         size: this.size,
         cupType: this.cupType,
         addOns: this.addOns,
-        quantity: this.quantity
+        quantity: this.quantity,
+        sugarLevel: this.sugarLevel,
+        subTotal: this.priceShown
       };
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "updateCustomerOrder", param, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].url + "updateCustomerOrder", param, _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].config).then(function (res) {
         if (res.data.status) {
-          _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
+          _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].deauthenticate();
         }
+
+        _this4.retrieveProduct();
+
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('#myModal').modal('hide');
+        sweetalert__WEBPACK_IMPORTED_MODULE_1___default()("Order Updated!", "Successfully", "success");
       });
     },
     getSizePrice: function getSizePrice() {
       if (this.size === 'highDose') {
         this.total = this.highprice;
+        this.basePrice = this.highprice;
       } else if (this.size === 'overDose') {
         this.total = this.overprice;
+        this.basePrice = this.overprice;
       } else if (this.size === 'lowDose') {
         this.total = this.price;
+        this.basePrice = this.price;
       }
 
-      this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice);
+      this.priceShown = this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice);
     },
     getCupPrice: function getCupPrice() {
-      var _this4 = this;
+      var _this5 = this;
 
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + 'retrieveOneCupType', {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].url + 'retrieveOneCupType', {
         cupType: this.cupType
-      }, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
+      }, _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].config).then(function (res) {
         if (res.data.status) {
-          _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
+          _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].deauthenticate();
         }
 
-        _this4.cupTypePrice = res.data.cupType[0].inputCupOnlinePrice;
-        _this4.priceShown = _this4.quantity * (_this4.total + _this4.totalAddOns + _this4.cupTypePrice);
+        _this5.cupTypePrice = res.data.cupType[0].inputCupOnlinePrice;
+        _this5.priceShown = _this5.quantity * (_this5.basePrice + _this5.totalAddOns + _this5.cupTypePrice);
       });
     },
     getQuantity: function getQuantity() {
-      this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice);
+      this.priceShown = this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice);
     },
     retrieveCupType: function retrieveCupType() {
-      var _this5 = this;
+      var _this6 = this;
 
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "retrieveCupType", {}, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].url + "retrieveCupType", {}, _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].config).then(function (response) {
         if (response.data.status) {
-          _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
+          _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].deauthenticate();
         }
 
-        _this5.cupData = response.data.cupType;
+        _this6.cupData = response.data.cupType;
       });
     },
     retrieveAddOns: function retrieveAddOns() {
-      var _this6 = this;
+      var _this7 = this;
 
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "retrievingAddOns", {}, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (response) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].url + "retrievingAddOns", {}, _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].config).then(function (response) {
         if (response.data.status) {
-          _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
+          _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].deauthenticate();
         }
 
-        _this6.addOnsData = response.data.addons;
+        _this7.addOnsData = response.data.addons;
       });
     },
     retrieveCategory: function retrieveCategory() {
-      var _this7 = this;
+      var _this8 = this;
 
       this.loadingShow = true;
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + 'retrieveCategoryAscending', {}, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].url + 'retrieveCategoryAscending', {}, _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].config).then(function (res) {
         if (res.data.status) {
-          _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
+          _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].deauthenticate();
         }
 
-        _this7.data = res.data.addCategory;
-        _this7.loadingShow = false;
+        _this8.data = res.data.addCategory;
+        _this8.loadingShow = false;
       });
     },
     redirect: function redirect(param) {
-      _router__WEBPACK_IMPORTED_MODULE_3__["default"].push('/productOnline/' + param)["catch"](function () {});
+      _router__WEBPACK_IMPORTED_MODULE_4__["default"].push('/productOnline/' + param)["catch"](function () {});
     },
     // retrieveProduct(){
     //     this.loadingShow = true
@@ -461,24 +484,24 @@ __webpack_require__.r(__webpack_exports__);
     //     })
     // },
     addTotalPrice: function addTotalPrice(item, event) {
-      var _this8 = this;
+      var _this9 = this;
 
-      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "retrieveOneAddOn", {
+      this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].url + "retrieveOneAddOn", {
         id: item.id
-      }, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (response) {
+      }, _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].config).then(function (response) {
         if (response.data.status) {
-          _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
+          _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].deauthenticate();
         }
 
-        _this8.addOnsPrice = response.data.addons.onlineAddOnsPrice;
+        _this9.addOnsPrice = response.data.addons.onlineAddOnsPrice;
 
         if (event.target.checked) {
-          _this8.totalAddOns += _this8.addOnsPrice;
+          _this9.totalAddOns += _this9.addOnsPrice;
         } else {
-          _this8.totalAddOns -= _this8.addOnsPrice;
+          _this9.totalAddOns -= _this9.addOnsPrice;
         }
 
-        _this8.priceShown = _this8.quantity * (_this8.total + _this8.totalAddOns + _this8.cupTypePrice);
+        _this9.priceShown = _this9.quantity * (_this9.basePrice + _this9.totalAddOns + _this9.cupTypePrice);
       });
     },
     showModal: function showModal(item) {
@@ -492,15 +515,15 @@ __webpack_require__.r(__webpack_exports__);
 
       this.size = item.size;
       this.sugarLevel = item.sugarLevel;
-      this.cupType = item.cupType; // this.addOns = item.same_order[0].addOns
-
-      this.quantity = item.quantity; // this.total = 0
-      // this.totalAddOns = 0
-      // this.cupTypePrice = 0
-
-      this.price = item.order_product[0].onlinelowPrice; // this.highprice = item.order_product[0].onlinehighPrice
-      // this.overprice = item.order_product[0].onlineoverPrice
-      // console.log(item.order_product[0].productName)
+      this.cupType = item.cupType;
+      this.addOns = item.same_order[0].addOns;
+      this.quantity = item.quantity;
+      this.total = 0;
+      this.totalAddOns = 0;
+      this.cupTypePrice = 0;
+      this.price = item.order_product[0].onlinelowPrice;
+      this.highprice = item.order_product[0].onlinehighPrice;
+      this.overprice = item.order_product[0].onlineoverPrice; // console.log(item.order_product[0].productName)
 
       this.productNameOrder = item.order_product[0].productName;
       this.image = item.order_product[0].image;
@@ -509,21 +532,21 @@ __webpack_require__.r(__webpack_exports__);
       this.getSizePrice(); //  });
     },
     orderNow: function orderNow() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.payment !== null) {
         var params = {
           id: localStorage.getItem("customerId"),
           status: "pendingCustomer"
         };
-        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].url + "updateStatus", params, _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].config).then(function (res) {
+        this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].url + "updateStatus", params, _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].config).then(function (res) {
           if (res.data.status) {
-            _services_auth__WEBPACK_IMPORTED_MODULE_2__["default"].deauthenticate();
+            _services_auth__WEBPACK_IMPORTED_MODULE_3__["default"].deauthenticate();
           }
 
-          sweetalert__WEBPACK_IMPORTED_MODULE_0___default()("Order Successfully!", "Processing .........", "success");
+          sweetalert__WEBPACK_IMPORTED_MODULE_1___default()("Order Successfully!", "Processing .........", "success");
 
-          _this9.retrieveProduct();
+          _this10.retrieveProduct();
 
           localStorage.removeItem("customerOnlineId");
         });
@@ -866,7 +889,20 @@ var render = function() {
                                             }
                                           }
                                         },
-                                        [_vm._v("❌")]
+                                        [_vm._v("mdi-pencil")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-icon",
+                                        {
+                                          attrs: { small: "" },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.deleteOrder(item.id)
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("mdi-delete")]
                                       )
                                     ],
                                     1
@@ -1035,7 +1071,9 @@ var render = function() {
                             _c("br"),
                             _vm._v(" "),
                             _c("h3", [
-                              _vm._v("Base Price (₱" + _vm._s(_vm.price) + ")")
+                              _vm._v(
+                                "Base Price (₱" + _vm._s(_vm.basePrice) + ")"
+                              )
                             ]),
                             _vm._v(" "),
                             _c("h3", [_vm._v(_vm._s(_vm.productNameOrder))]),
@@ -1255,7 +1293,90 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _vm._m(1)
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticStyle: {
+                                  "font-size": "15px",
+                                  "font-weight": "bold"
+                                },
+                                attrs: { for: "size" }
+                              },
+                              [_vm._v("Add Ons(Optional):")]
+                            ),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "checkboxStyle" },
+                              _vm._l(_vm.addOnsData, function(item, index) {
+                                return _c("div", { key: index }, [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.addOns,
+                                        expression: "addOns"
+                                      }
+                                    ],
+                                    attrs: {
+                                      type: "checkbox",
+                                      id: item.addons_name
+                                    },
+                                    domProps: {
+                                      value: item.addons_name,
+                                      checked: Array.isArray(_vm.addOns)
+                                        ? _vm._i(_vm.addOns, item.addons_name) >
+                                          -1
+                                        : _vm.addOns
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.addTotalPrice(item, $event)
+                                      },
+                                      change: function($event) {
+                                        var $$a = _vm.addOns,
+                                          $$el = $event.target,
+                                          $$c = $$el.checked ? true : false
+                                        if (Array.isArray($$a)) {
+                                          var $$v = item.addons_name,
+                                            $$i = _vm._i($$a, $$v)
+                                          if ($$el.checked) {
+                                            $$i < 0 &&
+                                              (_vm.addOns = $$a.concat([$$v]))
+                                          } else {
+                                            $$i > -1 &&
+                                              (_vm.addOns = $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1)))
+                                          }
+                                        } else {
+                                          _vm.addOns = $$c
+                                        }
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "label",
+                                    { attrs: { for: item.addons_name } },
+                                    [
+                                      _vm._v(
+                                        _vm._s(item.addons_name) +
+                                          " (+ ₱" +
+                                          _vm._s(item.onlineAddOnsPrice) +
+                                          ")"
+                                      )
+                                    ]
+                                  ),
+                                  _c("br")
+                                ])
+                              }),
+                              0
+                            )
+                          ])
                         ])
                       ])
                     ])
@@ -1322,6 +1443,15 @@ var render = function() {
                 "div",
                 { staticClass: "modal-footer" },
                 [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
                   _c("center", [
                     _c(
                       "button",
@@ -1334,7 +1464,7 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("Add to Cart")]
+                      [_vm._v("Save Change")]
                     )
                   ])
                 ],
@@ -1364,24 +1494,6 @@ var staticRenderFns = [
         },
         [_vm._v("×")]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c(
-        "label",
-        {
-          staticStyle: { "font-size": "15px", "font-weight": "bold" },
-          attrs: { for: "size" }
-        },
-        [_vm._v("Add Ons(Optional):")]
-      ),
-      _c("br"),
-      _vm._v(" "),
-      _c("div", { staticClass: "checkboxStyle" })
     ])
   }
 ]

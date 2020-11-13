@@ -42,10 +42,14 @@
                  <td>{{item.quantity}}</td>
                  <td>{{item.subTotal}}</td>
                  <td>
-                  <v-icon
+                     <v-icon
                     small
                    data-toggle="modal" data-target="#myModal" @click="showModal(item)"
-                  >❌</v-icon>
+                  >mdi-pencil</v-icon>
+                  <v-icon
+                    small
+                   @click="deleteOrder(item.id)"
+                  >mdi-delete</v-icon> 
                  </td>
                </tr>
              </tbody>
@@ -102,7 +106,7 @@
                                 <center>
                                     <img class="imageSize2" :src="image">
                                     <div ><br>
-                                        <h3>Base Price (₱{{price}})</h3>
+                                        <h3>Base Price (₱{{basePrice}})</h3>
                                         <h3>{{productNameOrder}}</h3>
                                         <p class="productDescription">{{description}}</p>
                                     </div>
@@ -138,10 +142,10 @@
                                         <div class="form-group">
                                             <label for="size" style="font-size: 15px; font-weight: bold">Add&nbsp;Ons(Optional):</label><br>
                                             <div class="checkboxStyle">
-                                                <!-- <div v-for="(item, index) in addOnsData" :key="index">
+                                                <div v-for="(item, index) in addOnsData" :key="index">
                                                     <input type="checkbox" :id="item.addons_name" :value="item.addons_name" v-model="addOns" @click="addTotalPrice(item, $event)">
                                                     <label :for="item.addons_name">{{item.addons_name}} (+ ₱{{item.onlineAddOnsPrice}})</label><br>
-                                                </div> -->
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
@@ -159,8 +163,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <!-- <button type="button" class="btn btn-danger" data-dismiss="modal" @click="cancel">Cancel</button> -->
-                        <center><button type="submit" class="btn btn-success btnRegister" @click="updateCustomerOrder()">Add to Cart</button></center>                        
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" >Cancel</button>
+                        <center><button type="submit" class="btn btn-success btnRegister" @click="updateCustomerOrder()">Save Change</button></center>                        
                     </div>
                 </div>
             </div>
@@ -181,6 +185,8 @@
 }
 </style>
 <script>
+import $ from 'jquery'
+
 import swal from "sweetalert";
 import loading from "../../basic/loading.vue";
 import AUTH from "../../services/auth";
@@ -199,6 +205,8 @@ export default {
       addOnsData:[],
       cupData:[],
       price:null,
+      image:null,
+      basePrice:0,
       description:null,
      addOns:null,
      success:null,
@@ -217,6 +225,7 @@ export default {
      error:'',
      idForProduct:null,
      tableDataForEdit:[],
+     itemId:null,
 
  
      payments: [ "Cash on Delivery", "G-cash"],
@@ -231,6 +240,7 @@ export default {
    this.count = 0;
    this.retrieveProduct();
    this.retrieveCupType();
+   this.retrieveAddOns();
    let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
      cluster: this.config.PUSHER_APP_CLUSTER,
      encrypted: true
@@ -301,28 +311,40 @@ export default {
    },
    updateCustomerOrder(){
      let param ={
-       id: this.idForProduct,
+       id: this.itemId,
        size:this.size,
        cupType:this.cupType,
        addOns:this.addOns,
-       quantity:this.quantity
+       quantity:this.quantity,
+       sugarLevel:this.sugarLevel,
+       subTotal:this.priceShown
      }
        this.$axios.post(AUTH.url + "updateCustomerOrder",param, AUTH.config).then(res => {
               if(res.data.status){
                   AUTH.deauthenticate()
               }
+            this.retrieveProduct();
+
+              $('#myModal').modal('hide')
+                             swal("Order Updated!", "Successfully", "success")
             });
 
    },
     getSizePrice(){
             if(this.size === 'highDose'){
                 this.total = this.highprice
+                this.basePrice = this.highprice
             }else if(this.size === 'overDose'){
                 this.total = this.overprice
+                this.basePrice = this.overprice
+
             }else if(this.size === 'lowDose'){
                 this.total = this.price
+                this.basePrice = this.price
+
+                
             }
-            this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
+            this.priceShown = this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice)
         },
         getCupPrice(){
             this.$axios.post(AUTH.url + 'retrieveOneCupType', {cupType: this.cupType}, AUTH.config).then(res => {
@@ -330,11 +352,11 @@ export default {
                     AUTH.deauthenticate()
                 }
                 this.cupTypePrice = res.data.cupType[0].inputCupOnlinePrice
-                this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
+                this.priceShown = this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice)
             })
         },
         getQuantity(){
-            this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
+            this.priceShown = this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice)
         },
         retrieveCupType(){
             this.$axios.post(AUTH.url + "retrieveCupType", {}, AUTH.config).then(response => {
@@ -386,7 +408,7 @@ export default {
                 }else{
                     this.totalAddOns -= this.addOnsPrice
                 }
-                this.priceShown = this.quantity * (this.total + this.totalAddOns + this.cupTypePrice)
+                this.priceShown = this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice)
             })
         },
          showModal(item){
@@ -404,14 +426,14 @@ export default {
             this.size = item.size
             this.sugarLevel = item.sugarLevel
             this.cupType = item.cupType
-            // this.addOns = item.same_order[0].addOns
+            this.addOns = item.same_order[0].addOns
             this.quantity = item.quantity
-            // this.total = 0
-            // this.totalAddOns = 0
-            // this.cupTypePrice = 0
+            this.total = 0
+            this.totalAddOns = 0
+            this.cupTypePrice = 0
             this.price = item.order_product[0].onlinelowPrice
-            // this.highprice = item.order_product[0].onlinehighPrice
-            // this.overprice = item.order_product[0].onlineoverPrice
+            this.highprice = item.order_product[0].onlinehighPrice
+            this.overprice = item.order_product[0].onlineoverPrice
             // console.log(item.order_product[0].productName)
             this.productNameOrder = item.order_product[0].productName
             this.image = item.order_product[0].image
