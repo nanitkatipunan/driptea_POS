@@ -9,8 +9,8 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _assets_profile_jpg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../assets/profile.jpg */ "./resources/assets/profile.jpg");
-/* harmony import */ var _assets_profile_jpg__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_assets_profile_jpg__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _assets_empty_png__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../assets/empty.png */ "./resources/assets/empty.png");
+/* harmony import */ var _assets_empty_png__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_assets_empty_png__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/auth */ "./resources/js/services/auth/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
@@ -581,7 +581,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
- // import imongAccount from "./myAccounts";
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -606,7 +605,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       errorMessage15: null,
       errorMessage16: null,
       modalShow: true,
-      profilepic: _assets_profile_jpg__WEBPACK_IMPORTED_MODULE_0___default.a,
+      profilepic: _assets_empty_png__WEBPACK_IMPORTED_MODULE_0___default.a,
       firstname: null,
       lastname: null,
       username: null,
@@ -805,8 +804,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this2.Cpassword = null;
           jquery__WEBPACK_IMPORTED_MODULE_3___default()("#" + modalID).modal("hide");
         })["catch"](function (error) {
-          console.log('anhi nisulod', error);
-
           if (error.response.status === 300) {
             _this2.errorMessage14 = "Username already exist";
           }
@@ -941,7 +938,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.image-upload > input {\r\n  visibility:hidden;\r\n  width:0;\r\n  height:0\n}\n.cursorText{\r\n  cursor: pointer;\n}\n.updateText {\r\n  width: auto;\r\n  vertical-align: middle;\n}\n.theUpdatebtn {\r\n  background-color: #ff5b04;\r\n  width: 100%;\r\n  height: 30px;\r\n  border-radius: 2px;\r\n  padding: 0%;\n}\n.savebtn {\r\n  color: #ff5b04;\n}\n.thetitle {\r\n  margin-top: 3%;\r\n  font-family: \"Google Sans\", Roboto, Arial, sans-serif;\r\n  font-weight: 400;\n}\n.title {\r\n  font-family: \"Google Sans\", Roboto, Arial, sans-serif;\r\n  font-weight: 400;\n}\n.subtitle {\r\n  font-size: 15px;\n}\n.container {\r\n  margin-top: 3%;\r\n  border: 1px solid gray;\r\n  border-radius: 1%;\r\n  width: 70%;\r\n  margin-bottom: 5%;\n}\n.profilePic {\r\n  height: 100px;\r\n  width: 100px;\r\n  border-radius: 100%;\n}\n.thelabel {\r\n  font-size: 13px;\n}\n.text-danger{\r\n  font-size: 12px\n}\r\n", ""]);
+exports.push([module.i, "\n.image-upload > input {\r\n  visibility:hidden;\r\n  width:0;\r\n  height:0\n}\n.cursorText{\r\n  cursor: pointer;\n}\n.updateText {\r\n  width: auto;\r\n  vertical-align: middle;\n}\n.theUpdatebtn {\r\n  background-color: #ff5b04;\r\n  width: 100%;\r\n  height: 30px;\r\n  border-radius: 2px;\r\n  padding: 0%;\n}\n.savebtn {\r\n  color: #ff5b04;\n}\n.thetitle {\r\n  margin-top: 3%;\r\n  font-family: \"Google Sans\", Roboto, Arial, sans-serif;\r\n  font-weight: 400;\n}\n.title {\r\n  font-family: \"Google Sans\", Roboto, Arial, sans-serif;\r\n  font-weight: 400;\n}\n.subtitle {\r\n  font-size: 15px;\n}\n.container {\r\n  margin-top: 3%;\r\n  border: 1px solid gray;\r\n  border-radius: 1%;\r\n  width: 70%;\r\n  margin-bottom: 5%;\n}\n.profilePic {\r\n  height: 150px;\r\n  width: 150px;\r\n  border-radius: 100%;\n}\n.thelabel {\r\n  font-size: 13px;\n}\n.text-danger{\r\n  font-size: 12px\n}\r\n", ""]);
 
 // exports
 
@@ -2344,14 +2341,14 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/assets/profile.jpg":
-/*!**************************************!*\
-  !*** ./resources/assets/profile.jpg ***!
-  \**************************************/
+/***/ "./resources/assets/empty.png":
+/*!************************************!*\
+  !*** ./resources/assets/empty.png ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/images/profile.jpg?d1ba46d2eede0a422fe963b840360759";
+module.exports = "/images/empty.png?65fc78002bd78f8a707519ebe72275b4";
 
 /***/ }),
 

@@ -39,7 +39,7 @@
                            <td>{{getProduct(item)}}</td>
                            <td>{{item[0].get_checkouts[0].total}}</td>
                            <td>
-                               <button class="btn btn-primary"  data-toggle="modal" data-target="#myModal" @click="viewOrder(item)">View</button>
+                               <button class="btn btn-primary"  data-toggle="modal" data-target="#myModal" @click="viewOrderComplete(item)">View</button>
                            </td>
                        </tr>
                    </tbody>
@@ -84,7 +84,7 @@
                            <td>₱ {{getTotal(items)}}</td>
                            <td>Pending Order</td>
                            <td>
-                               <button class="btn btn-primary"  data-toggle="modal" data-target="#myModal" @click="viewOrder(items)">View</button>
+                               <button class="btn btn-primary"  data-toggle="modal" data-target="#myModal" @click="viewOrderPending(items)">View</button>
                            </td>
                        </tr>
                    </tbody>
@@ -135,13 +135,17 @@
                                           
                                             <label for="sugarLevel" style="font-size: 15px; font-weight: bold">Sugar Level:</label>
                                             <p>{{sugarLevel}}</p>
-
                                            
                                             <label for="size" style="font-size: 15px; font-weight: bold">Add&nbsp;Ons(Optional):</label><br>
                                             <p>{{addOns}}</p>
-                                <label for="quantity" style="font-size: 15px; font-weight: bold; display: inline;">Quantity:</label>
-                                <p>{{quantity}}</p>
-                                     <p style="float:right;margin-right:5%;font-size:20px">TOTAL: <b> ₱{{priceShown}}.00</b></p> 
+
+                                            <label for="quantity" style="font-size: 15px; font-weight: bold; display: inline;">Quantity:</label>
+                                            <p>{{quantity}}</p>
+
+                                            <label v-if="tableDataCompleteOrder" for="delivery" style="font-size: 15px; font-weight: bold; display: inline;">Delivery Fee:</label>
+                                            <p v-if="tableDataCompleteOrder">{{deliveryFee}}</p>
+
+                                            <p style="float:right;margin-right:5%;font-size:20px">TOTAL: <b> ₱{{priceShown}}.00</b></p> 
 
 
 
@@ -155,7 +159,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" >Okay</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" >Okay</button>
                         <!-- <center><button type="submit" class="btn btn-success btnRegister" @click="updateCustomerOrder()">Save Change</button></center>                         -->
                     </div>
                 </div>
@@ -204,7 +208,8 @@ export default {
             quantity:null,
             basePrice:null,
             sizeName:null,
-            orderDate:null
+            orderDate:null,
+            deliveryFee:null,
         }
     },
     mounted(){
@@ -302,7 +307,7 @@ export default {
             })
             return storeAddOns
         },
-      viewOrder(item){
+      viewOrderPending(item){
           console.log(item)
             this.size = item[0].size
             this.sugarLevel = item[0].sugarLevel
@@ -318,6 +323,30 @@ export default {
             this.productName = item[0].order_product[0].productName
             this.image = item[0].order_product[0].image
             this.description = item[0].order_product[0].description
+           
+            // this.itemId = item.id
+            this.getSizePrice()
+            //  });
+      },
+       viewOrderComplete(item){
+          console.log(item)
+            this.size = item[0].size
+            this.sugarLevel = item[0].sugarLevel
+            this.cupType = item[0].cupType
+            this.addOns = item[0].same_order[0].addOns
+            this.quantity = item[0].quantity
+            // this.priceShown = item[0].subTotal
+            this.orderDate = item[0].get_checkouts[0].created_at
+            // this.cupTypePrice = 0
+            this.price = item[0].order_product[0].onlinelowPrice
+            this.highPrice = item[0].order_product[0].onlinehighPrice
+            this.overPrice = item[0].order_product[0].onlineoverPrice
+            this.productName = item[0].order_product[0].productName
+            this.image = item[0].order_product[0].image
+            this.description = item[0].order_product[0].description
+            this.deliveryFee= item[0].get_checkouts[0].deliveryFee
+            this.priceShown= item[0].get_checkouts[0].total
+
             // this.itemId = item.id
             this.getSizePrice()
             //  });

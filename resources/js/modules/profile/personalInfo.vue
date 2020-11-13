@@ -541,8 +541,8 @@
   margin-bottom: 5%;
 }
 .profilePic {
-  height: 100px;
-  width: 100px;
+  height: 150px;
+  width: 150px;
   border-radius: 100%;
 }
 .thelabel {
@@ -554,13 +554,12 @@
 </style>
 
 <script>
-import ProfilePic from "../../../assets/profile.jpg";
+import ProfilePic from "../../../assets/empty.png";
 import AUTH from "../../services/auth";
 import Axios from "axios";
 import $ from "jquery";
 import loading from '../../basic/loading.vue';
 import swal from "sweetalert";
-// import imongAccount from "./myAccounts";
 
 export default {
   data() {
@@ -782,7 +781,6 @@ export default {
             $("#" + modalID).modal("hide");
           })
           .catch(error => {
-            console.log('anhi nisulod', error)
             if (error.response.status === 300) {
               this.errorMessage14 = "Username already exist";
             }

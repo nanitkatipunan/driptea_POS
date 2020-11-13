@@ -244,6 +244,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -272,7 +276,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       quantity: null,
       basePrice: null,
       sizeName: null,
-      orderDate: null
+      orderDate: null,
+      deliveryFee: null
     };
   },
   mounted: function mounted() {
@@ -372,7 +377,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       return storeAddOns;
     },
-    viewOrder: function viewOrder(item) {
+    viewOrderPending: function viewOrderPending(item) {
       console.log(item);
       this.size = item[0].size;
       this.sugarLevel = item[0].sugarLevel;
@@ -388,6 +393,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.productName = item[0].order_product[0].productName;
       this.image = item[0].order_product[0].image;
       this.description = item[0].order_product[0].description; // this.itemId = item.id
+
+      this.getSizePrice(); //  });
+    },
+    viewOrderComplete: function viewOrderComplete(item) {
+      console.log(item);
+      this.size = item[0].size;
+      this.sugarLevel = item[0].sugarLevel;
+      this.cupType = item[0].cupType;
+      this.addOns = item[0].same_order[0].addOns;
+      this.quantity = item[0].quantity; // this.priceShown = item[0].subTotal
+
+      this.orderDate = item[0].get_checkouts[0].created_at; // this.cupTypePrice = 0
+
+      this.price = item[0].order_product[0].onlinelowPrice;
+      this.highPrice = item[0].order_product[0].onlinehighPrice;
+      this.overPrice = item[0].order_product[0].onlineoverPrice;
+      this.productName = item[0].order_product[0].productName;
+      this.image = item[0].order_product[0].image;
+      this.description = item[0].order_product[0].description;
+      this.deliveryFee = item[0].get_checkouts[0].deliveryFee;
+      this.priceShown = item[0].get_checkouts[0].total; // this.itemId = item.id
 
       this.getSizePrice(); //  });
     }
@@ -667,7 +693,7 @@ var render = function() {
                                   },
                                   on: {
                                     click: function($event) {
-                                      return _vm.viewOrder(item)
+                                      return _vm.viewOrderComplete(item)
                                     }
                                   }
                                 },
@@ -759,7 +785,7 @@ var render = function() {
                                   },
                                   on: {
                                     click: function($event) {
-                                      return _vm.viewOrder(items)
+                                      return _vm.viewOrderPending(items)
                                     }
                                   }
                                 },
@@ -912,6 +938,25 @@ var render = function() {
                         _vm._v(" "),
                         _c("p", [_vm._v(_vm._s(_vm.quantity))]),
                         _vm._v(" "),
+                        _vm.tableDataCompleteOrder
+                          ? _c(
+                              "label",
+                              {
+                                staticStyle: {
+                                  "font-size": "15px",
+                                  "font-weight": "bold",
+                                  display: "inline"
+                                },
+                                attrs: { for: "delivery" }
+                              },
+                              [_vm._v("Delivery Fee:")]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.tableDataCompleteOrder
+                          ? _c("p", [_vm._v(_vm._s(_vm.deliveryFee))])
+                          : _vm._e(),
+                        _vm._v(" "),
                         _c(
                           "p",
                           {
@@ -971,7 +1016,7 @@ var staticRenderFns = [
       _c(
         "button",
         {
-          staticClass: "btn btn-danger",
+          staticClass: "btn btn-primary",
           attrs: { type: "button", "data-dismiss": "modal" }
         },
         [_vm._v("Okay")]
