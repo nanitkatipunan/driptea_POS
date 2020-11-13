@@ -165,18 +165,18 @@
                 </div>
             </div>
         </div>
-
- 
- <loading v-if="loadingShow"></loading>
-  
+        <loading v-if="loadingShow"></loading>
    </div>
- 
- 
 </template>
 <style scoped>
 .table {
    width: 70%;
    margin-left:5%
+}
+.imageSize2{
+    height: 300px;
+    width: 300px;
+    margin-top: 2%;
 }
 </style>
 <script>
@@ -308,7 +308,6 @@ export default {
             return storeAddOns
         },
       viewOrderPending(item){
-          console.log(item)
             this.size = item[0].size
             this.sugarLevel = item[0].sugarLevel
             this.cupType = item[0].cupType
@@ -329,7 +328,6 @@ export default {
             //  });
       },
        viewOrderComplete(item){
-          console.log(item)
             this.size = item[0].size
             this.sugarLevel = item[0].sugarLevel
             this.cupType = item[0].cupType

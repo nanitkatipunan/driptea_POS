@@ -114,26 +114,27 @@ class OrderController extends Controller
         return response()->JSON(compact('prods'));
     }
     public function updateCustomerOrder(Request $request){
-        // dd($request);
-
-        //  $order = Order::with('orderProduct')->where('id', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
-        // dd($order);
-
         $data = $request->all();
         $product = Order::firstOrCreate(['id' => $request->id]);
-        // dd($product);
-
-  
+        $dataAddOns = $data['addOns'];
+        $this->updateAddOns($dataAddOns, $product->id);
         $product->quantity = $data['quantity'];
         $product->size = $data['size'];
         $product->sugarLevel = $data['sugarLevel'];
         $product->cupType = $data['cupType'];
         $product->subTotal = $data['subTotal'];
-       
         $product->save();
-        dd($product);
+    }
 
-        // return response()->json(compact('product'));
+    public function updateAddOns($dataParams, $id){
+        $Ons = AddOns::where('orderId', $id);
+        $Ons->delete();
+        foreach ($dataParams as $value) {
+            $addOns = new AddOns();
+            $addOns['orderId'] = $id;
+            $addOns['addOns'] = $value;
+            $addOns->save();
+        }
     }
 
 }

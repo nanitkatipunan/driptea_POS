@@ -158,47 +158,49 @@
       <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
       <v-spacer></v-spacer>
          <div class="col-6 text-right">
-                    <v-btn icon style="margin-right: 3%;" @click="redirect('/onlineDashboard')">
-                        <v-icon>mdi-home</v-icon>
-                    </v-btn>
-                    <v-btn icon @click="redirect('/customerCart')" style="margin-right: 2%;">
-                        <v-icon>mdi-cart</v-icon>
-                        <span style="margin-left: -3%;">Cart</span>
-                        <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
-                    </v-btn>
-                  <v-avatar>
-                    <v-img :src="profileImage" @click="redirect('/personalInfo')"></v-img>
-                  </v-avatar>
-     
-            <v-menu offset-y>
+          <v-btn icon style="margin-right: 3%;" @click="redirect('/onlineDashboard')">
+              <v-icon>mdi-home</v-icon>
+          </v-btn>
+          <v-btn icon @click="redirect('/customerCart')" style="margin-right: 2%;">
+              <v-icon>mdi-cart</v-icon>
+              <span style="margin-left: -3%;">Cart</span>
+              <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{onlineCount > 0 ? 'New' : ''}}</span>
+          </v-btn>
+          <v-avatar>
+            <v-img :src="emptyImage"></v-img>
+          </v-avatar>
+          <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" icon>
                 <v-icon medium color="black" right>mdi-arrow-down-drop-circle</v-icon>
               </v-btn>
             </template>
-                        <v-list>
-                            <v-list-item >
-                                <v-list-item-title @click="viewProfile">Profile</v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title @click="redirect('/orderHistory')">Order History</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
+            <v-list>
+                <v-list-item >
+                    <v-list-item-title class="clickCursor" @click="viewProfile">Profile</v-list-item-title>
+                </v-list-item>
+                <v-list-item>
+                    <v-list-item-title class="clickCursor" @click="redirect('/orderHistory')">Order History</v-list-item-title>
+                </v-list-item>
+                <v-list-item>
+                    <v-list-item-title class="clickCursor" @click="logout()">Logout</v-list-item-title>
+                </v-list-item>
+            </v-list>
+          </v-menu>
         </div>
       <!-- <v-app-bar-items>
         <button class="btn" @click="logout()">Logout</button>
       </v-app-bar-items> -->
     </v-app-bar>
-
-
     <v-main>
       <router-view></router-view>
     </v-main>
   </v-app>
 </template>
-
 <style>
+.clickCursor{
+  cursor: pointer;
+}
 .logo {
   width: 60px;
   height: 60px;
@@ -206,9 +208,9 @@
 .cashierNav {
   max-height: 65px;
 }
-.onlineNav{
+.onlineNav {
   max-height: 65px;
-   display: none;
+  display: none;
   position: absolute;
 }
 .color {
@@ -217,8 +219,8 @@
 </style>
 <script>
 import image from "../assets/logo.png";
-import profileImage from "../assets/logo.png";
-// import emptyImage from "../assets/empty.png";n
+// import profileImage from "../assets/logo.png";
+import emptyImage from "../assets/empty.png";
 import AUTH from "./services/auth";
 import ROUTER from "./router";
 import { mdiAccount } from "@mdi/js";
@@ -227,16 +229,14 @@ import config from "./config.js";
 import product from "./modules/products/productCategory.vue";
 export default {
   data: () => ({
-
-    profileImage:profileImage,
     username: null,
     admin: localStorage.getItem("adminId"),
     cashier: localStorage.getItem("cashierId"),
-    online:localStorage.getItem("customerId"),
+    online: localStorage.getItem("customerId"),
     drawer: null,
     show: false,
     image: image,
-    emptyImage: null,
+    emptyImage: emptyImage,
     auth: AUTH,
     token: null,
     dialog: false,
@@ -312,15 +312,16 @@ export default {
       { title: "Click Me" },
       { title: "Click Me 2...................." }
     ],
-    count: 0
+    count: 0,
+    onlineCount: 0
   }),
   components: {},
   mounted() {
     this.admin = localStorage.getItem("adminId");
     this.cashier = localStorage.getItem("cashierId");
-    this.online = localStorage.getItem("customerId")
-    if(this.admin || this.cashier || this.online){
-      this.retrieveImage()
+    this.online = localStorage.getItem("customerId");
+    if (this.admin || this.cashier || this.online) {
+      this.retrieveImage();
       this.retrieve();
     }
     let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
@@ -330,13 +331,18 @@ export default {
     let channel = pusher.subscribe("driptea-channel");
     let obj = this;
     channel.bind("driptea-data", data => {
-      if(data.order === 'pendingCustomer'){
+      if (data.order === "pendingCustomer") {
         // this.playSound('file://resources/audio/notify.mp3')
-        this.playSound('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3')
+        this.playSound(
+          "http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3"
+        );
         this.retrieve();
       }
-      if(data.order.image){
-        this.retrieveImage()
+      if (data.order.image) {
+        this.retrieveImage();
+      }
+      if (data.order.status === "incart") {
+        this.onlineCount++;
       }
     });
   },
@@ -344,8 +350,8 @@ export default {
     product
   },
   methods: {
-    playSound (sound) {
-      if(sound) {
+    playSound(sound) {
+      if (sound) {
         var audio = new Audio(sound);
         audio.play();
       }
@@ -360,17 +366,15 @@ export default {
         } else {
           ROUTER.push(route).catch(() => {});
         }
-      }else if (this.cashier != null) {
+      } else if (this.cashier != null) {
         if (route === "/logout/" + this.cashier) {
           this.logout();
         } else {
           ROUTER.push(route).catch(() => {});
         }
-      }else if (this.online != null) {
-       
-          ROUTER.push(route).catch(() => {});
-        
-        }
+      } else if (this.online != null) {
+        ROUTER.push(route).catch(() => {});
+      }
     },
     getOrder(item, event) {
       event.target.classList.add("color");
@@ -380,37 +384,45 @@ export default {
     },
     retrieve() {
       let storage = [];
-      this.$axios.post(AUTH.url + "retrieveOnlineOrder", {}, AUTH.config).then(res => {
-        if(res.data.status){
-            AUTH.deauthenticate()
-        }
-        this.tableData = res.data.order;
-        Object.keys(this.tableData).forEach(element => {
-          storage.push(this.tableData[element]);
+      this.$axios
+        .post(AUTH.url + "retrieveOnlineOrder", {}, AUTH.config)
+        .then(res => {
+          if (res.data.status) {
+            AUTH.deauthenticate();
+          }
+          this.tableData = res.data.order;
+          Object.keys(this.tableData).forEach(element => {
+            storage.push(this.tableData[element]);
+          });
+          this.storeOrder = storage;
+          this.count = this.storeOrder.length;
         });
-        this.storeOrder = storage;
-        this.count = this.storeOrder.length
-      });
     },
     logout() {
       AUTH.deauthenticate();
     },
-     viewProfile() {
-       let id = localStorage.getItem('customerId')
-     ROUTER.push("/personalInfo/"+id).catch(() => {});
-   },
-    retrieveImage(){
-      this.loadingShow = true
+    viewProfile() {
+      let id = localStorage.getItem("customerId");
+      ROUTER.push("/personalInfo/" + id).catch(() => {});
+    },
+    retrieveImage() {
+      this.loadingShow = true;
       let params = {
-        uname: this.admin ? this.admin : this.cashier
-      }
-      this.$axios.post(AUTH.url + "getUserData", params, AUTH.config).then( res => {
-        this.loadingShow = false
-        if(res.data.status){
-          AUTH.deauthenticate()
-        }
-        this.emptyImage = res.data.userdata[0].img
-      })
+        uname: this.admin
+          ? this.admin
+          : this.cashier ? this.cashier : this.online
+      };
+      this.$axios
+        .post(AUTH.url + "getUserData", params, AUTH.config)
+        .then(res => {
+          this.loadingShow = false;
+          if (res.data.status) {
+            AUTH.deauthenticate();
+          }
+          if (res.data.userdata[0].img) {
+            this.emptyImage = res.data.userdata[0].img;
+          }
+        });
     }
   }
 };

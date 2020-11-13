@@ -37,7 +37,7 @@
                <tr v-for="(item, index) in tableData" :key="index">
                  <td>{{item.order_product ? item.order_product[0].productName : ''}}</td>
                  <td>{{item.same_order ? getAddOns(item.same_order) : ''}}</td>
-                 <td>{{item.cupType ? item.cupType : ''}}</td>
+                 <td>{{getCup(item.cupType)}}</td>
                  <td>{{item.choosenPrice}}</td>
                  <td>{{item.quantity}}</td>
                  <td>{{item.subTotal}}</td>
@@ -169,23 +169,21 @@
                 </div>
             </div>
         </div>
-
-
-
-
- <loading v-if="loadingShow"></loading>
- 
- 
- 
-          </div>
+            <loading v-if="loadingShow"></loading>
+        </div>
 </template>
 <style scoped>
 .table {
- width: 70%;
+  width: 170%;
+}
+.imageSize2 {
+  height: 300px;
+  width: 300px;
+  margin-top: 2%;
 }
 </style>
 <script>
-import $ from 'jquery'
+import $ from "jquery";
 
 import swal from "sweetalert";
 import loading from "../../basic/loading.vue";
@@ -194,306 +192,328 @@ import ROUTER from "../../router";
 import config from "../../config.js";
 import empty from "../../basic/empty.vue";
 export default {
- data() {
-   return {
-     size:null,
-     cupSize:null,
-     cupType:null,
-     quantity:null,
-     sugarLevel:null,
-     priceShown:null,
-      addOnsData:[],
-      cupData:[],
-      price:null,
-      image:null,
-      basePrice:0,
-      description:null,
-     addOns:null,
-     success:null,
-     productNameOrder:null,
-       search:null,
-     tableData: null,
-     config: config,
-     count: 0,
-     subTotal: 0,
-     total: 0,
-     deliveryFee: 0,
-     processModal: false,
-     loadingShow: false,
-     payment:null,
-     available:null,
-     error:'',
-     idForProduct:null,
-     tableDataForEdit:[],
-     itemId:null,
-
- 
-     payments: [ "Cash on Delivery", "G-cash"],
-     availability:["Call me","Cancel Order"]
-   };
- },
- components: {
-   empty,
-   loading
- },
- mounted() {
-   this.count = 0;
-   this.retrieveProduct();
-   this.retrieveCupType();
-   this.retrieveAddOns();
-   let pusher = new Pusher(this.config.PUSHER_APP_KEY, {
-     cluster: this.config.PUSHER_APP_CLUSTER,
-     encrypted: true
-   });
- 
-   //Subscribe to the channel we specified in our Adonis Application
-   let channel = pusher.subscribe("driptea-channel");
- 
-   channel.bind("driptea-data", data => {
-     this.count++;
-     this.retrieveProduct();
-   });
- },
- methods: {
-   home() {
-     ROUTER.push("/onlineDashboard").catch(() => {});
-   },
-   retrieveProduct() {
-     this.loadingShow = true;
-     let params = {
-       id: localStorage.getItem("customerId")
-     };
-     this.$axios.post(AUTH.url + "retrieveCustomerOrder", params, AUTH.config).then(res => {
-       if(res.data.status){
-           AUTH.deauthenticate()
-       }
-       this.tableData = res.data.order;
-       this.loadingShow = false;
-     });
-   },
-   getAddOns(item) {
-     let storeAddOns = "";
-     let index = item.length;
-     item.forEach(el => {
-       if (item.indexOf(el) >= index - 1) {
-         storeAddOns += el.addOns;
-       } else {
-         storeAddOns += el.addOns + ", ";
-       }
-     });
-     return storeAddOns;
-   },
-   deleteOrder(prodId) {
+  data() {
+    return {
+      size: null,
+      cupSize: null,
+      cupType: null,
+      quantity: null,
+      sugarLevel: null,
+      priceShown: 0,
+      addOnsData: [],
+      cupData: [],
+      price: null,
+      image: null,
+      basePrice: 0,
+      description: null,
+      addOns: [],
+      success: null,
+      productNameOrder: null,
+      search: null,
+      tableData: null,
+      config: config,
+      count: 0,
+      subTotal: 0,
+      total: 0,
+      deliveryFee: 0,
+      processModal: false,
+      loadingShow: false,
+      payment: null,
+      available: null,
+      error: "",
+      idForProduct: null,
+      tableDataForEdit: [],
+      itemId: null,
+      payments: ["Cash on Delivery", "G-cash"],
+      availability: ["Call me", "Cancel Order"],
+      totalAddOns: 0
+    };
+  },
+  components: {
+    empty,
+    loading
+  },
+  mounted() {
+    this.count = 0;
+    this.retrieveProduct();
+    this.retrieveCupType();
+    this.retrieveAddOns();
+  },
+  methods: {
+    getCup(item) {
+      let cup = "";
+      this.cupData.forEach(el => {
+        if (item === el.cupTypeName) {
+          if (parseInt(el.inputCupOnlinePrice) === 0) {
+            cup = item;
+          } else {
+            cup = item + "(+" + el.inputCupOnlinePrice + ".00)";
+          }
+        }
+      });
+      return cup;
+    },
+    home() {
+      ROUTER.push("/onlineDashboard").catch(() => {});
+    },
+    retrieveProduct() {
+      this.loadingShow = true;
+      let params = {
+        id: localStorage.getItem("customerId")
+      };
+      this.$axios
+        .post(AUTH.url + "retrieveCustomerOrder", params, AUTH.config)
+        .then(res => {
+          if (res.data.status) {
+            AUTH.deauthenticate();
+          }
+          this.tableData = res.data.order;
+          this.loadingShow = false;
+        });
+    },
+    getAddOns(item) {
+      let storeAddOns = "";
+      let index = item.length;
+      item.forEach(el => {
+        this.addOnsData.forEach(e => {
+          if (el.addOns === e.addons_name) {
+            if (item.indexOf(el) >= index - 1) {
+              storeAddOns += el.addOns + " (+" + e.onlineAddOnsPrice + ".00)";
+            } else {
+              storeAddOns += el.addOns + " (+" + e.onlineAddOnsPrice + ".00), ";
+            }
+          }
+        });
+        // if (item.indexOf(el) >= index - 1) {
+        //   storeAddOns += el.addOns;
+        // } else {
+        //   storeAddOns += el.addOns + ", ";
+        // }
+      });
+      return storeAddOns;
+    },
+    deleteOrder(prodId) {
       swal({
         title: "Are you sure you want to delete?",
         text: "Once deleted, you will not be able to recover this order!",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
-      })
-      .then((willDelete) => {
+        dangerMode: true
+      }).then(willDelete => {
         if (willDelete) {
-           this.$axios.post(AUTH.url + "deleteOrder", { id: prodId }, AUTH.config).then(res => {
-              if(res.data.status){
-                  AUTH.deauthenticate()
+          this.$axios
+            .post(AUTH.url + "deleteOrder", { id: prodId }, AUTH.config)
+            .then(res => {
+              if (res.data.status) {
+                AUTH.deauthenticate();
               }
             });
-              this.retrieveProduct();
+          this.retrieveProduct();
           swal("Your order is succssfully deleted!", {
-            icon: "success",
+            icon: "success"
           });
         } else {
           swal("Your order remains to cart");
         }
       });
-      
-    
-   },
-   updateCustomerOrder(){
-     let param ={
-       id: this.itemId,
-       size:this.size,
-       cupType:this.cupType,
-       addOns:this.addOns,
-       quantity:this.quantity,
-       sugarLevel:this.sugarLevel,
-       subTotal:this.priceShown
-     }
-       this.$axios.post(AUTH.url + "updateCustomerOrder",param, AUTH.config).then(res => {
-              if(res.data.status){
-                  AUTH.deauthenticate()
-              }
-            this.retrieveProduct();
+    },
+    updateCustomerOrder() {
+      let param = {
+        id: this.itemId,
+        size: this.size,
+        cupType: this.cupType,
+        addOns: this.addOns,
+        quantity: this.quantity,
+        sugarLevel: this.sugarLevel,
+        subTotal: this.priceShown
+      };
+      this.$axios
+        .post(AUTH.url + "updateCustomerOrder", param, AUTH.config)
+        .then(res => {
+          if (res.data.status) {
+            AUTH.deauthenticate();
+          }
+          this.retrieveProduct();
 
-              $('#myModal').modal('hide')
-                             swal("Order Updated!", "Successfully", "success")
-            });
-
-   },
-    getSizePrice(){
-            if(this.size === 'highDose'){
-                this.total = this.highprice
-                this.basePrice = this.highprice
-            }else if(this.size === 'overDose'){
-                this.total = this.overprice
-                this.basePrice = this.overprice
-
-            }else if(this.size === 'lowDose'){
-                this.total = this.price
-                this.basePrice = this.price
-
-                
+          $("#myModal").modal("hide");
+          swal("Order Updated!", "Successfully", "success");
+        });
+    },
+    getSizePrice() {
+      if (this.size === "highDose") {
+        this.total = this.highprice;
+        this.basePrice = this.highprice;
+      } else if (this.size === "overDose") {
+        this.total = this.overprice;
+        this.basePrice = this.overprice;
+      } else if (this.size === "lowDose") {
+        this.total = this.price;
+        this.basePrice = this.price;
+      }
+      this.priceShown =
+        this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice);
+    },
+    getCupPrice() {
+      this.$axios
+        .post(
+          AUTH.url + "retrieveOneCupType",
+          { cupType: this.cupType },
+          AUTH.config
+        )
+        .then(res => {
+          if (res.data.status) {
+            AUTH.deauthenticate();
+          }
+          this.cupTypePrice = res.data.cupType[0].inputCupOnlinePrice;
+          this.priceShown =
+            this.quantity *
+            (this.basePrice + this.totalAddOns + this.cupTypePrice);
+        });
+    },
+    getQuantity() {
+      this.priceShown =
+        this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice);
+    },
+    retrieveCupType() {
+      this.$axios
+        .post(AUTH.url + "retrieveCupType", {}, AUTH.config)
+        .then(response => {
+          if (response.data.status) {
+            AUTH.deauthenticate();
+          }
+          this.cupData = response.data.cupType;
+        });
+    },
+    retrieveAddOns() {
+      this.$axios
+        .post(AUTH.url + "retrievingAddOns", {}, AUTH.config)
+        .then(response => {
+          if (response.data.status) {
+            AUTH.deauthenticate();
+          }
+          this.addOnsData = response.data.addons;
+        });
+    },
+    retrieveCategory() {
+      this.loadingShow = true;
+      this.$axios
+        .post(AUTH.url + "retrieveCategoryAscending", {}, AUTH.config)
+        .then(res => {
+          if (res.data.status) {
+            AUTH.deauthenticate();
+          }
+          this.data = res.data.addCategory;
+          this.loadingShow = false;
+        });
+    },
+    redirect(param) {
+      ROUTER.push("/productOnline/" + param).catch(() => {});
+    },
+    // retrieveProduct(){
+    //     this.loadingShow = true
+    //     this.$axios.post(AUTH.url + "retrieveAllProductAscending", {}, AUTH.config).then(res => {
+    //         if(res.data.status){
+    //             AUTH.deauthenticate()
+    //         }
+    //         this.productData = res.data.product
+    //         this.loadingShow = false
+    //     })
+    // },
+    addTotalPrice(item, event) {
+      this.$axios
+        .post(AUTH.url + "retrieveOneAddOn", { id: item.id }, AUTH.config)
+        .then(response => {
+          if (response.data.status) {
+            AUTH.deauthenticate();
+          }
+          this.addOnsPrice = response.data.addons.onlineAddOnsPrice;
+          if (event.target.checked) {
+            this.totalAddOns += this.addOnsPrice;
+          } else {
+            this.totalAddOns -= this.addOnsPrice;
+          }
+          this.priceShown =
+            this.quantity *
+            (this.basePrice + this.totalAddOns + this.cupTypePrice);
+        });
+    },
+    showModal(item) {
+      this.totalAddOns = 0
+      this.size = item.size;
+      this.sugarLevel = item.sugarLevel;
+      this.cupType = item.cupType;
+      item.same_order.forEach(el => {
+        this.addOns.push(el.addOns);
+        this.addOnsData.forEach(e => {
+            if(el.addOns === e.addons_name){
+                this.totalAddOns += e.onlineAddOnsPrice
             }
-            this.priceShown = this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice)
-        },
-        getCupPrice(){
-            this.$axios.post(AUTH.url + 'retrieveOneCupType', {cupType: this.cupType}, AUTH.config).then(res => {
-                if(res.data.status){
-                    AUTH.deauthenticate()
-                }
-                this.cupTypePrice = res.data.cupType[0].inputCupOnlinePrice
-                this.priceShown = this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice)
-            })
-        },
-        getQuantity(){
-            this.priceShown = this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice)
-        },
-        retrieveCupType(){
-            this.$axios.post(AUTH.url + "retrieveCupType", {}, AUTH.config).then(response => {
-                if(response.data.status){
-                    AUTH.deauthenticate()
-                }
-                this.cupData = response.data.cupType
-            });
-        },
-        retrieveAddOns() {
-            this.$axios.post(AUTH.url + "retrievingAddOns", {}, AUTH.config).then(response => {
-                if(response.data.status){
-                    AUTH.deauthenticate()
-                }
-                this.addOnsData = response.data.addons;
-            });
-        },
-        retrieveCategory(){
-            this.loadingShow = true
-            this.$axios.post(AUTH.url + 'retrieveCategoryAscending', {}, AUTH.config).then(res => {
-                if(res.data.status){
-                    AUTH.deauthenticate()
-                }
-                this.data = res.data.addCategory
-                this.loadingShow = false
-            })
-        },
-        redirect(param){
-            ROUTER.push('/productOnline/'+param).catch(()=>{})
-        },
-        // retrieveProduct(){
-        //     this.loadingShow = true
-        //     this.$axios.post(AUTH.url + "retrieveAllProductAscending", {}, AUTH.config).then(res => {
-        //         if(res.data.status){
-        //             AUTH.deauthenticate()
-        //         }
-        //         this.productData = res.data.product
-        //         this.loadingShow = false
-        //     })
-        // },
-        addTotalPrice(item, event){
-            this.$axios.post(AUTH.url + "retrieveOneAddOn", {id: item.id}, AUTH.config).then(response => {
-                if(response.data.status){
-                    AUTH.deauthenticate()
-                }
-                this.addOnsPrice = response.data.addons.onlineAddOnsPrice
-                if(event.target.checked){
-                    this.totalAddOns += this.addOnsPrice
-                }else{
-                    this.totalAddOns -= this.addOnsPrice
-                }
-                this.priceShown = this.quantity * (this.basePrice + this.totalAddOns + this.cupTypePrice)
-            })
-        },
-         showModal(item){
-             console.log(item,"this is ")
-
-
-            // this.$axios.post(AUTH.url + "retrieveCustomersOrdersForEdit",{id:id}, AUTH.config).then(res => {
-            // if(res.data.status){
-            //     AUTH.deauthenticate()
-    //         // }
-    //    this.tableDataForEdit = res.data.order;
-    //    console.log(this.tableDataForEdit);
-
-            // this.idForProduct=id
-            this.size = item.size
-            this.sugarLevel = item.sugarLevel
-            this.cupType = item.cupType
-            this.addOns = item.same_order[0].addOns
-            this.quantity = item.quantity
-            this.total = 0
-            this.totalAddOns = 0
-            this.cupTypePrice = 0
-            this.price = item.order_product[0].onlinelowPrice
-            this.highprice = item.order_product[0].onlinehighPrice
-            this.overprice = item.order_product[0].onlineoverPrice
-            // console.log(item.order_product[0].productName)
-            this.productNameOrder = item.order_product[0].productName
-            this.image = item.order_product[0].image
-            this.description = item.description
-            this.itemId = item.id
-            this.getSizePrice()
-            //  });
-        },
-   orderNow() {
-     if(this.payment !== null){
- 
-     let params = {
-       id: localStorage.getItem("customerId"),
-       status: "pendingCustomer"
-     };
-     this.$axios.post(AUTH.url + "updateStatus", params, AUTH.config).then(res => {
-       if(res.data.status){
-           AUTH.deauthenticate()
-
-       }
-           swal("Order Successfully!", "Processing .........", "success")
-
-       this.retrieveProduct();
-       localStorage.removeItem("customerOnlineId");
-       
-     });
-
-     }
-     else{
-       this.error = "This filed is required"
-     }
-     
-   },
-   getSubTotal() {
-     let total = 0;
-     this.tableData.forEach(element => {
-       total += element.subTotal;
-     });
-     this.subTotal = total;
-     return parseInt(total)
-       .toFixed(2)
-       .replace(/\d(?=(\d{3})+\.)/g, "$&,");
-   },
-   getTotal() {
-     let total = 0;
-     let subTotal = this.subTotal;
-     total = subTotal + 100;
-     this.total = total;
-     return parseInt(total)
-       .toFixed(2)
-       .replace(/\d(?=(\d{3})+\.)/g, "$&,");
-   },
-   getDeliveryFee() {
-     let deliveryFee = 50;
-     this.deliveryFee = deliveryFee;
-     return parseInt(deliveryFee)
-       .toFixed(2)
-       .replace(/\d(?=(\d{3})+\.)/g, "$&,");
-   },
-
- }
+        })
+      });
+      this.cupType = item.cupType
+      this.quantity = item.quantity;
+      this.total = 0;
+      this.cupTypePrice = 0
+      this.cupData.forEach(el => {
+          if(el.cupTypeName === item.cupType){
+              this.cupTypePrice = el.inputCupOnlinePrice;
+          }
+      })
+      this.price = item.order_product[0].onlinelowPrice;
+      this.highprice = item.order_product[0].onlinehighPrice;
+      this.overprice = item.order_product[0].onlineoverPrice;
+      this.productNameOrder = item.order_product[0].productName;
+      this.image = item.order_product[0].image;
+      this.description = item.description;
+      this.itemId = item.id;
+      this.getSizePrice();
+    },
+    orderNow() {
+      if (this.payment !== null) {
+        let params = {
+          id: localStorage.getItem("customerId"),
+          status: "pendingCustomer"
+        };
+        this.$axios
+          .post(AUTH.url + "updateStatus", params, AUTH.config)
+          .then(res => {
+            if (res.data.status) {
+              AUTH.deauthenticate();
+            }
+            swal("Order Successfully!", "Processing .........", "success");
+            this.retrieveProduct();
+            localStorage.removeItem("customerOnlineId");
+          });
+      } else {
+        this.error = "This filed is required";
+      }
+    },
+    getSubTotal() {
+      let total = 0;
+      this.tableData.forEach(element => {
+        total += element.subTotal;
+      });
+      this.subTotal = total;
+      return parseInt(total)
+        .toFixed(2)
+        .replace(/\d(?=(\d{3})+\.)/g, "$&,");
+    },
+    getTotal() {
+      let total = 0;
+      let subTotal = this.subTotal;
+      total = subTotal + 100;
+      this.total = total;
+      return parseInt(total)
+        .toFixed(2)
+        .replace(/\d(?=(\d{3})+\.)/g, "$&,");
+    },
+    getDeliveryFee() {
+      let deliveryFee = 50;
+      this.deliveryFee = deliveryFee;
+      return parseInt(deliveryFee)
+        .toFixed(2)
+        .replace(/\d(?=(\d{3})+\.)/g, "$&,");
+    }
+  }
 };
 </script>

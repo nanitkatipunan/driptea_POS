@@ -378,7 +378,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return storeAddOns;
     },
     viewOrderPending: function viewOrderPending(item) {
-      console.log(item);
       this.size = item[0].size;
       this.sugarLevel = item[0].sugarLevel;
       this.cupType = item[0].cupType;
@@ -397,7 +396,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.getSizePrice(); //  });
     },
     viewOrderComplete: function viewOrderComplete(item) {
-      console.log(item);
       this.size = item[0].size;
       this.sugarLevel = item[0].sugarLevel;
       this.cupType = item[0].cupType;
@@ -455,7 +453,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.table[data-v-0f3ac740] {\r\n   width: 70%;\r\n   margin-left:5%\n}\r\n", ""]);
+exports.push([module.i, "\n.table[data-v-0f3ac740] {\r\n   width: 70%;\r\n   margin-left:5%\n}\n.imageSize2[data-v-0f3ac740]{\r\n    height: 300px;\r\n    width: 300px;\r\n    margin-top: 2%;\n}\r\n", ""]);
 
 // exports
 
