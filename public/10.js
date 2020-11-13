@@ -2341,6 +2341,17 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./resources/assets/empty.png":
+/*!************************************!*\
+  !*** ./resources/assets/empty.png ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/empty.png?65fc78002bd78f8a707519ebe72275b4";
+
+/***/ }),
+
 /***/ "./resources/js/modules/profile/personalInfo.vue":
 /*!*******************************************************!*\
   !*** ./resources/js/modules/profile/personalInfo.vue ***!

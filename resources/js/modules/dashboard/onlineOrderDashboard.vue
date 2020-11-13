@@ -1,6 +1,6 @@
 <template >
     <div>   
-        <div class="header" style="background-color:#ff5b04">
+        <!-- <div class="header" style="background-color:#ff5b04">
             <div class="container" >
                 <div class="row">
                     <div class="col-6">
@@ -32,11 +32,9 @@
                     </v-menu>
                     </div>
                 </div>
-                <!--/row-->
             </div>
-            <!--container-->
-        </div>
-        <nav class="navbar navbar-expand-sm sticky-top navbar-light " style="background-color:#ff5b04">
+        </div> -->
+        <!-- <nav class="navbar navbar-expand-sm sticky-top navbar-light " style="background-color:#ff5b04;overflow:hidden;">
                     <div class="container">
                             <ul class="nav nav-tabs justify-content-center">
                                 <li class="nav-item"  v-for="(item, index) in data" :key="index">
@@ -45,7 +43,20 @@
                             
                             </ul>
                     </div>
-                </nav>
+                </nav> -->
+                <template >
+                    <v-tabs
+                    align-with-title
+                    >
+                    <v-tabs-slider color="yellow"></v-tabs-slider>
+
+                    <v-tab
+                    v-for="(item, index) in data" :key="index"
+                    >
+                        <a class="nav-link" :href="'#'+item.productCategory" style="color: black;">{{item.productCategory}}</a>
+                    </v-tab>
+                    </v-tabs>
+                </template>
 
 
         <div class="container" fluid>
@@ -148,10 +159,13 @@
                                 <input v-model="quantity" type="number" min="1" style="width:100px; display: inline;" class="form-control" @change="getQuantity()">
                             </div>
                         </center>
+                        <br>
+                           <p style="float:right;margin-right:5%">TOTAL: <b> ₱{{priceShown}}.00</b></p> 
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal" @click="cancel">Cancel</button>
-                        <center><button type="submit" class="btn btn-success btnRegister" @click="addToCart()">Add to Cart - {{priceShown}}</button></center>                        
+                        <center><button type="submit" class="btn btn-success btnRegister" @click="addToCart()">Add to Cart</button></center>                        
                     </div>
                 </div>
             </div>
@@ -187,6 +201,11 @@
     height: 170px;
     width: 70%;
 }
+.fixed-tabs-bar .v-tabs__bar {
+    top: 4rem;
+  z-index: 2;
+    position: -webkit-sticky;
+    position: sticky;}
 @media screen and (max-width: 900px) {
     .imageSize2{
         height: 300px;
@@ -210,6 +229,8 @@
 
 </style>
 <script>
+import swal from "sweetalert";
+
 import AUTH from '../../services/auth'
 import ROUTER from '../../router'
 import $ from 'jquery'
@@ -392,6 +413,7 @@ export default {
                                 AUTH.deauthenticate()
                             }
                             $('#viewDetails').modal('hide')
+                             swal("Order added to cart", "Successfully", "success")
                         })
                     })
                 }else{
@@ -415,6 +437,7 @@ export default {
                             AUTH.deauthenticate()
                         }
                         $('#viewDetails').modal('hide')
+
                     })
                 }
             }

@@ -68,6 +68,11 @@ class OrderController extends Controller
         $order = Order::with('orderProduct')->with('sameOrder')->where('onlineId', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
         return response()->json(compact('order'));
     }
+    // public function retrieveCustomersOrdersForEdit(Request $request){
+    //     $order = Order::with('orderProduct')->with('sameOrder')->where('id', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
+    //     // dd($order);
+    //     return response()->json(compact('order'));
+    // }
 
     public function updateStatus(Request $request){
         if($request['status'] === 'complete'){
@@ -108,4 +113,27 @@ class OrderController extends Controller
             ->get();
         return response()->JSON(compact('prods'));
     }
+    public function updateCustomerOrder(Request $request){
+        // dd($request);
+
+        //  $order = Order::with('orderProduct')->where('id', $request->id)->where('status', 'incart')->where('deleted_at', null)->orderBy('id','DESC')->get();
+        // dd($order);
+
+        $data = $request->all();
+        $product = Order::firstOrCreate(['id' => $request->id]);
+        // dd($product);
+
+  
+        $product->quantity = $data['quantity'];
+        $product->size = $data['size'];
+        $product->sugarLevel = $data['sugarLevel'];
+        $product->cupType = $data['cupType'];
+        $product->subTotal = $data['subTotal'];
+       
+        $product->save();
+        dd($product);
+
+        // return response()->json(compact('product'));
+    }
+
 }

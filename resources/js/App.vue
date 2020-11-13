@@ -150,6 +150,48 @@
       </v-app-bar-items>
     </v-app-bar>
 
+ <!-- online -->
+     <v-app-bar class="onlineNav" color="#ff5b04" v-if="online !== null" dense fixed app>
+      <a>
+        <v-img max-height="64" max-width="42" :src="image" @click="redirect('/onlineDashboard')"></v-img>
+      </a>
+      <v-app-bar-title app name="thetitle">DRIPTEA</v-app-bar-title>
+      <v-spacer></v-spacer>
+         <div class="col-6 text-right">
+                    <v-btn icon style="margin-right: 3%;" @click="redirect('/onlineDashboard')">
+                        <v-icon>mdi-home</v-icon>
+                    </v-btn>
+                    <v-btn icon @click="redirect('/customerCart')" style="margin-right: 2%;">
+                        <v-icon>mdi-cart</v-icon>
+                        <span style="margin-left: -3%;">Cart</span>
+                        <span style="background-color: red; color: white; border-radius: 20%; font-size: 10px; margin-left: -10%; margin-top: -20%;">{{count > 0 ? 'New' : ''}}</span>
+                    </v-btn>
+                  <v-avatar>
+                    <v-img :src="profileImage" @click="redirect('/personalInfo')"></v-img>
+                  </v-avatar>
+     
+            <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-bind="attrs" v-on="on" icon>
+                <v-icon medium color="black" right>mdi-arrow-down-drop-circle</v-icon>
+              </v-btn>
+            </template>
+                        <v-list>
+                            <v-list-item >
+                                <v-list-item-title @click="viewProfile">Profile</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-list-item-title @click="redirect('/orderHistory')">Order History</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+        </div>
+      <!-- <v-app-bar-items>
+        <button class="btn" @click="logout()">Logout</button>
+      </v-app-bar-items> -->
+    </v-app-bar>
+
+
     <v-main>
       <router-view></router-view>
     </v-main>
@@ -164,13 +206,19 @@
 .cashierNav {
   max-height: 65px;
 }
+.onlineNav{
+  max-height: 65px;
+   display: none;
+  position: absolute;
+}
 .color {
   background: #89afe8;
 }
 </style>
 <script>
 import image from "../assets/logo.png";
-import emptyImage from "../assets/empty.png";
+import profileImage from "../assets/logo.png";
+// import emptyImage from "../assets/empty.png";n
 import AUTH from "./services/auth";
 import ROUTER from "./router";
 import { mdiAccount } from "@mdi/js";
@@ -179,13 +227,16 @@ import config from "./config.js";
 import product from "./modules/products/productCategory.vue";
 export default {
   data: () => ({
+
+    profileImage:profileImage,
     username: null,
     admin: localStorage.getItem("adminId"),
     cashier: localStorage.getItem("cashierId"),
+    online:localStorage.getItem("customerId"),
     drawer: null,
     show: false,
     image: image,
-    emptyImage: emptyImage,
+    emptyImage: null,
     auth: AUTH,
     token: null,
     dialog: false,
@@ -267,7 +318,8 @@ export default {
   mounted() {
     this.admin = localStorage.getItem("adminId");
     this.cashier = localStorage.getItem("cashierId");
-    if(this.admin || this.cashier){
+    this.online = localStorage.getItem("customerId")
+    if(this.admin || this.cashier || this.online){
       this.retrieveImage()
       this.retrieve();
     }
@@ -314,7 +366,11 @@ export default {
         } else {
           ROUTER.push(route).catch(() => {});
         }
-      }
+      }else if (this.online != null) {
+       
+          ROUTER.push(route).catch(() => {});
+        
+        }
     },
     getOrder(item, event) {
       event.target.classList.add("color");
@@ -339,6 +395,10 @@ export default {
     logout() {
       AUTH.deauthenticate();
     },
+     viewProfile() {
+       let id = localStorage.getItem('customerId')
+     ROUTER.push("/personalInfo/"+id).catch(() => {});
+   },
     retrieveImage(){
       this.loadingShow = true
       let params = {
