@@ -51,6 +51,11 @@ class UserController extends Controller
         // $this.userdata();
     }
 
+    public function retrieve(Request $request){
+        $user = User::where('deleted_at', null)->get();
+        return response()->json(compact('user'));
+    }
+
     public function register(Request $request)
     {
         //validate if email already exist
@@ -60,10 +65,21 @@ class UserController extends Controller
         if ($validate->fails()) {
             return response()->json($validate->errors()->toJson(), 300);
         }
+        $inp['email'] = $request->get('email');
+        $rule = array('email' => 'unique:users,email');
+        $validate = Validator::make($inp, $rule);
+        if ($validate->fails()) {
+            return response()->json($validate->errors()->toJson(), 301);
+        }
 
         $validator = Validator::make($request->all(), [
             'account_type' => 'required|string|max:255',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'contactNumber' => 'required|string|max:255',
             'name' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -73,14 +89,19 @@ class UserController extends Controller
         $user = User::create([
             'account_type' => $request->get('account_type'),
             'name' => $request->get('name'),
-            'fullname' => $request->get('fullname'),
+            'email' => $request->get('email'),
+            'firstname' => $request->get('firstname'),
+            'lastname' => $request->get('lastname'),
             'address' => $request->get('address'),
             'contactNumber' => $request->get('contactNumber'),
             'password' => Hash::make($request->get('password')),
         ]);
-        $token = JWTAuth::fromUser($user);
-        // dd($token);
-        return response()->json(compact('user','token'),201);
+        if($request['adminRegister']){
+            return response()->json(compact('user'),201);
+        }else{
+            $token = JWTAuth::fromUser($user);
+            return response()->json(compact('user','token'),201);
+        }
     }
 
     public function getAuthenticatedUser()
