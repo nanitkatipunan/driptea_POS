@@ -715,6 +715,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _ref;
 
     return _ref = {
+      auth: _services_auth__WEBPACK_IMPORTED_MODULE_0__["default"],
       dialogConfirmation: false,
       editCat: false,
       tableForCategory: true,
@@ -1318,10 +1319,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.imgURL = URL.createObjectURL(e.target.files[0]);
     },
     formSubmitProduct: function formSubmitProduct(e) {
+      e.preventDefault();
       this.loadingShow = true;
 
       if (this.img !== null && this.prodType !== null && this.productName !== null && this.lowPrice !== null && this.highPrice !== null && this.overPrice !== null && this.onlinelowPrice !== null && this.onlinehighPrice !== null & this.onlineoverPrice !== null && this.lowPrice > 0 && this.highPrice > 0 && this.overPrice > 0 && this.onlinelowPrice > 0 && this.onlinehighPrice > 0 && this.onlineoverPrice > 0 && this.errorMessage1 === null) {
-        e.preventDefault();
         var currentObj = this;
         var config = {
           headers: {

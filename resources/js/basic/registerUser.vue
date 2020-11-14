@@ -407,7 +407,10 @@ export default {
           })
           .catch(error => {
             if (error.response.status === 300) {
-              this.errorMessage3 = "Username already exist";
+              this.errorMessage14 = "Username already exist";
+            }
+            if (error.response.status === 301) {
+              this.errorMessage3 = "Email already exist";
             }
             this.loadingShow = false
           });
@@ -537,7 +540,7 @@ export default {
         this.password.length >= 6 &&
         this.password.localeCompare(this.confirmPass) === 0 &&
         this.type !== null &&
-        AUTH.validateEmail(this.email) === true
+        this.validateEmail(this.email) === true
       ) {
         this.errorMessage1 = null;
       } else {

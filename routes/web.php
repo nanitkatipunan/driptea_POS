@@ -17,11 +17,12 @@ Route::post('register', 'App\Http\Controllers\UserController@register');
 Route::post('login', 'App\Http\Controllers\UserController@authenticate');
 Route::post('tokenRefresh', 'App\Http\Controllers\UserController@tokenRefresh');
 Route::post('deaunthenticate', 'App\Http\Controllers\UserController@deaunthenticate');
-Route::post('getUserData', 'App\Http\Controllers\UserController@userdata');
-Route::post('getUserName', 'App\Http\Controllers\UserController@getUserName');
-Route::post('SaveNEWdata', 'App\Http\Controllers\UserController@SaveNEWdata');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::post('updateImage', 'App\Http\Controllers\UserController@updateImage');
+    Route::post('getUserData', 'App\Http\Controllers\UserController@userdata');
+    Route::post('getUserName', 'App\Http\Controllers\UserController@getUserName');
+    Route::post('SaveNEWdata', 'App\Http\Controllers\UserController@SaveNEWdata');
     Route::post('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
     Route::post('retrieve', 'App\Http\Controllers\UserController@retrieve');
 
@@ -49,12 +50,17 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('updateStatus','App\Http\Controllers\OrderController@updateStatus');
     Route::post('updateOnlineStatus','App\Http\Controllers\OrderController@updateOnlineStatus');
     Route::post('deleteOrder','App\Http\Controllers\OrderController@deleteOrder');
+    Route::post('updateCustomerOrder','App\Http\Controllers\OrderController@updateCustomerOrder');
+
     Route::post('retrieveOrder','App\Http\Controllers\OrderController@retrieveOrder');
     Route::post('retrieveCustomerOrder','App\Http\Controllers\OrderController@retrieveCustomerOrder');
     Route::post('retrieveOnlineOrder','App\Http\Controllers\OrderController@retrieveOnlineOrder');
     Route::post('retrieveWholeOrder','App\Http\Controllers\OrderController@retrieveWholeOrder');
     Route::post('getOrder','App\Http\Controllers\OrderController@getOrder');
     Route::post('retrieveSalesReportPerCategory','App\Http\Controllers\OrderController@retrieveSalesReportPerCategory');
+    Route::post('retrievePendingOrders','App\Http\Controllers\OrderController@retrieveOnlineOrder');
+    Route::post('retrieveCustomersOrdersForEdit','App\Http\Controllers\OrderController@retrieveCustomersOrdersForEdit');
+
 
 
     Route::post('addingAddOns','App\Http\Controllers\AddAddOnsController@addAddons');

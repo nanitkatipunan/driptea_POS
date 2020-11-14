@@ -495,6 +495,10 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loadingShow = true;
       this.$axios.post(_services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].url + "retrieve", {}, _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].config).then(function (response) {
+        if (response.data.status) {
+          _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].deauthenticate();
+        }
+
         _this.loadingShow = false;
         _this.userData = response.data.user;
       });
@@ -661,7 +665,7 @@ __webpack_require__.r(__webpack_exports__);
           this.errorMessage8 = null;
           this.errorMessage9 = null;
         }
-      } else if (this.contactNum != null && this.address != null && this.firstname.length >= 6 && this.email !== null && this.password !== null && this.password.length >= 6 && this.password.localeCompare(this.confirmPass) === 0 && this.type !== null && _services_auth__WEBPACK_IMPORTED_MODULE_1__["default"].validateEmail(this.email) === true) {
+      } else if (this.contactNum != null && this.address != null && this.firstname.length >= 6 && this.email !== null && this.password !== null && this.password.length >= 6 && this.password.localeCompare(this.confirmPass) === 0 && this.type !== null && this.validateEmail(this.email) === true) {
         this.errorMessage1 = null;
       } else {
         this.errorMessage17 = "Please fill in all required fields.";

@@ -8,10 +8,20 @@ use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\DB;
-
+use App\Events\pusherEvent;
 
 class UserController extends Controller
 {
+    public function updateImage(Request $request){
+        $user = User::firstOrCreate(['id' => $request->id]);
+        $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('images'), $imageName);
+        $user->image = 'images/'.$imageName;
+        $user->save();
+        event(new pusherEvent($user));
+        return response()->json(compact('user'));
+    }
+
     public function authenticate(Request $request)
     {
         $credentials = $request->only('name', 'password');
@@ -27,26 +37,37 @@ class UserController extends Controller
 
     public function userdata(Request $request){
         $name = $request->only('uname');
-        // dd($name);
-        $userdata = DB::table('users')->select('fullname as fullname','address as address','contactNumber as CN','name as email','password as pwd')
+        $userdata = DB::table('users')->select('firstname as fname', 'lastname as lname', 'address as address', 
+        'contactNumber as CN', 'email as email', 'name as username', 'password as pwd', 'image as img')
             ->where('id', $request->uname)
             ->get();
-
-        // dd($userdata);
         return response()->json(compact('userdata'));
     }
     public function getUserName(Request $request){
         $name = $request->only('uname');
-        // dd($name);
         $userdata = DB::table('users')->select('name as fullname')
             ->where('id', $request->uname)
             ->get();
-
-        // dd($userdata);
         return response()->json(compact('userdata'));
     }
     public function SaveNEWdata(Request $request){
-        $userdata = DB::table('users')->where('id', $request->ID)->update([$request->col => $request->data]);
+        if($request->col === 'name'){
+            $input['name'] = $request->data;
+            $rules = array('name' => 'unique:users,name');
+            $validate = Validator::make($input, $rules);
+            if ($validate->fails()) {
+                return response()->json($validate->errors()->toJson(), 300);
+            }
+        }else if($request->col === 'email'){
+            $inp['email'] = $request->data;
+            $rule = array('email' => 'unique:users,email');
+            $validate = Validator::make($inp, $rule);
+            if ($validate->fails()) {
+                return response()->json($validate->errors()->toJson(), 301);
+            }
+        }else {
+            $userdata = DB::table('users')->where('id', $request->ID)->update([$request->col => $request->data]);
+        }
         // return $this->userdata($request);
         // $this.userdata();
     }

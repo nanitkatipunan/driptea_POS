@@ -197,13 +197,13 @@ export default {
             this.cupData.forEach(el => {
                 if(item === el.cupTypeName){
                     if(this.customerType === 'foodpanda' || this.customerType === 'grab' || this.customerType === 'online'){
-                        if(el.inputCupOnlinePrice === 0){
+                        if(parseInt(el.inputCupOnlinePrice) === 0){
                             cup = (item)
                         }else{
                             cup = (item + '(+' + el.inputCupOnlinePrice + '.00)')
                         }
                     }else{
-                        if(el.cupTypePrice === 0){
+                        if(parseInt(el.cupTypePrice === 0)){
                             cup = (item)
                         }else{
                             cup = (item + '(+' + el.cupTypePrice + '.00)')
@@ -268,7 +268,7 @@ export default {
             if(this.tableData != null){
                 let total = 0
                 this.tableData.forEach(element => {
-                    total += element.subTotal
+                    total += parseInt(element.subTotal)
                 });
                 this.subTotalPrice = total
                 return parseInt(total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
