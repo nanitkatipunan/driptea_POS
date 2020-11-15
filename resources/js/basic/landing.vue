@@ -1,6 +1,10 @@
 <template>
-  <v-img :src="require('@/assets/landing1.jpg')" class="pr-16 pt-16" height="100vh">
-    <v-card class="float-right mr-16 pa-5 mt-16" width="400" >
+  <v-img
+    :src="require('@/assets/landing1.jpg')"
+    class="pr-16 pt-16"
+    height="100vh"
+  >
+    <v-card class="float-right mr-16 pa-5 mt-16" width="400">
       <center>
         <img class="logo" :src="image" />
         <br />
@@ -47,13 +51,15 @@
           @click:append="show3 = !show3"
         ></v-text-field>
         <a href class="FP">Forgot Password</a><br />
-        <v-btn
-          type="button"
-          class="btn btnRegister"
-          @click="login"
-          color="orange"
-          >Login</v-btn
-        >
+        <center>
+          <v-btn
+            type="button"
+            class="btn btnRegister ml-12"
+            @click="login"
+            color="orange"
+            >Login</v-btn
+          >
+        </center>
 
         <hr />
         <center>
@@ -98,7 +104,7 @@ export default {
     redirect(route) {
       ROUTER.push(route).catch(() => {});
     },
-   
+
     login(e) {
       e.preventDefault();
       this.loadingShow = true;
