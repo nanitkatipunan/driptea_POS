@@ -1105,7 +1105,6 @@ export default {
             
           
         });
-
         let totalCup = response.data.quantityCupsInDB.incomingOverDose;
       });
     },
@@ -1402,7 +1401,6 @@ export default {
       if (this.image !== null && this.productType !== null) {
         e.preventDefault();
         let currentObj = this;
-
         const config = {
           headers: {
               "content-type": "multipart/form-data",
@@ -1444,7 +1442,6 @@ export default {
       if (this.image !== null && this.productType !== null) {
         e.preventDefault();
         let currentObj = this;
-
         const config = {
           headers: {
               "content-type": "multipart/form-data",
@@ -1676,7 +1673,6 @@ export default {
           });
           this.retrieveAddOns();
           this.dialogForAddOns = false;
-
         });
       } else {
         this.errorMessage = "Please fill up all fields";
